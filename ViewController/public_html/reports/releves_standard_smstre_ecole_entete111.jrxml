@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="releves_standard_smstre_ecole_entete111" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7743faf8-3fdc-4761-af68-54d548ff010f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="parcours" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="annee_univers" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_hs" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_semestre" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\Niang\\works\\GestionPedagogiqueProd\\GestionPedagogique\\ViewController\\public_html\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+etu.NUMERO, pers.prenoms,pers.nom, pers.nom||' '||pers.prenoms NomPrenom, pers.DATE_NAISSANCE, pers.LIEU_NAISSANCE
+,cv.LIBELLE_COURT Civilite,
+dm.ID_DOMAINE, dm.LIBELLE_LONG Domaine, mt.ID_MENTION, mt.LIBELLE_LONG Mention,
+UE.LIBELLE_LONG Ue,--rfu.CREDIT CreditUE,rfu.NOTE MoyenneUe,DECODE(rfu.RESULTAT, 1, 'Non Validé', DECODE(rfu.RESULTAT, 2, 'Validé', DECODE(rfu.RESULTAT, 3, 'Validé par Compensation', 'Non Validé'))) ResultatUE,
+fus.ID_FILIERE_UE_SEMSTRE IdFilUe, ipsu.ID_INSCRIPTION_PED_SEM_UE IdInsPedSemUe,fus.CODIFICATION,
+an.LIBELLE_LONG AnneeUnivers,an.ID_ANNEES_UNIVERS
+,fus.ID_SEMESTRE, sm.LIBELLE_LONG Semestre,fus.COEFFICIENT
+--,ss.ID_SESSION,DECODE(ss.ID_SESSION, 1, 'NORMALE','RATRAPAGE') Sess
+--,rs.NOTE MoyenneSemestre,DECODE(rs.RESULTAT, 1, 'Non Validé', DECODE(rs.RESULTAT, 2, 'Validé', DECODE(rs.RESULTAT, 3, 'Validé par Compensation', ''))) ResultatSemestre,
+--rs.CREDIT CreditSemestre,tmtsem.LIBELLE_LONG MentionSem
+,nf.LIBELLE_LONG ||' '|| DECODE(nfp.ID_FORMATION_SPECIALITE, NULL, '',' Spécialité : '||sp.specialite)||DECODE(nfp.ID_FORMATION_OPTION, NULL, '',' Option : '||op.Options) Parcours,
+s.LIBELLE_LONG Structures, sign.signataire,
+DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, s.EMAIL,inst.EMAIL) Email,
+DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, s.FAX, inst.FAX) Fax,
+DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, s.TELEPHONE,inst.TELEPHONE) Telephone,
+DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, s.LIBELLE_COURT,institut) Institut,
+'Département : '||hs.LIBELLE_LONG Departement
+FROM  INSCRIPTION_PED_SEM_UE ipsu
+JOIN  FILIERE_UE_SEMSTRE fus ON ipsu.ID_FILIERE_UE_SEMSTRE = fus.ID_FILIERE_UE_SEMSTRE
+--JOIN  RESULTATS_FIL_UE_SEMESTRE rfu ON rfu.ID_INSCRIPTION_PED_SEM_UE = ipsu.ID_INSCRIPTION_PED_SEM_UE
+JOIN  UE ON UE.ID_UE = fus.ID_UE
+JOIN  INSCRIPTION_PED_SEMESTRE ips ON ips.ID_INSCRIPTION_PED_SEMESTRE = ipsu.ID_INSCRIPTION_PED_SEMESTRE
+
+JOIN  SEMESTRES sm ON ips.ID_SEMESTRE = sm.ID_SEMESTRE AND fus.ID_SEMESTRE = sm.ID_SEMESTRE
+--JOIN  SESSIONS ss ON rs.ID_SESSION = ss.ID_SESSION
+JOIN  INSCRIPTIONS_PEDAGOGIQUES ip ON ip.ID_INSCRIPTION_PEDAGOGIQUE=ips.ID_INSCRIPTION_PEDAGOGIQUE
+JOIN  INSCRIPTIONS_ADMIN ia ON ia.ID_INSCRIPTION_ADMIN=ip.ID_INSCRIPTION_ADMIN
+JOIN  ANNEES_UNIVERS an on ia.ID_ANNEES_UNIVERS = an.ID_ANNEES_UNIVERS
+JOIN  TYPE_FORMATION tf ON tf.ID_TYPE_FORMATION = ia.ID_TYPE_FORMATION
+JOIN  ETUDIANTS etu ON etu.ID_ETUDIANT=ia.ID_ETUDIANT
+JOIN  PERSONNES pers ON pers.ID_PERSONNE=etu.ID_PERSONNE
+JOIN  CIVILITES cv on pers.ID_CIVILITE = cv.ID_CIVILITE
+JOIN  MAQUETTES m ON fus.ID_MAQUETTE = m.ID_MAQUETTE
+JOIN  PARCOURS_MAQUETTE_ANNEE pma ON pma.ID_PARCOURS_MAQUET_ANNEE=ip.ID_PARCOURS_MAQUET_ANNEE AND m.ID_MAQUETTE=pma.ID_MAQUETTE
+JOIN  NIVEAUX_FORMATION_PARCOURS nfp ON nfp.ID_NIVEAU_FORMATION_PARCOURS=pma.ID_NIVEAU_FORMATION_PARCOURS
+JOIN  (
+        SELECT nfc.ID_NIVEAU_FORMATION_COHORTE, ct.LIBELLE cohorte, nfc.ID_NIVEAU_FORMATION
+        FROM NIVEAU_FORMATION_COHORTES nfc JOIN COHORTES ct ON nfc.ID_COHORTE = ct.ID_COHORTE
+      ) crt On crt.ID_NIVEAU_FORMATION_COHORTE=nfp.ID_NIVEAU_FORMATION_COHORTE
+JOIN  NIVEAUX_FORMATIONS nf on crt.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION
+JOIN  FORMATIONS f on nf.ID_FORMATION = f.ID_FORMATION
+JOIN  MENTIONS mt ON f.ID_MENTION = mt.ID_MENTION
+JOIN DOMAINES dm ON mt.ID_DOMAINE = dm.ID_DOMAINE
+JOIN  HISTORIQUES_STRUCTURES hs on f.ID_HISTORIQUES_STRUCTURE = hs.ID_HISTORIQUES_STRUCTURE
+JOIN  STRUCTURES s on hs.ID_STRUCTURES = s.ID_STRUCTURE
+LEFT JOIN  (
+            Select distinct pers.PRENOMS || ' '||pers.NOM signataire,sg.ID_SIGNATAIRE
+            from PERSONNES pers, SIGNATAIRE sg
+            WHERE pers.ID_PERSONNE=sg.ID_PERSONNE
+            ) sign on sign.ID_SIGNATAIRE = s.ID_SIGNATAIRE
+LEFT JOIN (
+          SELECT sp.LIBELLE_LONG specialite, fsp.ID_FORMATION_SPECIALITE
+          FROM FORMATIONS_SPECIALITES fsp JOIN SPECIALITES sp on fsp.ID_SPECIALITE = sp.ID_SPECIALITE
+          ) sp ON sp.ID_FORMATION_SPECIALITE = nfp.ID_FORMATION_SPECIALITE
+LEFT JOIN (
+          SELECT op.LIBELLE_LONG Options, fop.ID_FORMATION_OPTION
+          FROM FORMATIONS_OPTIONS fop JOIN OPTIONS op on fop.ID_OPTION = op.ID_OPTION
+          ) op ON op.ID_FORMATION_OPTION = nfp.ID_FORMATION_OPTION
+LEFT JOIN (
+          SELECT hst.ID_HISTORIQUES_STRUCTURE,ins.LIBELLE_LONG institut, ins.EMAIL, ins.TELEPHONE, ins.FAX
+          FROM HISTORIQUES_STRUCTURES hst JOIN INSTITUTS ins on hst.ID_HISTORIQUES_STRUCTURE = ins.STRUCTURE_PARENT
+          ) inst ON inst.ID_HISTORIQUES_STRUCTURE = hs.ID_HISTORIQUES_STRUCTURE
+WHERE nfp.ID_NIVEAU_FORMATION_PARCOURS=$P{parcours}
+AND ia.ID_ANNEES_UNIVERS=$P{annee_univers}
+AND hs.ID_HISTORIQUES_STRUCTURE=$P{id_hs}
+--AND rs.RESULTAT = 2
+AND ips.id_semestre=$P{id_semestre}
+ORDER BY pers.nom,pers.prenoms,fus.ID_FILIERE_UE_SEMSTRE,fus.CODIFICATION]]>
+	</queryString>
+	<field name="NUMERO" class="java.lang.String"/>
+	<field name="PRENOMS" class="java.lang.String"/>
+	<field name="NOM" class="java.lang.String"/>
+	<field name="NOMPRENOM" class="java.lang.String"/>
+	<field name="DATE_NAISSANCE" class="java.sql.Timestamp"/>
+	<field name="LIEU_NAISSANCE" class="java.lang.String"/>
+	<field name="CIVILITE" class="java.lang.String"/>
+	<field name="ID_DOMAINE" class="java.math.BigDecimal"/>
+	<field name="DOMAINE" class="java.lang.String"/>
+	<field name="ID_MENTION" class="java.math.BigDecimal"/>
+	<field name="MENTION" class="java.lang.String"/>
+	<field name="UE" class="java.lang.String"/>
+	<field name="IDFILUE" class="java.math.BigDecimal"/>
+	<field name="IDINSPEDSEMUE" class="java.math.BigDecimal"/>
+	<field name="CODIFICATION" class="java.lang.String"/>
+	<field name="ANNEEUNIVERS" class="java.lang.String"/>
+	<field name="ID_ANNEES_UNIVERS" class="java.math.BigDecimal"/>
+	<field name="ID_SEMESTRE" class="java.math.BigDecimal"/>
+	<field name="SEMESTRE" class="java.lang.String"/>
+	<field name="COEFFICIENT" class="java.math.BigDecimal"/>
+	<field name="PARCOURS" class="java.lang.String"/>
+	<field name="STRUCTURES" class="java.lang.String"/>
+	<field name="SIGNATAIRE" class="java.lang.String"/>
+	<field name="EMAIL" class="java.lang.String"/>
+	<field name="FAX" class="java.lang.String"/>
+	<field name="TELEPHONE" class="java.lang.String"/>
+	<field name="INSTITUT" class="java.lang.String"/>
+	<field name="DEPARTEMENT" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="217" splitType="Stretch">
+			<image vAlign="Top">
+				<reportElement x="3" y="5" width="109" height="92" uuid="e749215b-d0f9-47cb-b1c1-00cd0e51aabe"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR} + "ucad.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="111" y="5" width="385" height="14" uuid="c362a266-a59a-46fc-8e93-f0485c844fcd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[UNIVERSITE CHEIKH ANTA DIOP DE DAKAR]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="101" y="20" width="452" height="14" uuid="c894106f-68d0-432a-b05c-c99ecfe9d96c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRUCTURES}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="111" y="34" width="385" height="14" uuid="2837e651-38d5-47c5-97ad-9d5c632c7e7d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{INSTITUT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="176" y="49" width="29" height="16" uuid="9439a423-f635-46f2-a353-462f912cab6a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Tél :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="205" y="49" width="100" height="16" uuid="a2588a08-8bf4-43fa-97ff-be6261923bad"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TELEPHONE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="341" y="49" width="35" height="16" uuid="24c9a39e-a43a-47d3-abb4-e02cb635ee9a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Email :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="377" y="49" width="177" height="16" uuid="c370c5a0-916d-4b5e-b8c2-57b9df675fe1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EMAIL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="111" y="65" width="386" height="18" uuid="b17dd642-a7e1-4197-aaf3-a7696ea8c688"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DAKAR-SENEGAL]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="43" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="deliberation_anuelle_deliberation_anuelle_ExecuteWithParams1PageDef"
+                Package="evaluation.deliberationannuelle" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="DélibérationAnnuelle" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DélibérationAnnuelleIterator" Refresh="never"/>
+    <iterator Binds="DeliberationAnnuelle" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="DeliberationAnnuelleIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="DeliberationAnnuelleIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams" InstanceName="evaluationAppDataControl.DeliberationAnnuelle"
+            DataControl="evaluationAppDataControl">
+      <NamedData NDName="annee" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDValue="#{sessionScope.id_niv_form_parcours}" NDType="java.lang.Integer"/>
+      <NamedData NDName="cred1" NDValue="0" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="cred2" NDValue="60" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="moy1" NDValue="0" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="moy2" NDValue="20" NDType="oracle.jbo.domain.Number"/>
+    </action>
+  </bindings>
+</pageDefinition>

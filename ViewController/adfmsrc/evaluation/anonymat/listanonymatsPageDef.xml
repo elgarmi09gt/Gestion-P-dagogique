@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listanonymatsPageDef"
+                Package="evaluation.anonymat">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ReglesAnonymatVO" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="ReglesAnonymatVOIterator"/>
+    <searchRegion Binds="ReglesAnonymatVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ReglesAnonymatVOQuery"/>
+    <iterator Binds="HistoriqueStructureByUserName" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="HistoriqueStructureByUserNameIterator"/>
+    <iterator Binds="ParcoursRespFrImpMaqEtd" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="ParcoursRespFrImpMaqEtdIterator"/>
+    <iterator Binds="MaquetteParcoursAnnee" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="MaquetteParcoursAnneeIterator"/>
+    <iterator Binds="SemestresParcous" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="SemestresParcousIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ReglesAnonymatVOIterator" id="ReglesAnonymatVO">
+      <nodeDefinition DefName="model.updatableview.ReglesAnonymatVO" Name="ReglesAnonymatVO0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="HistoriqueStructureByUserNameIterator" ListOperMode="navigation"
+          ListIter="HistoriqueStructureByUserNameIterator" id="HistoriqueStructureByUserName" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="ParcoursRespFrImpMaqEtdIterator" ListOperMode="navigation"
+          ListIter="ParcoursRespFrImpMaqEtdIterator" id="ParcoursRespFrImpMaqEtd" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="MaquetteParcoursAnneeIterator" ListOperMode="navigation" ListIter="MaquetteParcoursAnneeIterator"
+          id="MaquetteParcoursAnnee" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="ReglesAnonymatVOIterator" ListOperMode="navigation" ListIter="ReglesAnonymatVOIterator"
+          id="ReglesAnonymatVO1" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="SemestresParcousIterator" ListOperMode="navigation" ListIter="SemestresParcousIterator"
+          id="SemestresParcous" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+  </bindings>
+</pageDefinition>

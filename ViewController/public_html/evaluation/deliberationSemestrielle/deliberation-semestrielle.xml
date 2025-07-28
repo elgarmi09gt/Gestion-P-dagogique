@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="deliberation-semestrielle">
+    <default-activity>UpdateIsAbs</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__1">
+      <managed-bean-name>DeliberationSemestrielleBean</managed-bean-name>
+      <managed-bean-class>view.beans.evaluation.deliberation_sem.DeliberationSemestrielleBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="deliberationSemestrielle">
+      <page>/evaluation/deliberationSemestrielle/deliberationSemestrielle.jsff</page>
+    </view>
+    <method-call id="getUeParcousAnSemSess">
+      <method>#{bindings.getUeParcousAnSemSess.execute}</method>
+      <return-value>#{sessionScope.lisUes}</return-value>
+      <outcome>
+        <fixed-outcome>getUeParcousAnSemSess</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="delibsemTest">
+      <page>/evaluation/deliberationSemestrielle/delibsemTest.jsff</page>
+    </view>
+    <method-call id="getEtudiantUe">
+      <method>#{bindings.getEtudiantUe.execute}</method>
+      <return-value>#{sessionScope.lisEtudiantUes}</return-value>
+      <outcome>
+        <fixed-outcome>getEtudiantUe</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="UpdateIsAbs">
+      <method>#{bindings.UpdateIsAbs.execute}</method>
+      <outcome>
+        <fixed-outcome>UpdateIsAbs</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="DeliReclamation">
+      <method>#{bindings.DeliReclamation.execute}</method>
+      <outcome>
+        <fixed-outcome>DeliReclamation</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="DelibererDefSemestre">
+      <method>#{bindings.DelibererDefSemestre.execute}</method>
+      <outcome>
+        <fixed-outcome>DelibererDefSemestre</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__4">
+      <from-activity-id>getUeParcousAnSemSess</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome>getUeParcousAnSemSess</from-outcome>
+        <to-activity-id>delibsemTest</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__6">
+      <from-activity-id>getEtudiantUe</from-activity-id>
+      <control-flow-case id="__7">
+        <from-outcome>getEtudiantUe</from-outcome>
+        <to-activity-id>deliberationSemestrielle</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__2">
+      <from-activity-id>UpdateIsAbs</from-activity-id>
+      <control-flow-case id="__3">
+        <from-outcome>UpdateIsAbs</from-outcome>
+        <to-activity-id>DeliReclamation</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__8">
+      <from-activity-id>DeliReclamation</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome>DeliReclamation</from-outcome>
+        <to-activity-id>DelibererDefSemestre</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__11">
+      <from-activity-id>DelibererDefSemestre</from-activity-id>
+      <control-flow-case id="__12">
+        <from-outcome>DelibererDefSemestre</from-outcome>
+        <to-activity-id>getEtudiantUe</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

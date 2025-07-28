@@ -1,0 +1,387 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{DecaisserBean.popRechCmpte}">
+    <af:dialog id="d1" title="Veuillez choisir un compte" dialogListener="#{DecaisserBean.onDialogRechercheCmpte}">
+      <f:facet name="buttonBar"/>
+      <af:table value="#{bindings.lesComptesFormStrcAnRO.collectionModel}" var="row"
+                rows="#{bindings.lesComptesFormStrcAnRO.rangeSize}"
+                emptyText="#{bindings.lesComptesFormStrcAnRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.lesComptesFormStrcAnRO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.lesComptesFormStrcAnRO.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.lesComptesFormStrcAnRO.rangeSize}"
+                filterModel="#{bindings.lesComptesFormStrcAnROQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.lesComptesFormStrcAnROQuery.processQuery}" varStatus="vs" id="t1">
+        <af:column sortProperty="#{bindings.lesComptesFormStrcAnRO.hints.LibTypeCmpte.name}" filterable="true"
+                   sortable="true" headerText="Compte" id="c1"
+                   width="300">
+          <af:outputText value="#{row.LibTypeCmpte}"
+                         shortDesc="#{bindings.lesComptesFormStrcAnRO.hints.LibTypeCmpte.tooltip}" id="ot1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesComptesFormStrcAnRO.hints.LibRep.name}" filterable="true" sortable="true"
+                   headerText="Répartition" id="c2" width="200">
+          <af:outputText value="#{row.LibRep}" shortDesc="#{bindings.lesComptesFormStrcAnRO.hints.LibRep.tooltip}"
+                         id="ot2"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesComptesFormStrcAnRO.hints.Pourcentage.name}" filterable="true"
+                   sortable="true" headerText="#{bindings.lesComptesFormStrcAnRO.hints.Pourcentage.label}" id="c3">
+          <af:outputText value="#{row.Pourcentage}"
+                         shortDesc="#{bindings.lesComptesFormStrcAnRO.hints.Pourcentage.tooltip}" id="ot3">
+            <af:convertNumber groupingUsed="false"
+                              pattern="#{bindings.lesComptesFormStrcAnRO.hints.Pourcentage.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesComptesFormStrcAnRO.hints.SoldeActuel.name}" filterable="true"
+                   sortable="true" headerText="Solde Actuel" id="c5">
+          <af:outputText value="#{row.SoldeActuel}"
+                         shortDesc="#{bindings.lesComptesFormStrcAnRO.hints.SoldeActuel.tooltip}" id="ot5">
+            <af:convertNumber groupingUsed="false"
+                              pattern="#{bindings.lesComptesFormStrcAnRO.hints.SoldeActuel.format}"/>
+          </af:outputText>
+        </af:column>
+      </af:table>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{DecaisserBean.onDialogCan}"/>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:panelTabbed position="above" id="pt1">
+    <af:showDetailItem id="tab1" text="DECAISSEMENT" disclosed="true">
+      <af:iterator value="#{DecaisserBean.refresh()}" id="i1"/>
+      <af:panelGroupLayout id="pgl2" layout="horizontal" styleClass="AFStretchWidth"
+                           inlineStyle="border:solid  2px #2897e8;">
+        <af:panelGroupLayout id="pgl3" layout="vertical">
+          <af:button text="Rechercher un Compte" id="b2"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:0px;margin-bottom:50px;"
+                     partialSubmit="false" disabled="true"/>
+          <af:panelGroupLayout id="pgl1" layout="horizontal"
+                               inlineStyle="margin-left:5px;border:solid  1px #2897e8;width:300px;margin-left:10px;">
+            <af:inputText label="Numéro Compte" id="it1" disabled="true" binding="#{DecaisserBean.inputNumCmpte}"
+                          value="#{DecaisserBean.num_cmpte}"/>
+            <af:button text="?" id="b1"
+                       inlineStyle="background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                       actionListener="#{DecaisserBean.onRecherche}"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="width:850px;border:solid  1px #2897e8;">
+                  <af:button text="Détail du Compte" id="b3"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:5px;margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+          <af:panelGroupLayout id="pgl6">
+            <af:table value="#{bindings.DetailsCompteRO.collectionModel}" var="row"
+                      rows="#{bindings.DetailsCompteRO.rangeSize}"
+                      emptyText="#{bindings.DetailsCompteRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" fetchSize="#{bindings.DetailsCompteRO.rangeSize}"
+                      filterModel="#{bindings.DetailsCompteROQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.DetailsCompteROQuery.processQuery}" varStatus="vs" id="t2"
+                      inlineStyle="margin-left:5px;margin-bottom:5px;" width="530">
+              <af:column sortProperty="#{bindings.DetailsCompteRO.hints.LibCmpte.name}" filterable="true"
+                         sortable="true" headerText="Compte" id="c6" width="300">
+                <af:outputText value="#{row.LibCmpte}" shortDesc="#{bindings.DetailsCompteRO.hints.LibCmpte.tooltip}"
+                               id="ot6"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.DetailsCompteRO.hints.NumeroCompte.name}" filterable="true"
+                         sortable="true" headerText="Numero Compte" id="c7" width="200">
+                <af:outputText value="#{row.NumeroCompte}"
+                               shortDesc="#{bindings.DetailsCompteRO.hints.NumeroCompte.tooltip}" id="ot7"/>
+              </af:column>
+            </af:table>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl7" layout="vertical" halign="left">
+                <af:button text="Etat du Compte" id="b4"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:5px;margin-bottom:50px;"
+                     partialSubmit="false" disabled="true"/>
+          <af:panelGroupLayout id="pgl5" inlineStyle="border:solid  1px #2897e8;width:280px;" layout="horizontal">
+            <af:inputText value="#{bindings.SoldeActuel.inputValue}" label="Solde Actuel :"
+                          required="#{bindings.SoldeActuel.hints.mandatory}"
+                          columns="#{bindings.SoldeActuel.hints.displayWidth}"
+                          maximumLength="#{bindings.SoldeActuel.hints.precision}"
+                          shortDesc="#{bindings.SoldeActuel.hints.tooltip}" id="it2" contentStyle="font-size:large;"
+                          inlineStyle="font-weight:normal;">
+              <f:validator binding="#{bindings.SoldeActuel.validator}"/>
+                <f:convertNumber/>
+            </af:inputText>
+            <af:outputLabel value="FCFA" id="ol1"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl8" layout="vertical" inlineStyle="border:solid  2px #2897e8;margin-top:10px;">
+        <af:button text="Opération en cours" id="b11"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+        <af:inputText label="Numéro Opération" id="it3" contentStyle="margin-top:10px;" inlineStyle="margin-left:5px;"
+                      binding="#{DecaisserBean.inputNumOp}" value="#{DecaisserBean.num_op}" disabled="true"/>
+        <af:panelFormLayout id="pfl1" rows="2" inlineStyle="margin-top:10px;">
+          <f:facet name="footer"/>
+          <af:inputText label="Montant" id="it4" autoSubmit="true" value="#{DecaisserBean.montant}"
+                        converter="javax.faces.Integer" binding="#{DecaisserBean.inputMontant}"/>
+          <af:inputText label="Objet" id="it5" rows="3" value="#{DecaisserBean.objet}"
+                        binding="#{DecaisserBean.inputObjet}"/>
+          <af:selectOneChoice value="#{bindings.ModePaiements.inputValue}" label="Type Opération"
+                              shortDesc="#{bindings.ModePaiements.hints.tooltip}" id="soc1">
+            <f:selectItems value="#{bindings.ModePaiements.items}" id="si1"/>
+            <f:validator binding="#{bindings.ModePaiements.validator}"/>
+          </af:selectOneChoice>
+          <af:inputText label="Banque" id="it6" autoSubmit="true" value="#{DecaisserBean.banque}"
+                        binding="#{DecaisserBean.inputBanq}"/>
+          <af:inputDate label="Date" id="id1" value="#{DecaisserBean.date_op}"/>
+          <af:inputText label="Numéro (Chèque/Virement)" id="it7" value="#{DecaisserBean.num_chq_vir}"
+                        binding="#{DecaisserBean.inputNumChqVir}"/>
+        </af:panelFormLayout>
+        <af:panelGroupLayout id="pgl12" layout="vertical"
+                             inlineStyle="border:solid  2px #2897e8;margin-top:20px;margin-left:5px;width:1100px;margin-bottom:10px;">
+          <af:button text="Bénéficiaire" id="b6"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:5px;margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+          <af:panelGroupLayout id="pgl10" layout="horizontal" inlineStyle="margin-left:5px;margin-bottom:5px;">
+            <af:panelFormLayout id="pfl2" rows="2" inlineStyle="width:950px;border:solid  1px #2897e8;">
+              <f:facet name="footer"/>
+              <af:panelGroupLayout id="pgl9" layout="horizontal">
+                <af:inputText label="Bénéficiare" id="it9" binding="#{DecaisserBean.inputBen}"
+                              value="#{DecaisserBean.num_ben}" disabled="true"/>
+                <af:button text="?" id="b5"
+                           inlineStyle="background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                           actionListener="#{DecaisserBean.onRechercheBen}"/>
+              </af:panelGroupLayout>
+              <af:inputText label="Nom" id="it8" contentStyle="margin-bottom:5px;" binding="#{DecaisserBean.inputNom}"
+                            value="#{DecaisserBean.nom}"/>
+              <af:inputText label="Tél" id="it10" binding="#{DecaisserBean.inputTel}" value="#{DecaisserBean.tel}"/>
+              <af:inputText label="Prénom" id="it11" binding="#{DecaisserBean.inputPrenom}"
+                            value="#{DecaisserBean.prenom}"/>
+              <af:inputText label="Compte Banque" id="it12" binding="#{DecaisserBean.inputCmpteBanq}"
+                            value="#{DecaisserBean.cmpte_banq}"/>
+              <af:inputText label="N° Mandat" id="it13" binding="#{DecaisserBean.inputMandat}"
+                            value="#{DecaisserBean.mandat}"/>
+            </af:panelFormLayout>
+            <af:button id="b7" icon="/images/new_icon.png"
+                       inlineStyle="margin-left:5px;background:none 0% 0%/auto auto repeat scroll padding-box border-box #fff;"
+                       actionListener="#{DecaisserBean.onInsertBen}"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl11" layout="horizontal" halign="center"
+                           inlineStyle="margin-top:10px;margin-bottom:10px;">
+        <af:button text="VALIDER" id="b8"
+                   inlineStyle="margin-left:10px;font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                   actionListener="#{DecaisserBean.onValiderOperation}"/>
+        <af:button text="EDITER DECHARGE" id="b9"
+                   inlineStyle="margin-left:10px;font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"/>
+        <af:button text="EDITER DECAISSE" id="b10"
+                   inlineStyle="margin-left:10px;font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"/>
+      </af:panelGroupLayout>
+    </af:showDetailItem>
+    <af:showDetailItem id="tab2" text="DETAILS">
+    <af:button text="Décaissements" id="b12"
+               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:20px;"
+                     partialSubmit="false" disabled="true"/>
+      <af:table value="#{bindings.DetailOPerationCmptRO.collectionModel}" var="row"
+                rows="#{bindings.DetailOPerationCmptRO.rangeSize}"
+                emptyText="#{bindings.DetailOPerationCmptRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.DetailOPerationCmptRO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.DetailOPerationCmptRO.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.DetailOPerationCmptRO.rangeSize}"
+                filterModel="#{bindings.DetailOPerationCmptROQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.DetailOPerationCmptROQuery.processQuery}" varStatus="vs" id="t4">
+        <af:column sortProperty="#{bindings.DetailOPerationCmptRO.hints.DateOperation.name}" filterable="true"
+                   sortable="true" headerText="Date" id="c4">
+          <f:facet name="filter">
+            <af:inputDate value="#{bindings.DetailOPerationCmptROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateOperation.value}"
+                          id="id2">
+              <af:convertDateTime pattern="#{bindings.DetailOPerationCmptRO.hints.DateOperation.format}"/>
+            </af:inputDate>
+          </f:facet>
+          <af:outputText value="#{row.DateOperation}"
+                         shortDesc="#{bindings.DetailOPerationCmptRO.hints.DateOperation.tooltip}" id="ot4">
+            <af:convertDateTime pattern="#{bindings.DetailOPerationCmptRO.hints.DateOperation.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.DetailOPerationCmptRO.hints.Montant.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.DetailOPerationCmptRO.hints.Montant.label}" id="c11" width="150">
+          <af:outputText value="#{row.Montant}" shortDesc="#{bindings.DetailOPerationCmptRO.hints.Montant.tooltip}"
+                         id="ot11">
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.DetailOPerationCmptRO.hints.Montant.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.DetailOPerationCmptRO.hints.NumeroRecu.name}" filterable="true"
+                   sortable="true" headerText="Reçu" id="c14" width="120">
+          <af:outputText value="#{row.NumeroRecu}"
+                         shortDesc="#{bindings.DetailOPerationCmptRO.hints.NumeroRecu.tooltip}" id="ot14"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.DetailOPerationCmptRO.hints.LibModePaie.name}" filterable="true"
+                   sortable="true" headerText="Mode" id="c15">
+          <af:outputText value="#{row.LibModePaie}"
+                         shortDesc="#{bindings.DetailOPerationCmptRO.hints.LibModePaie.tooltip}" id="ot15"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.DetailOPerationCmptRO.hints.NumChqVir.name}" filterable="true"
+                   sortable="true" headerText="N° Chèque (Virement)" id="c18" width="150">
+          <af:outputText value="#{row.NumChqVir}" shortDesc="#{bindings.DetailOPerationCmptRO.hints.NumChqVir.tooltip}"
+                         id="ot18"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.DetailOPerationCmptRO.hints.Proprietaire.name}" filterable="true"
+                   sortable="true" headerText="Bénéficiaire" id="c16" width="250">
+          <af:outputText value="#{row.Proprietaire}"
+                         shortDesc="#{bindings.DetailOPerationCmptRO.hints.Proprietaire.tooltip}" id="ot16"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.DetailOPerationCmptRO.hints.LibTypeCmpte.name}" filterable="true"
+                   sortable="true" headerText="Compte" id="c17" width="300">
+          <af:outputText value="#{row.LibTypeCmpte}"
+                         shortDesc="#{bindings.DetailOPerationCmptRO.hints.LibTypeCmpte.tooltip}" id="ot17"/>
+        </af:column>
+        <af:column headerText="Etat Opération" id="c19" width="250">
+          <af:selectOneChoice value="#{row.bindings.OpVal.inputValue}" label="#{row.bindings.OpVal.label}"
+                              required="#{bindings.DetailOPerationCmptRO.hints.OpVal.mandatory}"
+                              shortDesc="#{bindings.DetailOPerationCmptRO.hints.OpVal.tooltip}" readOnly="true"
+                              id="soc2" inlineStyle="color:Blue; font-size:large;">
+            <f:selectItems value="#{row.bindings.OpVal.items}" id="si2"/>
+            <f:validator binding="#{row.bindings.OpVal.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+      </af:table>
+      <af:panelGroupLayout id="pgl13" layout="horizontal"
+                           inlineStyle="border:solid  1px #2897e8;width:280px;margin-top:15px;" >
+        <af:inputText label="Total :   " id="it19"
+                      inlineStyle="margin-top:10px; margin-left:75px; font-size:large;margin-bottom:10px;font-weight:normal;"
+                      value="#{DecaisserBean.somme_total}" contentStyle="font-size:large;"
+                          readOnly="true">
+                      <f:validator />
+          <f:convertNumber/>
+        </af:inputText>
+        <af:outputLabel value="FCFA" id="ol2"/>
+      </af:panelGroupLayout>
+    </af:showDetailItem>
+  </af:panelTabbed>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{DecaisserBean.popRechBen}">
+    <af:dialog id="d2" title="Veuillez choisir un Bénéficiare" dialogListener="#{DecaisserBean.onDialogRechercheBen}">
+      <f:facet name="buttonBar"/>
+      
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{DecaisserBean.onDialogBenCan}"/>
+      <af:table value="#{bindings.BeneficiaireRO.collectionModel}" var="row" rows="#{bindings.BeneficiaireRO.rangeSize}"
+                emptyText="#{bindings.BeneficiaireRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.BeneficiaireRO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.BeneficiaireRO.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.BeneficiaireRO.rangeSize}"
+                filterModel="#{bindings.BeneficiaireROQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.BeneficiaireROQuery.processQuery}" varStatus="vs" id="t3" scrollPolicy="page">
+        <af:column sortProperty="#{bindings.BeneficiaireRO.hints.NumeroCompte.name}" filterable="true" sortable="true"
+                   headerText="Numéro Compte" id="c10" width="100">
+          <af:outputText value="#{row.NumeroCompte}" shortDesc="#{bindings.BeneficiaireRO.hints.NumeroCompte.tooltip}"
+                         id="ot10"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BeneficiaireRO.hints.Proprietaire.name}" filterable="true" sortable="true"
+                   headerText="Propriétaire" id="c8" width="400">
+          <af:outputText value="#{row.Proprietaire}" shortDesc="#{bindings.BeneficiaireRO.hints.Proprietaire.tooltip}"
+                         id="ot8"/>
+        </af:column>
+        <af:column headerText="#{bindings.BeneficiaireRO.hints.Nom.label}" id="c12" width="150">
+          <af:outputText value="#{row.Nom}" shortDesc="#{bindings.BeneficiaireRO.hints.Nom.tooltip}" id="ot12"/>
+        </af:column>
+        <af:column headerText="#{bindings.BeneficiaireRO.hints.Prenom.label}" id="c13" width="200">
+          <af:outputText value="#{row.Prenom}" shortDesc="#{bindings.BeneficiaireRO.hints.Prenom.tooltip}" id="ot13"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BeneficiaireRO.hints.Telephone.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.BeneficiaireRO.hints.Telephone.label}" id="c9" width="150">
+          <af:outputText value="#{row.Telephone}" shortDesc="#{bindings.BeneficiaireRO.hints.Telephone.tooltip}"
+                         id="ot9"/>
+        </af:column>
+      </af:table>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{DecaisserBean.popInsBen}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d3" title="Ajouter un Bénéficiaire" dialogListener="#{DecaisserBean.onDialogInsBen}">
+      <af:panelFormLayout id="pfl3" rows="2">
+        <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                      required="#{bindings.Nom.hints.mandatory}" columns="#{bindings.Nom.hints.displayWidth}"
+                      maximumLength="#{bindings.Nom.hints.precision}" shortDesc="#{bindings.Nom.hints.tooltip}"
+                      id="it14" contentStyle="width:150px;">
+          <f:validator binding="#{bindings.Nom.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Prenom.inputValue}" label="#{bindings.Prenom.hints.label}"
+                      required="#{bindings.Prenom.hints.mandatory}" columns="#{bindings.Prenom.hints.displayWidth}"
+                      maximumLength="#{bindings.Prenom.hints.precision}" shortDesc="#{bindings.Prenom.hints.tooltip}"
+                      id="it15" contentStyle="width:150px;">
+          <f:validator binding="#{bindings.Prenom.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Telephone.inputValue}" label="#{bindings.Telephone.hints.label}"
+                      required="#{bindings.Telephone.hints.mandatory}"
+                      columns="#{bindings.Telephone.hints.displayWidth}"
+                      maximumLength="#{bindings.Telephone.hints.precision}"
+                      shortDesc="#{bindings.Telephone.hints.tooltip}" id="it16">
+          <f:validator binding="#{bindings.Telephone.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.NumCompteBanque.inputValue}" label="Compte Bancaire"
+                      required="#{bindings.NumCompteBanque.hints.mandatory}"
+                      columns="#{bindings.NumCompteBanque.hints.displayWidth}"
+                      maximumLength="#{bindings.NumCompteBanque.hints.precision}"
+                      shortDesc="#{bindings.NumCompteBanque.hints.tooltip}" id="it17">
+          <f:validator binding="#{bindings.NumCompteBanque.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Proprietaire.inputValue}" label="#{bindings.Proprietaire.hints.label}"
+                      required="#{bindings.Proprietaire.hints.mandatory}"
+                      columns="#{bindings.Proprietaire.hints.displayWidth}"
+                      maximumLength="#{bindings.Proprietaire.hints.precision}"
+                      shortDesc="#{bindings.Proprietaire.hints.tooltip}" id="it18" contentStyle="width:150px;">
+          <f:validator binding="#{bindings.Proprietaire.validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:serverListener type="onDialogEvent" method="#{DecaisserBean.onDialogInsCan}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+    </af:dialog>
+  </af:popup>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{DecaisserBean.popNotCmpt}">
+    <af:dialog id="d4" type="ok" title="Impossible d'effectuer l'opération !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+        <af:outputFormatted value="Veuillez sélectionner un compte  !" id="of5"
+                            inlineStyle="font-size:x-large; color:red;"/>
+
+    </af:dialog>
+  </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p5" binding="#{DecaisserBean.popNotBen}">
+    <af:dialog id="d5" type="ok" title="Impossible d'effectuer l'opération !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+        <af:outputFormatted value="Veuillez sélectionner ou ajouter un bénéficiaire  !" id="of1"
+                            inlineStyle="font-size:x-large; color:red;"/>
+
+    </af:dialog>
+  </af:popup>
+          <af:popup childCreation="deferred" autoCancel="disabled" id="p6" binding="#{DecaisserBean.popNotMont}">
+    <af:dialog id="d6" type="ok" title="Impossible d'effectuer l'opération !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+        <af:outputFormatted value=" Veuillez saisir le montant de l'opération  " id="of2"
+                            inlineStyle="font-size:x-large; color:red;"/>
+
+    </af:dialog>
+  </af:popup>
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p7" binding="#{DecaisserBean.popMontSup}">
+    <af:dialog id="d7" type="ok" title="Impossible d'effectuer l'opération !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+        <af:outputFormatted value=" Le solde disponible dans le compte est inférieur au montant de l'opération  " id="of3"
+                            inlineStyle="font-size:x-large; color:red;"/>
+
+    </af:dialog>
+  </af:popup>
+  
+          <af:popup childCreation="deferred" autoCancel="disabled" id="p8" binding="#{DecaisserBean.popConfOper}">
+    <af:dialog id="d8" title="Confirmation !" inlineStyle="text-align:center;"
+               dialogListener="#{DecaisserBean.onDialogConfOper}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous confirmer l'opération " id="ot25" inlineStyle="font-size:large;" />
+      <af:serverListener type="onDialogEvent" method="#{DecaisserBean.onDialogConfOpCan}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

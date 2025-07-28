@@ -1,0 +1,2 @@
+SELECT DISTINCT * from ETUDIANTS etd
+Where etd.NUMERO like '20220B11T'

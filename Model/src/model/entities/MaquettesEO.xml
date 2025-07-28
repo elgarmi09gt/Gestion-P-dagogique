@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="MaquettesEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="MAQUETTES"
+  AliasName="Maquettes"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdMaquette"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_MAQUETTE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="MAQUETTES"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="LibelleLong"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="200"
+    ColumnName="LIBELLE_LONG"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="MAQUETTES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="LibelleCourt"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="75"
+    ColumnName="LIBELLE_COURT"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="MAQUETTES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="MAQUETTES"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="MAQUETTES"/>
+  <Attribute
+    Name="UtiCree"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="MAQUETTES"
+    IsNotNull="true"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="MAQUETTES"/>
+  <Attribute
+    Name="IdStructure"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_STRUCTURE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="MAQUETTES"/>
+  <AccessorAttribute
+    Name="NiveauFormationMaquetteAnneEO"
+    Association="model.assoc.MaquetteToNivFormMaqAnAssoc"
+    AssociationEnd="model.assoc.MaquetteToNivFormMaqAnAssoc.NiveauFormationMaquetteAnneEO"
+    AssociationOtherEnd="model.assoc.MaquetteToNivFormMaqAnAssoc.MaquettesEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <AccessorAttribute
+    Name="FiliereUeSemstreEO"
+    Association="model.assoc.MaquetteToFilliereUeSemestreAssoc"
+    AssociationEnd="model.assoc.MaquetteToFilliereUeSemestreAssoc.FiliereUeSemstreEO"
+    AssociationOtherEnd="model.assoc.MaquetteToFilliereUeSemestreAssoc.MaquettesEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="NiveauFormationMaquetteAnneVO"
+    ViewLink="model.viewlink.MaquetteToNivForMaqAnVL"
+    ViewLinkEnd="model.viewlink.MaquetteToNivForMaqAnVL.NiveauFormationMaquetteAnneVO"
+    ViewLinkOtherEnd="model.viewlink.MaquetteToNivForMaqAnVL.MaquettesVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="FiliereUeSemstreVO"
+    ViewLink="model.viewlink.MaquetteToFiliereUeSemestreAssoc"
+    ViewLinkEnd="model.viewlink.MaquetteToFiliereUeSemestreAssoc.FiliereUeSemstreVO"
+    ViewLinkOtherEnd="model.viewlink.MaquetteToFiliereUeSemestreAssoc.MaquettesVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ParcoursMaquetteAnneeVO"
+    ViewLink="model.viewlink.MaquetteToParcoursMaquetteAnneeVL"
+    ViewLinkEnd="model.viewlink.MaquetteToParcoursMaquetteAnneeVL.ParcoursMaquetteAnneeVO"
+    ViewLinkOtherEnd="model.viewlink.MaquetteToParcoursMaquetteAnneeVL.MaquettesVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkMaquettes"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_MAQUETTES"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.MaquettesEO.IdMaquette"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqMaquetteLibelleCourt">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_MAQUETTE_LIBELLE_COURT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.MaquettesEO.LibelleCourt"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqMaquetteLibelleLong">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_MAQUETTE_LIBELLE_LONG"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.MaquettesEO.LibelleLong"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkMaqStruct">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_STRUCTURES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_MAQ_STRUCT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.MaquettesEO.IdStructure"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkMaquetteUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_MAQUETTE_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.MaquettesEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkMaquetteUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_MAQUETTE_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.MaquettesEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ApplicationsROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ApplicationsROVORowImpl"
+  ComponentClass="model.readOnlyView.ApplicationsROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ApplicationsROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="log"
+    Kind="where"
+    Type="java.lang.String"/>
+  <SQLQuery><![CDATA[Select distinct app.ID_APPLICATION,app.LIBELLE_LONG,app.LOGIN,app.CHEMIN_IMAGE,app.ID_UTILISATEUR    
+from (    
+    Select app.ID_APPLICATION,app.LIBELLE_LONG,uti.LOGIN,app.CHEMIN_IMAGE,uti.ID_UTILISATEUR    
+    from APPLICATIONS app Join 
+    MODULES mo on app.ID_APPLICATION=mo.ID_APPLICATION  
+    join FONCTIONNALITES fx on mo.ID_MODULE=fx.ID_MODULE    
+    Join ROLES_FONCTIONNALITES rfx on fx.ID_FONCTIONNALITE=rfx.ID_FONCTIONNALITE    
+    Join ROLES rls on rfx.ID_ROLE = rls.ID_ROLE  
+    Join UTILISATEURS_ROLES urls on rls.ID_ROLE=urls.ID_ROLE  
+    Join UTILISATEURS uti on urls.ID_UTILISATEUR = uti.ID_UTILISATEUR   
+    UNION    
+    Select app.ID_APPLICATION,app.LIBELLE_LONG,uti.LOGIN,app.CHEMIN_IMAGE,uti.ID_UTILISATEUR  
+    from APPLICATIONS app Join  
+    MODULES mo on app.ID_APPLICATION=mo.ID_APPLICATION  
+    join FONCTIONNALITES fx on mo.ID_MODULE=fx.ID_MODULE    
+    join UTILISATEURS_FONCTIONNALITES ufx on fx.ID_FONCTIONNALITE=ufx.ID_FONCTIONNALITE     
+    join UTILISATEURS uti on ufx.ID_UTILISATEUR=uti.ID_UTILISATEUR    
+  ) app    
+where app.LOGIN=:log]]></SQLQuery>
+  <ViewAttribute
+    Name="IdApplication"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_APPLICATION"
+    Expression="ID_APPLICATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Login"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LOGIN"
+    Expression="LOGIN"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CheminImage"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CHEMIN_IMAGE"
+    Expression="CHEMIN_IMAGE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="255"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdUtilisateur"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_UTILISATEUR"
+    Expression="ID_UTILISATEUR"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdApplication"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="ModulesROVO"
+    ViewLink="model.viewlink.ApplicationsToModuleVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

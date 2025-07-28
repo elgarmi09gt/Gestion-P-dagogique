@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelFormLayout id="pfl1" rows="2"
+                      inlineStyle="border:solid  2px #2897e8;width:700px;margin-top:20px;margin-left:10px;">
+    <af:inputText value="#{bindings.Numero.inputValue}" label="#{bindings.Numero.hints.label}"
+                  required="#{bindings.Numero.hints.mandatory}" columns="#{bindings.Numero.hints.displayWidth}"
+                  maximumLength="#{bindings.Numero.hints.precision}" shortDesc="#{bindings.Numero.hints.tooltip}"
+                  id="it1" readOnly="true">
+      <f:validator binding="#{bindings.Numero.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                  required="#{bindings.Nom.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Nom.hints.displayWidth}" maximumLength="#{bindings.Nom.hints.precision}"
+                  shortDesc="#{bindings.Nom.hints.tooltip}" id="it2">
+      <f:validator binding="#{bindings.Nom.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Prenoms.inputValue}" label="#{bindings.Prenoms.hints.label}"
+                  required="#{bindings.Prenoms.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Prenoms.hints.displayWidth}" maximumLength="#{bindings.Prenoms.hints.precision}"
+                  shortDesc="#{bindings.Prenoms.hints.tooltip}" id="it3">
+      <f:validator binding="#{bindings.Prenoms.validator}"/>
+    </af:inputText>
+    <af:inputDate value="#{bindings.DateNaissance.inputValue}" readOnly="true"
+                  label="#{bindings.DateNaissance.hints.label}" required="#{bindings.DateNaissance.hints.mandatory}"
+                  columns="#{bindings.DateNaissance.hints.displayWidth}"
+                  shortDesc="#{bindings.DateNaissance.hints.tooltip}" id="id1">
+      <f:validator binding="#{bindings.DateNaissance.validator}"/>
+      <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+    </af:inputDate>
+  </af:panelFormLayout>
+  <af:spacer width="10" height="10" id="s1"/>
+  <af:panelGroupLayout id="pgl1" layout="vertical">
+    <af:panelHeader text="Le cursus de l'étudiant :" id="ph1" inlineStyle="margin-left:10px;margin-top:20px;">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:table value="#{bindings.DiplomeEtudiantGradeRO1.collectionModel}" var="row"
+                rows="#{bindings.DiplomeEtudiantGradeRO1.rangeSize}"
+                emptyText="#{bindings.DiplomeEtudiantGradeRO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.DiplomeEtudiantGradeRO1.collectionModel.selectedRow}"
+                selectionListener="#{bindings.DiplomeEtudiantGradeRO1.collectionModel.makeCurrent}"
+                rowSelection="single" fetchSize="#{bindings.DiplomeEtudiantGradeRO1.rangeSize}"
+                filterModel="#{bindings.DiplomeEtudiantGradeRO1Query.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.DiplomeEtudiantGradeRO1Query.processQuery}" varStatus="vs" id="t1"
+                inlineStyle="margin-top:10px;">
+        <af:column sortProperty="#{bindings.DiplomeEtudiantGradeRO1.hints.DateObtention.name}" filterable="true"
+                   headerText="Date d'Obtention" id="c1">
+          <f:facet name="filter">
+            <af:inputDate value="#{bindings.DiplomeEtudiantGradeRO1Query.queryDescriptor.filterConjunctionCriterion.criterionMap.DateObtention.value}"
+                          id="id3">
+              <af:convertDateTime pattern="#{bindings.DiplomeEtudiantGradeRO1.hints.DateObtention.format}"/>
+            </af:inputDate>
+          </f:facet>
+          <af:outputText value="#{row.DateObtention}"
+                         shortDesc="#{bindings.DiplomeEtudiantGradeRO1.hints.DateObtention.tooltip}" id="ot1">
+            <af:convertDateTime pattern="#{bindings.DiplomeEtudiantGradeRO1.hints.DateObtention.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.DiplomeEtudiantGradeRO1.hints.IdEtab.name}" filterable="true"
+                   headerText="Etablissement" id="c6" width="200">
+          <af:selectOneChoice value="#{row.bindings.IdEtab.inputValue}" label="#{row.bindings.IdEtab.label}"
+                              required="#{bindings.DiplomeEtudiantGradeRO1.hints.IdEtab.mandatory}"
+                              shortDesc="#{bindings.DiplomeEtudiantGradeRO1.hints.IdEtab.tooltip}" readOnly="true"
+                              id="soc9">
+            <f:selectItems value="#{row.bindings.IdEtab.items}" id="si9"/>
+            <f:validator binding="#{row.bindings.IdEtab.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.DiplomeEtudiantGradeRO1.hints.IdGradesFormation.name}" filterable="true"
+                   headerText="Grade Formation" id="c7">
+          <af:selectOneChoice value="#{row.bindings.IdGradesFormation.inputValue}"
+                              label="#{row.bindings.IdGradesFormation.label}"
+                              required="#{bindings.DiplomeEtudiantGradeRO1.hints.IdGradesFormation.mandatory}"
+                              shortDesc="#{bindings.DiplomeEtudiantGradeRO1.hints.IdGradesFormation.tooltip}"
+                              readOnly="true" id="soc10">
+            <f:selectItems value="#{row.bindings.IdGradesFormation.items}" id="si10"/>
+            <f:validator binding="#{row.bindings.IdGradesFormation.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.DiplomeEtudiantGradeRO1.hints.IdOption.name}" filterable="true"
+                   headerText="Option" id="c8" width="400">
+          <af:selectOneChoice value="#{row.bindings.IdOption.inputValue}" label="#{row.bindings.IdOption.label}"
+                              required="#{bindings.DiplomeEtudiantGradeRO1.hints.IdOption.mandatory}"
+                              shortDesc="#{bindings.DiplomeEtudiantGradeRO1.hints.IdOption.tooltip}" readOnly="true"
+                              id="soc11">
+            <f:selectItems value="#{row.bindings.IdOption.items}" id="si11"/>
+            <f:validator binding="#{row.bindings.IdOption.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.DiplomeEtudiantGradeRO1.hints.IdSpecialite.name}" filterable="true"
+                   headerText="Spécialité" id="c9" width="200">
+          <af:selectOneChoice value="#{row.bindings.IdSpecialite.inputValue}" label="#{row.bindings.IdSpecialite.label}"
+                              required="#{bindings.DiplomeEtudiantGradeRO1.hints.IdSpecialite.mandatory}"
+                              shortDesc="#{bindings.DiplomeEtudiantGradeRO1.hints.IdSpecialite.tooltip}" readOnly="true"
+                              id="soc12">
+            <f:selectItems value="#{row.bindings.IdSpecialite.items}" id="si12"/>
+            <f:validator binding="#{row.bindings.IdSpecialite.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.DiplomeEtudiantGradeRO1.hints.IdTypeMention.name}" filterable="true"
+                   headerText="Mention" id="c10">
+          <af:selectOneChoice value="#{row.bindings.IdTypeMention.inputValue}"
+                              label="#{row.bindings.IdTypeMention.label}"
+                              required="#{bindings.DiplomeEtudiantGradeRO1.hints.IdTypeMention.mandatory}"
+                              shortDesc="#{bindings.DiplomeEtudiantGradeRO1.hints.IdTypeMention.tooltip}"
+                              readOnly="true" id="soc13">
+            <f:selectItems value="#{row.bindings.IdTypeMention.items}" id="si13"/>
+            <f:validator binding="#{row.bindings.IdTypeMention.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.DiplomeEtudiantGradeRO1.hints.Lieu.name}" filterable="true"
+                   headerText="#{bindings.DiplomeEtudiantGradeRO1.hints.Lieu.label}" id="c11">
+          <af:outputText value="#{row.Lieu}" shortDesc="#{bindings.DiplomeEtudiantGradeRO1.hints.Lieu.tooltip}"
+                         id="ot6"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.DiplomeEtudiantGradeRO1.hints.PaysObtention.name}" filterable="true"
+                   headerText="Pays d'Obtention" id="c12">
+          <af:selectOneChoice value="#{row.bindings.PaysObtention.inputValue}"
+                              label="#{row.bindings.PaysObtention.label}"
+                              required="#{bindings.DiplomeEtudiantGradeRO1.hints.PaysObtention.mandatory}"
+                              shortDesc="#{bindings.DiplomeEtudiantGradeRO1.hints.PaysObtention.tooltip}"
+                              readOnly="true" id="soc14">
+            <f:selectItems value="#{row.bindings.PaysObtention.items}" id="si14"/>
+            <f:validator binding="#{row.bindings.PaysObtention.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.DiplomeEtudiantGradeRO1.hints.Serie.name}" filterable="true"
+                   headerText="Série" id="c13">
+          <af:outputText value="#{row.Serie}" shortDesc="#{bindings.DiplomeEtudiantGradeRO1.hints.Serie.tooltip}"
+                         id="ot7"/>
+        </af:column>
+      </af:table>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+</ui:composition>

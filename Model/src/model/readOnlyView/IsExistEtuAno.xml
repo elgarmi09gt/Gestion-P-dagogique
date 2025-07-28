@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="IsExistEtuAno"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.IsExistEtuAnoRowImpl"
+  ComponentClass="model.readOnlyView.IsExistEtuAnoImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.IsExistEtuAno_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_an"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="id_nfp"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="id_sem"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="id_sess"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT ano.ID_ANONYMAT, ga.ID_ETUDIANT, ga.ANONYMAT  
+FROM ANONYMAT ano  
+JOIN GEN_ANONYMAT ga ON ano.ID_ANONYMAT = ga.ID_ANONYMAT 
+WHERE ano.ID_ANNEES_UNIVERS=:id_an 
+AND ano.ID_NIVEAU_FORMATION_PARCOURS=:id_nfp 
+AND ano.ID_SEMESTRE=:id_sem 
+AND ano.ID_SESSION=:id_sess]]></SQLQuery>
+  <ViewAttribute
+    Name="IdAnonymat"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANONYMAT"
+    Expression="ID_ANONYMAT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Anonymat"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ANONYMAT"
+    Expression="ANONYMAT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="JuryROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.JuryROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="annee"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT             
+  nfp.ID_NIVEAU_FORMATION_PARCOURS, an.ID_ANNEES_UNIVERS, s.ID_SEMESTRE, ss.ID_SESSION,      
+  j.ID_JURY,j.LIBELLE_LONG, j.LIBELLE_COURT, an.LIBELLE_LONG Anne_univers, s.LIBELLE_LONG Semestre, ss.LIBELLE_LONG Sess,             
+  nf.LIBELLE_LONG || ' ' || crt.LIBELLE || DECODE(nfp.ID_NIVFORM_OPTION, NULL, '', ' Option : ' || op.lib_option) lib_parcours                   
+from  JURY j    
+JOIN  NIVEAUX_FORMATION_PARCOURS nfp ON    j.ID_NIVEAU_FORMATION_PARCOURS = nfp.ID_NIVEAU_FORMATION_PARCOURS            
+LEFT JOIN (                              
+  SELECT  nfs.CODESPECSCOL ,sp.LIBELLE_LONG lib_specialite, nfs.ID_NIVEAU_FORMATION_SPECIALITE                                                                                                                        
+  FROM NIVEAUX_FORMATIONS_SPECIALITES nfs                               
+  JOIN SPECNIVSECSCOL sp ON nfs.CODESPECSCOL = sp.CODE                                                                                                                       
+) sp ON sp.ID_NIVEAU_FORMATION_SPECIALITE = nfp.ID_NIVFORM_SPECIALITE            
+LEFT JOIN (                     
+  SELECT                     
+    op.LIBELLE lib_option,                     
+    nfo.ID_NIV_FORM_SPEC_OPTION,nfo.CODEOPTIONSCOL                     
+  FROM                     
+    NIV_FORM_SPECIALITE_OPTION nfo JOIN OPTIONNIVSECSCOL op ON nfo.CODEOPTIONSCOL = op.CODE                         
+  ) op ON op.ID_NIV_FORM_SPEC_OPTION = nfp.ID_NIVFORM_OPTION         
+JOIN NIVEAU_FORMATION_COHORTES nfc on nfp.ID_NIVEAU_FORMATION_COHORTE = nfc.ID_NIVEAU_FORMATION_COHORTE            
+JOIN COHORTES crt on nfc.ID_COHORTE = crt.ID_COHORTE            
+JOIN NIVEAUX_FORMATIONS nf on  nfc.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION            
+JOIN  ANNEES_UNIVERS an on j.ID_ANNEES_UNIVERS = an.ID_ANNEES_UNIVERS            
+JOIN  SEMESTRES s on j.ID_SEMESTRE = s.ID_SEMESTRE            
+JOIN  SESSIONS ss on j.ID_SESSION = ss.ID_SESSION            
+WHERE nfp.ID_NIVEAU_FORMATION_PARCOURS =:parcours             
+AND   an.ID_ANNEES_UNIVERS =:annee]]></SQLQuery>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SEMESTRE"
+    Expression="ID_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdSession"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SESSION"
+    Expression="ID_SESSION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdJury"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_JURY"
+    Expression="ID_JURY"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleCourt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="75"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_COURT"
+    Expression="LIBELLE_COURT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="AnneUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ANNE_UNIVERS"
+    Expression="ANNE_UNIVERS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Semestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SEMESTRE"
+    Expression="SEMESTRE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Sess"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SESS"
+    Expression="SESS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="725"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_PARCOURS"
+    Expression="LIB_PARCOURS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="725"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsJurySelected"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="VIEW_ATTR"
+    SQLType="BIT">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNiveauFormationParcours"/>
+    <Item Value="IdAnneesUnivers"/>
+    <Item Value="IdSemestre"/>
+    <Item Value="IdJury"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="UtilisateurJuryROVO"
+    ViewLink="model.viewlink.JuryToUtilisateurJuryVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="releves_subreportEc" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b1883d6e-1465-4feb-98d9-56cbe019c8c5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IdFilUe" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IdInsPedSemUe" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\Niang\\works\\GestionPedagogiqueProd\\GestionPedagogique\\ViewController\\public_html\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_calendrier" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT nc.id_calendrier_deliberation,ec.LIBELLE_LONG Ec, fec.ID_FILIERE_UE_SEMSTRE_EC IdFilEc, nc.NOTE,
+fec.CODIFICATION, fec.COEFFICIENT,ipu.ID_INSCRIPTION_PED_SEM_UE
+FROM FILIERE_UE_SEMSTRE_EC fec
+JOIN FILIERE_UE_SEMSTRE fus ON fec.ID_FILIERE_UE_SEMSTRE=fus.ID_FILIERE_UE_SEMSTRE
+JOIN ec ON ec.ID_EC = fec.ID_EC
+JOIN NOTES_EC nc on nc.ID_FILIERE_UE_SEMSTRE_EC = fec.ID_FILIERE_UE_SEMSTRE_EC
+JOIN INSCRIPTION_PED_SEM_UE ipu on ipu.ID_INSCRIPTION_PED_SEM_UE = nc.ID_INSCRIPTION_PED_SEM_UE and ipu.ID_FILIERE_UE_SEMSTRE = fus.ID_FILIERE_UE_SEMSTRE
+WHERE fus.ID_FILIERE_UE_SEMSTRE=$P{IdFilUe}
+AND ipu.ID_INSCRIPTION_PED_SEM_UE=$P{IdInsPedSemUe} and nc.id_calendrier_deliberation=$P{id_calendrier}
+ORDER BY fec.CODIFICATION]]>
+	</queryString>
+	<field name="ID_CALENDRIER_DELIBERATION" class="java.math.BigDecimal"/>
+	<field name="EC" class="java.lang.String"/>
+	<field name="IDFILEC" class="java.math.BigDecimal"/>
+	<field name="NOTE" class="java.math.BigDecimal"/>
+	<field name="CODIFICATION" class="java.lang.String"/>
+	<field name="COEFFICIENT" class="java.math.BigDecimal"/>
+	<field name="ID_INSCRIPTION_PED_SEM_UE" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="9f37dab1-177a-471a-a258-2316faced711"/>
+			</line>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement x="1" y="0" width="464" height="12" uuid="27a44ca5-8887-4b68-b740-46c2f128e07e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="00.00" isBlankWhenNull="true">
+				<reportElement x="467" y="0" width="48" height="12" uuid="951ab20f-b5de-4169-8489-5fb407b868a2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOTE}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="1" height="13" uuid="578dee0e-5c75-4fde-ba23-b7e57669305e"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="555" y="0" width="1" height="12" uuid="669bcb92-497e-42c9-8e39-7786c38a73cf"/>
+			</line>
+			<line>
+				<reportElement x="465" y="0" width="1" height="12" uuid="911b8190-ce56-449e-a37a-cf26939be062"/>
+			</line>
+			<line>
+				<reportElement x="516" y="0" width="1" height="12" uuid="75ae61da-b822-4f59-a39f-1ecfe68ec4f7"/>
+			</line>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="517" y="0" width="38" height="12" uuid="e53634a3-b805-4346-af2d-6d7428efa16a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COEFFICIENT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

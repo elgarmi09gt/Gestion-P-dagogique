@@ -1,0 +1,1531 @@
+package saisie_notes_mode_ens;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import java.io.InputStream;
+
+import java.io.OutputStream;
+
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+
+import java.security.Key;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.crypto.Cipher;
+
+import javax.crypto.spec.SecretKeySpec;
+
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+
+import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewHandler;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import javax.faces.event.ValueChangeEvent;
+
+import model.services.evaluationAppImpl;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCBindingContainer;
+import oracle.adf.model.binding.DCIteratorBinding;
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPanelWindow;
+import oracle.adf.view.rich.component.rich.RichPopup;
+import oracle.adf.view.rich.component.rich.data.RichTable;
+
+import oracle.adf.view.rich.component.rich.input.RichSelectOneChoice;
+import oracle.adf.view.rich.component.rich.layout.RichPanelGroupLayout;
+import oracle.adf.view.rich.component.rich.output.RichPanelCollection;
+import oracle.adf.view.rich.context.AdfFacesContext;
+import oracle.adf.view.rich.event.DialogEvent;
+
+import oracle.adf.view.rich.event.DialogEvent.Outcome;
+import oracle.adf.view.rich.render.ClientEvent;
+
+import oracle.binding.AttributeBinding;
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.dss.util.BASE64Encoder;
+
+import oracle.jbo.Row;
+import oracle.jbo.RowSetIterator;
+
+import oracle.jbo.VariableValueManager;
+import oracle.jbo.ViewCriteria;
+import oracle.jbo.ViewCriteriaManager;
+import oracle.jbo.ViewObject;
+
+import oracle.security.xmlsec.saml2.ac.Protection;
+
+import org.apache.myfaces.trinidad.model.UploadedFile;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import view.beans.entities.EtudiantGroupeSaisie;
+import view.beans.evaluation.deliberation_ue.DeliberatioUeBean;
+
+public class SaisieNotesBean {
+    private RichTable tableSaisieNotes;
+    private RichPopup popenrg;
+    private UploadedFile uploadedFile;
+    private RichPopup popImport;
+    private RichPopup popClot;
+    ADFContext adfCtx = ADFContext.getCurrent();
+    Map sessionFlowScope = adfCtx.getSessionScope();
+    Long cal = Long.parseLong(sessionFlowScope.get("id_calendrier").toString());
+    Long parcours_maq = Long.parseLong(sessionFlowScope.get("prcrs_maq_an").toString());
+
+    private static final String ALGO = "AES";
+    private byte[] keyvalue;
+    String parcours = sessionFlowScope.get("id_niv_form_parcours").toString();
+    String sess = sessionFlowScope.get("id_session").toString();
+    String sem = sessionFlowScope.get("id_smstre").toString();
+    String an = sessionFlowScope.get("id_annee").toString();
+    //Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    //private Integer parcours = Integer.parseInt(sessionScope.get("id_niv_form_parcours").toString());
+    private Integer anne_univers = Integer.parseInt(sessionFlowScope.get("id_annee").toString());
+    private Integer session = Integer.parseInt(sessionFlowScope.get("id_session").toString());
+    private Integer utilisateur = Integer.parseInt(sessionFlowScope.get("id_user").toString());
+    private Integer calendrier = Integer.parseInt(sessionFlowScope.get("id_calendrier").toString());
+    private Integer semestre = Integer.parseInt(sessionFlowScope.get("id_smstre").toString());
+    
+    String crypted="";
+    String key =
+        getParcours() + "" + getSess() + "" + getSem() + "" + getAn() + "" + getAn() + "" +
+        getSem() + "" + getSess() + "" + getParcours() + "" + getSem() + "" + getSess() + "" + getParcours() +
+        "" + getAn() + "" + getSess() + "" + getParcours() + "" + getAn() + "" + getSem();
+
+    private RichPopup popupClosedSuccess;
+    private RichPopup popupOtherErr;
+    private RichPopup popupEcClosed;
+    private RichSelectOneChoice inputFilEc;
+    private RichPopup popupAllisClosed;
+
+    private RichSelectOneChoice lib_ue;
+    private RichPanelWindow panelbtn;
+    private RichPanelGroupLayout panelbtngroupe;
+    private RichPopup popupConfirmCloseAllInter;
+    private RichPopup popupConfirmReOpenSaisie;
+    private RichPopup popupSuccessReOpen;
+    private RichPopup popSaisieInterNotClosedYet;
+    private RichPopup popUeClosed;
+    private RichPopup popNotStudent;
+    private RichPopup popSaisieSaved;
+    private RichPanelCollection pancol;
+    private RichPopup opupUeClosed;
+    private RichPanelGroupLayout panGrp;
+
+
+    public void setParcours(String parcours) {
+        this.parcours = parcours;
+    }
+
+    public String getParcours() {
+        return parcours;
+    }
+
+    public void setSess(String sess) {
+        this.sess = sess;
+    }
+
+    public String getSess() {
+        return sess;
+    }
+
+    public void setSem(String sem) {
+        this.sem = sem;
+    }
+
+    public String getSem() {
+        return sem;
+    }
+
+    public void setAn(String an) {
+        this.an = an;
+    }
+
+    public String getAn() {
+        return an;
+    }
+
+    @SuppressWarnings("unchecked")
+    public SaisieNotesBean() {
+        /*AttributeBinding id_type_ctrl = (AttributeBinding) getBindings().getControlBinding("IdTypeControle");
+        AttributeBinding id_fil_ec = (AttributeBinding) getBindings().getControlBinding("IdFiliereUeSemstreEc1");
+        System.out.println("idtype_controle"+id_type_ctrl);
+        System.out.println("IdFiliereUeSemstreEc"+id_fil_ec);*/
+        System.out.println("Attri  "+sessionFlowScope.get("ref"));
+        //sessionFlowScope.put("ref", 0);
+    }
+
+    public void setUploadedFile(UploadedFile uploadedFile) {
+        this.uploadedFile = uploadedFile;
+    }
+
+    public UploadedFile getUploadedFile() {
+        return uploadedFile;
+    }
+
+    public void setTableSaisieNotes(RichTable tableSaisieNotes) {
+        this.tableSaisieNotes = tableSaisieNotes;
+    }
+
+    public RichTable getTableSaisieNotes() {
+        return tableSaisieNotes;
+    }
+    public BindingContainer getBindings() {
+        return (BindingContainer) BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    @SuppressWarnings("unchecked")
+
+    public Object resolvElDC(String data) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Application app = fc.getApplication();
+        ExpressionFactory elFactory = app.getExpressionFactory();
+        ELContext elContext = fc.getELContext();
+        ValueExpression valueExp =
+            elFactory.createValueExpression(elContext, "#{data." + data + ".dataProvider}", Object.class);
+        return valueExp.getValue(elContext);
+    }   
+
+    public void setPopenrg(RichPopup popenrg) {
+        this.popenrg = popenrg;
+    }
+
+    public RichPopup getPopenrg() {
+        return popenrg;
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public void onDialog(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        
+        if (outcome == Outcome.ok) {
+            //commit
+            executeOperation("Commit").execute();
+            RichPopup popup = this.getPopSaisieSaved();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            popup.show(hints);
+            //DCIteratorBinding iter = (DCIteratorBinding)getBindings().get("NotesModeEnseignementIterator"); 
+            /*DCIteratorBinding iter = (DCIteratorBinding)getBindings().get("SaisieNoteEtudiantIterator");
+            RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+            Integer nbr = 0;
+            if(rsi.getRowCount() == 0){
+                RichPopup popup = this.getPopNotStudent();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+
+                popup.show(hints);
+            }
+            else{
+                while (rsi.hasNext()) {
+                    Row nextRow = rsi.next();
+                    String note = null;
+                    //verifier si la note est nulle
+                    if(nextRow.getAttribute("Note")!=null)
+                        note = nextRow.getAttribute("Note").toString();
+                        System.out.println("Note : "+note);
+                    OperationBinding findUpdate = getBindings().getOperationBinding("findAndUpdateNote");
+                    findUpdate.getParamsMap().put("idNoteModeEns", Long.parseLong(nextRow.getAttribute("IdNoteModeEnseignement").toString()));
+                    findUpdate.getParamsMap().put("note", note);
+                    findUpdate.execute();
+                    nbr ++;
+                    if(2==nbr)
+                        break;
+                }
+                if(nbr > 0){
+                    executeOperation("Commit").execute();    //validation des données importées
+                    RichPopup popup = this.getPopSaisieSaved();
+                    RichPopup.PopupHints hints = new RichPopup.PopupHints();
+
+                    popup.show(hints);
+                }
+            }*/
+        }
+    }
+
+    public void onDialogCancel(ClientEvent clientEvent) {
+        // Add event code here...
+        this.getPopenrg().hide();
+    }
+
+    public void onEnregistrer(ActionEvent actionEvent) {
+        // Add event code here...
+        RichPopup popup = this.getPopenrg();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public void readNProcessExcelx(InputStream xlsx) throws IOException {
+        
+        AttributeBinding idtype_controle = (AttributeBinding) getBindings().getControlBinding("IdTypeControle");
+        AttributeBinding IdFiliereUeSemstreEc = (AttributeBinding) getBindings().getControlBinding("IdFiliereUeSemstreEc1");
+        AttributeBinding IdFiliereUeSemstre = (AttributeBinding) getBindings().getControlBinding("IdFiliereUeSemstre");
+        //
+        AttributeBinding lib_annee = (AttributeBinding) getBindings().getControlBinding("LibAnnee");
+        AttributeBinding libelle_ue = (AttributeBinding) getBindings().getControlBinding("UeEvalRO");
+        AttributeBinding libelle_ec = (AttributeBinding) getBindings().getControlBinding("EcEvalRO");
+        AttributeBinding libelle_type_ctrl = (AttributeBinding) getBindings().getControlBinding("EcEvalTypeCtrlRO");
+        AttributeBinding id_fil_ec = (AttributeBinding) getBindings().getControlBinding("IdFiliereUeSemstreEc1");
+        AttributeBinding id_type_ctrl = (AttributeBinding) getBindings().getControlBinding("IdTypeControle");
+        AttributeBinding lib_niv_form = (AttributeBinding) getBindings().getControlBinding("LibNivForm");
+        System.out.println("getLib_ue().toString();"+libelle_ue.getInputValue());
+        
+        String [][] entete = new String[9][2];        
+        entete[0][0] = "Niveau de Formation :";
+        entete[0][1] = lib_niv_form.getInputValue().toString();
+        entete[1][0] = "UE :";
+        entete[1][1] = libelle_ue.getInputValue().toString();
+        entete[2][0] = "EC :";
+        entete[2][1] = libelle_ec.getInputValue().toString();
+        entete[3][0] = "Type de Controle :";
+        entete[3][1] = libelle_type_ctrl.getInputValue().toString();
+        
+        entete[4][0] = "Semestre :";
+        entete[4][1] = getSem();
+
+        entete[5][0] = "Session : ";
+        entete[5][1] = getSess();
+        
+        entete[6][0] = "Id FilUeSemEc";
+        entete[6][1] = id_fil_ec.getInputValue().toString();
+        entete[7][0] = "Id Type Ctrl";
+        entete[7][1] = id_type_ctrl.getInputValue().toString();
+        entete[8][0] = "Année Universitaire :";
+        entete[8][1] = lib_annee.getInputValue().toString();
+        
+        for( String[] en : entete){
+        }
+        for(int i=0;i<9;i++){
+            System.out.println(entete[i][0]+" "+entete[i][1]);
+        }
+
+        //Use XSSFWorkbook for XLS file
+        XSSFWorkbook WorkBook = null;
+        int sheetIndex = 0;
+
+        try {
+            WorkBook = new XSSFWorkbook(xlsx);
+        } catch (IOException e) {
+
+        }
+       // WorkBook.
+       OperationBinding op_refresh = getBindings().getOperationBinding("ExecuteWithParams");
+       op_refresh.getParamsMap().put("id_type_ctrl_var", Long.parseLong(idtype_controle.getInputValue().toString()));
+       op_refresh.getParamsMap().put("id_cal_delib_var", getCal());
+       op_refresh.getParamsMap().put("id_fil_ec",  Long.parseLong(IdFiliereUeSemstreEc.getInputValue().toString()));
+       op_refresh.execute();
+       
+       DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("NotesModeEnseignementIterator"); 
+       int totRows = ((int) iter.getEstimatedRowCount()) + 1;
+       //Here 2 is the number of columns
+        HashMap<String,String> ligne_colonne = new HashMap<String,String>();
+        ArrayList<HashMap<String,String>> tab_erreur = new ArrayList<HashMap<String,String>>();
+        XSSFSheet sheet = WorkBook.getSheetAt(sheetIndex);
+        try{
+        }
+        catch(Exception e) {
+        }
+       if( sheet.getRow(5).getCell(5) == null || sheet.getRow(6).getCell(5) == null || sheet.getRow(7).getCell(5) == null || sheet.getRow(8).getCell(5) == null){
+            FacesMessage msg1 = new FacesMessage("Veuillez choisir le fichier qui contient : ");
+            msg1.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext.getCurrentInstance().addMessage(null, msg1);
+            for(int i=0;i<9;i++){
+                FacesMessage msg = new FacesMessage("+ "+entete[i][0]+" "+entete[i][1]);
+                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+            getPopImport().hide();
+        }
+       else{
+            Long id_sem = Long.parseLong( sheet.getRow(5).getCell(5).getStringCellValue().toString());
+            Long id_sess = Long.parseLong( sheet.getRow(6).getCell(5).getStringCellValue().toString());
+            Long id_ec = Long.parseLong( sheet.getRow(7).getCell(5).getStringCellValue().toString());
+            Long id_ty_ctrl = Long.parseLong( sheet.getRow(8).getCell(5).getStringCellValue().toString());
+            String lib_annee_excel = sheet.getRow(9).getCell(5).getStringCellValue().toString();
+
+            OperationBinding op_getAnnee = getBindings().getOperationBinding("getIdAnne");
+            op_getAnnee.getParamsMap().put("lib_annee",  lib_annee_excel);
+            op_getAnnee.execute();
+            AttributeBinding id_annee_excel = (AttributeBinding) getBindings().getControlBinding("IdAnneesUnivers1");
+            Long ec = Long.parseLong( id_fil_ec.getInputValue().toString());
+            Long type_controle = Long.parseLong( id_type_ctrl.getInputValue().toString());
+            Long id_annee = Long.parseLong(id_annee_excel.getInputValue().toString());
+            String password_read = id_annee+""+id_ec+""+id_ty_ctrl+""+id_sem+""+id_sess;
+
+            if(!sheet.validateSheetPassword(password_read)){
+                AttributeBinding CodificationUE = (AttributeBinding) getBindings().getControlBinding("CodificationUE");
+                AttributeBinding CodificationEC = (AttributeBinding) getBindings().getControlBinding("CodificationEC");
+                AttributeBinding LibelleCourtCtrl = (AttributeBinding) getBindings().getControlBinding("LibelleCourtCtrl");               
+                FacesMessage msg = new FacesMessage("Veuillez choisir le fichier original du nom "+CodificationUE.getInputValue()+"_"+CodificationEC.getInputValue()+"_"+LibelleCourtCtrl.getInputValue()+".xlsx");
+                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+            else{
+               //si le fichier est bon
+                if(type_controle != id_ty_ctrl || ec != id_ec || id_sem != Long.parseLong(getSem()) || id_sess != Long.parseLong(getSess())) {
+                    FacesMessage msg1 = new FacesMessage("Veuillez choisir le fichier qui contient :");
+                    msg1.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    FacesContext.getCurrentInstance().addMessage(null, msg1);
+                    for(int i=0;i<9;i++){
+                        System.out.println(entete[i][0]+" "+entete[i][1]);
+                        FacesMessage msg = new FacesMessage("+ "+entete[i][0]+" "+entete[i][1]);
+                        msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                    }
+                    getPopImport().hide();
+                }
+                else{
+                    Integer derniere_ligne = totRows + 12;
+                    Integer premiere_ligne = ((derniere_ligne-totRows) + 1);
+                    System.out.println("tot lignes "+derniere_ligne+" val der");
+                    System.out.println("1er lignes "+((derniere_ligne-totRows) + 1)+" val 1 er ");
+                    //Iterate over excel rows
+                    OperationBinding isGenereAnonymat = getBindings().getOperationBinding("isGenereAnonymat");
+                    isGenereAnonymat.getParamsMap().put("parcours", Long.parseLong( getParcours()));
+                    isGenereAnonymat.getParamsMap().put("anne", Long.parseLong( getAn()));
+                    isGenereAnonymat.getParamsMap().put("semestre", Long.parseLong( getSem()));
+                    isGenereAnonymat.getParamsMap().put("sessions", Long.parseLong( getSess()));
+                    //System.out.println(getParcours()+" ann"+getAnne_univers()+"Sem "+getSemestre()+"Sess "+getSession());
+                    Integer is_anomymat = (Integer)isGenereAnonymat.execute();
+                    //s'il ya anonymat
+                    if(is_anomymat > 0){ 
+                        String anonymat = "";
+                        Double note = null;
+                        System.out.println();
+                        for (Integer row_current = premiere_ligne; row_current <derniere_ligne; row_current++) { 
+                            int Index = 4;System.out.println("row_current "+row_current);
+                            //Iterate over row's columns
+                            for (int column = 5; column < 6; column++) {
+                                Cell MytempCell = sheet.getRow(row_current).getCell(column);
+                                if (MytempCell != null) {
+                                    Index = MytempCell.getColumnIndex();
+                                } else {
+                                    Index++;
+                                }
+                                if (Index == 4) {
+                                    anonymat = MytempCell.getStringCellValue();                    
+                                } 
+                                else if (Index == 5) { 
+                                    Integer ligne = row_current +1;
+                                    try{
+                                    if(!isCellEmpty(MytempCell)){       // remplir le tab d'erreur
+                                            if((MytempCell.getNumericCellValue() > 20)||(MytempCell.getNumericCellValue() < 0) ){
+                                                ligne_colonne.put(ligne.toString(),"Note doit etre comprise entre 0 et 20");
+                                                tab_erreur.add(ligne_colonne);
+                                            }
+                                            else
+                                                note = MytempCell.getNumericCellValue();
+                                        }
+                                        else
+                                            note=null;
+            
+                                    }catch(Exception e) {
+                                        ligne_colonne.put(ligne.toString(),"La note doit etre un nombre");
+                                        tab_erreur.add(ligne_colonne);
+                                    }
+                                }   
+                            }
+                        }
+                        // verifier si tab d'erreur n'est pas vide
+                        if(tab_erreur.size() > 0){
+                            for (String current : tab_erreur.get(0).keySet()) {
+                                FacesMessage msg = new FacesMessage("Ligne n° "+current+" et Colonne n° 6 :"+tab_erreur.get(0).get(current));
+                                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                                FacesContext.getCurrentInstance().addMessage(null, msg);
+                            }
+                            getPopImport().hide();
+                        }
+                        // pas d'erreur dans le fichier d'excel
+                        if(tab_erreur.size() == 0){
+                            //for (org.apache.poi.ss.usermodel.Row tempRow : sheet) {
+                            anonymat = "";
+                            note = null;
+                            for (Integer row_current = premiere_ligne; row_current < derniere_ligne; row_current++) { 
+                                int Index = 4;
+                                //Iterate over row's columns
+                                for (int column = 4; column < 6; column++) {
+                                    Cell MytempCell = sheet.getRow(row_current).getCell(column);
+                                    if (MytempCell != null) {
+                                        Index = MytempCell.getColumnIndex();
+                                    } else {
+                                        Index++;
+                                    }
+                                    if (Index == 4) {
+                                        anonymat = MytempCell.getStringCellValue();                       
+                                    } 
+                                    else if (Index == 5) {                      
+                                        if(!isCellEmpty(MytempCell))
+                                            note=MytempCell.getNumericCellValue();
+                                        else
+                                            note=null;
+                                    }   
+                                }
+                                try {
+                                    key = key.substring(0, 16);
+                                    crypted = encrypt(anonymat,key);       //ré-encrypter l'anonymat recupéré                    
+                                    OperationBinding op_getAnonymat = getBindings().getOperationBinding("getAnonymat");
+                                    op_getAnonymat.getParamsMap().put("anonymat_var",  crypted);
+                                    op_getAnonymat.execute();
+                                    //id_etudiant de l'anonymat encrypté
+                                    AttributeBinding id_etud = (AttributeBinding) getBindings().getControlBinding("IdEtudiant");
+                                    OperationBinding op_getIdNoteModeEns = getBindings().getOperationBinding("getIdNoteModeEns");
+                                    op_getIdNoteModeEns.getParamsMap().put("id_etud",Long.parseLong(id_etud.getInputValue().toString()));
+                                    op_getIdNoteModeEns.getParamsMap().put("id_fil_ue_sem",  Long.parseLong(IdFiliereUeSemstre.getInputValue().toString()));
+                                    op_getIdNoteModeEns.getParamsMap().put("id_fil_ue_sem_ec",  Long.parseLong(IdFiliereUeSemstreEc.getInputValue().toString()));
+                                    op_getIdNoteModeEns.getParamsMap().put("id_type_ctrl",  Long.parseLong(idtype_controle.getInputValue().toString()));
+                                    op_getIdNoteModeEns.execute();
+                                    //id_note_mode_enseignement
+                                    AttributeBinding id_note = (AttributeBinding) getBindings().getControlBinding("IdNoteModeEnseignement1");
+                                    //pour faire la mise à jour du note recupérée dans le fichier Excel
+                                    OperationBinding findUpdate = getBindings().getOperationBinding("findAndUpdateNote");
+                                    findUpdate.getParamsMap().put("idNoteModeEns", Long.parseLong(id_note.getInputValue().toString()));
+                                    findUpdate.getParamsMap().put("note", note);
+                                    findUpdate.execute();
+                                    
+                                } 
+                                catch (Exception e) {
+                                }   
+                            }
+                            executeOperation("Commit").execute();    //validation des données importées
+                                    
+                            //refresh la page apres import
+                            FacesContext fc = FacesContext.getCurrentInstance();
+                            String refreshpage = fc.getViewRoot().getViewId();
+                            ViewHandler ViewH =
+                            fc.getApplication().getViewHandler();
+                            UIViewRoot UIV = ViewH.createView(fc,refreshpage);
+                            UIV.setViewId(refreshpage);
+                            fc.setViewRoot(UIV);
+                        }
+                    }
+                //pas d'anonymat
+                    else{
+                        String anonymat = "";
+                        Double note = null;
+                        for (Integer row_current = premiere_ligne; row_current <derniere_ligne; row_current++) { 
+                            int Index = 4;
+                            //Iterate over row's columns
+                            for (int column = 4; column < 8; column++) {
+                                Cell MytempCell = sheet.getRow(row_current).getCell(column);
+                                if (MytempCell != null) {
+                                    Index = MytempCell.getColumnIndex();
+                                } else {
+                                    Index++;
+                                }
+                                if (Index == 4) {
+                                    anonymat = MytempCell.getStringCellValue();                    
+                                } 
+                                else if (Index == 7) { 
+                                    Integer ligne = row_current +1;
+                                    try{
+                                    if(!isCellEmpty(MytempCell)){       // remplir le tab d'erreur
+                                            if((MytempCell.getNumericCellValue() > 20)||(MytempCell.getNumericCellValue() < 0) ){
+                                                ligne_colonne.put(ligne.toString(),"Note doit etre comprise entre 0 et 20");
+                                                tab_erreur.add(ligne_colonne);
+                                            }
+                                            else
+                                                note = MytempCell.getNumericCellValue();
+                                        }
+                                        else
+                                            note=null;
+                        
+                                    }catch(Exception e) {
+                                        ligne_colonne.put(ligne.toString(),"La note doit etre un nombre");
+                                        tab_erreur.add(ligne_colonne);
+                                    }
+                                }   
+                            }
+                        }
+                        // verifier si tab d'erreur n'est pas vide
+                        if(tab_erreur.size() > 0){
+                            for (String current : tab_erreur.get(0).keySet()) {
+                                FacesMessage msg = new FacesMessage("Ligne n° "+current+" et Colonne n° 8 :"+tab_erreur.get(0).get(current));
+                                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                                FacesContext.getCurrentInstance().addMessage(null, msg);
+                            }
+                            getPopImport().hide();
+                        }
+                        // pas d'erreur dans le fichier d'excel
+                        if(tab_erreur.size() == 0){
+                            //for (org.apache.poi.ss.usermodel.Row tempRow : sheet) {
+                            String numero = "";
+                            note = null;
+                            for (Integer row_current = premiere_ligne; row_current < derniere_ligne; row_current++) { 
+                                int Index = 4;
+                                //Iterate over row's columns
+                                for (int column = 4; column < 8; column++) {
+                                    Cell MytempCell = sheet.getRow(row_current).getCell(column);
+                                    if (MytempCell != null) {
+                                        Index = MytempCell.getColumnIndex();
+                                    } else {
+                                        Index++;
+                                    }
+                                    if (Index == 4) {
+                                        numero = MytempCell.getStringCellValue();                       
+                                    } 
+                                    else if (Index == 7) {                      
+                                        if(!isCellEmpty(MytempCell))
+                                            note=MytempCell.getNumericCellValue();
+                                        else
+                                            note=null;
+                                    }   
+                                }
+                                try {               
+                                    OperationBinding op_getAnonymat = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getEtudiant");
+                                    op_getAnonymat.getParamsMap().put("num_etud",  numero);
+                                    op_getAnonymat.execute();
+    
+                                    //id_etudiant à partir du numéro
+                                    
+                                    AttributeBinding id_etud = (AttributeBinding) getBindings().getControlBinding("IdEtudiant1");
+                                    OperationBinding op_getIdNoteModeEns = getBindings().getOperationBinding("getIdNoteModeEns");
+                                    op_getIdNoteModeEns.getParamsMap().put("id_etud",Long.parseLong(id_etud.getInputValue().toString()));
+                                    op_getIdNoteModeEns.getParamsMap().put("id_fil_ue_sem",  Long.parseLong(IdFiliereUeSemstre.getInputValue().toString()));
+                                    op_getIdNoteModeEns.getParamsMap().put("id_fil_ue_sem_ec",  Long.parseLong(IdFiliereUeSemstreEc.getInputValue().toString()));
+                                    op_getIdNoteModeEns.getParamsMap().put("id_type_ctrl",  Long.parseLong(idtype_controle.getInputValue().toString()));
+                                    op_getIdNoteModeEns.execute();
+                                    //id_note_mode_enseignement
+                                    AttributeBinding id_note = (AttributeBinding) getBindings().getControlBinding("IdNoteModeEnseignement1");
+                                    //pour faire la mise à jour du note recupérée dans le fichier Excel
+                                    OperationBinding findUpdate = getBindings().getOperationBinding("findAndUpdateNote");
+                                    findUpdate.getParamsMap().put("idNoteModeEns", Long.parseLong(id_note.getInputValue().toString()));
+                                    findUpdate.getParamsMap().put("note", note);
+                                    findUpdate.execute();
+                                    
+                                } 
+                                catch (Exception e) {
+                                }   
+                            }
+                            executeOperation("Commit").execute();    //validation des données importées
+                                    
+                            //refresh la page apres import
+                            FacesContext fc = FacesContext.getCurrentInstance();
+                            String refreshpage = fc.getViewRoot().getViewId();
+                            ViewHandler ViewH =
+                            fc.getApplication().getViewHandler();
+                            UIViewRoot UIV = ViewH.createView(fc,refreshpage);
+                            UIV.setViewId(refreshpage);
+                            fc.setViewRoot(UIV);
+                        }
+                    }
+                }  
+            } //sheet
+        }
+    }    
+    public OperationBinding executeOperation(String operation) {
+        OperationBinding createParam = getBindings().getOperationBinding(operation);
+        return createParam;
+
+    }
+    
+    public String encrypt(String data, String keys) throws Exception{
+        keys = keys.substring(0, 16);
+        keyvalue = keys.getBytes();
+        Key key = new SecretKeySpec(keyvalue, ALGO);
+        Cipher c = Cipher.getInstance(ALGO);
+        c.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encVal = c.doFinal(data.getBytes());
+        @SuppressWarnings("oracle.jdeveloper.java.semantic-warning")
+        String encryptedValue = new BASE64Encoder().encode(encVal);
+        return encryptedValue;
+    }
+
+    @SuppressWarnings({ "oracle.jdeveloper.java.unchecked-conversion-or-cast",
+                        "oracle.jdeveloper.java.insufficient-catch-block" })
+    
+    public void readNProcessExcel(InputStream xls) throws IOException {
+        AttributeBinding idtype_controle = (AttributeBinding) getBindings().getControlBinding("IdTypeControle");
+        AttributeBinding IdFiliereUeSemstreEc = (AttributeBinding) getBindings().getControlBinding("IdFiliereUeSemstreEc1");
+        AttributeBinding IdFiliereUeSemstre = (AttributeBinding) getBindings().getControlBinding("IdFiliereUeSemstre");
+        
+        //Use HSSFWorkbook for XLS file
+        HSSFWorkbook WorkBook = null;
+        int sheetIndex = 0;
+        try {
+            WorkBook = new HSSFWorkbook(xls);
+        } catch (IOException e) {
+            System.out.println("Exception : " + e);
+        }
+
+        HSSFSheet sheet = WorkBook.getSheetAt(sheetIndex);
+
+        Integer skipRw = 1;
+        Integer skipcnt = 1;
+        //Iterate over excel rows
+        for (org.apache.poi.ss.usermodel.Row tempRow : sheet) {
+            String anonymat = "";
+            Double note = null;
+            if (skipcnt > skipRw) { //skip first n row for labels.
+                //Create new row in table
+                int Index = 0;           
+                for (int column = 0; column < tempRow.getPhysicalNumberOfCells(); column++) {
+                    Cell MytempCell = tempRow.getCell(column);
+                    if (MytempCell != null) {
+                        Index = MytempCell.getColumnIndex();
+                    } else {
+                        Index++;
+                    }
+                    if (Index == 0) {
+                        anonymat = MytempCell.getStringCellValue();
+                       
+                    } else if (Index == 1) {
+                        if(!isCellEmpty(MytempCell))
+                            note=MytempCell.getNumericCellValue();
+                        else
+                            note=null;
+    
+                    }
+                 }
+                try {
+                    key = key.substring(0, 16);
+                    crypted = encrypt(anonymat,key);       //ré-encrypter l'anonymat recupéré
+                    OperationBinding op_getAnonymat = getBindings().getOperationBinding("getAnonymat");
+                    op_getAnonymat.getParamsMap().put("anonymat_var",  crypted);
+                    op_getAnonymat.execute();
+                    //id_etudiant de l'anonymat encrypté
+                    AttributeBinding id_etud = (AttributeBinding) getBindings().getControlBinding("IdEtudiant");
+
+                    OperationBinding op_getIdNoteModeEns = getBindings().getOperationBinding("getIdNoteModeEns");
+                    op_getIdNoteModeEns.getParamsMap().put("id_etud",Long.parseLong(id_etud.getInputValue().toString()));
+                    op_getIdNoteModeEns.getParamsMap().put("id_fil_ue_sem",  Long.parseLong(IdFiliereUeSemstre.getInputValue().toString()));
+                    op_getIdNoteModeEns.getParamsMap().put("id_fil_ue_sem_ec",  Long.parseLong(IdFiliereUeSemstreEc.getInputValue().toString()));
+                    op_getIdNoteModeEns.getParamsMap().put("id_type_ctrl",  Long.parseLong(idtype_controle.getInputValue().toString()));
+                    op_getIdNoteModeEns.execute();
+                    //id_note_mode_enseignement
+                    AttributeBinding id_note = (AttributeBinding) getBindings().getControlBinding("IdNoteModeEnseignement1");
+                    //pour faire la mise à jour du note recupérée dans le fichier Excel
+                    OperationBinding findUpdate = getBindings().getOperationBinding("findAndUpdateNote");
+                    findUpdate.getParamsMap().put("idNoteModeEns", Long.parseLong(id_note.getInputValue().toString()));
+                    findUpdate.getParamsMap().put("note", note);
+                    findUpdate.execute();
+                    
+                } catch (Exception e) {
+                }
+
+            }
+
+            skipcnt++;
+        }
+        executeOperation("Commit").execute();    //validation des données importées
+        
+        //refresh la page apres import
+        FacesContext fc = FacesContext.getCurrentInstance();
+        String refreshpage = fc.getViewRoot().getViewId();
+        ViewHandler ViewH =
+        fc.getApplication().getViewHandler();
+        UIViewRoot UIV = ViewH.createView(fc,refreshpage);
+        UIV.setViewId(refreshpage);
+        fc.setViewRoot(UIV);
+    }
+
+    public static boolean isCellEmpty(final Cell cell) {
+        if (cell == null || cell.getCellType() == CellType.BLANK) {
+            return true;
+        }
+        if (cell.getCellType() == CellType.BLANK && cell.getStringCellValue().isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+    public void onUploadExcel(ActionEvent actionEvent) {
+
+        UploadedFile file =  uploadedFile;
+
+        try {
+            //Check if file is XLSX
+            if (file.getContentType().equalsIgnoreCase("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ||
+                file.getContentType().equalsIgnoreCase("application/xlsx")) {
+                readNProcessExcelx(file.getInputStream()); //for xlsx           
+            }
+            //Check if file is XLS
+            else if (file.getContentType().equalsIgnoreCase("application/vnd.ms-excel")) {
+                if (file.getFilename().toUpperCase().endsWith(".XLS")) {
+                    readNProcessExcel(file.getInputStream()); //for xls
+                }
+
+            } else {
+                FacesMessage msg = new FacesMessage("File format not supported.-- Upload XLS or XLSX file");
+                msg.setSeverity(FacesMessage.SEVERITY_WARN);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+            file.getInputStream().close();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(tableSaisieNotes);
+
+        } catch (IOException e) {
+            // TODO
+        }
+        this.getPopImport().hide();
+    }
+
+    public void setPopImport(RichPopup popImport) {
+        this.popImport = popImport;
+    }
+
+    public RichPopup getPopImport() {
+        return popImport;
+    }
+
+    public void setPopClot(RichPopup popClot) {
+        this.popClot = popClot;
+    }
+
+    public RichPopup getPopClot() {
+        return popClot;
+    }
+
+    public void onDialogCanClot(ClientEvent clientEvent) {
+        this.getPopClot().hide();
+    }
+
+/*   OperationBinding calcul_moy_ec_final = getBindings().getOperationBinding("CalculMoyenneEcFinalProc");
+     calcul_moy_ec_final.getParamsMap().put("anne", Integer.parseInt(getAn()));
+     calcul_moy_ec_final.getParamsMap().put("semestre", Integer.parseInt(getSem()));
+     calcul_moy_ec_final.getParamsMap().put("parcours", Integer.parseInt(getParcours()));
+     calcul_moy_ec_final.getParamsMap().put("fileUesem", Integer.parseInt(IdFiliereUeSemstre.getInputValue().toString()));
+     calcul_moy_ec_final.getParamsMap().put("idFilieUeSemEc", Integer.parseInt(IdFiliereUeSemstreEc.getInputValue().toString()));
+     calcul_moy_ec_final.getParamsMap().put("calendrDelib", getCal());
+     calcul_moy_ec_final.getParamsMap().put("utilisateur", Integer.parseInt(sessionFlowScope.get("id_user").toString()));
+     calcul_moy_ec_final.execute();*/
+    @SuppressWarnings("unchecked")
+    public void onDialogClot(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            AttributeBinding idtype_controle = (AttributeBinding) getBindings().getControlBinding("IdTypeControle");
+            AttributeBinding IdFiliereUeSemstreEc = (AttributeBinding) getBindings().getControlBinding("IdFiliereUeSemstreEc1");
+            String action = "O";
+            OperationBinding clotureSaisieNotes = getBindings().getOperationBinding("clotureSaisieNotes");
+            clotureSaisieNotes.getParamsMap().put("fil_sem_ec", IdFiliereUeSemstreEc.getInputValue());
+            clotureSaisieNotes.getParamsMap().put("type_control", idtype_controle.getInputValue());
+            clotureSaisieNotes.getParamsMap().put("calendrier", getCal());
+            clotureSaisieNotes.getParamsMap().put("action", action);
+            clotureSaisieNotes.getParamsMap().put("utilisateur",Long.parseLong(sessionFlowScope.get("id_user").toString()));
+            clotureSaisieNotes.getParamsMap().put("prcrs_maq",getParcours_maq());
+            this.getPopClot().hide();
+            Integer result = (Integer) clotureSaisieNotes.execute();
+            if (result == 1) {
+                OperationBinding calcul_moy_ec = getBindings().getOperationBinding("CalculerMoyenneEc");
+                calcul_moy_ec.getParamsMap().put("calendrier", getCal());
+                calcul_moy_ec.getParamsMap().put("parcours_maq", getParcours_maq());
+                calcul_moy_ec.getParamsMap().put("fil_ec", IdFiliereUeSemstreEc.getInputValue());
+                calcul_moy_ec.getParamsMap().put("utilisateur", new Long(getUtilisateur()));
+                calcul_moy_ec.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPancol());
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getTableSaisieNotes());
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanelbtngroupe());
+            } else if (result == 0){
+                RichPopup popup = this.getPopSaisieInterNotClosedYet();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                popup.show(hints);
+            }
+            else{
+                RichPopup popup = this.getPopUeClosed();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                popup.show(hints);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void exportToExcel(FacesContext facesContext, OutputStream outputStream) {
+        // Add event code here...
+        AttributeBinding idtype_controle = (AttributeBinding) getBindings().getControlBinding("IdTypeControle");
+        AttributeBinding IdFiliereUeSemstreEc = (AttributeBinding) getBindings().getControlBinding("IdFiliereUeSemstreEc1");
+        OperationBinding op_refresh = getBindings().getOperationBinding("ExecuteWithParams");
+        op_refresh.getParamsMap().put("id_type_ctrl_var", Long.parseLong(idtype_controle.getInputValue().toString()));
+        op_refresh.getParamsMap().put("id_cal_delib_var", getCal());
+        op_refresh.getParamsMap().put("id_fil_ec",  Long.parseLong(IdFiliereUeSemstreEc.getInputValue().toString()));
+        op_refresh.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("NotesModeEnseignementIterator");
+        //Create RowSetIterato iterate over viewObject
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        //Create  Workbook object
+        XSSFWorkbook xwb = new XSSFWorkbook();//xwb.setWorkbookPassword("refonte", arg1);
+        //Create Sheet in Workbook
+        XSSFSheet sheet = xwb.createSheet("Liste des Etudiants");
+        
+        //No of total rows+ 1 for array sizing
+        int totRows = ((int) iter.getEstimatedRowCount()) + 1;
+        //Here 2 is the number of columns
+        AttributeBinding lib_annee = (AttributeBinding) getBindings().getControlBinding("LibAnnee");
+        AttributeBinding libelle_ue = (AttributeBinding) getBindings().getControlBinding("UeEvalRO");
+        AttributeBinding libelle_ec = (AttributeBinding) getBindings().getControlBinding("EcEvalRO");
+        AttributeBinding libelle_type_ctrl = (AttributeBinding) getBindings().getControlBinding("EcEvalTypeCtrlRO");
+        AttributeBinding id_fil_ec = (AttributeBinding) getBindings().getControlBinding("IdFiliereUeSemstreEc1");
+        AttributeBinding id_type_ctrl = (AttributeBinding) getBindings().getControlBinding("IdTypeControle");
+        AttributeBinding lib_niv_form = (AttributeBinding) getBindings().getControlBinding("LibNivForm");
+        //le mot de passe annee,fil_ec,type_control,semestre,session
+        String mot_passe = getAn()+""+id_fil_ec.getInputValue().toString()+""+id_type_ctrl.getInputValue().toString()+""+getSem()+""+getSess();
+        sheet.protectSheet(mot_passe);      // mot de passe du fichier
+        
+        String [][] entete = new String[9][2];        
+        entete[0][0] = "Niveau de Formation :";
+        entete[0][1] = lib_niv_form.getInputValue().toString();
+        entete[1][0] = "UE :";
+        entete[1][1] = libelle_ue.getInputValue().toString();
+        entete[2][0] = "EC :";
+        entete[2][1] = libelle_ec.getInputValue().toString();
+        entete[3][0] = "Type de Controle :";
+        entete[3][1] = libelle_type_ctrl.getInputValue().toString();
+        
+        entete[4][0] = "Semestre :";
+        entete[4][1] = getSem();
+
+        entete[5][0] = "Session : ";
+        entete[5][1] = getSess();
+        
+        entete[6][0] = "Id FilUeSemEc";
+        entete[6][1] = id_fil_ec.getInputValue().toString();
+        entete[7][0] = "Id Type Ctrl";
+        entete[7][1] = id_type_ctrl.getInputValue().toString();
+        entete[8][0] = "Année Universitaire :";
+        entete[8][1] = lib_annee.getInputValue().toString();
+        
+        int rowNum = 1;
+        //Iterate over Object array for each row
+        for (Object[] datatype : entete) {
+            //Creating row in Excel Sheet
+            org.apache.poi.ss.usermodel.Row row = sheet.createRow(rowNum++);
+            //Set data in column of a row
+            int colNum = 4;
+            for (Object field : datatype) {
+                Cell cell = row.createCell(colNum++);
+                CellStyle cellStyle = xwb.createCellStyle();
+                
+                // Style the cell with borders and border color
+                CellStyle style = xwb.createCellStyle();
+                style.setBorderBottom(BorderStyle.MEDIUM);
+                style.setBottomBorderColor(IndexedColors.BLUE.getIndex());
+                style.setBorderLeft(BorderStyle.MEDIUM);
+                style.setLeftBorderColor(IndexedColors.BLUE.getIndex());
+                style.setBorderRight(BorderStyle.MEDIUM);
+                style.setRightBorderColor(IndexedColors.BLUE.getIndex());
+                style.setBorderTop(BorderStyle.MEDIUM);
+                style.setTopBorderColor(IndexedColors.BLUE.getIndex());
+                //cell.setCellStyle(style);
+                
+                cellStyle.setLocked(true);          // verrouillage des cellules
+                cell.setCellValue("");
+                cell.setCellStyle(cellStyle);
+                sheet.setColumnWidth(4, 8000);
+                sheet.setColumnWidth(5, 6000);
+                sheet.setVerticallyCenter(true);
+                if(colNum == 4 && rowNum == 1){
+                    XSSFCellStyle style2 = xwb.createCellStyle(); 
+                    style2.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.index);
+                    // and solid fill pattern produces solid grey cell fill
+                    style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);          
+                  
+                    cell.setCellStyle(style2); 
+                }                  
+                row.setHeight((short) 400);
+                if (field instanceof String) {
+                    cell.setCellValue((String) field);
+                    cell.setCellStyle(style);
+                } else if (field instanceof Float) {
+                    cell.setCellValue((Float) field);
+                } 
+            }
+        }
+        
+        OperationBinding isGenereAnonymat = getBindings().getOperationBinding("isGenereAnonymat");
+        isGenereAnonymat.getParamsMap().put("parcours", Long.parseLong( getParcours()));
+        isGenereAnonymat.getParamsMap().put("anne", Long.parseLong( getAn()));
+        isGenereAnonymat.getParamsMap().put("semestre", Long.parseLong( getSem()));
+        isGenereAnonymat.getParamsMap().put("sessions", Long.parseLong( getSess()));
+        Integer id_anomymat = (Integer)isGenereAnonymat.execute();
+        //pas d'anonymat
+        if(id_anomymat == 0){           
+            //Here 4 is the number of columns
+            Object[][] content_not_ano = new Object[totRows][4];
+            int column = 4;
+            //Set header text in first row of table in PDF
+            content_not_ano[0][0] = "Numéro";
+            content_not_ano[0][1] = "Prénon & Nom";
+            content_not_ano[0][2] = "Date de Naissance";
+            content_not_ano[0][3] = "Note";
+
+            int i = 1;
+            while (rsi.hasNext()) {
+                Row nextRow = rsi.next();
+                for (int j = 0; j < column; j++) {
+                    if (j == 0 && nextRow.getAttribute("Numero") != null) {
+                        content_not_ano[i][j] = nextRow.getAttribute("Numero").toString();
+                    }
+                    if (j == 1 && nextRow.getAttribute("PrenomNom") != null) {
+                        content_not_ano[i][j] = nextRow.getAttribute("PrenomNom").toString();
+                    }
+                    if (j == 2 && nextRow.getAttribute("DateNaissance") != null) {
+                        java.util.Date utilDate = new java.util.Date(((Date)nextRow.getAttribute("DateNaissance")).getTime());
+                        
+                        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        String date1 = dateFormat.format(utilDate);
+                        content_not_ano[i][j] = date1;
+                    }
+                    if (j == 3 && nextRow.getAttribute("Note") != null) {
+                        content_not_ano[i][j] = Float.parseFloat(nextRow.getAttribute("Note").toString());
+                    }
+                }
+                i++;
+            }
+            //Close RowSetIterator
+            rsi.closeRowSetIterator();
+            //Set data in Excel Sheet from Object array
+            int rowNum_not_ano = 12;
+            //Iterate over Object array for each row
+            for (Object[] datatype : content_not_ano) {
+                //Creating row in Excel Sheet
+                org.apache.poi.ss.usermodel.Row row = sheet.createRow(rowNum_not_ano++);
+                //Set data in column of a row
+                int colNum = 4;
+                for (Object field : datatype) {
+                    Cell cell = row.createCell(colNum++);
+                    CellStyle cellStyle = xwb.createCellStyle();
+                    
+                    CellStyle style = xwb.createCellStyle();
+                    style.setBorderBottom(BorderStyle.MEDIUM);
+                    style.setBorderLeft(BorderStyle.MEDIUM);
+                    style.setBorderRight(BorderStyle.MEDIUM);
+                    style.setBorderTop(BorderStyle.MEDIUM);
+                    //cell.setCellStyle(style);
+                    cellStyle.setLocked(true);
+                    cell.setCellValue("");
+                    cell.setCellStyle(cellStyle);
+                    sheet.setColumnWidth(5, 10000);
+                    sheet.setColumnWidth(6, 5000);
+                    sheet.setColumnWidth(8, 3000);
+                    sheet.setVerticallyCenter(true); 
+                    if(colNum == 4 && rowNum_not_ano == 12){
+                    XSSFCellStyle style2 = xwb.createCellStyle(); 
+                        style2.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.index);
+                        // and solid fill pattern produces solid grey cell fill
+                        style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);          
+                      
+                    cell.setCellStyle(style2); 
+                    }
+                      
+                    row.setHeight((short) 800);
+                    if(colNum == 8){
+                        DataFormat format = xwb.createDataFormat();
+                        CellStyle style_cell = xwb.createCellStyle();
+                        style_cell.setBorderBottom(BorderStyle.MEDIUM);
+                        style_cell.setBorderLeft(BorderStyle.MEDIUM);
+                        style_cell.setBorderRight(BorderStyle.MEDIUM);
+                        style_cell.setBorderTop(BorderStyle.MEDIUM);
+                        
+                        style_cell.setLocked(false);
+                        cell.setCellValue("");
+                        style_cell.setDataFormat(format.getFormat("00.00"));
+                        cell.setCellStyle(style_cell);
+                    }
+                    if (field instanceof String) {
+                        cell.setCellValue((String) field);
+                        cell.setCellStyle(style);
+                    } else if (field instanceof Float) {
+                        cell.setCellValue((Float) field);
+                    } 
+                }
+            } 
+        }
+        //anonymat
+        else{
+            Object[][] content_ano = new Object[totRows][2];
+            int column_ano = 2;
+            //Set header text in first row of table in PDF
+            content_ano[0][0] = "Anonymat";
+            content_ano[0][1] = "Note";
+            
+            int i = 1;
+            while (rsi.hasNext()) {
+                Row nextRow = rsi.next();
+                for (int j = 0; j < column_ano; j++) {
+                    if (j == 0 && nextRow.getAttribute("Anonymat") != null) {
+                        content_ano[i][j] = nextRow.getAttribute("Anonymat").toString();
+                    }
+                    if (j == 1 && nextRow.getAttribute("Note") != null) {
+                        content_ano[i][j] = Float.parseFloat(nextRow.getAttribute("Note").toString());
+                    }
+                }
+                i++;
+            }
+            rsi.closeRowSetIterator();
+            rowNum = 12;
+            //Iterate over Object array for each row
+            for (Object[] datatype1 : content_ano) {
+                //Creating row in Excel Sheet
+                org.apache.poi.ss.usermodel.Row row = sheet.createRow(rowNum++);
+                //Set data in column of a row
+                int colNum = 4;
+                for (Object field : datatype1) {
+                    Cell cell = row.createCell(colNum++);
+                    CellStyle cellStyle = xwb.createCellStyle();
+                    
+                    CellStyle style = xwb.createCellStyle();
+                    style.setBorderBottom(BorderStyle.MEDIUM);
+                    style.setBorderLeft(BorderStyle.MEDIUM);
+                    style.setBorderRight(BorderStyle.MEDIUM);
+                    style.setBorderTop(BorderStyle.MEDIUM);
+                    cell.setCellValue("");
+                    cell.setCellStyle(cellStyle);
+                    cell.setCellStyle(style);
+                    sheet.setColumnWidth(0, 5000);
+                    sheet.setColumnWidth(1, 3000);
+                    sheet.setVerticallyCenter(true); 
+                    
+                    if(colNum == 4 && rowNum == 12){
+                        XSSFCellStyle style2 = xwb.createCellStyle(); 
+                        style2.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.index);
+                        // and solid fill pattern produces solid grey cell fill
+                        style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);          
+                      
+                        cell.setCellStyle(style2); 
+                        sheet.autoSizeColumn(2);
+                    }                  
+                    row.setHeight((short) 800);
+                    // deverouiller la colunne 2 (note)
+                    if(colNum == 6){
+                        DataFormat format = xwb.createDataFormat();
+                        //cell.setCellStyle(style);
+                        CellStyle style_cell = xwb.createCellStyle();
+                        style_cell.setBorderBottom(BorderStyle.MEDIUM);
+                        style_cell.setBorderLeft(BorderStyle.MEDIUM);
+                        style_cell.setBorderRight(BorderStyle.MEDIUM);
+                        style_cell.setBorderTop(BorderStyle.MEDIUM);
+                        style_cell.setLocked(false);
+                        cell.setCellValue("");
+                        style_cell.setDataFormat(format.getFormat("00.00"));
+                        cell.setCellStyle(style_cell);
+                        
+                    }
+                    if (field instanceof String) {
+                        cell.setCellValue((String) field);
+                    } else if (field instanceof Float) {
+                        cell.setCellValue((Float) field);
+                    } 
+                }
+            }
+           
+        } 
+        facesContext.responseComplete();
+        try {
+            xwb.write(outputStream);
+            outputStream.flush();
+            outputStream.close();facesContext.responseComplete();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        FacesContext fc = facesContext;
+        String refreshpage = fc.getViewRoot().getViewId();
+        ViewHandler ViewH =
+        fc.getApplication().getViewHandler();
+        UIViewRoot UIV = ViewH.createView(fc,refreshpage);
+        UIV.setViewId(refreshpage);
+        fc.setViewRoot(UIV);        
+        
+    }
+
+    
+    
+    public void setCal(Long cal) {
+        this.cal = cal;
+    }
+
+    public Long getCal() {
+        return cal;
+    }
+
+
+    public void setPopupClosedSuccess(RichPopup popupClosedSuccess) {
+        this.popupClosedSuccess = popupClosedSuccess;
+    }
+
+    public RichPopup getPopupClosedSuccess() {
+        return popupClosedSuccess;
+    }
+
+    public void setPopupOtherErr(RichPopup popupOtherErr) {
+        this.popupOtherErr = popupOtherErr;
+    }
+
+    public RichPopup getPopupOtherErr() {
+        return popupOtherErr;
+    }
+
+    public void setPopupEcClosed(RichPopup popupEcClosed) {
+        this.popupEcClosed = popupEcClosed;
+    }
+
+    public RichPopup getPopupEcClosed() {
+        return popupEcClosed;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnCloseAllInterAction(DialogEvent dialogEvent) {
+        String action = "O";
+        Boolean ok = false;
+        Outcome outcome = dialogEvent.getOutcome();
+        DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("EcEvalROIterator");
+        Row currentRow = iter.getCurrentRow();
+        DCIteratorBinding iterUe = (DCIteratorBinding) getBindings().get("UeEvalROIterator");
+        Row currentRowUe = iterUe.getCurrentRow();
+        //System.out.println("idFilEc : "+currentRow.getAttribute("IdFiliereUeSemstreEc").toString());
+        this.getPopupConfirmCloseAllInter().hide();
+        if (outcome == Outcome.yes) {
+            OperationBinding allInter = getBindings().getOperationBinding("GetAllInterFilEc");
+            allInter.getParamsMap().put("id_fil_ec", Integer.parseInt(currentRow.getAttribute("IdFiliereUeSemstreEc").toString()));
+            allInter.execute();
+            DCIteratorBinding iterAll = (DCIteratorBinding) getBindings().get("AllInteFilEcROVOIterator");
+            if(iterAll.getEstimatedRowCount()>0){
+                RowSetIterator rsi = iterAll.getViewObject().createRowSetIterator(null);
+                while (rsi.hasNext()) {
+                    Row nextRow = rsi.next();
+                    OperationBinding clotureSaisieNotesInter = getBindings().getOperationBinding("clotureSaisieNotesInter");
+                    clotureSaisieNotesInter.getParamsMap().put("fil_sem_ec", Long.parseLong(currentRow.getAttribute("IdFiliereUeSemstreEc").toString()));
+                    clotureSaisieNotesInter.getParamsMap().put("type_control", Long.parseLong(nextRow.getAttribute("IdTypeControle").toString()));
+                    clotureSaisieNotesInter.getParamsMap().put("mode_control", Long.parseLong(nextRow.getAttribute("IdModeControleEc").toString()));
+                    clotureSaisieNotesInter.getParamsMap().put("calendrier", getCal());
+                    clotureSaisieNotesInter.getParamsMap().put("action", action);
+                    clotureSaisieNotesInter.getParamsMap().put("utilisateur", getUtilisateur());
+
+                    Integer result = (Integer) clotureSaisieNotesInter.execute();
+                    if (result == 1) {
+                        OperationBinding calcul_moy_ec = getBindings().getOperationBinding("calculMoyenneEc");
+                        calcul_moy_ec.getParamsMap().put("anne", Integer.parseInt(getAn()));
+                        calcul_moy_ec.getParamsMap().put("semestre", Integer.parseInt(getSem()));
+                        calcul_moy_ec.getParamsMap().put("parcours", Integer.parseInt(getParcours()));
+                        calcul_moy_ec.getParamsMap().put("fileUesem", Integer.parseInt(currentRowUe.getAttribute("IdFiliereUeSemstre").toString()));
+                        calcul_moy_ec.getParamsMap().put("idFilieUeSemEc", Integer.parseInt(currentRow.getAttribute("IdFiliereUeSemstreEc").toString()));
+                        calcul_moy_ec.getParamsMap().put("typeControle", Integer.parseInt(nextRow.getAttribute("IdTypeControle").toString()));
+                        calcul_moy_ec.getParamsMap().put("calendrDelib", getCal());
+                        calcul_moy_ec.getParamsMap().put("utilisateur", Integer.parseInt(sessionFlowScope.get("id_user").toString()));
+                        calcul_moy_ec.execute();
+                        ok = true;
+                    } 
+                    else{
+                        System.out.println("Error");
+                        ok = false;
+                    }
+                }
+                rsi.closeRowSetIterator();
+            }
+            if(ok){
+                RichPopup popup = this.getPopupClosedSuccess();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+            }else{
+            RichPopup popup = this.getPopupOtherErr();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints); 
+            }
+            
+            /* BindingContainer bindings = getBindings();
+            OperationBinding is_closed = bindings.getOperationBinding("closeAllInter");
+            is_closed.getParamsMap()
+                .put("fil_sem_ec", Integer.parseInt(currentRow.getAttribute("IdFiliereUeSemstreEc").toString()));
+            is_closed.getParamsMap().put("calendrier", getCalendrier());
+            is_closed.getParamsMap().put("action", action);
+            is_closed.getParamsMap().put("utilisateur", getUtilisateur());
+            Integer closed = (Integer) is_closed.execute();
+            System.out.println("Closed : "+closed);
+            if (closed == 1) {
+                //Success
+                RichPopup popup = this.getPopupClosedSuccess();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+            } else if (closed == 2) {
+                //Ue Closed
+                RichPopup popup = this.getPopupEcClosed();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+            } else if (closed == -1) {
+                //Toutes les ecs sont cloturés
+                RichPopup popup = this.getPopupAllisClosed();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+            } else {
+                //Other error Verifier la cloture des inter
+                RichPopup popup = this.getPopupOtherErr();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+            }*/
+        } 
+
+    }
+
+    public void setInputFilEc(RichSelectOneChoice inputFilEc) {
+        this.inputFilEc = inputFilEc;
+    }
+
+    public RichSelectOneChoice getInputFilEc() {
+        return inputFilEc;
+    }
+
+    public void setAnne_univers(Integer anne_univers) {
+        this.anne_univers = anne_univers;
+    }
+
+    public Integer getAnne_univers() {
+        return anne_univers;
+    }
+
+    public void setUtilisateur(Integer utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Integer getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setCalendrier(Integer calendrier) {
+        this.calendrier = calendrier;
+    }
+
+    public Integer getCalendrier() {
+        return calendrier;
+    }
+
+    public void setSemestre(Integer semestre) {
+        this.semestre = semestre;
+    }
+
+    public Integer getSemestre() {
+        return semestre;
+    }
+
+    public void setPopupAllisClosed(RichPopup popupAllisClosed) {
+        this.popupAllisClosed = popupAllisClosed;
+    }
+
+    public RichPopup getPopupAllisClosed() {
+        return popupAllisClosed;
+    }
+
+    public void setLib_ue(RichSelectOneChoice lib_ue) {
+        this.lib_ue = lib_ue;
+    }
+
+    public RichSelectOneChoice getLib_ue() {
+        return lib_ue;
+    }
+
+    public void setPanelbtn(RichPanelWindow panelbtn) {
+        this.panelbtn = panelbtn;
+    }
+
+    public RichPanelWindow getPanelbtn() {
+        return panelbtn;
+    }
+
+    public void setPanelbtngroupe(RichPanelGroupLayout panelbtngroupe) {
+        this.panelbtngroupe = panelbtngroupe;
+    }
+
+    public RichPanelGroupLayout getPanelbtngroupe() {
+        return panelbtngroupe;
+    }
+
+    public void setSession(Integer session) {
+        this.session = session;
+    }
+
+    public Integer getSession() {
+        return session;
+    }
+
+    public void setPopupConfirmCloseAllInter(RichPopup popupConfirmCloseAllInter) {
+        this.popupConfirmCloseAllInter = popupConfirmCloseAllInter;
+    }
+
+    public RichPopup getPopupConfirmCloseAllInter() {
+        return popupConfirmCloseAllInter;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnOpenSaisieAction(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        DCIteratorBinding iterEc = (DCIteratorBinding) getBindings().get("EcEvalROIterator");
+        Row currentEcRow = iterEc.getCurrentRow();
+        DCIteratorBinding iterUe = (DCIteratorBinding) getBindings().get("UeEvalROIterator");
+        Row currentUeRow = iterUe.getCurrentRow();
+        DCIteratorBinding iterTc = (DCIteratorBinding) getBindings().get("TypeControleIterator");
+        Row currentTcRow = iterTc.getCurrentRow();
+        //System.out.println("idFilEc : "+currentRow.getAttribute("IdFiliereUeSemstreEc").toString());
+        this.getPopupConfirmReOpenSaisie().hide();
+        if (outcome == Outcome.yes) {
+            /*        OperationBinding openSaisieInter = getBindings().getOperationBinding("reouvrirSaisieNotes");
+            openSaisieInter.getParamsMap().put("parcours", Long.parseLong(getParcours()));
+            openSaisieInter.getParamsMap()
+                .put("fil_ue", Long.parseLong(currentUeRow.getAttribute("IdFiliereUeSemstre").toString()));
+            openSaisieInter.getParamsMap()
+                .put("fil_sem_ec", Long.parseLong(currentEcRow.getAttribute("IdFiliereUeSemstreEc").toString()));
+            openSaisieInter.getParamsMap()
+                .put("type_control", Long.parseLong(currentTcRow.getAttribute("IdTypeControle").toString()));
+            openSaisieInter.getParamsMap().put("calendrier",getCal());
+            openSaisieInter.getParamsMap().put("utilisateur", new Long(getUtilisateur()));
+             
+*/
+            OperationBinding opopen = getBindings().getOperationBinding("reouvrirFilEc");
+            opopen.getParamsMap().put("fil_ue", Long.parseLong(currentUeRow.getAttribute("IdFiliereUeSemstre").toString()));
+            opopen.getParamsMap().put("fil_sem_ec", Long.parseLong(currentEcRow.getAttribute("IdFiliereUeSemstreEc").toString()));
+            opopen.getParamsMap().put("type_control", Long.parseLong(currentTcRow.getAttribute("IdTypeControle").toString()));
+            opopen.getParamsMap().put("calendrier",getCal());
+            opopen.getParamsMap().put("utilisateur", new Long(getUtilisateur()));
+            opopen.getParamsMap().put("prcrs_maq", getParcours_maq());
+            Integer result = (Integer) opopen.execute();
+            if(1 == result){
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getTableSaisieNotes()); 
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanelbtngroupe()); 
+            }else if(-1 == result){
+                RichPopup popup = this.getOpupUeClosed();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                popup.show(hints);
+            }else{
+                System.out.println("Other");
+            }
+        } 
+    }
+
+    public void setPopupConfirmReOpenSaisie(RichPopup popupConfirmReOpenSaisie) {
+        this.popupConfirmReOpenSaisie = popupConfirmReOpenSaisie;
+    }
+
+    public RichPopup getPopupConfirmReOpenSaisie() {
+        return popupConfirmReOpenSaisie;
+    }
+
+    public void setPopupSuccessReOpen(RichPopup popupSuccessReOpen) {
+        this.popupSuccessReOpen = popupSuccessReOpen;
+    }
+
+    public RichPopup getPopupSuccessReOpen() {
+        return popupSuccessReOpen;
+    }
+
+    public void setPopSaisieInterNotClosedYet(RichPopup popSaisieInterNotClosedYet) {
+        this.popSaisieInterNotClosedYet = popSaisieInterNotClosedYet;
+    }
+
+    public RichPopup getPopSaisieInterNotClosedYet() {
+        return popSaisieInterNotClosedYet;
+    }
+
+    public void setPopUeClosed(RichPopup popUeClosed) {
+        this.popUeClosed = popUeClosed;
+    }
+
+    public RichPopup getPopUeClosed() {
+        return popUeClosed;
+    }
+
+    public void setPopNotStudent(RichPopup popNotStudent) {
+        this.popNotStudent = popNotStudent;
+    }
+
+    public RichPopup getPopNotStudent() {
+        return popNotStudent;
+    }
+
+    public void setPopSaisieSaved(RichPopup popSaisieSaved) {
+        this.popSaisieSaved = popSaisieSaved;
+    }
+
+    public RichPopup getPopSaisieSaved() {
+        return popSaisieSaved;
+    }
+
+    public void setPancol(RichPanelCollection pancol) {
+        this.pancol = pancol;
+    }
+
+    public RichPanelCollection getPancol() {
+        return pancol;
+    }
+
+    public void onNoteChanged(ValueChangeEvent valueChangeEvent) {
+        AttributeBinding uti_modif = (AttributeBinding) getBindings().getControlBinding("UtiModifie");
+        uti_modif.setInputValue(getUtilisateur());
+    }
+
+    public void export(FacesContext facesContext, OutputStream outputStream) throws IOException {
+        // Add event code here...
+        OutputStreamWriter w = null;
+        try {
+            w = new OutputStreamWriter(outputStream, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+        }
+        try {
+            w.write("Hi there!");
+        } catch (IOException e) {
+        }
+        // The stream is automatically closed, but since we wrapped it,
+        // we'd better flush our writer
+        w.flush();
+    }
+
+    public void setOpupUeClosed(RichPopup opupUeClosed) {
+        this.opupUeClosed = opupUeClosed;
+    }
+
+    public RichPopup getOpupUeClosed() {
+        return opupUeClosed;
+    }
+
+    public void setParcours_maq(Long parcours_maq) {
+        this.parcours_maq = parcours_maq;
+    }
+
+    public Long getParcours_maq() {
+        return parcours_maq;
+    }
+
+    public void setPanGrp(RichPanelGroupLayout panGrp) {
+        this.panGrp = panGrp;
+    }
+
+    public RichPanelGroupLayout getPanGrp() {
+        return panGrp;
+    }
+}

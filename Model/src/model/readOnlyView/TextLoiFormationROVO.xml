@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="TextLoiFormationROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.TextLoiFormationROVORowImpl"
+  ComponentClass="model.readOnlyView.TextLoiFormationROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.TextLoiFormationROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_form"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[Select tl.ID_TEXT_LOI,tl.TEXT from TEXT_LOIS tl JOIN TEXT_LOI_FORMATION tlf ON tl.ID_TEXT_LOI = tlf.ID_TEXT_LOI 
+JOIN TEXT_LOIS_HISTORIQUE_STR tlhs ON tlf.ID_TEXT_LOI = tlhs.ID_TEXT_LOI 
+JOIN HISTORIQUES_STRUCTURES hs ON tlhs.ID_HISTORIQUES_STRUCTURE = hs.ID_HISTORIQUES_STRUCTURE 
+WHERE tlf.ID_FORMATION=:id_form]]></SQLQuery>
+  <ViewAttribute
+    Name="IdTextLoi"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_TEXT_LOI"
+    Expression="ID_TEXT_LOI"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Text"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="500"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="TEXT"
+    Expression="TEXT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

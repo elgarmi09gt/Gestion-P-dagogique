@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="inscription_ue_optPageDef"
+                Package="dap.inscription_ue_opt">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ParcousInscriptionUeOpt" RangeSize="5" DataControl="gestdapAppDataControl"
+              id="ParcousInscriptionUeOptIterator"/>
+    <searchRegion Binds="ParcousInscriptionUeOptIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ParcousInscriptionUeOptQuery"/>
+    <iterator Binds="FiliereUeSemestreInsUeOpt" RangeSize="8" DataControl="gestdapAppDataControl"
+              id="FiliereUeSemestreInsUeOptIterator"/>
+    <iterator Binds="EtudiantInsUeOpt" RangeSize="8" DataControl="gestdapAppDataControl"
+              id="EtudiantInsUeOptIterator"/>
+    <searchRegion Binds="EtudiantInsUeOptIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtudiantInsUeOptQuery"/>
+    <iterator Binds="EtudiantInscritOpt" RangeSize="15" DataControl="gestdapAppDataControl"
+              id="EtudiantInscritOptIterator"/>
+    <searchRegion Binds="EtudiantInscritOptIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtudiantInscritOptQuery"/>
+    <searchRegion Binds="FiliereUeSemestreInsUeOptIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FiliereUeSemestreInsUeOptQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ParcousInscriptionUeOptIterator" id="ParcousInscriptionUeOpt">
+      <nodeDefinition DefName="model.readOnlyView.ParcousInscriptionUeOptROVO" Name="ParcousInscriptionUeOpt0">
+        <AttrNames>
+          <Item Value="Niveauformationparcours"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="FiliereUeSemestreInsUeOptIterator" id="isSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="EtudiantInsUeOptIterator" id="EtudiantInsUeOpt">
+      <nodeDefinition DefName="model.readOnlyView.EtudiantInsUeOptROVO" Name="EtudiantInsUeOpt0">
+        <AttrNames>
+          <Item Value="isSelected"/>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="EtudiantInsUeOptIterator" id="isSelected1" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <methodAction id="getSelectedEtudiant" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getSelectedEtudiant" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getSelectedEtudiant.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getSelectedEtudiant_getSelectedEtudiant_dataControl_dataProvider_getSelectedEtudiant_result"/>
+    <methodAction id="getSelectedFilUe" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getSelectedFilUe"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getSelectedFilUe.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getSelectedFilUe_getSelectedFilUe_dataControl_dataProvider_getSelectedFilUe_result"/>
+    <methodAction id="createOrUpdateInsPedSemUe" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateInsPedSemUe" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateInsPedSemUe.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateInsPedSemUe_createOrUpdateInsPedSemUe_dataControl_dataProvider_createOrUpdateInsPedSemUe_result">
+      <NamedData NDName="ins_ped_sem_id" NDType="java.lang.Long"/>
+      <NamedData NDName="fil_ue_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="getInspedSem" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getInspedSem"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getInspedSem.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getInspedSem_getInspedSem_dataControl_dataProvider_getInspedSem_result">
+      <NamedData NDName="ins_ped" NDType="java.lang.Long"/>
+      <NamedData NDName="sem_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <tree IterBinding="EtudiantInscritOptIterator" id="EtudiantInscritOpt">
+      <nodeDefinition DefName="model.readOnlyView.EtudiantInscritOptROVO" Name="EtudiantInscritOpt0">
+        <AttrNames>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="Numero"/>
+          <Item Value="IdSemestre"/>
+          <Item Value="Codification"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FiliereUeSemestreInsUeOptIterator" id="FiliereUeSemestreInsUeOpt">
+      <nodeDefinition DefName="model.readOnlyView.FiliereUeSemestreInsUeOptROVO" Name="FiliereUeSemestreInsUeOpt0">
+        <AttrNames>
+          <Item Value="isFilUeSelected"/>
+          <Item Value="Codification"/>
+          <Item Value="IdSemestre"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="FiliereUeSemestreInsUeOptIterator" id="isFilUeSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isFilUeSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+  </bindings>
+</pageDefinition>

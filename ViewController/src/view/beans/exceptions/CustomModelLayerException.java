@@ -1,0 +1,71 @@
+package view.beans.exceptions;
+
+import java.io.IOException;
+
+import javax.faces.FacesException;
+import javax.faces.context.ExternalContext;
+
+import javax.faces.context.FacesContext;
+
+import oracle.adf.controller.ControllerException;
+import oracle.adf.model.binding.DCErrorHandlerImpl;
+
+public class CustomModelLayerException extends DCErrorHandlerImpl {
+    public CustomModelLayerException(boolean b) {
+        super(b);
+    }
+
+    public CustomModelLayerException() {
+        super();
+    }
+
+    @Override
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    protected boolean skipException(Exception exception) {
+        if (exception instanceof ClassNotFoundException) {
+            //FacesContext fctx;
+            System.out.println("ClassNotFoundException");
+            ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
+            //fctx.getExternalContext();
+            try {
+                ext.redirect("/menu.jsf");
+            } catch (IOException e) {
+            }
+            return true;
+        } else if (exception instanceof NullPointerException) {
+            //FacesContext fctx;
+            System.out.println("NullPointerException");
+            ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
+            //fctx.getExternalContext();
+            try {
+                ext.redirect("/menu.jsf");
+            } catch (IOException e) {
+            }
+            return true;
+        }
+        //javax.faces.FacesException
+        else if (exception instanceof FacesException) {
+            //FacesContext fctx;
+            System.out.println("FacesException"+exception.getMessage());
+            ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
+            //fctx.getExternalContext();
+            try {
+                ext.redirect("/menu.jsf");
+            } catch (IOException e) {
+            }
+            return true;
+        } else if (exception instanceof ControllerException) {
+            //FacesContext fctx;
+            System.out.println("ControllerException");
+            ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
+            //fctx.getExternalContext();
+            try {
+                ext.redirect("/menu.jsf");
+            } catch (IOException e) {
+            }
+            return true;
+        } else {
+            return super.skipException(exception);
+        }
+    }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="validation_depart_tk_validation_depart_tk_ExecuteWithParamsPageDef"
+                Package="ecolage.validation_departement" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="OperationAValDepartRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="OperationAValDepartROIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="OperationAValDepartROIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="id_annee" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Long"/>
+      <NamedData NDName="id_hs" NDValue="#{sessionScope.id_hs}" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDValue="#{sessionScope.id_user}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="etatDeliberationPageDef"
+                Package="evaluation.etatDeliberation">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="HistoriqueStructureByUserName" RangeSize="-1" DataControl="gestdapAppDataControl"
+              id="HistoriqueStructureByUserNameIterator"/>
+    <iterator Binds="ParcoursRespFrImpMaqEtd" RangeSize="-1" DataControl="gestdapAppDataControl"
+              id="ParcoursRespFrImpMaqEtdIterator"/>
+    <iterator Binds="MaquetteValideImported" RangeSize="-1" DataControl="gestdapAppDataControl"
+              id="MaquetteValideImportedIterator"/>
+    <iterator Binds="EtatDeliberationAn" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="EtatDeliberationAnIterator"/>
+    <searchRegion Binds="EtatDeliberationAnIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtatDeliberationAnQuery"/>
+    <iterator Binds="EtatDeliberationSem" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="EtatDeliberationSemIterator"/>
+    <searchRegion Binds="EtatDeliberationSemIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtatDeliberationSemQuery"/>
+    <iterator Binds="EtatDelibUE" RangeSize="25" DataControl="gestdapAppDataControl" id="EtatDelibUEIterator"/>
+    <searchRegion Binds="EtatDelibUEIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtatDelibUEQuery"/>
+  </executables>
+  <bindings>
+    <list IterBinding="HistoriqueStructureByUserNameIterator" ListOperMode="navigation"
+          ListIter="HistoriqueStructureByUserNameIterator" id="HistoriqueStructureByUserName" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="ParcoursRespFrImpMaqEtdIterator" ListOperMode="navigation"
+          ListIter="ParcoursRespFrImpMaqEtdIterator" id="ParcoursRespFrImpMaqEtd" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="MaquetteValideImportedIterator" ListOperMode="navigation"
+          ListIter="MaquetteValideImportedIterator" id="MaquetteValideImported" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="EtatDeliberationAnIterator" id="EtatDeliberationAn">
+      <nodeDefinition DefName="model.readOnlyView.EtatDeliberationAnROVO" Name="EtatDeliberationAn0">
+        <AttrNames>
+          <Item Value="Sess"/>
+          <Item Value="AnneeDeliberee"/>
+          <Item Value="AnneeCloturee"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="EtatDeliberationSemIterator" id="EtatDeliberationSem">
+      <nodeDefinition DefName="model.readOnlyView.EtatDeliberationSemROVO" Name="EtatDeliberationSem0">
+        <AttrNames>
+          <Item Value="Semestre"/>
+          <Item Value="Sessio"/>
+          <Item Value="EtatDeliberation"/>
+          <Item Value="Validee"/>
+          <Item Value="NonValidee"/>
+          <Item Value="Absent"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="EtatDelibUEIterator" id="EtatDelibUE">
+      <nodeDefinition DefName="model.readOnlyView.EtatDelibUEROVO" Name="EtatDelibUE0">
+        <AttrNames>
+          <Item Value="Semstre"/>
+          <Item Value="Sessio"/>
+          <Item Value="LibelleLong"/>
+          <Item Value="UeDeliberee"/>
+          <Item Value="UeCloturee"/>
+          <Item Value="Validee"/>
+          <Item Value="NonValidee"/>
+          <Item Value="Absent"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="EtatDelibUEIterator" id="Semstre">
+      <AttrNames>
+        <Item Value="Semstre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtatDelibUEIterator" id="Sessio">
+      <AttrNames>
+        <Item Value="Sessio"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtatDeliberationAnIterator" id="Annee">
+      <AttrNames>
+        <Item Value="Annee"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

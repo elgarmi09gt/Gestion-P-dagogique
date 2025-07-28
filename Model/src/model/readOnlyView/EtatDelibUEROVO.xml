@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="EtatDelibUEROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.EtatDelibUEROVORowImpl"
+  ComponentClass="model.readOnlyView.EtatDelibUEROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.EtatDelibUEROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[Select nbre.*,Semstre,Sessio,CODIFICATION,LIBELLE_LONG,UE_DELIBEREE,UE_CLOTUREE,ID_SEMESTRE, ID_SESSION,ID_NIVEAU_FORMATION_PARCOURS, ID_MAQUETTE,ID_ANNEES_UNIVERS   
+from   
+(SELECT distinct   
+    pma.ID_PARCOURS_MAQUET_ANNEE,   
+    cd.ID_CALENDRIER_DELIBERATION,   
+    nfp.ID_NIVEAU_FORMATION_PARCOURS,   
+    pma.ID_MAQUETTE,   
+    pma.ID_ANNEES_UNIVERS,   
+    sess.ID_SESSION,   
+    sem.ID_SEMESTRE,   
+    fus.ID_FILIERE_UE_SEMSTRE,      
+    sem.LIBELLE_LONG Semstre,      
+    sess.LIBELLE_LONG Sessio,      
+    fus.CODIFICATION,      
+    UE.LIBELLE_LONG,      
+    DECODE(vdu.UE_DELIBEREE, NULL, 'EN COURS', DECODE(vdu.UE_DELIBEREE, 'O', 'OUI', 'NON')) UE_DELIBEREE,      
+    DECODE(vdu.UE_CLOTUREE, NULL, 'EN COURS', DECODE(vdu.UE_CLOTUREE, 'O', 'OUI', 'NON')) UE_CLOTUREE     
+FROM      
+    (((((((NIVEAU_FORMATION_COHORTES nfc JOIN NIVEAUX_FORMATION_PARCOURS nfp ON nfc.ID_NIVEAU_FORMATION_COHORTE = nfp.ID_NIVEAU_FORMATION_COHORTE) JOIN PARCOURS_MAQUETTE_ANNEE pma ON nfp.ID_NIVEAU_FORMATION_PARCOURS = pma.ID_NIVEAU_FORMATION_PARCOURS) JOIN FILIERE_UE_SEMSTRE fus ON pma.ID_MAQUETTE = fus.ID_MAQUETTE) JOIN UE ON fus.ID_UE = UE.ID_UE) JOIN CALENDRIER_DELIBERATION cd ON nfc.ID_NIVEAU_FORMATION_COHORTE = cd.ID_NIVEAU_FORMATION_COHORTE AND cd.ID_ANNEES_UNIVERS = pma.ID_ANNEES_UNIVERS AND cd.ID_SEMESTRE = fus.ID_SEMESTRE) JOIN SEMESTRES sem ON cd.ID_SEMESTRE = sem.ID_SEMESTRE) JOIN SESSIONS sess ON cd.ID_SESSION = sess.ID_SESSION) LEFT JOIN VALIDATION_DELIB_UE vdu ON cd.ID_CALENDRIER_DELIBERATION = vdu.ID_CALENDRIER_DELIBERATION AND vdu.ID_PARCOURS_MAQ_ANNEE = pma.ID_PARCOURS_MAQUET_ANNEE      
+) etatDelib,   
+(Select * from   
+  (Select ip.ID_PARCOURS_MAQUET_ANNEE, iue.ID_FILIERE_UE_SEMSTRE,rfu.ID_CALENDRIER_DELIBERATION, DECODE (rfu.RESULTAT, 2, 'VALIDEE',    
+                              1, Decode(rfu.NOTE, null, 'ABSENT','NON VALIDEE'),   
+                              3, 'VALIDEE',   
+                                'PAS DE RESULTAT') res   
+    from RESULTATS_FIL_UE_SEMESTRE rfu   
+  join INSCRIPTION_PED_SEM_UE iue on rfu.ID_INSCRIPTION_PED_SEM_UE=iue.ID_INSCRIPTION_PED_SEM_UE   
+  join INSCRIPTION_PED_SEMESTRE ips on iue.ID_INSCRIPTION_PED_SEMESTRE=ips.ID_INSCRIPTION_PED_SEMESTRE   
+  join INSCRIPTIONS_PEDAGOGIQUES ip on ips.ID_INSCRIPTION_PEDAGOGIQUE=ip.ID_INSCRIPTION_PEDAGOGIQUE   
+  )   
+  PIVOT (   
+    count (res)               
+    FOR res in ('VALIDEE','NON VALIDEE','ABSENT'               
+    )     
+  )) nbre   
+WHERE etatDelib.ID_PARCOURS_MAQUET_ANNEE=nbre.ID_PARCOURS_MAQUET_ANNEE      
+ AND etatDelib.ID_CALENDRIER_DELIBERATION=nbre.ID_CALENDRIER_DELIBERATION   
+ AND etatDelib.ID_FILIERE_UE_SEMSTRE=nbre.ID_FILIERE_UE_SEMSTRE   
+ORDER BY ID_SEMESTRE, ID_SESSION, CODIFICATION]]></SQLQuery>
+  <ViewAttribute
+    Name="IdParcoursMaquetAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_PARCOURS_MAQUET_ANNEE"
+    Expression="ID_PARCOURS_MAQUET_ANNEE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdFiliereUeSemstre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_FILIERE_UE_SEMSTRE"
+    Expression="ID_FILIERE_UE_SEMSTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdCalendrierDeliberation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_CALENDRIER_DELIBERATION"
+    Expression="ID_CALENDRIER_DELIBERATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Validee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="&quot;'VALIDEE'&quot;"
+    Expression="&quot;'VALIDEE'&quot;"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="NonValidee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="&quot;'NON VALIDEE'&quot;"
+    Expression="&quot;'NON VALIDEE'&quot;"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Absent"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="&quot;'ABSENT'&quot;"
+    Expression="&quot;'ABSENT'&quot;"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Semstre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SEMSTRE"
+    Expression="SEMSTRE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Sessio"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SESSIO"
+    Expression="SESSIO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Codification"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODIFICATION"
+    Expression="CODIFICATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="UeDeliberee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="UE_DELIBEREE"
+    Expression="UE_DELIBEREE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="UeCloturee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="UE_CLOTUREE"
+    Expression="UE_CLOTUREE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SEMESTRE"
+    Expression="ID_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdSession"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SESSION"
+    Expression="ID_SESSION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdMaquette"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_MAQUETTE"
+    Expression="ID_MAQUETTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdParcoursMaquetAnnee"/>
+    <Item Value="IdCalendrierDeliberation"/>
+    <Item Value="IdFiliereUeSemstre"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

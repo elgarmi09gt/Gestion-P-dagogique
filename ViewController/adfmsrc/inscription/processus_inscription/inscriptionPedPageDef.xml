@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="inscriptionPedPageDef"
+                Package="inscription.processus_inscription">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="InscriptionsPedagogiques" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="InscriptionsPedagogiquesIterator"/>
+    <iterator Binds="InscriptionPedSemestre" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptionPedSemestreIterator"/>
+    <iterator Binds="UtiInsplSem" RangeSize="10" DataControl="inscriptionAppDataControl" id="UtiInsplSemIterator"/>
+    <iterator Binds="InscriptionsAdmin" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptionsAdminIterator"/>
+    <iterator Binds="reInscripAdminRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="reInscripAdminROIterator"/>
+    <iterator Binds="reInscResultSemRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="reInscResultSemROIterator"/>
+    <iterator Binds="reInscripAdminPedRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="reInscripAdminPedROIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdInscriptionAdmin">
+      <AttrNames>
+        <Item Value="IdInscriptionAdmin"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_IdHorairesTd" id="IdHorairesTd"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_IdStatut" id="IdStatut"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_IdOption" id="IdOption"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_IdBourse" id="IdBourse"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_IdCohorte" id="IdCohorte"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_IdTypeConvention"
+          id="IdTypeConvention" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_IdOperateur" id="IdOperateur"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="Motif">
+      <AttrNames>
+        <Item Value="Motif"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_Redoublement" id="Redoublement"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_EtatInscrEtatInscrId"
+          id="EtatInscrEtatInscrId" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="Quittance">
+      <AttrNames>
+        <Item Value="Quittance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="Tarif">
+      <AttrNames>
+        <Item Value="Tarif"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_NbInsc" id="NbInsc"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="DernierInscription">
+      <AttrNames>
+        <Item Value="DernierInscription"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_PermetDoubleInscription"
+          id="PermetDoubleInscription" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_Assimile" id="Assimile"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_Cartetiree" id="Cartetiree"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionsPedagogiquesIterator" StaticList="false" Uses="LOV_OrdreInscription"
+          id="OrdreInscription" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="CodeAConserver">
+      <AttrNames>
+        <Item Value="CodeAConserver"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="DateEditionCarte">
+      <AttrNames>
+        <Item Value="DateEditionCarte"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="UtiPermetDoublIns">
+      <AttrNames>
+        <Item Value="UtiPermetDoublIns"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdParcoursMaquetAnnee">
+      <AttrNames>
+        <Item Value="IdParcoursMaquetAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdInscriptionPedagogique">
+      <AttrNames>
+        <Item Value="IdInscriptionPedagogique"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="InscriptionPedSemestreIterator" id="CreateInsertPedSem"
+            InstanceName="inscriptionAppDataControl.InscriptionPedSemestre" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="IdInscriptionPedSemestre">
+      <AttrNames>
+        <Item Value="IdInscriptionPedSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="IdInscriptionPedagogique1">
+      <AttrNames>
+        <Item Value="IdInscriptionPedagogique"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="IdSemestre">
+      <AttrNames>
+        <Item Value="IdSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="UtiCree1">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="UtiInsplSemIterator" id="ExecuteWithParamsUtilSem"
+            InstanceName="inscriptionAppDataControl.UtiInsplSem" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_niv_form_parc" NDValue="42" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDValue="85" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDValue="1" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="InscriptionsAdminIterator" id="IdTypeFormation">
+      <AttrNames>
+        <Item Value="IdTypeFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAdminIterator" id="IdGrade">
+      <AttrNames>
+        <Item Value="IdGrade"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAdminIterator" id="IdEtudiant">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="reInscripAdminROIterator" id="ExecuteWithParams"
+            InstanceName="inscriptionAppDataControl.reInscripAdminRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_type_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_grade" NDType="java.lang.Long"/>
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="reInscResultSemROIterator" id="ExecuteWithParams1"
+            InstanceName="inscriptionAppDataControl.reInscResultSemRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_ins_ped_sem" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="isResultSem" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isResultSem"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isResultSem.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isResultSem_isResultSem_dataControl_dataProvider_isResultSem_result">
+      <NamedData NDName="id_ins_ped_sem" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="CumulCredit">
+      <AttrNames>
+        <Item Value="CumulCredit"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="DetteCredit">
+      <AttrNames>
+        <Item Value="DetteCredit"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="reInscripAdminPedROIterator" id="ExecuteWithParams2"
+            InstanceName="inscriptionAppDataControl.reInscripAdminPedRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_type_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_grad" NDType="java.lang.Long"/>
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="InscriptionsAdminIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

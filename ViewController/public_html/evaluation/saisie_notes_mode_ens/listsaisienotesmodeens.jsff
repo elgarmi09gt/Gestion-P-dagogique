@@ -1,0 +1,478 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="viewcontrollerBundle1" value="#{adfBundle['view.ViewControllerBundle']}"/>
+    <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+    <af:panelGroupLayout id="pgl20" layout="scroll">
+        <af:panelGroupLayout id="pgl15" layout="horizontal" styleClass="AFStretchWidth">
+            <af:link id="l1" icon="/images/icons8-gauche.gif">
+                <af:setPropertyListener from="/modulecheck/check-module-tf.xml#check-module-tf"
+                                        to="#{sessionScope.TfID}" type="action"/>
+            </af:link>
+            <af:panelGroupLayout id="pgl5" layout="vertical" halign="end">
+                <af:selectOneChoice value="#{bindings.IdNiveauFormationParcours.inputValue}"
+                                    required="#{bindings.IdNiveauFormationParcours.hints.mandatory}"
+                                    shortDesc="#{bindings.IdNiveauFormationParcours.hints.tooltip}" id="soc3"
+                                    contentStyle="font-style:italic; font-size:large;margin-top:-5px">
+                    <f:selectItems value="#{bindings.IdNiveauFormationParcours.items}" id="si3"/>
+                    <f:validator binding="#{bindings.IdNiveauFormationParcours.validator}"/>
+                </af:selectOneChoice>
+                <af:outputFormatted value="(#{bindings.LibAnnee.inputValue})(Semestre #{sessionScope.id_smstre})(#{sessionScope.id_session == 1 ? 'Première ' : 'Deuxième '} Session)" id="of24"
+                                            inlineStyle="font-style:italic; font-size:large;margin-top:-5px"/>
+            </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl8" layout="vertical"
+                             inlineStyle='line-height:50px;border: solid 2px #2898e8;background-repeat: repeat; background-image:url("images/logo_tr.jpg");'
+                             styleClass="AFStretchWidth">
+            <af:outputFormatted value="Choix critères de saisies" id="of6"
+                                inlineStyle="font-size:medium; font-weight:bolder;margin-left:10px;"/>
+            <af:panelGroupLayout id="pgl18" layout="horizontal" styleClass="AFStretchWidth" halign="center">
+                <af:panelGroupLayout id="pgl2" layout="vertical" inlineStyle="line-height:1px;"
+                                     styleClass="AFStretchWidth" halign="center">
+                    <af:outputFormatted value="Unité d'enseignement" id="of7" styleUsage="instruction"
+                                        inlineStyle="font-size:medium;"/>
+                    <af:selectOneChoice value="#{bindings.UeEvalRO.inputValue}"
+                                        required="#{bindings.UeEvalRO.hints.mandatory}"
+                                        shortDesc="#{bindings.UeEvalRO.hints.tooltip}" id="soc1"
+                                        inlineStyle="margin-top:10px;" autoSubmit="true"
+                                        contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                                        binding="#{SaisieNotesbean.lib_ue}">
+                        <f:selectItems value="#{bindings.UeEvalRO.items}" id="si1"/>
+                        <f:validator binding="#{bindings.UeEvalRO.validator}"/>
+                    </af:selectOneChoice>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl3" layout="vertical" inlineStyle="line-height:1px;"
+                                     styleClass="AFStretchWidth" halign="center">
+                    <af:outputFormatted value="Eléments constitutifs" id="of8" styleUsage="instruction"
+                                        inlineStyle="font-size:medium;"/>
+                    <af:selectOneChoice value="#{bindings.EcEvalRO.inputValue}"
+                                        required="#{bindings.EcEvalRO.hints.mandatory}"
+                                        shortDesc="#{bindings.EcEvalRO.hints.tooltip}" id="soc2"
+                                        inlineStyle="margin-top:10px;" partialTriggers="soc1"
+                                        contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                                        autoSubmit="true">
+                        <f:selectItems value="#{bindings.EcEvalRO.items}" id="si2"/>
+                        <f:validator binding="#{bindings.EcEvalRO.validator}"/>
+                    </af:selectOneChoice>
+                </af:panelGroupLayout>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl16" layout="horizontal" styleClass="AFStretchWidth" halign="center"
+                                 inlineStyle="margin:10px 0;">
+                <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="line-height:1px;"
+                                     styleClass="AFStretchWidth" halign="center">
+                    <af:outputFormatted value="Type de contrôle" id="of9" styleUsage="instruction"
+                                        inlineStyle="font-size:medium;"/>
+                    <af:selectOneChoice value="#{bindings.EcEvalTypeCtrlRO.inputValue}"
+                                        required="#{bindings.EcEvalTypeCtrlRO.hints.mandatory}"
+                                        shortDesc="#{bindings.EcEvalTypeCtrlRO.hints.tooltip}" id="soc6"
+                                        inlineStyle="margin-top:10px;"
+                                        contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                                        autoSubmit="true">
+                        <f:selectItems value="#{bindings.EcEvalTypeCtrlRO.items}" id="si6"/>
+                        <f:validator binding="#{bindings.EcEvalTypeCtrlRO.validator}"/>
+                    </af:selectOneChoice>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl6" layout="vertical" inlineStyle="line-height:1px;"
+                                     styleClass="AFStretchWidth" halign="center">
+                    <af:outputFormatted value="Groupes de saisie" id="of10" styleUsage="instruction"
+                                        inlineStyle="font-size:medium;"/>
+                    <af:selectOneChoice value="#{bindings.SaisieNotesGroupesSaisieLOV.inputValue}"
+                                        required="#{bindings.SaisieNotesGroupesSaisieLOV.hints.mandatory}"
+                                        shortDesc="#{bindings.SaisieNotesGroupesSaisieLOV.hints.tooltip}" id="soc4"
+                                        inlineStyle="margin-top:10px;"
+                                        contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px">
+                        <f:selectItems value="#{bindings.SaisieNotesGroupesSaisieLOV.items}" id="si4"/>
+                        <f:validator binding="#{bindings.SaisieNotesGroupesSaisieLOV.validator}"/>
+                    </af:selectOneChoice>
+                </af:panelGroupLayout>
+                <!--af:panelGroupLayout id="pgl5" layout="vertical" inlineStyle="line-height:1px;"
+                                     styleClass="AFStretchWidth" halign="center">
+                    <af:outputFormatted value="Filtre" id="of11" styleUsage="instruction"
+                                        inlineStyle="font-size:medium;"/>
+                    <af:selectOneChoice value="#{bindings.SaisieNotesFiltresLOV.inputValue}"
+                                        required="#{bindings.SaisieNotesFiltresLOV.hints.mandatory}"
+                                        shortDesc="#{bindings.SaisieNotesFiltresLOV.hints.tooltip}" id="soc5"
+                                        inlineStyle="margin-top:10px;"
+                                        contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:22px">
+                        <f:selectItems value="#{bindings.SaisieNotesFiltresLOV.items}" id="si5"/>
+                        <f:validator binding="#{bindings.SaisieNotesFiltresLOV.validator}"/>
+                    </af:selectOneChoice>
+                </af:panelGroupLayout-->
+            </af:panelGroupLayout>
+            <!--af:panelGroupLayout id="pgl7" layout="horizontal" styleClass="AFStretchWidth"/-->
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl17" layout="horizontal" halign="center" inlineStyle="margin-top:5px"
+                             binding="#{SaisieNotesbean.panelbtngroupe}">
+            <!--af:button id="b3" icon="/images/import_48px.png"
+               inlineStyle="font-size:large; color:White; font-family:cursive; border-radius:8px 8px 8px 8px / 8px 8px 8px 8px ; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8; margin:5px;"
+               disabled="#{sessionScope.isClosed == '1' ? true : false}" shortDesc="Importer">
+      <af:showPopupBehavior popupId="pimport"/>
+    </af:button-->
+            <af:button id="b4"
+                       inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                       actionListener="#{SaisieNotesbean.onEnregistrer}"
+                       disabled="#{sessionScope.isInterExist == '1' ? true : sessionScope.isClosed != '1' ? sessionScope.id_user == bindings.ResponsableEc.inputValue ? false : sessionScope.id_user == bindings.ResponsableUe.inputValue ? false : securityContext.userInRole['Admin,President Jury'] ? false : sessionScope.isAccessAllowed != '0' ? false : true : true}" shortDesc="Enregistrer"
+                       text="Enregistrer" icon="/images/save-24.png"
+                       visible="#{sessionScope.id_user == bindings.ResponsableEc.inputValue ? true : sessionScope.id_user == bindings.ResponsableUe.inputValue ? true : securityContext.userInRole['Admin,President Jury'] ? true : false}"
+                       disabledIcon="/images/disable-24.png">
+                <af:showPopupBehavior popupId="penreg"/>
+            </af:button>
+            <af:button id="b5"
+                       inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                       disabled="#{sessionScope.isClosed != '1' ? sessionScope.id_user == bindings.ResponsableEc.inputValue ? false : (sessionScope.id_user == bindings.ResponsableUe.inputValue ? false : (sessionScope.id_user == bindings.PdtJury.inputValue ? false : (securityContext.userInRole['Admin'] ? false : true ) ) ) : true}" shortDesc="Clôturer Saisie"
+                       text="Clôturer" icon="/images/lock-24.png" disabledIcon="/images/disable-24.png">
+                <af:showPopupBehavior popupId="pcloture"/>
+            </af:button>
+            <af:button id="b7"
+                       inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;" shortDesc="Clôturer intermédiaire"
+                       disabled="#{sessionScope.isClosedAllInter == '1' ? true : false}"
+                       text="Clôturer intermédiaire" visible="false" disabledIcon="/images/disable-24.png">
+                <af:showPopupBehavior popupId="popup-confirm-close"/>
+            </af:button>
+            <!-- visible="#{sessionScope.isResponsableUe != '0' ? true : sessionScope.isResponsableEc != '0' ? true : false}" -->
+            <af:button id="b1"
+                       inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px" shortDesc="Réouvrir Saisie"
+                       disabled="#{sessionScope.isClosed == '1' ? sessionScope.id_user == bindings.ResponsableUe.inputValue ? false : (sessionScope.id_user == bindings.PdtJury.inputValue ? false : (securityContext.userInRole['Admin'] ? false : true) ) : true}" text="Réouvrir"
+                       icon="/images/open-24.png" disabledIcon="/images/disable-24.png">
+                <af:showPopupBehavior popupId="popup-confirm-open"/>
+            </af:button>
+        </af:panelGroupLayout>
+        <af:iterator value="#{DeliberatioUeBean.getEtudNoteModeEns(bindings.IdFiliereUeSemstreEc1.inputValue,bindings.IdTypeControle.inputValue,sessionScope.id_calendrier)}"
+                     id="i6"/>
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth" inlineStyle="font-size:large;"
+                            binding="#{SaisieNotesbean.pancol}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar">
+                <af:toolbar id="t2">
+                    <af:button id="b2" icon="/images/Microsoft-Excel-2013-icon-small.png"
+                               inlineStyle="font-size:large; color:White; font-family:cursive; border-radius:8px 8px 8px 8px / 8px 8px 8px 8px ; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8; margin:5px;"
+                               immediate="true" clientComponent="true" shortDesc="Exporter">
+                        <af:fileDownloadActionListener contentType="application/vnd.ms-excel"
+                                                       filename="#{bindings.CodificationUE}_#{bindings.CodificationEC}_#{bindings.LibelleCourtCtrl}.xlsx"
+                                                       method="#{SaisieNotesbean.exportToExcel}"/>
+                        <af:setPropertyListener type="action" from="#{'1'}" to="#{sessionScope.ref}"/>
+                    </af:button>
+                </af:toolbar>
+            </f:facet>
+            <f:facet name="statusbar"/>
+            <!--af:table value="#{bindings.NotesModeEnseignement.collectionModel}" var="row"
+                      rows="#{bindings.NotesModeEnseignement.rangeSize}"
+                      emptyText="#{bindings.NotesModeEnseignement.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.NotesModeEnseignement.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.NotesModeEnseignement.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.NotesModeEnseignement.rangeSize}"
+                      filterModel="#{bindings.NotesModeEnseignementQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.NotesModeEnseignementQuery.processQuery}" varStatus="vs" id="t1"
+                      binding="#{SaisieNotesbean.tableSaisieNotes}" inlineStyle="margin-top:20px;"
+                      scrollPolicy="page">
+                <af:column sortProperty="Anonymat" filterable="true" sortable="true"
+                           headerText="#{bindings.NotesModeEnseignement.hints.Anonymat.label}" id="c2" width="100"
+                           visible="#{sessionScope.isAnonymat == '1' ? true : false}">
+                    <af:inputText value="#{row.bindings.Anonymat.inputValue}"
+                                  label="#{bindings.NotesModeEnseignement.hints.Anonymat.label}"
+                                  required="#{bindings.NotesModeEnseignement.hints.Anonymat.mandatory}"
+                                  columns="#{bindings.NotesModeEnseignement.hints.Anonymat.displayWidth}"
+                                  maximumLength="#{bindings.NotesModeEnseignement.hints.Anonymat.precision}"
+                                  shortDesc="#{bindings.NotesModeEnseignement.hints.Anonymat.tooltip}" id="it2"
+                                  inlineStyle="font-size:large;">
+                        <f:validator binding="#{row.bindings.Anonymat.validator}"/>
+                    </af:inputText>
+                </af:column>
+                <af:column headerText="Numéro" id="c3" visible="#{sessionScope.isAnonymat == '0' ? true : false}"
+                           width="150" sortable="true" filterable="true">
+                    <af:outputText value="#{row.Numero}"
+                                   shortDesc="#{bindings.NotesModeEnseignement.hints.Numero.tooltip}" id="ot3"
+                                   inlineStyle="font-size:large;"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.NotesModeEnseignement.hints.Prenom.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.PENOM}" id="c10" width="300">
+                    <af:inputText value="#{row.bindings.Prenom.inputValue}"
+                                  label="#{bindings.NotesModeEnseignement.hints.Prenom.label}"
+                                  required="#{bindings.NotesModeEnseignement.hints.Prenom.mandatory}"
+                                  columns="#{bindings.NotesModeEnseignement.hints.Prenom.displayWidth}"
+                                  maximumLength="#{bindings.NotesModeEnseignement.hints.Prenom.precision}"
+                                  shortDesc="#{bindings.NotesModeEnseignement.hints.Prenom.tooltip}" id="it7"
+                                  readOnly="true" contentStyle="font-size:large;">
+                        <f:validator binding="#{row.bindings.Prenom.validator}"/>
+                    </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.NotesModeEnseignement.hints.Nom.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.NOM}" id="c11" width="150">
+                    <af:inputText value="#{row.bindings.Nom.inputValue}"
+                                  label="#{bindings.NotesModeEnseignement.hints.Nom.label}"
+                                  required="#{bindings.NotesModeEnseignement.hints.Nom.mandatory}"
+                                  columns="#{bindings.NotesModeEnseignement.hints.Nom.displayWidth}"
+                                  maximumLength="#{bindings.NotesModeEnseignement.hints.Nom.precision}"
+                                  shortDesc="#{bindings.NotesModeEnseignement.hints.Nom.tooltip}" id="it8"
+                                  readOnly="true" contentStyle="font-size:large;">
+                        <f:validator binding="#{row.bindings.Nom.validator}"/>
+                    </af:inputText>
+                </af:column>
+                <af:column headerText="Date Naissance" id="c7"
+                           visible="#{sessionScope.isAnonymat == '0' ? true : false}" width="150">
+                    <af:outputText value="#{row.DateNaissance}"
+                                   shortDesc="#{bindings.NotesModeEnseignement.hints.DateNaissance.tooltip}" id="ot7"
+                                   inlineStyle="font-size:large;">
+                        <af:convertDateTime pattern="#{bindings.NotesModeEnseignement.hints.DateNaissance.format}"/>
+                    </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.NotesModeEnseignement.hints.Note.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.NotesModeEnseignement.hints.Note.label}" id="c1"
+                           width="150" inlineStyle="font-size:large;" align="center">
+                    <af:inputText value="#{row.bindings.Note.inputValue}"
+                                  label="#{bindings.NotesModeEnseignement.hints.Note.label}"
+                                  required="#{bindings.NotesModeEnseignement.hints.Note.mandatory}"
+                                  columns="#{bindings.NotesModeEnseignement.hints.Note.displayWidth}"
+                                  maximumLength="#{bindings.NotesModeEnseignement.hints.Note.precision}"
+                                  shortDesc="#{bindings.NotesModeEnseignement.hints.Note.tooltip}" id="it1"
+                                  readOnly="#{sessionScope.isClosed == '1' ? true  : false}"
+                                  inlineStyle="font-size:large;" contentStyle="font-size:large;"
+                                  disabled="#{sessionScope.isInterExist == '1' ? true : false}">
+                        <f:validator binding="#{row.bindings.Note.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.NotesModeEnseignement.hints.Note.format}"/>
+                    </af:inputText>
+                </af:column>
+            </af:table-->
+            <af:table value="#{bindings.SaisieNoteEtudiant.collectionModel}" var="row"
+                      rows="#{bindings.SaisieNoteEtudiant.rangeSize}"
+                      emptyText="#{bindings.SaisieNoteEtudiant.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.SaisieNoteEtudiant.collectionModel.selectedRow}"
+                      rowSelection="single" fetchSize="#{bindings.SaisieNoteEtudiant.rangeSize}"
+                      filterModel="#{bindings.SaisieNoteEtudiantQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.SaisieNoteEtudiantQuery.processQuery}" varStatus="vs" id="t1"
+                      scrollPolicy="page" binding="#{SaisieNotesbean.tableSaisieNotes}"
+                      visible="#{sessionScope.id_user == bindings.ResponsableEc.inputValue ? true : sessionScope.id_user == bindings.ResponsableUe.inputValue ? true : securityContext.userInRole['Admin,President Jury'] ? true : sessionScope.isAccessAllowed != '0' ? true : false}">
+                <af:column sortProperty="#{bindings.SaisieNoteEtudiant.hints.Numero.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle1.NUMERO}" id="c1" width="150">
+                    <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of11"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.SaisieNoteEtudiant.hints.Prenom.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.PENOM}" id="c2" width="200">
+                    <af:outputFormatted value="#{row.bindings.Prenom.inputValue}" id="of13"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.SaisieNoteEtudiant.hints.Nom.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.NOM}" id="c3" width="150">
+                    <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of20"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.SaisieNoteEtudiant.hints.DateNaissance.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle1.DATE_NAISSANCE}"
+                           id="c4" width="150">
+                    <af:outputFormatted value="#{row.bindings.DateNaissance.inputValue}" id="of21"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.SaisieNoteEtudiant.hints.LieuNaissance.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle1.LIEU_DE_NAISSANCE}"
+                           id="c5" width="200">
+                    <af:outputFormatted value="#{row.bindings.LieuNaissance.inputValue}" id="of22"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.SaisieNoteEtudiant.hints.NotesModeEnseignement.Note.name}"
+                           headerText="#{viewcontrollerBundle1.NOTE}" id="c7">
+                    <af:inputText value="#{row.NotesModeEnseignement.bindings.Note.inputValue}"
+                                  label="#{bindings.SaisieNoteEtudiant.hints.NotesModeEnseignement.Note.label}"
+                                  required="#{bindings.SaisieNoteEtudiant.hints.NotesModeEnseignement.Note.mandatory}"
+                                  columns="#{bindings.SaisieNoteEtudiant.hints.NotesModeEnseignement.Note.displayWidth}"
+                                  maximumLength="#{bindings.SaisieNoteEtudiant.hints.NotesModeEnseignement.Note.precision}"
+                                  shortDesc="#{bindings.SaisieNoteEtudiant.hints.NotesModeEnseignement.Note.tooltip}"
+                                  rendered="#{row.NotesModeEnseignement != null}" id="it1" autoSubmit="true"
+                                  valueChangeListener="#{SaisieNotesbean.onNoteChanged}"
+                                  disabled="#{sessionScope.isInterExist == '1' ? true : false}"
+                                  readOnly="#{sessionScope.isClosed == '1'  ? true : row.IdTypeVerrou == '99' ? true : false}"
+                                  contentStyle="font-size:large;">
+                        <f:validator binding="#{row.NotesModeEnseignement.bindings.Note.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.SaisieNoteEtudiant.hints.NotesModeEnseignement.Note.format}"/>
+                    </af:inputText>
+                </af:column>
+                <!--af:column headerText="#{bindings.SaisieNoteEtudiant.hints.IdTypeVerrou.label}" id="c6">
+                    <af:outputText value="#{row.IdTypeVerrou}"
+                                   shortDesc="#{bindings.SaisieNoteEtudiant.hints.IdTypeVerrou.tooltip}" id="ot1">
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.SaisieNoteEtudiant.hints.IdTypeVerrou.format}"/>
+                    </af:outputText>
+                </af:column-->
+                <!--af:column headerText="UtiModifie" id="c9">
+                    <af:inputText value="#{sessionScope.id_user}"
+                                   shortDesc="#{bindings.SaisieNoteEtudiant.hints.NotesModeEnseignement.UtiModifie.tooltip}"
+                                   rendered="#{row.NotesModeEnseignement != null}" id="ot2" autoSubmit="true">
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.SaisieNoteEtudiant.hints.NotesModeEnseignement.UtiModifie.format}"/>
+                    </af:inputText>
+                </af:column-->
+            </af:table>
+        </af:panelCollection>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="penreg" binding="#{SaisieNotesbean.popenrg}">
+        <af:dialog id="d1" title="Formulaire d'enregistrement" dialogListener="#{SaisieNotesbean.onDialog}">
+            <f:facet name="buttonBar"/>
+            <af:clientListener method="onDialog" type="dialog"/>
+            <af:serverListener type="onDialogEvent" method="#{SaisieNotesbean.onDialogCancel}"/>
+            <af:outputText value="Voulez-vous enregistrer la saisie ?" id="ot5"/>
+        </af:dialog>
+    </af:popup>
+
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-confirm-close"
+            binding="#{SaisieNotesbean.popupConfirmCloseAllInter}">
+      <af:dialog id="d4" title="Confirmer la clôture" type="yesNo" affirmativeTextAndAccessKey="Clôturer "
+                 noTextAndAccessKey="Annuler" dialogListener="#{SaisieNotesbean.OnCloseAllInterAction}">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl10" inlineStyle="text-align:center;" layout="vertical">
+          <af:icon name="info" id="i1"/>
+          <af:outputFormatted value="Etes-vous sûre de vouloir clôturer toutes les saisies intermédiaires ?" id="of1"
+                              inlineStyle="font-size:medium; color:#2898e8; font-weight:bold;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+<af:popup childCreation="deferred" autoCancel="disabled" id="popup-closed-success"
+              binding="#{SaisieNotesbean.popupClosedSuccess}">
+      <af:dialog id="d7" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl13" layout="vertical" inlineStyle="text-align:center;">
+          <af:icon name="info" id="i4"/>
+          <af:outputFormatted value="Clôture effectue avec succès" id="of4"
+                              inlineStyle="color:#2898e8; font-size:medium; font-weight:bold;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+<af:popup childCreation="deferred" autoCancel="disabled" id="popup-ec-closed"
+              binding="#{SaisieNotesbean.popupEcClosed}">
+      <af:dialog id="d5" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl11" layout="vertical" inlineStyle="text-align:center;">
+          <af:icon name="warning" id="i2"/>
+          <af:outputFormatted value="Désolé !!! Ec déjà clôturé" id="of2"
+                              inlineStyle="color:Orange; font-size:medium;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+<af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{SaisieNotesbean.popupAllisClosed}">
+      <af:dialog id="d8" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl14" layout="vertical" inlineStyle="text-align:center;">
+          <af:icon name="info" id="i5"/>
+          <af:outputFormatted value="Toutes les saisies ont déjà été clôturée" id="of5"
+                              inlineStyle="color:#2898e8; font-size:medium; font-weight:bold;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+<af:popup childCreation="deferred" autoCancel="disabled" id="popup-other-err"
+              binding="#{SaisieNotesbean.popupOtherErr}">
+      <af:dialog id="d6" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl12" layout="vertical" inlineStyle="text-align:center;">
+          <af:icon name="error" id="i3"/>
+          <af:outputFormatted value="Erreur lors de la clôture : veuillez réessayer s'il vous plait" id="of3"
+                              inlineStyle="color:Red; font-size:medium;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup><af:popup childCreation="deferred" id="pimport" autoCancel="disabled" binding="#{SaisieNotesbean.popImport}">
+        <af:dialog id="d2" title="Choisissez un fichier Excel" type="none">
+            <f:facet name="buttonBar"/>
+            <af:inputFile id="if1" value="#{requestScope.SaisieNotesbean.uploadedFile}"
+                          inlineStyle="margin-bottom:20px;"/>
+            <af:button text="Valider" id="b6" actionListener="#{SaisieNotesbean.onUploadExcel}"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="pcloture" binding="#{SaisieNotesbean.popClot}">
+        <af:dialog affirmativeTextAndAccessKey="OUI" cancelTextAndAccessKey="ANNULER" id="d3"
+                   inlineStyle="text-align:center;" title="Confirmation de la clôture"
+                   dialogListener="#{SaisieNotesbean.onDialogClot}">
+            <f:facet name="buttonBar"/>
+            <af:clientListener method="onDialog" type="dialog"/>
+            <af:serverListener type="onDialogEvent" method="#{SaisieNotesbean.onDialogCanClot}"/>
+            <af:outputText value="Voulez-vous clôturer la saisie?" id="ot10" inlineStyle="font-size:medium;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-confirm-open"
+              binding="#{SaisieNotesbean.popupConfirmReOpenSaisie}">
+        <af:dialog id="d9" title="Confirmer la réouverture" type="yesNo" affirmativeTextAndAccessKey="Réouvrir"
+                   noTextAndAccessKey="Annuler" dialogListener="#{SaisieNotesbean.OnOpenSaisieAction}">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl1" inlineStyle="text-align:center;" layout="vertical">
+                <af:icon name="warning" id="i7"/>
+                <af:outputFormatted value="Etes-vous sûre de vouloir réouvrie la saisie ?" id="of14"
+                                    inlineStyle="font-size:medium; color:#2898e8; font-weight:bold;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-succes-open"
+              binding="#{SaisieNotesbean.popupSuccessReOpen}">
+        <af:dialog id="d10" title="Info">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl19" layout="vertical" halign="center">
+                <af:icon name="info" id="i8"/>
+                <af:outputFormatted value="Réouverture effectuée avec succès" id="of15"
+                                    inlineStyle="font-size:medium; color:#2898e8; font-weight:bold;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p6"
+              binding="#{SaisieNotesbean.opupUeClosed}">
+        <af:dialog id="d15" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl7" layout="vertical" halign="center">
+                <af:icon name="info" id="i13"/>
+                <af:outputFormatted value="L'Unité d'enseignement est cloturé : Rassurez-vous qu'il soit ouvert d'abord !" id="of12"
+                                    inlineStyle="font-size:medium; color:#2898e8; font-weight:bold;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+              binding="#{SaisieNotesbean.popSaisieInterNotClosedYet}">
+        <af:dialog id="d11" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl9" layout="vertical" valign="middle" halign="center">
+                <af:icon name="warning" id="i9"/>
+                <af:outputFormatted value="La saisie de toutes les notes de controle n'est pas encore cloturée !"
+                                    id="of16" inlineStyle="color:Orange;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{SaisieNotesbean.popUeClosed}">
+        <af:dialog id="d12" cancelTextAndAccessKey="Fermer" type="cancel" title="Info">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl21" layout="vertical" valign="middle" halign="center">
+                <af:icon name="warning" id="i10"/>
+                <af:outputFormatted value="L'ue est déja cloturer !" id="of17" inlineStyle="color:Orange;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{SaisieNotesbean.popNotStudent}">
+        <af:dialog id="d13" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl22" layout="vertical" valign="middle" halign="center">
+                <af:icon name="warning" id="i11"/>
+                <af:outputFormatted value="Aucun étudiant" id="of18" inlineStyle="color:Orange;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p5" binding="#{SaisieNotesbean.popSaisieSaved}">
+        <af:dialog id="d14" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl23" layout="vertical" valign="middle" halign="center">
+                <af:icon name="info" id="i12"/>
+                <af:outputFormatted value="La Saisie enregistrée avec succès !" id="of19" inlineStyle="color:Green;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <!--af:panelFormLayout id="pfl1">
+        <af:inputText value="#{bindings.UtiModifie.inputValue}" label="#{bindings.UtiModifie.hints.label}"
+                      required="#{bindings.UtiModifie.hints.mandatory}"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it2">
+            <f:validator binding="#{bindings.UtiModifie.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText>
+    </af:panelFormLayout-->
+    <af:resource type="javascript">function onDialog(evt){ var outcome = evt.getOutcome(); if (outcome ==
+                                   AdfDialogEvent.OUTCOME_CANCEL){ //call server var eventSource = evt.getSource(); var
+                                   immediate = true; AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+                                   evt.cancel(); } }</af:resource>
+    
+    <af:resource type="javascript">function onDialogClot(evt){ var outcome = evt.getOutcome(); if (outcome ==
+                                   AdfDialogEvent.OUTCOME_CANCEL){ //call server var eventSource = evt.getSource(); var
+                                   immediate = true; AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+                                   evt.cancel(); } }</af:resource>                               
+</ui:composition>

@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <af:panelGroupLayout id="pgl4" halign="center" layout="scroll" inlineStyle="background-color:#fff;margin-top:150px"
+                         valign="middle" binding="#{ConnectionEvalBean.conDapPan}">
+        <!--af:iterator id="i1" value="#{ConnectionEvalBean.init()}"/-->
+        <af:outputFormatted value="Paramétres de Connexion" id="of7"
+                            inlineStyle="font-size:x-large; color:#2897e8; font-weight:bolder;"/>
+        <af:panelGroupLayout id="pgl3" layout="vertical"
+                             inlineStyle="border: solid 3px  #2897e8; border-radius:13px ; margin-left:100px; line-height:50px; margin-right:100px; font-size:large; background-color:#2897e8;margin-top:30px; width:1000px">
+            <af:panelGroupLayout id="pgl5" layout="horizontal" inlineStyle="width: 850px;">
+                <af:panelGroupLayout id="pgl1" layout="horizontal">
+                    <af:panelGroupLayout id="pgl6" halign="left" layout="vertical">
+                        <af:outputFormatted value="Année Universitaire" id="of1"
+                                            inlineStyle="font-size:large; color:White; font-weight:bolder; "/>
+                    </af:panelGroupLayout>
+                    <af:panelGroupLayout id="pgl2" halign="left" layout="vertical" inlineStyle="width: 200px;">
+                        <af:selectOneChoice value="#{bindings.AnneeUniverROVO.inputValue}"
+                                            required="#{bindings.AnneeUniverROVO.hints.mandatory}"
+                                            shortDesc="#{bindings.AnneeUniverROVO.hints.tooltip}" id="soc1"
+                                            contentStyle="font-size:large;width: 200px;  border-radius: 8px;">
+                            <f:selectItems value="#{bindings.AnneeUniverROVO.items}" id="si1"/>
+                            <f:validator binding="#{bindings.AnneeUniverROVO.validator}"/>
+                        </af:selectOneChoice>
+                    </af:panelGroupLayout>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl11" layout="horizontal">
+                    <!--af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:985px)"
+                                 propertyName="layout"/-->
+                    <af:panelGroupLayout id="pgl16" halign="left" layout="vertical">
+                        <af:outputFormatted value="Etablissement" id="of3"
+                                            inlineStyle="font-size:large; color:White; font-weight:bolder;"/>
+                    </af:panelGroupLayout>
+                    <af:panelGroupLayout id="pgl17" halign="left" layout="vertical" inlineStyle="width: 200px;">
+                        <af:selectOneChoice value="#{bindings.StructuresVO1.inputValue}"
+                                            required="#{bindings.StructuresVO1.hints.mandatory}"
+                                            shortDesc="#{bindings.StructuresVO1.hints.tooltip}" id="soc2"
+                                            contentStyle="font-size:large;width: 200px;  border-radius: 8px;">
+                            <f:selectItems value="#{bindings.StructuresVO1.items}" id="si2"/>
+                            <f:validator binding="#{bindings.StructuresVO1.validator}"/>
+                        </af:selectOneChoice>
+                    </af:panelGroupLayout>
+                </af:panelGroupLayout>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl20">
+      
+        <af:button id="b1" actionListener="#{ConnectionEvalBean.onContinuePedAction}"
+                   inlineStyle="font-size:large; text-align:center; background-color:Blue;border-radius:13px  ; line-height:30px;"
+                   iconPosition="trailing" text="Continuer" useWindow="true" icon="/images/continue-24.png"/>
+      </af:panelGroupLayout>
+        </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl27" binding="#{ConnectionEvalBean.dashDapPan}" visible="false" layout="vertical">
+    <af:outputFormatted value="DashBoard" id="of11"
+                        inlineStyle="font-size:x-large; color:#2897e8; font-weight:bolder;"/>
+    <!--af:image source="/images/logo_tr.jpg" shortDesc="logo" id="i4" inlineStyle="width: 700px; height: 700px"/-->
+    <af:panelStretchLayout id="psl1" dimensionsFrom="children">
+      <f:facet name="start">
+      </f:facet>
+      <f:facet name="end">
+      </f:facet>
+      <f:facet name="top">
+      </f:facet>
+      <f:facet name="bottom">
+      </f:facet>
+      <f:facet name="center">
+      </f:facet>
+    </af:panelStretchLayout>
+  </af:panelGroupLayout>
+</ui:composition>

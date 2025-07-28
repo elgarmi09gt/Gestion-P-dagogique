@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="StatistiquesDepartementROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.StatistiquesDepartementROVORowImpl"
+  ComponentClass="model.readOnlyView.StatistiquesDepartementROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.StatistiquesDepartementROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="p_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <ViewAccessor
+    Name="SessionsROVO1"
+    ViewObjectName="model.readOnlyView.SessionsROVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="SessionsLOV1"
+    ViewObjectName="model.readOnlyView.SessionsLOV"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_Sessions"
+    ListVOName="SessionsLOV1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Sessions"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="id"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="libelle"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[Select * from             
+(Select hs.ID_HISTORIQUES_STRUCTURE ,Decode(ra.SESSION_VALIDATION,null,0,ra.SESSION_VALIDATION) Sessions, re.LIBELLE_LONG res            
+From HISTORIQUES_STRUCTURES hs            
+join FORMATIONS fr on hs.ID_HISTORIQUES_STRUCTURE=fr.ID_HISTORIQUES_STRUCTURE            
+join NIVEAUX_FORMATIONS nf on fr.ID_FORMATION=nf.ID_FORMATION            
+join NIVEAU_FORMATION_COHORTES nfc on nf.ID_NIVEAU_FORMATION=nfc.ID_NIVEAU_FORMATION            
+join NIVEAUX_FORMATION_PARCOURS nfp on nfc.ID_NIVEAU_FORMATION_COHORTE=nfp.ID_NIVEAU_FORMATION_COHORTE            
+join PARCOURS_MAQUETTE_ANNEE pma on nfp.ID_NIVEAU_FORMATION_PARCOURS=pma.ID_NIVEAU_FORMATION_PARCOURS            
+join INSCRIPTIONS_PEDAGOGIQUES ip on pma.ID_PARCOURS_MAQUET_ANNEE=ip.ID_PARCOURS_MAQUET_ANNEE            
+join RESULTATS_ANNUELS ra on ip.ID_INSCRIPTION_PEDAGOGIQUE=ra.ID_INSCRIPTION_PEDAGOGIQUE            
+join RESULTAT_EVALUATIONS re on ra.RESULTAT=re.ID_RESULTAT            
+where pma.ID_ANNEES_UNIVERS =:p_annee)            
+PIVOT (          
+  count (res)            
+  FOR res in ('REDOUBLE','PASSE EN CLASSE SUPERIEURE','AUTORISE A PASSER','ANNEE VALIDEE','ANNEE NON VALIDEE','OBTIENT LE DIPLÔME','PAS DE RESULTAT','EXCLU'            
+  )  
+)order by Sessions]]></SQLQuery>
+  <ViewAttribute
+    Name="IdHistoriquesStructure"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="ID_HISTORIQUES_STRUCTURE"
+    Expression="ID_HISTORIQUES_STRUCTURE"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="Sessions"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="SESSIONS"
+    Expression="SESSIONS"
+    SQLType="NUMERIC"
+    LOVName="LOV_Sessions">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Redouble"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="&quot;'REDOUBLE'&quot;"
+    Expression="&quot;'REDOUBLE'&quot;"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="PasseEnClasseSuperieure"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="&quot;'PASSE EN CLASSE SUPERIEURE'&quot;"
+    Expression="&quot;'PASSE EN CLASSE SUPERIEURE'&quot;"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="AutoriseAPasser"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="&quot;'AUTORISE A PASSER'&quot;"
+    Expression="&quot;'AUTORISE A PASSER'&quot;"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="AnneeValidee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="&quot;'ANNEE VALIDEE'&quot;"
+    Expression="&quot;'ANNEE VALIDEE'&quot;"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="AnneeNonValidee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="&quot;'ANNEE NON VALIDEE'&quot;"
+    Expression="&quot;'ANNEE NON VALIDEE'&quot;"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="ObtientLeDiplôme"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="&quot;'OBTIENT LE DIPLÔME'&quot;"
+    Expression="&quot;'OBTIENT LE DIPLÔME'&quot;"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="PasDeResultat"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="&quot;'PAS DE RESULTAT'&quot;"
+    Expression="&quot;'PAS DE RESULTAT'&quot;"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Exclu"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="&quot;'EXCLU'&quot;"
+    Expression="&quot;'EXCLU'&quot;"
+    SQLType="NUMERIC"/>
+  <ViewLinkAccessor
+    Name="StatistiquesNiveauxFormationROVO"
+    ViewLink="model.viewlink.StatDeptToStatNivFormVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

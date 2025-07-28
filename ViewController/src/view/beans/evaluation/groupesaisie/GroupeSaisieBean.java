@@ -1,0 +1,360 @@
+package view.beans.evaluation.groupesaisie;
+
+import java.sql.SQLException;
+
+import java.util.ArrayList;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCIteratorBinding;
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPopup;
+
+import oracle.adf.view.rich.component.rich.data.RichTable;
+import oracle.adf.view.rich.component.rich.layout.RichPanelGroupLayout;
+import oracle.adf.view.rich.component.rich.nav.RichButton;
+import oracle.adf.view.rich.component.rich.output.RichPanelCollection;
+import oracle.adf.view.rich.context.AdfFacesContext;
+import oracle.adf.view.rich.event.DialogEvent;
+
+import oracle.adf.view.rich.event.DialogEvent.Outcome;
+
+import oracle.adf.view.rich.render.ClientEvent;
+
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+import oracle.jbo.RowSet;
+import oracle.jbo.RowSetIterator;
+
+import java.util.List;
+
+import java.util.Map;
+
+import oracle.binding.AttributeBinding;
+
+import view.beans.entities.Etudiant;
+import view.beans.entities.EtudiantGroupeSaisie;
+
+public class GroupeSaisieBean {
+    private List<EtudiantGroupeSaisie> etudiantlists;
+    final String OLD_CURR_KEY_VIEWSCOPE_ATTR = "__oldCurrentRowKey__";
+    private RichPopup popupNewGroupeSaisie;
+    private RichTable groupeSaisieTable;
+    private RichTable groupeSaisieEtudiantTable;
+    private RichTable etudiantTable;
+    private RichButton btnEtudiant;
+    private RichPopup popupNotStudentChekedDet;
+    private RichPanelCollection groupeSaisiePC;
+    Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    private Integer parcours = Integer.parseInt(sessionScope.get("id_niv_form_parcours").toString());
+    private Integer anne_univers = Integer.parseInt(sessionScope.get("id_annee").toString());
+    private Integer session = Integer.parseInt(sessionScope.get("id_session").toString());
+    private Integer utilisateur = Integer.parseInt(sessionScope.get("id_user").toString());
+    private Integer semestre = Integer.parseInt(sessionScope.get("id_smstre").toString());
+    private RichPanelCollection groupeSaisieEtudiant;
+    private RichTable grpsaisieetdtable;
+    private RichPanelGroupLayout etudiantGroupePan;
+
+    @SuppressWarnings("unchecked")
+    public GroupeSaisieBean() {
+        
+    }
+
+    public BindingContainer getBindings() {
+        return BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<EtudiantGroupeSaisie> getStudents() {
+        etudiantlists = new ArrayList<>();
+        OperationBinding lesEtudiants = BindingContext.getCurrent()
+                                                      .getCurrentBindingsEntry()
+                                                      .getOperationBinding("GetEtudiant");
+        lesEtudiants.getParamsMap().put("annee", getAnne_univers());
+        lesEtudiants.getParamsMap().put("sem", getSemestre());
+        lesEtudiants.getParamsMap().put("parcours", getParcours());
+        lesEtudiants.getParamsMap().put("sess", getSession());
+        lesEtudiants.execute();
+
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("EtudiantGroupeSaisieEtudiantIterator");
+        Row currentinsped = iter.getCurrentRow();
+        if (currentinsped == null) {
+            return etudiantlists;
+        }
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        while (rsi.hasNext()) {
+            Row nextRow = rsi.next();
+            etudiantlists.add(new EtudiantGroupeSaisie(nextRow.getAttribute("Numero").toString(),
+                                           nextRow.getAttribute("PrenomNom").toString(), false));
+        }
+        rsi.closeRowSetIterator();
+        System.out.print(etudiantlists.toString());
+        return etudiantlists;
+    }
+
+    public void OnNewGroupeSaisieClicked(ActionEvent actionEvent) {
+        BindingContainer bindings = getBindings();
+        //get current row and save its rowKey in view scope for later use
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("GroupeSaisieIterator");
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree");
+        AttributeBinding annee = (AttributeBinding) getBindings().getControlBinding("IdAnneeUnivers");
+        AttributeBinding prcrs = (AttributeBinding) getBindings().getControlBinding("IdNiveauFormationParcours1");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        if (oldCcurrentRow != null) {
+            ADFContext adfCtx = ADFContext.getCurrent();
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        }
+        //perform row create
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateGroupeSaisie");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return;
+        }
+        uticre.setInputValue(getUtilisateur());
+        annee.setInputValue(getAnne_univers());
+        System.out.println("Annee id : "+annee.getInputValue());
+        prcrs.setInputValue(getParcours());
+        System.out.println("Parcours id : "+getParcours());
+        System.out.println("Parcours 2 id : "+prcrs.getInputValue());
+        RichPopup popup = this.getPopupNewGroupeSaisie();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        //empty hints renders dialog in center of screen
+        popup.show(hints);
+        return;
+    }
+
+    public void setPopupNewGroupeSaisie(RichPopup popupNewGroupeSaisie) {
+        this.popupNewGroupeSaisie = popupNewGroupeSaisie;
+    }
+
+    public RichPopup getPopupNewGroupeSaisie() {
+        return popupNewGroupeSaisie;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnDialogCreateGroupeSaisieAction(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        this.getPopupNewGroupeSaisie().hide();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = getBindings();
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            // réexecuter la VO GroupeSaisie pour rafraichir le tableau
+            OperationBinding lesGroupes = BindingContext.getCurrent()
+                                                          .getCurrentBindingsEntry()
+                                                          .getOperationBinding("GetGroupeSaisie");
+            lesGroupes.getParamsMap().put("annee", getAnne_univers());
+            lesGroupes.getParamsMap().put("sem", getSemestre());
+            lesGroupes.getParamsMap().put("parcours", getParcours());
+            lesGroupes.getParamsMap().put("sess", getSession());
+            lesGroupes.execute(); 
+            
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getGroupeSaisiePC());
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getGroupeSaisieTable());
+        }
+    }
+
+    public void setGroupeSaisieTable(RichTable groupeSaisieTable) {
+        this.groupeSaisieTable = groupeSaisieTable;
+    }
+
+    public RichTable getGroupeSaisieTable() {
+        return groupeSaisieTable;
+    }
+
+    public void OnDialogHandler(ClientEvent clientEvent) {
+        BindingContainer bindings = getBindings();
+        RichPopup popup = this.getPopupNewGroupeSaisie();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("GroupeSaisieIterator");
+        Row currentRow = dciter.getCurrentRow();
+        dciter.removeCurrentRow();
+        //set current row back to original row
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        if(oldCurrentRowKey != null){
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getGroupeSaisieTable());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnSaveGroupeSaisieEtudiantClicked(ActionEvent actionEvent) {
+        BindingContainer bindings = getBindings();
+        //get current row and save its rowKey in view scope for later use
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("GroupeSaisieParcoursIterator");
+        Row currentRow = dciter.getCurrentRow();
+        Long IdGroupeSaisie = Long.parseLong(currentRow.getAttribute("IdGroupeSaisie").toString());
+        //System.out.println("IdGroupeSaisie " + IdGroupeSaisie);
+        try {
+            OperationBinding operationgetSelected = bindings.getOperationBinding("addSelectedToGroupe");
+            // Integer is_all_note_mod_ens_closed = (Integer) is_closed_all_note_mod_ens.execute();
+            ArrayList<Long> result = (ArrayList<Long>) operationgetSelected.execute();
+            
+            if(result.size() != 0) {
+                for (int counter = 0; counter < result.size(); counter++) {
+                    // appelle de la methode CreategroupeSaisieEtudiant
+                    //System.out.println(result.get(counter));
+                    OperationBinding opCreatGrpSaisieEtd = bindings.getOperationBinding("CreateGroupeSaisieEtudiant");
+                    opCreatGrpSaisieEtd.getParamsMap().put("IdGroupeSaisie", IdGroupeSaisie);
+                    opCreatGrpSaisieEtd.getParamsMap().put("UtiCree", getUtilisateur());
+                    opCreatGrpSaisieEtd.getParamsMap().put("IdEtudiant", result.get(counter));
+                    Object resul = opCreatGrpSaisieEtd.execute();
+                }
+            }else{
+                // Pas d'etudiant choisie : selectionner etudiant
+                RichPopup popup = this.getPopupNotStudentChekedDet();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                popup.show(hints);
+                /*OperationBinding opCreatGrpSaisieEtd = bindings.getOperationBinding("CreateGroupeSaisieEtudiant");
+                opCreatGrpSaisieEtd.getParamsMap().put("IdGroupeSaisie", IdGroupeSaisie);
+                opCreatGrpSaisieEtd.getParamsMap().put("UtiCree", 33);
+                opCreatGrpSaisieEtd.getParamsMap().put("IdEtudiant", null);
+                Object resul = opCreatGrpSaisieEtd.execute();*/
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+        Object result = operationCommit.execute();
+        OperationBinding lesEtudiants = BindingContext.getCurrent()
+                                                      .getCurrentBindingsEntry()
+                                                      .getOperationBinding("GetEtudiant");
+        lesEtudiants.getParamsMap().put("annee", getAnne_univers());
+        lesEtudiants.getParamsMap().put("sem", getSemestre());
+        lesEtudiants.getParamsMap().put("parcours", getParcours());
+        lesEtudiants.getParamsMap().put("sess", getSession());
+        lesEtudiants.execute();
+        /* OperationBinding lesGroupEtudiants = BindingContext.getCurrent()
+                                                      .getCurrentBindingsEntry()
+                                                      .getOperationBinding("GetGroupSaisieEtudiant");
+        lesGroupEtudiants.getParamsMap().put("annee",getAnne_univers());
+        lesGroupEtudiants.getParamsMap().put("sem", getSemestre());
+        lesGroupEtudiants.getParamsMap().put("parcours", getParcours());
+        lesGroupEtudiants.getParamsMap().put("sess", getSession());
+        lesGroupEtudiants.execute(); */
+        
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getGroupeSaisieEtudiant());
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getGrpsaisieetdtable());
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getEtudiantTable());
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getEtudiantGroupePan());
+    }
+
+    public void setGroupeSaisieEtudiantTable(RichTable groupeSaisieEtudiantTable) {
+        this.groupeSaisieEtudiantTable = groupeSaisieEtudiantTable;
+    }
+
+    public RichTable getGroupeSaisieEtudiantTable() {
+        return groupeSaisieEtudiantTable;
+    }
+
+    public void setEtudiantTable(RichTable etudiantTable) {
+        this.etudiantTable = etudiantTable;
+    }
+
+    public RichTable getEtudiantTable() {
+        return etudiantTable;
+    }
+
+    public void setBtnEtudiant(RichButton btnEtudiant) {
+        this.btnEtudiant = btnEtudiant;
+    }
+
+    public RichButton getBtnEtudiant() {
+        return btnEtudiant;
+    }
+
+    public void setPopupNotStudentChekedDet(RichPopup popupNotStudentChekedDet) {
+        this.popupNotStudentChekedDet = popupNotStudentChekedDet;
+    }
+
+    public RichPopup getPopupNotStudentChekedDet() {
+        return popupNotStudentChekedDet;
+    }
+
+    public void setGroupeSaisiePC(RichPanelCollection groupeSaisiePC) {
+        this.groupeSaisiePC = groupeSaisiePC;
+    }
+
+    public RichPanelCollection getGroupeSaisiePC() {
+        return groupeSaisiePC;
+    }
+
+    public void setParcours(Integer parcours) {
+        this.parcours = parcours;
+    }
+
+    public Integer getParcours() {
+        return parcours;
+    }
+
+    public void setAnne_univers(Integer anne_univers) {
+        this.anne_univers = anne_univers;
+    }
+
+    public Integer getAnne_univers() {
+        return anne_univers;
+    }
+
+    public void setSession(Integer session) {
+        this.session = session;
+    }
+
+    public Integer getSession() {
+        return session;
+    }
+
+    public void setSemestre(Integer semestre) {
+        this.semestre = semestre;
+    }
+
+    public Integer getSemestre() {
+        return semestre;
+    }
+
+    public void setUtilisateur(Integer utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Integer getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setGroupeSaisieEtudiant(RichPanelCollection groupeSaisieEtudiant) {
+        this.groupeSaisieEtudiant = groupeSaisieEtudiant;
+    }
+
+    public RichPanelCollection getGroupeSaisieEtudiant() {
+        return groupeSaisieEtudiant;
+    }
+
+    public void setGrpsaisieetdtable(RichTable grpsaisieetdtable) {
+        this.grpsaisieetdtable = grpsaisieetdtable;
+    }
+
+    public RichTable getGrpsaisieetdtable() {
+        return grpsaisieetdtable;
+    }
+
+    public void setEtudiantGroupePan(RichPanelGroupLayout etudiantGroupePan) {
+        this.etudiantGroupePan = etudiantGroupePan;
+    }
+
+    public RichPanelGroupLayout getEtudiantGroupePan() {
+        return etudiantGroupePan;
+    }
+}

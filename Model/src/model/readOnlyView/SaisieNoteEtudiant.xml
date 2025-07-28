@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="SaisieNoteEtudiant"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.SaisieNoteEtudiantRowImpl"
+  ComponentClass="model.readOnlyView.SaisieNoteEtudiantImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.SaisieNoteEtudiant_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="cal"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="fil_ec_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="t_cntrl_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="prcrs_maq"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[SELECT  distinct                   
+    nme.ID_NOTE_MODE_ENSEIGNEMENT, etu.numero, pers.prenoms Prenom, pers.nom, to_char(pers.date_naissance,'dd/mm/rrrr')date_naissance, pers.lieu_naissance, ipsu.id_inscription_ped_sem_ue, etu.id_etudiant, nme.NOTE,nme.ID_TYPE_VERROU                                                    
+FROM personnes pers                  
+JOIN etudiants etu on pers.id_personne = etu.id_personne                                                           
+JOIN inscriptions_admin ia on etu.id_etudiant = ia.id_etudiant                                                         
+JOIN inscriptions_pedagogiques ip on ia.id_inscription_admin = ip.id_inscription_admin                                                         
+JOIN inscription_ped_semestre ips on ip.id_inscription_pedagogique = ips.id_inscription_pedagogique                                                         
+JOIN inscription_ped_sem_ue ipsu on ips.id_inscription_ped_semestre = ipsu.id_inscription_ped_semestre                                       
+JOIN NOTES_MODE_ENSEIGNEMENT nme on ipsu.ID_INSCRIPTION_PED_SEM_UE=nme.ID_INSCRIPTION_PED_SEM_UE                 
+where nme.ID_CALENDRIER_DELIBERATION=:cal and nme.ID_FILIERE_UE_SEMSTRE_EC=:fil_ec_id and nme.ID_TYPE_CONTROLE=:t_cntrl_id and ipsu.IS_DELIBARABLE=1          
+AND ip.ID_PARCOURS_MAQUET_ANNEE=:prcrs_maq AND nme.VALIDE <> 9  
+ORDER BY pers.nom, pers.prenoms]]></SQLQuery>
+  <ViewAttribute
+    Name="IdNoteModeEnseignement"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_NOTE_MODE_ENSEIGNEMENT"
+    Expression="ID_NOTE_MODE_ENSEIGNEMENT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOM"
+    Expression="PRENOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="DATE_NAISSANCE"
+    Expression="DATE_NAISSANCE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LieuNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIEU_NAISSANCE"
+    Expression="LIEU_NAISSANCE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdInscriptionPedSemUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PED_SEM_UE"
+    Expression="ID_INSCRIPTION_PED_SEM_UE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Note"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="NOTE"
+    Expression="NOTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdTypeVerrou"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_TYPE_VERROU"
+    Expression="ID_TYPE_VERROU"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNoteModeEnseignement"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="NotesModeEnseignement"
+    ViewLink="model.viewlink.EtudiantSaisieNoteToNoteModeEnseignementVL"
+    Type="model.updatableview.NotesModeEnseignementRowImpl"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

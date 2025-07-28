@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelFormLayout id="pfl1">
+    <af:inputText value="#{bindings.NivFormParcours.inputValue}" label="#{bindings.NivFormParcours.hints.label}"
+                  required="#{bindings.NivFormParcours.hints.mandatory}"
+                  columns="#{bindings.NivFormParcours.hints.displayWidth}"
+                  maximumLength="#{bindings.NivFormParcours.hints.precision}"
+                  shortDesc="#{bindings.NivFormParcours.hints.tooltip}" id="it1"
+                  binding="#{Autorisationbean.nivFormParc}" partialTriggers="b1 b2">
+      <f:validator binding="#{bindings.NivFormParcours.validator}"/>
+      <af:convertNumber groupingUsed="false" pattern="#{bindings.NivFormParcours.format}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.IdForm.inputValue}" label="#{bindings.IdForm.hints.label}"
+                  required="#{bindings.IdForm.hints.mandatory}" columns="#{bindings.IdForm.hints.displayWidth}"
+                  maximumLength="#{bindings.IdForm.hints.precision}" shortDesc="#{bindings.IdForm.hints.tooltip}"
+                  id="it2" binding="#{Autorisationbean.idForm}" partialTriggers="b1 b2">
+      <f:validator binding="#{bindings.IdForm.validator}"/>
+      <af:convertNumber groupingUsed="false" pattern="#{bindings.IdForm.format}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Niveau.inputValue}" label="#{bindings.Niveau.hints.label}"
+                  required="#{bindings.Niveau.hints.mandatory}" columns="#{bindings.Niveau.hints.displayWidth}"
+                  maximumLength="#{bindings.Niveau.hints.precision}" shortDesc="#{bindings.Niveau.hints.tooltip}"
+                  id="it3" binding="#{Autorisationbean.idNiv}" partialTriggers="b1 b2">
+      <f:validator binding="#{bindings.Niveau.validator}"/>
+      <af:convertNumber groupingUsed="false" pattern="#{bindings.Niveau.format}"/>
+    </af:inputText>
+  </af:panelFormLayout>
+  <af:button text="button 1" id="b1" action="#{Autorisationbean.search}"/>
+  <af:button text="button 2" id="b2"/>
+  <af:table value="#{bindings.NivFormAutoriseRO.collectionModel}" var="row"
+            rows="#{bindings.NivFormAutoriseRO.rangeSize}"
+            emptyText="#{bindings.NivFormAutoriseRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+            rowBandingInterval="0" selectedRowKeys="#{bindings.NivFormAutoriseRO.collectionModel.selectedRow}"
+            selectionListener="#{bindings.NivFormAutoriseRO.collectionModel.makeCurrent}" rowSelection="single"
+            fetchSize="#{bindings.NivFormAutoriseRO.rangeSize}"
+            filterModel="#{bindings.NivFormAutoriseROQuery.queryDescriptor}" filterVisible="true"
+            queryListener="#{bindings.NivFormAutoriseROQuery.processQuery}" varStatus="vs" id="t1">
+    <af:column sortProperty="#{bindings.NivFormAutoriseRO.hints.Diplome.name}" filterable="true" sortable="true"
+               headerText="#{bindings.NivFormAutoriseRO.hints.Diplome.label}" id="c1">
+      <af:outputText value="#{row.Diplome}" shortDesc="#{bindings.NivFormAutoriseRO.hints.Diplome.tooltip}" id="ot1"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.NivFormAutoriseRO.hints.Libform.name}" filterable="true" sortable="true"
+               headerText="#{bindings.NivFormAutoriseRO.hints.Libform.label}" id="c2">
+      <af:outputText value="#{row.Libform}" shortDesc="#{bindings.NivFormAutoriseRO.hints.Libform.tooltip}" id="ot2"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.NivFormAutoriseRO.hints.LibNiveau.name}" filterable="true" sortable="true"
+               headerText="#{bindings.NivFormAutoriseRO.hints.LibNiveau.label}" id="c3">
+      <af:outputText value="#{row.LibNiveau}" shortDesc="#{bindings.NivFormAutoriseRO.hints.LibNiveau.tooltip}"
+                     id="ot3"/>
+    </af:column>
+  </af:table>
+</ui:composition>

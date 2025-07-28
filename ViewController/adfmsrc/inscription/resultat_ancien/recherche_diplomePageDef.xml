@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="recherche_diplomePageDef"
+                Package="inscription.resultat_ancien">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AttrSearchNumDiplomeRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="AttrSearchNumDiplomeROIterator"/>
+    <iterator Binds="HistResultAncienRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="HistResultAncienROIterator"/>
+    <iterator Binds="NumeroDiplome" RangeSize="10" DataControl="inscriptionAppDataControl" id="NumeroDiplomeIterator"/>
+    <iterator Binds="NumDiplomeInsAncRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="NumDiplomeInsAncROIterator"/>
+    <searchRegion Binds="NumDiplomeInsAncROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NumDiplomeInsAncROQuery"/>
+  </executables>
+  <bindings>
+    <list IterBinding="AttrSearchNumDiplomeROIterator" StaticList="false" Uses="LOV_IdAnnee" id="IdAnnee"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="HistResultAncienROIterator" ListOperMode="navigation" ListIter="HistResultAncienROIterator"
+          id="HistResultAncienRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="AttrSearchNumDiplomeROIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NumeroDiplomeIterator" id="IdNumeroDiplome">
+      <AttrNames>
+        <Item Value="IdNumeroDiplome"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="NumeroDiplomeIterator" id="CreateInsert" InstanceName="inscriptionAppDataControl.NumeroDiplome"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <list IterBinding="NumeroDiplomeIterator" StaticList="false" Uses="LOV_IdAnneesUnivers" id="IdAnneesUnivers"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="NumeroDiplomeIterator" id="Numero1">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="NumeroDiplomeIterator" StaticList="false" Uses="LOV_IdHistoriqueStructure"
+          id="IdHistoriqueStructure" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="NumeroDiplomeIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <tree IterBinding="NumDiplomeInsAncROIterator" id="NumDiplomeInsAncRO">
+      <nodeDefinition DefName="model.readOnlyView.NumDiplomeInsAncROVO" Name="NumDiplomeInsAncRO0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="IdHistoriqueStructure"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="NumDiplomeInsAncROIterator" id="IdNumeroDiplome1">
+      <AttrNames>
+        <Item Value="IdNumeroDiplome"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="NumDiplomeInsAncROIterator" id="Execute"
+            InstanceName="inscriptionAppDataControl.NumDiplomeInsAncRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="iteratorExecute"/>
+  </bindings>
+</pageDefinition>

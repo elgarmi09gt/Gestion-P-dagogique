@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelStretchLayout id="psl1" dimensionsFrom="children">
+    <f:facet name="start"/>
+    <f:facet name="end"/>
+    <f:facet name="top"><af:outputFormatted value="Cohortes >>" id="of12"
+                      inlineStyle="color:#2898e8; font-weight:bold; font-style:italic; font-family:Verdana;"/>
+    </f:facet>
+    <f:facet name="bottom"/>
+    <f:facet name="center">
+      <af:panelCollection id="pc1" binding="#{Cohortesbean.cohortesCollection}" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t2">
+            <af:button id="b1" actionListener="#{Cohortesbean.onCohortes}" icon="/images/new_icon.png"/>
+            <af:button id="b2" icon="/images/edit_icon.png">
+              <af:showPopupBehavior popupId="::p2"/>
+            </af:button>
+            <af:button id="b3" icon="/images/delete_icon.png">
+              <af:showPopupBehavior popupId="::p3"/>
+            </af:button>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.Cohortes1.collectionModel}" var="row" rows="#{bindings.Cohortes1.rangeSize}"
+                  emptyText="#{bindings.Cohortes1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.Cohortes1.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.Cohortes1.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.Cohortes1.rangeSize}" filterModel="#{bindings.Cohortes1Query.queryDescriptor}"
+                  filterVisible="true" queryListener="#{bindings.Cohortes1Query.processQuery}" varStatus="vs" id="t3"
+                  columnStretching="last">
+          <af:column sortProperty="#{bindings.Cohortes1.hints.Libelle.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.LIBELLE}" id="c1">
+            <af:outputText value="#{row.Libelle}" shortDesc="#{bindings.Cohortes1.hints.Libelle.tooltip}" id="ot1"/>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p4" contentDelivery="lazyUncached">
+              <af:menu text="menu 1" id="m1">
+                <af:commandMenuItem text="New" id="cmi1" actionListener="#{Cohortesbean.onCohortes}"
+                                    icon="/images/new_icon.png"/>
+                <af:commandMenuItem text="Edit" id="cmi2" icon="/images/edit_icon.png">
+                  <af:showPopupBehavior popupId=":::p2"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="Delete" id="cmi3" icon="/images/delete_icon.png">
+                  <af:showPopupBehavior popupId=":::p3"/>
+                </af:commandMenuItem>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+      </af:panelCollection>
+    </f:facet>
+  </af:panelStretchLayout>
+  <af:resource type="javascript">
+      function onDialogNew(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{Cohortesbean.popupNew}">
+    <af:dialog id="d1" dialogListener="#{Cohortesbean.onDialogNew}"
+               title="#{viewcontrollerBundle.FORMULAIRE_DE_SAISIE}">
+      <af:panelFormLayout id="pfl1">
+        <af:inputText value="#{bindings.Libelle.inputValue}" label="#{bindings.Libelle.hints.label}"
+                      required="#{bindings.Libelle.hints.mandatory}" columns="#{bindings.Libelle.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle.hints.precision}" shortDesc="#{bindings.Libelle.hints.tooltip}"
+                      id="it2">
+          <f:validator binding="#{bindings.Libelle.validator}"/>
+        </af:inputText>
+        <!--af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it3">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText-->
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialogNew" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{Cohortesbean.onDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p3" contentDelivery="lazyUncached">
+    <af:dialog id="d3" dialogListener="#{Cohortesbean.onCohortesDelete}" title="#{viewcontrollerBundle.CONFIM_Supp}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl3">
+        <af:inputText value="#{bindings.Libelle.inputValue}" label="#{bindings.Libelle.hints.label}"
+                      required="#{bindings.Libelle.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Libelle.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle.hints.precision}" shortDesc="#{bindings.Libelle.hints.tooltip}"
+                      id="it10">
+          <f:validator binding="#{bindings.Libelle.validator}"/>
+        </af:inputText>
+        <af:inputDate value="#{bindings.DateCreation.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation.hints.label}" required="#{bindings.DateCreation.hints.mandatory}"
+                      columns="#{bindings.DateCreation.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation.hints.tooltip}" id="id5">
+          <f:validator binding="#{bindings.DateCreation.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation.format}"/>
+        </af:inputDate>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" contentDelivery="lazyUncached">
+    <af:dialog id="d2" title="#{viewcontrollerBundle.FORMULAIRE_DE_MODIFICATIONS}" dialogListener="#{Cohortesbean.onDialogEdit}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl2">
+        <af:inputText value="#{bindings.Libelle.inputValue}" label="#{bindings.Libelle.hints.label}"
+                      required="#{bindings.Libelle.hints.mandatory}" columns="#{bindings.Libelle.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle.hints.precision}" shortDesc="#{bindings.Libelle.hints.tooltip}"
+                      id="it6">
+          <f:validator binding="#{bindings.Libelle.validator}"/>
+        </af:inputText>
+        <!--af:inputText value="#{bindings.UtiModifie.inputValue}" label="#{bindings.UtiModifie.hints.label}"
+                      required="#{bindings.UtiModifie.hints.mandatory}"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it8">
+          <f:validator binding="#{bindings.UtiModifie.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText-->
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

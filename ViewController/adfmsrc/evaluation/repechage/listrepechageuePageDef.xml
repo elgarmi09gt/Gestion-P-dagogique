@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listrepechageuePageDef"
+                Package="evaluation.repechage">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="MoyenneUE" RangeSize="10" DataControl="evaluationAppDataControl" id="MoyenneUEIterator"/>
+    <iterator Binds="PourcentageCC_CT_ROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="PourcentageCC_CT_ROVOIterator"/>
+    <iterator Binds="FilUeByFilEc" RangeSize="10" DataControl="evaluationAppDataControl" id="FilUeByFilEcIterator"/>
+    <iterator Binds="ResultatsFilUeSemestreVO" RangeSize="8" DataControl="evaluationAppDataControl"
+              id="ResultatsFilUeSemestreVOIterator"/>
+    <searchRegion Binds="ResultatsFilUeSemestreVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ResultatsFilUeSemestreVOQuery"/>
+    <iterator Binds="NotesModeEnseignementVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="NotesModeEnseignementVOIterator"/>
+    <searchRegion Binds="NotesModeEnseignementVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NotesModeEnseignementVOQuery"/>
+    <iterator Binds="RepecheFilUe" RangeSize="25" DataControl="evaluationAppDataControl" id="RepecheFilUeIterator"/>
+  </executables>
+  <bindings>
+    <methodAction id="RepecheUECriteria" RequiresUpdateModel="true" Action="invokeMethod" MethodName="RepecheUECriteria"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.RepecheUECriteria.dataControl.dataProvider">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="superieur" NDType="java.math.BigDecimal"/>
+      <NamedData NDName="inferieur" NDType="java.math.BigDecimal"/>
+    </methodAction>
+    <action IterBinding="MoyenneUEIterator" id="getMoyenneUe" InstanceName="evaluationAppDataControl.MoyenneUE"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="inspedsemue" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="PourcentageCC_CT_ROVOIterator" id="GetPourcentFilEc"
+            InstanceName="evaluationAppDataControl.PourcentageCC_CT_ROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_fil_ec" NDType="java.lang.Long"/>
+    </action>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="FilUeByFilEcIterator" id="GetFilUe"
+            InstanceName="evaluationAppDataControl.FilUeByFilEc" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_fil_ec" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="findAndUpdateNotePointJury" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findAndUpdateNotePointJury" IsViewObjectMethod="false"
+                  DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.findAndUpdateNotePointJury.dataControl.dataProvider">
+      <NamedData NDName="idNoteModeEns" NDType="java.lang.Long"/>
+      <NamedData NDName="point" NDType="java.lang.Float"/>
+    </methodAction>
+    <methodAction id="CalculMoyenneEcRepeche" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CalculMoyenneEcRepeche" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CalculMoyenneEcRepeche.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.CalculMoyenneEcRepeche_CalculMoyenneEcRepeche_dataControl_dataProvider_CalculMoyenneEcRepeche_result">
+      <NamedData NDName="inspedSemUe" NDType="java.lang.Integer"/>
+      <NamedData NDName="idFilieUeSemEc" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="CalculMoyenneUeRepeche" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CalculMoyenneUeRepeche" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CalculMoyenneUeRepeche.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.CalculMoyenneUeRepeche_CalculMoyenneUeRepeche_dataControl_dataProvider_CalculMoyenneUeRepeche_result">
+      <NamedData NDName="idInspedSemUe" NDType="java.lang.Integer"/>
+      <NamedData NDName="idCalendrDelib" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <tree IterBinding="ResultatsFilUeSemestreVOIterator" id="ResultatsFilUeSemestreVO">
+      <nodeDefinition DefName="model.updatableview.ResultatsFilUeSemestreVO" Name="ResultatsFilUeSemestreVO0">
+        <AttrNames>
+          <Item Value="Anonymat"/>
+          <Item Value="Note"/>
+          <Item Value="Credit"/>
+          <Item Value="Resultat"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="NotesModeEnseignementVOIterator" id="NotesModeEnseignementVO">
+      <nodeDefinition DefName="model.updatableview.NotesModeEnseignementVO" Name="NotesModeEnseignementVO0">
+        <AttrNames>
+          <Item Value="IdFiliereUeSemstreEc"/>
+          <Item Value="IdTypeControle"/>
+          <Item Value="Note"/>
+          <Item Value="PointJury"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="RepecheFilUeIterator" ListOperMode="navigation" ListIter="RepecheFilUeIterator"
+          id="RepecheFilUe" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+  </bindings>
+</pageDefinition>

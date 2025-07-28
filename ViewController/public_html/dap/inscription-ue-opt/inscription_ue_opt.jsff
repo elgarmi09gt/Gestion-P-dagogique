@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll" halign="center">
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <af:table value="#{bindings.ParcousInscriptionUeOpt.collectionModel}" var="row"
+                rows="#{bindings.ParcousInscriptionUeOpt.rangeSize}"
+                emptyText="#{bindings.ParcousInscriptionUeOpt.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.ParcousInscriptionUeOpt.collectionModel.selectedRow}"
+                selectionListener="#{bindings.ParcousInscriptionUeOpt.collectionModel.makeCurrent}"
+                rowSelection="single" fetchSize="#{bindings.ParcousInscriptionUeOpt.rangeSize}"
+                filterModel="#{bindings.ParcousInscriptionUeOptQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.ParcousInscriptionUeOptQuery.processQuery}" varStatus="vs" id="t1"
+                columnStretching="last" scrollPolicy="page">
+        <af:column sortProperty="#{bindings.ParcousInscriptionUeOpt.hints.Niveauformationparcours.name}"
+                   filterable="true" sortable="true" headerText="#{viewcontrollerBundle.PARCOURS}" id="c1">
+          <af:outputFormatted value="#{row.bindings.Niveauformationparcours.inputValue}" id="of1"/>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+    <af:button text="Enregistrer" id="b2"
+               inlineStyle="font-size:small; border-radius:10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+               actionListener="#{InscriptionUeOptBean.OnInscriptionClicked}"/>
+    <af:panelGroupLayout id="pgl2" layout="horizontal" inlineStyle="margin-top : -10px;">
+      <af:iterator id="i5" value="#{InscriptionUeOptBean.initTopUe()}"/>
+      <af:iterator id="i4" value="#{InscriptionUeOptBean.initUe()}"/>
+      <af:panelHeader text="Unités d'enseignements" id="ph1" binding="#{InscriptionUeOptBean.filUePanHdr}" inlineStyle="border : solid 2px #2898e8;">
+        <af:panelCollection id="pc2" styleClass="AFStretchWidth" binding="#{InscriptionUeOptBean.filUePanCol}">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <af:table value="#{bindings.FiliereUeSemestreInsUeOpt.collectionModel}" var="row"
+                    rows="#{bindings.FiliereUeSemestreInsUeOpt.rangeSize}"
+                    emptyText="#{bindings.FiliereUeSemestreInsUeOpt.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0"
+                    selectedRowKeys="#{bindings.FiliereUeSemestreInsUeOpt.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.FiliereUeSemestreInsUeOpt.collectionModel.makeCurrent}"
+                    rowSelection="single" fetchSize="#{bindings.FiliereUeSemestreInsUeOpt.rangeSize}"
+                    filterModel="#{bindings.FiliereUeSemestreInsUeOptQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.FiliereUeSemestreInsUeOptQuery.processQuery}" varStatus="vs" id="t2"
+                    columnStretching="last" scrollPolicy="page" binding="#{InscriptionUeOptBean.filUeTable}">
+            <af:column sortProperty="#{bindings.FiliereUeSemestreInsUeOpt.hints.isFilUeSelected.name}"
+                       id="c2" align="center">
+              <af:selectBooleanCheckbox value="#{row.bindings.isFilUeSelected.inputValue}"
+                                        label="#{row.bindings.isFilUeSelected.label}"
+                                        shortDesc="#{bindings.FiliereUeSemestreInsUeOpt.hints.isFilUeSelected.tooltip}"
+                                        id="sbc1" autoSubmit="true"/>
+              <f:facet name="header">
+                <af:selectBooleanCheckbox id="sbc3" autoSubmit="true"
+                                          valueChangeListener="#{InscriptionUeOptBean.onSelectedFilUe}"
+                                          binding="#{InscriptionUeOptBean.is_ue}"/>
+              </f:facet>
+            </af:column>
+            <af:column sortProperty="#{bindings.FiliereUeSemestreInsUeOpt.hints.Codification.name}" filterable="true"
+                       sortable="true" headerText="#{bindings.FiliereUeSemestreInsUeOpt.hints.Codification.label}"
+                       id="c3" width="125">
+              <af:outputFormatted value="#{row.bindings.Codification.inputValue}" id="of2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.FiliereUeSemestreInsUeOpt.hints.IdSemestre.name}" filterable="true"
+                       sortable="true" headerText="#{bindings.FiliereUeSemestreInsUeOpt.hints.IdSemestre.label}"
+                       id="c4">
+              <af:outputFormatted value="#{row.bindings.IdSemestre.inputValue}" id="of3">
+                <af:convertNumber groupingUsed="false"
+                                  pattern="#{bindings.FiliereUeSemestreInsUeOpt.hints.IdSemestre.format}"/>
+              </af:outputFormatted>
+            </af:column>
+            <af:column sortProperty="#{bindings.FiliereUeSemestreInsUeOpt.hints.LibelleLong.name}" filterable="true"
+                       sortable="true" headerText="#{bindings.FiliereUeSemestreInsUeOpt.hints.LibelleLong.label}"
+                       id="c5">
+              <af:outputFormatted value="#{row.bindings.LibelleLong.inputValue}" id="of4"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:panelHeader>
+      <af:spacer width="10" height="10" id="s1"/>
+      <af:iterator id="i6" value="#{InscriptionUeOptBean.initTopEtd()}"/>
+      <af:iterator id="i7" value="#{InscriptionUeOptBean.initEtd()}"/>
+      <af:panelHeader text="Etudiants" id="ph2" inlineStyle="border : solid 2px #2898e8;"
+                      binding="#{InscriptionUeOptBean.etdPanHdr}">
+        <f:facet name="context"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="menuBar"/>
+        <af:panelCollection id="pc3" styleClass="AFStretchWidth" binding="#{InscriptionUeOptBean.etdPanCol}">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <af:table value="#{bindings.EtudiantInsUeOpt.collectionModel}" var="row"
+                    rows="#{bindings.EtudiantInsUeOpt.rangeSize}"
+                    emptyText="#{bindings.EtudiantInsUeOpt.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.EtudiantInsUeOpt.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.EtudiantInsUeOpt.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.EtudiantInsUeOpt.rangeSize}"
+                    filterModel="#{bindings.EtudiantInsUeOptQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.EtudiantInsUeOptQuery.processQuery}" varStatus="vs" id="t3"
+                    columnStretching="last" scrollPolicy="page" binding="#{InscriptionUeOptBean.etdTable}">
+            <af:column sortProperty="#{bindings.EtudiantInsUeOpt.hints.isSelected.name}" id="c6" align="center">
+              <af:selectBooleanCheckbox value="#{row.bindings.isSelected.inputValue}"
+                                        label="#{row.bindings.isSelected.label}"
+                                        shortDesc="#{bindings.EtudiantInsUeOpt.hints.isSelected.tooltip}" id="sbc2"
+                                        autoSubmit="true"/>
+              <f:facet name="header">
+                <af:selectBooleanCheckbox id="sbc4" autoSubmit="true"
+                                          valueChangeListener="#{InscriptionUeOptBean.onSelectedUser}"
+                                          binding="#{InscriptionUeOptBean.is_etd}"/>
+              </f:facet>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtudiantInsUeOpt.hints.Numero.name}" filterable="true" sortable="true"
+                       headerText="#{viewcontrollerBundle.NUMERO}" id="c7" width="150">
+              <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of5"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtudiantInsUeOpt.hints.Prenoms.name}" filterable="true" sortable="true"
+                       headerText="#{viewcontrollerBundle1.PENOM}" id="c8" width="250">
+              <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of6"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtudiantInsUeOpt.hints.Nom.name}" filterable="true" sortable="true"
+                       headerText="#{viewcontrollerBundle1.NOM}" id="c9">
+              <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of7"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:panelHeader>
+    </af:panelGroupLayout>
+    <af:button text="Enregistrer" id="b1"
+               inlineStyle="font-size:small; border-radius:10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+               actionListener="#{InscriptionUeOptBean.OnInscriptionClicked}"/>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+              binding="#{InscriptionUeOptBean.popuNotitemSelected}">
+      <af:dialog id="d1" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl3" layout="vertical" halign="center">
+          <af:icon name="warning" id="i1"/>
+          <af:outputFormatted value="Selectionner au moins un étudiant et une ue" id="of8" inlineStyle="color:Orange;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+              binding="#{InscriptionUeOptBean.popupSuccessInsc}">
+      <af:dialog id="d2" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl4" layout="vertical" halign="center">
+          <af:icon name="info" id="i2"/>
+          <af:outputFormatted value="Inscription efféctué !!!" id="of9" inlineStyle="color:Green;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{InscriptionUeOptBean.popupFailedInsc}">
+      <af:dialog id="d3" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl5" layout="vertical" halign="center">
+          <af:icon name="error" id="i3"/>
+          <af:outputFormatted value="Inscription pas totalement efféctué : contacter l'administrateur" id="of10" inlineStyle="color:Red;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:panelHeader text="Inscriptions Aux Ues Optionnelles" id="ph3">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <af:panelCollection id="pc4" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <af:table value="#{bindings.EtudiantInscritOpt.collectionModel}" var="row"
+                  rows="#{bindings.EtudiantInscritOpt.rangeSize}"
+                  emptyText="#{bindings.EtudiantInscritOpt.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.EtudiantInscritOpt.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.EtudiantInscritOpt.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.EtudiantInscritOpt.rangeSize}"
+                  filterModel="#{bindings.EtudiantInscritOptQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.EtudiantInscritOptQuery.processQuery}" varStatus="vs" id="t4"
+                  scrollPolicy="page" columnStretching="last">
+          <af:column sortProperty="#{bindings.EtudiantInscritOpt.hints.Prenoms.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle1.PENOM}" id="c10" width="200">
+            <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.EtudiantInscritOpt.hints.Prenoms.tooltip}"
+                           id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudiantInscritOpt.hints.Nom.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle1.NOM}" id="c11" width="150">
+            <af:outputText value="#{row.Nom}" shortDesc="#{bindings.EtudiantInscritOpt.hints.Nom.tooltip}" id="ot2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudiantInscritOpt.hints.Numero.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.NUMERO}" id="c12">
+            <af:outputText value="#{row.Numero}" shortDesc="#{bindings.EtudiantInscritOpt.hints.Numero.tooltip}"
+                           id="ot3"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudiantInscritOpt.hints.IdSemestre.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.SEMESTRE}" id="c13">
+            <af:outputText value="#{row.IdSemestre}" shortDesc="#{bindings.EtudiantInscritOpt.hints.IdSemestre.tooltip}"
+                           id="ot4">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.EtudiantInscritOpt.hints.IdSemestre.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudiantInscritOpt.hints.Codification.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.CODIFICATION}" id="c14" width="115">
+            <af:outputText value="#{row.Codification}"
+                           shortDesc="#{bindings.EtudiantInscritOpt.hints.Codification.tooltip}" id="ot5"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudiantInscritOpt.hints.LibelleLong.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.UNITE_ENSEIGNEMENT}" id="c15">
+            <af:outputText value="#{row.LibelleLong}"
+                           shortDesc="#{bindings.EtudiantInscritOpt.hints.LibelleLong.tooltip}" id="ot6"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+</ui:composition>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="SignataireEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="SIGNATAIRE"
+  AliasName="SignataireEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdSignataire"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_SIGNATAIRE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="SIGNATAIRE"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdPersonne"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_PERSONNE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="SIGNATAIRE"/>
+  <Attribute
+    Name="Signature"
+    IsQueriable="false"
+    ColumnName="SIGNATURE"
+    SQLType="BLOB"
+    Type="oracle.jbo.domain.BlobDomain"
+    ColumnType="BLOB"
+    TableName="SIGNATAIRE"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="SIGNATAIRE"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="SIGNATAIRE"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="SIGNATAIRE"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="SIGNATAIRE"/>
+  <AccessorAttribute
+    Name="StructuresEO"
+    Association="model.assoc.SignataireToStructureAssoc"
+    AssociationEnd="model.assoc.SignataireToStructureAssoc.StructuresEO"
+    AssociationOtherEnd="model.assoc.SignataireToStructureAssoc.SignataireEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="StructuresVO"
+    ViewLink="model.viewlink.SignataireToStructureVL"
+    ViewLinkEnd="model.viewlink.SignataireToStructureVL.StructuresVO"
+    ViewLinkOtherEnd="model.viewlink.SignataireToStructureVL.SignataireVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkSigantaire"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_SIGANTAIRE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.SignataireEO.IdSignataire"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkSigantairePersonne">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_PERSONNES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_SIGANTAIRE_PERSONNE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.SignataireEO.IdPersonne"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkSignataireUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_SIGNATAIRE_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.SignataireEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkSignataireUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_SIGNATAIRE_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.SignataireEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

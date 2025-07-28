@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listrepecheuePageDef"
+                Package="evaluation.repechage">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="RepecheFilUe" RangeSize="25" DataControl="evaluationAppDataControl" id="RepecheFilUeIterator"/>
+    <iterator Binds="ResultatFilUERepechable" RangeSize="15" DataControl="evaluationAppDataControl"
+              id="ResultatFilUERepechableIterator"/>
+    <searchRegion Binds="ResultatFilUERepechableIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ResultatFilUERepechableQuery"/>
+    <iterator Binds="FilereEcInvalideRepech" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="FilereEcInvalideRepechIterator"/>
+    <searchRegion Binds="FilereEcInvalideRepechIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FilereEcInvalideRepechQuery"/>
+    <iterator Binds="FilEc" RangeSize="25" DataControl="evaluationAppDataControl" id="FilEcIterator"/>
+    <iterator Binds="StructureRegleRepeche" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="StructureRegleRepecheIterator"/>
+    <iterator Binds="ResultFilUeRepechableMed" RangeSize="15" DataControl="evaluationAppDataControl"
+              id="ResultFilUeRepechableMedIterator"/>
+    <searchRegion Binds="ResultFilUeRepechableMedIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ResultFilUeRepechableMedQuery"/>
+    <iterator Binds="ParcoursInfo" RangeSize="25" DataControl="evaluationAppDataControl" id="ParcoursInfoIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="RepecheFilUeIterator" ListOperMode="navigation" ListIter="RepecheFilUeIterator"
+          id="RepecheFilUe" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="ResultatFilUERepechableIterator" id="geRepechableFilUe"
+            InstanceName="evaluationAppDataControl.ResultatFilUERepechable" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="fil_ue" NDType="java.lang.Long"/>
+      <NamedData NDName="notInf" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="notSup" NDType="oracle.jbo.domain.Number"/>
+    </action>
+    <tree IterBinding="ResultatFilUERepechableIterator" id="ResultatFilUERepechable">
+      <nodeDefinition DefName="model.readOnlyView.ResultatFilUERepechableROVO" Name="ResultatFilUERepechable0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="Note"/>
+          <Item Value="Resultat"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="RepecherUe" RequiresUpdateModel="true" Action="invokeMethod" MethodName="RepecherUe"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.RepecherUe.dataControl.dataProvider">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="fil_ue" NDType="java.lang.Long"/>
+      <NamedData NDName="moyenne_valid" NDType="java.math.BigDecimal"/>
+      <NamedData NDName="inspedUe" NDType="java.lang.Long"/>
+      <NamedData NDName="inspedSem" NDType="java.lang.Long"/>
+      <NamedData NDName="prcrs_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getTotalCoefUe" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getTotalCoefUe"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getTotalCoefUe.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getTotalCoefUe_getTotalCoefUe_dataControl_dataProvider_getTotalCoefUe_result">
+      <NamedData NDName="fil_ue" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getTotalCoefEcInvalid" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getTotalCoefEcInvalid" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getTotalCoefEcInvalid.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getTotalCoefEcInvalid_getTotalCoefEcInvalid_dataControl_dataProvider_getTotalCoefEcInvalid_result">
+      <NamedData NDName="fil_ue" NDType="java.lang.Long"/>
+      <NamedData NDName="inspedUe" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="moyenne_valid" NDType="java.math.BigDecimal"/>
+    </methodAction>
+    <attributeValues IterBinding="RepecheFilUeIterator" id="IdFiliereUeSemstre">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstre"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="FilereEcInvalideRepechIterator" id="getFilEcInvalide"
+            InstanceName="evaluationAppDataControl.FilereEcInvalideRepech" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="filUe_id" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="moyenne_valid" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="inspedUe" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="FilereEcInvalideRepechIterator" id="FilereEcInvalideRepech">
+      <nodeDefinition DefName="model.readOnlyView.FilereEcInvalideRepechROVO" Name="FilereEcInvalideRepech0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="Coefficient"/>
+          <Item Value="Note"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="ResultatFilUERepechableIterator" id="Note">
+      <AttrNames>
+        <Item Value="Note"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="FilEcIterator" ListOperMode="navigation" ListIter="FilEcIterator" id="FilEc"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="StructureRegleRepecheIterator" id="getRegleRepech"
+            InstanceName="evaluationAppDataControl.StructureRegleRepeche" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="str_id" NDType="java.lang.Long"/>
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="RepecherUeMed" RequiresUpdateModel="true" Action="invokeMethod" MethodName="RepecherUeMed"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.RepecherUeMed.dataControl.dataProvider">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="inspedSem" NDType="java.lang.Long"/>
+      <NamedData NDName="inspedUe" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="fil_ue" NDType="java.lang.Long"/>
+      <NamedData NDName="fil_ec" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="ResultatFilUERepechableIterator" id="Resultat">
+      <AttrNames>
+        <Item Value="Resultat"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ResultFilUeRepechableMedIterator" id="geRepechableFilUeMed"
+            InstanceName="evaluationAppDataControl.ResultFilUeRepechableMed" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="fil_ue" NDType="java.lang.Long"/>
+      <NamedData NDName="fil_ec" NDType="java.lang.Long"/>
+      <NamedData NDName="notInf" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="notSup" NDType="oracle.jbo.domain.Number"/>
+    </action>
+    <tree IterBinding="ResultFilUeRepechableMedIterator" id="ResultFilUeRepechableMed">
+      <nodeDefinition DefName="model.readOnlyView.ResultFilUeRepechableMedROVO" Name="ResultFilUeRepechableMed0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="Moyenneue"/>
+          <Item Value="Note"/>
+          <Item Value="isRepechMedUEChecked" Binds="isRepechMedUEChecked"/>
+          <Item Value="IdInscriptionPedSemUe"/>
+          <Item Value="IdFiliereUeSemstreEc"/>
+          <Item Value="IdParcoursMaquetAnnee"/>
+          <Item Value="IdInscriptionPedSemestre"/>
+          <Item Value="IdFiliereUeSemstre"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="ResultFilUeRepechableMedIterator" id="IdInscriptionPedSemUe">
+      <AttrNames>
+        <Item Value="IdInscriptionPedSemUe"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResultFilUeRepechableMedIterator" id="IdFiliereUeSemstreEc">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstreEc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResultFilUeRepechableMedIterator" id="IdFiliereUeSemstre1">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResultFilUeRepechableMedIterator" id="IdParcoursMaquetAnnee">
+      <AttrNames>
+        <Item Value="IdParcoursMaquetAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ParcoursInfoIterator" ListOperMode="navigation" ListIter="ParcoursInfoIterator"
+          id="ParcoursInfo" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+  </bindings>
+</pageDefinition>

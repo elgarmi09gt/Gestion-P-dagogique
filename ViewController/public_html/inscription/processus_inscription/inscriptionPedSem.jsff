@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"
+            inlineStyle="height:120px;margin-top:30px;margin-bottom:20px;"/>
+  <af:outputText value="Formulaire Inscription Ped Semestre" id="ot1"
+                 inlineStyle="font-size:large;margin-left:10px;"/>
+  <af:panelFormLayout id="pfl1" inlineStyle="margin-top:20px;">
+    <af:inputText value="#{bindings.IdInscriptionPedagogique.inputValue}"
+                  label="#{bindings.IdInscriptionPedagogique.hints.label}"
+                  required="#{bindings.IdInscriptionPedagogique.hints.mandatory}"
+                  columns="#{bindings.IdInscriptionPedagogique.hints.displayWidth}"
+                  maximumLength="#{bindings.IdInscriptionPedagogique.hints.precision}"
+                  shortDesc="#{bindings.IdInscriptionPedagogique.hints.tooltip}" id="it1" visible="false">
+      <f:validator binding="#{bindings.IdInscriptionPedagogique.validator}"/>
+      <af:convertNumber groupingUsed="false" pattern="#{bindings.IdInscriptionPedagogique.format}"/>
+    </af:inputText>
+    <af:selectOneChoice value="#{bindings.UtiInsplSem.inputValue}" label="Semestre"
+                        required="#{bindings.UtiInsplSem.hints.mandatory}"
+                        shortDesc="#{bindings.UtiInsplSem.hints.tooltip}" id="soc2"
+                        visible="#{sessionScope.isSem == '1' ? false : true}">
+      <f:selectItems value="#{bindings.UtiInsplSem.items}" id="si4"/>
+      <f:validator binding="#{bindings.UtiInsplSem.validator}"/>
+    </af:selectOneChoice>
+    <af:selectOneChoice value="#{bindings.reInscripAdminRO.inputValue}" label="Semestre"
+                        required="#{bindings.reInscripAdminRO.hints.mandatory}"
+                        shortDesc="#{bindings.reInscripAdminRO.hints.tooltip}" id="soc1" autoSubmit="true"
+                        valueChangeListener="#{Inscriptionbean.onChangeSemestreListener}"
+                        visible="#{sessionScope.isNotSemRes == '1' ? false : true}">
+      <f:selectItems value="#{bindings.reInscripAdminRO.items}" id="si3"/>
+      <f:validator binding="#{bindings.reInscripAdminRO.validator}"/>
+    </af:selectOneChoice>
+    <af:selectOneRadio value="#{bindings.InsPedValide.inputValue}" label="Ins. Pédagogique validée"
+                       required="#{bindings.InsPedValide.hints.mandatory}"
+                       shortDesc="#{bindings.InsPedValide.hints.tooltip}" id="sor1" layout="horizontal">
+      <f:selectItems value="#{bindings.InsPedValide.items}" id="si1"/>
+      <f:validator binding="#{bindings.InsPedValide.validator}"/>
+    </af:selectOneRadio>
+    <af:selectOneRadio value="#{bindings.PassExam.inputValue}" label="Examen passé"
+                       required="#{bindings.PassExam.hints.mandatory}" shortDesc="#{bindings.PassExam.hints.tooltip}"
+                       id="sor2" layout="horizontal">
+      <f:selectItems value="#{bindings.PassExam.items}" id="si2"/>
+      <f:validator binding="#{bindings.PassExam.validator}"/>
+    </af:selectOneRadio>
+    <af:inputText value="#{bindings.CumulCredit.inputValue}" label="Cumul Crédit"
+                  required="#{bindings.CumulCredit.hints.mandatory}"
+                  columns="#{bindings.CumulCredit.hints.displayWidth}"
+                  maximumLength="#{bindings.CumulCredit.hints.precision}"
+                  shortDesc="#{bindings.CumulCredit.hints.tooltip}" id="it3"
+                  readOnly="#{sessionScope.isReinscription == '1' ? true : false}" partialTriggers="soc1">
+      <f:validator binding="#{bindings.CumulCredit.validator}"/>
+      <af:convertNumber groupingUsed="false" pattern="#{bindings.CumulCredit.format}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.DetteCredit.inputValue}" label="Dette Credit"
+                  required="#{bindings.DetteCredit.hints.mandatory}"
+                  columns="#{bindings.DetteCredit.hints.displayWidth}"
+                  maximumLength="#{bindings.DetteCredit.hints.precision}"
+                  shortDesc="#{bindings.DetteCredit.hints.tooltip}" id="it4"
+                  readOnly="#{sessionScope.isReinscription == '1' ? true : false}" partialTriggers="soc1">
+      <f:validator binding="#{bindings.DetteCredit.validator}"/>
+      <af:convertNumber groupingUsed="false" pattern="#{bindings.DetteCredit.format}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                  required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                  maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                  id="it5" visible="false">
+      <f:validator binding="#{bindings.UtiCree.validator}"/>
+      <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+    </af:inputText>
+  </af:panelFormLayout>
+  <af:button text="&lt;&lt; Précédent" id="b1" inlineStyle="margin-top:20px;margin-left:10px;"/>
+  <af:button text="Suivant >>" id="b2" inlineStyle="margin-left:20px;"
+             action="#{Inscriptionbean.inscriptionPedSemValider}"/>
+</ui:composition>

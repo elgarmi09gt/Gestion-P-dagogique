@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="detailNotesPageDef"
+                Package="evaluation.detaislNote">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="DelibSemDataDetailNote" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DelibSemDataDetailNoteIterator"/>
+    <iterator Binds="DetailNotes" RangeSize="25" DataControl="evaluationAppDataControl" id="DetailNotesIterator"/>
+    <iterator Binds="ParcoursInfo" RangeSize="25" DataControl="evaluationAppDataControl" id="ParcoursInfoIterator"/>
+    <iterator Binds="DetailNote" RangeSize="25" DataControl="evaluationAppDataControl" id="DetailNoteIterator"/>
+    <searchRegion Binds="DetailNoteIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="DetailNoteQuery"/>
+    <iterator Binds="NotesModeEnseInter" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="NotesModeEnseInterIterator"/>
+    <iterator Binds="UtilisateurPDTJury" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="UtilisateurPDTJuryIterator"/>
+  </executables>
+  <bindings>
+    <methodAction id="getEtatDeliberation" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getEtatDeliberation" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getEtatDeliberation.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getEtatDeliberation_getEtatDeliberation_dataControl_dataProvider_getEtatDeliberation_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+    </methodAction>
+    <list IterBinding="ParcoursInfoIterator" ListOperMode="navigation" ListIter="ParcoursInfoIterator"
+          id="ParcoursInfo" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="DetailNoteIterator" id="Datelieunaiss">
+      <AttrNames>
+        <Item Value="Datelieunaiss"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="DetailNoteIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="DetailNoteIterator" id="opSearchDetails" InstanceName="evaluationAppDataControl.DetailNote"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="p_numero" NDType="java.lang.String"/>
+      <NamedData NDName="p_calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="p_pma" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="DetailNoteIterator" id="DetailNote">
+      <nodeDefinition DefName="model.readOnlyView.DetailNotesROVO" Name="DetailNote0">
+        <AttrNames>
+          <Item Value="IdNoteModeEnsInter"/>
+          <Item Value="Elementconst"/>
+          <Item Value="Typecntrl"/>
+          <Item Value="IdTypeVerrou"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="NotesModeEnseignementInterNewVO"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="model.updatableview.NotesModeEnseignementInterNewVO">
+        <AttrNames>
+          <Item Value="Note"/>
+          <Item Value="IsAbsent"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="Rollback" DataControl="evaluationAppDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <methodAction id="UpdateIsAbsent" RequiresUpdateModel="true" Action="invokeMethod" MethodName="UpdateIsAbsent"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.UpdateIsAbsent.dataControl.dataProvider">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier_id" NDType="java.lang.Long"/>
+      <NamedData NDName="ips_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="DelibererDetailNote" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="DelibererDetailNote" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.DelibererDetailNote.dataControl.dataProvider">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier_id" NDType="java.lang.Long"/>
+      <NamedData NDName="ips_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="cloturerReclamation" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cloturerReclamation" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.cloturerReclamation.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.cloturerReclamation_cloturerReclamation_dataControl_dataProvider_cloturerReclamation_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getEtudiantEc" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getEtudiantEc"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getEtudiantEc.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getEtudiantEc_getEtudiantEc_dataControl_dataProvider_getEtudiantEc_result">
+      <NamedData NDName="anId" NDType="java.lang.Long"/>
+      <NamedData NDName="semId" NDType="java.lang.Long"/>
+      <NamedData NDName="prcrsIaqId" NDType="java.lang.Long"/>
+      <NamedData NDName="sessId" NDType="java.lang.Long"/>
+      <NamedData NDName="filUeId" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getEtudiantUe" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getEtudiantUe"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getEtudiantUe.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getEtudiantUe_getEtudiantUe_dataControl_dataProvider_getEtudiantUe_result">
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+      <NamedData NDName="sem_id" NDType="java.lang.Long"/>
+      <NamedData NDName="prcrs_maq_id" NDType="java.lang.Long"/>
+      <NamedData NDName="sess_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="UpdateIsToPublish" RequiresUpdateModel="true" Action="invokeMethod" MethodName="UpdateIsToPublish"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.UpdateIsToPublish.dataControl.dataProvider">
+      <NamedData NDName="calendrier_id" NDType="java.lang.Long"/>
+      <NamedData NDName="ips_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="UtilisateurPDTJuryIterator" id="getUtilisateurPdtJury"
+            InstanceName="evaluationAppDataControl.UtilisateurPDTJury" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

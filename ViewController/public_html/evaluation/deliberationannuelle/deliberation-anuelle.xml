@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="deliberation-anuelle">
+    <default-activity>isPublishedAllSemestre</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__3">
+      <managed-bean-name>DeliberationAnnuelelBean</managed-bean-name>
+      <managed-bean-class>view.beans.evaluation.deliberation_ann.DeliberationAnnuelelBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="deliberationannuelle">
+      <page>/evaluation/deliberationannuelle/deliberationannuelle.jsff</page>
+    </view>
+    <method-call id="ExecuteWithParams">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="DeliberationAnnuelle">
+      <method>#{bindings.DeliberationAnnuelle.execute}</method>
+      <outcome>
+        <fixed-outcome>DeliberationAnnuelle</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="etudiantsAnnuelle">
+      <page>/evaluation/deliberationannuelle/etudiantsAnnuelle.jsff</page>
+    </view>
+    <method-call id="ExecuteWithParams1">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="pv">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="prcrs">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="pvAnnuel">
+      <page>/evaluation/deliberationannuelle/pvAnnuel.jsff</page>
+    </view>
+    <router id="router1">
+      <case id="__12">
+        <expression>#{pageFlowScope.isPublishAllSemestre != 0}</expression>
+        <outcome>1</outcome>
+      </case>
+      <case id="__16">
+        <expression>#{pageFlowScope.isPublishAllSemestre == 0}</expression>
+        <outcome>2</outcome>
+      </case>
+      <default-outcome>2</default-outcome>
+    </router>
+    <method-call id="isPublishedAllSemestre">
+      <method>#{bindings.isPublishedAllSemestre.execute}</method>
+      <return-value>#{pageFlowScope.isPublishAllSemestre}</return-value>
+      <outcome>
+        <fixed-outcome>isPublishedAllSemestre</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Deliberer">
+      <method>#{bindings.Deliberer.execute}</method>
+      <outcome>
+        <fixed-outcome>Deliberer</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="DelibererAnnee">
+      <method>#{bindings.DelibererAnnee.execute}</method>
+      <outcome>
+        <fixed-outcome>DelibererAnnee</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="UpdateEnjembiste">
+      <method>#{bindings.UpdateEnjembiste.execute}</method>
+      <outcome>
+        <fixed-outcome>UpdateEnjembiste</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="IsDelibarateAn">
+      <method>#{bindings.IsDelibarateAn.execute}</method>
+      <return-value>#{pageFlowScope.isdelibeAn}</return-value>
+      <outcome>
+        <fixed-outcome>IsDelibarateAn</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="IsClosedAn">
+      <method>#{bindings.IsClosedAn.execute}</method>
+      <return-value>#{pageFlowScope.iscloseAn}</return-value>
+      <outcome>
+        <fixed-outcome>IsClosedAn</fixed-outcome>
+      </outcome>
+    </method-call>
+    <router id="router2">
+      <case id="__25">
+        <expression>#{sessionScope.id_session == 1}</expression>
+        <outcome>1</outcome>
+      </case>
+      <case id="__26">
+        <expression>#{sessionScope.id_session != 1}</expression>
+        <outcome>2</outcome>
+      </case>
+      <default-outcome>outcome1</default-outcome>
+    </router>
+    <method-call id="ExecuteWithParams2">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <router id="router3">
+      <case id="__32">
+        <expression>#{pageFlowScope.iscloseAn == 1}</expression>
+        <outcome>1</outcome>
+      </case>
+      <case id="__33">
+        <expression>#{pageFlowScope.iscloseAn != 1}</expression>
+        <outcome>2</outcome>
+      </case>
+      <default-outcome>outcome1</default-outcome>
+    </router>
+    <method-call id="IsOpenDoc">
+      <method>#{bindings.IsOpenDoc.execute}</method>
+      <return-value>#{pageFlowScope.isOpenDc}</return-value>
+      <outcome>
+        <fixed-outcome>IsOpenDoc</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__1">
+      <from-activity-id>ExecuteWithParams</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>DeliberationAnnuelle</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__4">
+      <from-activity-id>DeliberationAnnuelle</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome>DeliberationAnnuelle</from-outcome>
+        <to-activity-id>etudiantsAnnuelle</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__8">
+      <from-activity-id>pv</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>IsDelibarateAn</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__10">
+      <from-activity-id>prcrs</from-activity-id>
+      <control-flow-case id="__11">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>pvAnnuel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__13">
+      <from-activity-id>router1</from-activity-id>
+      <control-flow-case id="__14">
+        <from-outcome>2</from-outcome>
+        <to-activity-id>pvAnnuel</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__15">
+        <from-outcome>1</from-outcome>
+        <to-activity-id>IsClosedAn</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__17">
+      <from-activity-id>isPublishedAllSemestre</from-activity-id>
+      <control-flow-case id="__18">
+        <from-outcome>isPublishedAllSemestre</from-outcome>
+        <to-activity-id>router1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__19">
+      <from-activity-id>Deliberer</from-activity-id>
+      <control-flow-case id="__20">
+        <from-outcome>Deliberer</from-outcome>
+        <to-activity-id>DelibererAnnee</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__21">
+      <from-activity-id>DelibererAnnee</from-activity-id>
+      <control-flow-case id="__22">
+        <from-outcome>DelibererAnnee</from-outcome>
+        <to-activity-id>router2</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__6">
+      <from-activity-id>IsDelibarateAn</from-activity-id>
+      <control-flow-case id="__7">
+        <from-outcome>IsDelibarateAn</from-outcome>
+        <to-activity-id>IsOpenDoc</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__23">
+      <from-activity-id>IsClosedAn</from-activity-id>
+      <control-flow-case id="__24">
+        <from-outcome>IsClosedAn</from-outcome>
+        <to-activity-id>router3</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__27">
+      <from-activity-id>router2</from-activity-id>
+      <control-flow-case id="__28">
+        <from-outcome>1</from-outcome>
+        <to-activity-id>pv</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__29">
+        <from-outcome>2</from-outcome>
+        <to-activity-id>ExecuteWithParams2</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__30">
+      <from-activity-id>ExecuteWithParams2</from-activity-id>
+      <control-flow-case id="__31">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>IsDelibarateAn</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__34">
+      <from-activity-id>router3</from-activity-id>
+      <control-flow-case id="__35">
+        <from-outcome>2</from-outcome>
+        <to-activity-id>Deliberer</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__36">
+        <from-outcome>1</from-outcome>
+        <to-activity-id>router2</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__37">
+      <from-activity-id>IsOpenDoc</from-activity-id>
+      <control-flow-case id="__38">
+        <from-outcome>IsOpenDoc</from-outcome>
+        <to-activity-id>prcrs</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

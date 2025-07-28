@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="InscriptionPedSemestreEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="INSCRIPTION_PED_SEMESTRE"
+  AliasName="InscriptionPedSemestreEO"
+  BindingStyle="OracleName"
+  xmlns:validation="http://xmlns.oracle.com/adfm/validation">
+  <Attribute
+    Name="IdInscriptionPedSemestre"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_INSCRIPTION_PED_SEMESTRE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEMESTRE"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdInscriptionPedagogique"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEMESTRE"/>
+  <Attribute
+    Name="IdSemestre"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_SEMESTRE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEMESTRE"/>
+  <Attribute
+    Name="InsPedValide"
+    Precision="1"
+    Scale="0"
+    ColumnName="INS_PED_VALIDE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEMESTRE"/>
+  <Attribute
+    Name="PassExam"
+    Precision="1"
+    Scale="0"
+    ColumnName="PASS_EXAM"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEMESTRE"/>
+  <Attribute
+    Name="CumulCredit"
+    Precision="2"
+    Scale="0"
+    ColumnName="CUMUL_CREDIT"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEMESTRE">
+    <validation:RangeValidationBean
+      Name="CumulCreditRule0"
+      ResId="model.entities.InscriptionPedSemestreEO.CumulCredit_Rule_0"
+      OnAttribute="CumulCredit"
+      OperandType="LITERAL"
+      Inverse="false"
+      MinValue="0"
+      MaxValue="30"/>
+  </Attribute>
+  <Attribute
+    Name="DetteCredit"
+    Precision="2"
+    Scale="0"
+    ColumnName="DETTE_CREDIT"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEMESTRE">
+    <validation:RangeValidationBean
+      Name="DetteCreditRule0"
+      ResId="model.entities.InscriptionPedSemestreEO.DetteCredit_Rule_0"
+      OnAttribute="DetteCredit"
+      OperandType="LITERAL"
+      Inverse="false"
+      MinValue="0"
+      MaxValue="30"/>
+  </Attribute>
+  <Attribute
+    Name="Maj"
+    Precision="1"
+    Scale="0"
+    ColumnName="MAJ"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEMESTRE"/>
+  <Attribute
+    Name="Maj1"
+    Precision="1"
+    Scale="0"
+    ColumnName="MAJ1"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEMESTRE"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="INSCRIPTION_PED_SEMESTRE"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="INSCRIPTION_PED_SEMESTRE"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEMESTRE"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEMESTRE"/>
+  <ViewLinkAccessor
+    Name="ResultatsFilUeSemestreVO"
+    ViewLink="model.viewlink.InsPedSemUeToResFilUeSemVL"
+    ViewLinkEnd="model.viewlink.InsPedSemUeToResFilUeSemVL.ResultatsFilUeSemestreVO"
+    ViewLinkOtherEnd="model.viewlink.InsPedSemUeToResFilUeSemVL.InscriptionPedSemestreVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkInscriptionPedSemestre"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_INSCRIPTION_PED_SEMESTRE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionPedSemestreEO.IdInscriptionPedSemestre"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsPedSemInsPed">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_INSCRIPTIONS_PEDAGOGIQUES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_PED_SEM_INS_PED"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionPedSemestreEO.IdInscriptionPedagogique"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsPedSemSemestr">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_SEMESTRES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_PED_SEM_SEMESTR"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionPedSemestreEO.IdSemestre"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsPedSemUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_PED_SEM_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionPedSemestreEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsPedSemUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_PED_SEM_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionPedSemestreEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</Entity>

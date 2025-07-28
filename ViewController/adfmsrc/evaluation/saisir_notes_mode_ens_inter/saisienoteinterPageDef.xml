@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="saisienoteinterPageDef"
+                Package="evaluation.saisir_notes_mode_ens_inter">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UeEvalNew" RangeSize="25" DataControl="evaluationAppDataControl" id="UeEvalNewIterator"/>
+    <iterator Binds="EcEvalNew" RangeSize="25" DataControl="evaluationAppDataControl" id="EcEvalNewIterator"/>
+    <iterator Binds="EcEvalTypeCntrlNew" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="EcEvalTypeCntrlNewIterator"/>
+    <iterator Binds="EcEvalTypeCntrModeCntrllNew" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="EcEvalTypeCntrModeCntrllNewIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="UeEvalNewIterator" ListOperMode="navigation" ListIter="UeEvalNewIterator" id="UeEvalNew"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="EcEvalNewIterator" ListOperMode="navigation" ListIter="EcEvalNewIterator" id="EcEvalNew"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="EcEvalTypeCntrlNewIterator" ListOperMode="navigation" ListIter="EcEvalTypeCntrlNewIterator"
+          id="EcEvalTypeCntrlNew" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibTypeCtrl"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="EcEvalTypeCntrModeCntrllNewIterator" ListOperMode="navigation"
+          ListIter="EcEvalTypeCntrModeCntrllNewIterator" id="EcEvalTypeCntrModeCntrllNew" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibModeCtrl"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="UeEvalNewIterator" id="CodificationUe">
+      <AttrNames>
+        <Item Value="Codification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcEvalNewIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcEvalTypeCntrlNewIterator" id="LibTypeCtrl">
+      <AttrNames>
+        <Item Value="LibTypeCtrl"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcEvalTypeCntrModeCntrllNewIterator" id="LibModeCtrl">
+      <AttrNames>
+        <Item Value="LibModeCtrl"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcEvalTypeCntrlNewIterator" id="LibelleCourtCtrl">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UeEvalNewIterator" id="LibAnnee">
+      <AttrNames>
+        <Item Value="LibAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcEvalNewIterator" id="IdFiliereUeSemstreEc">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstreEc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UeEvalNewIterator" id="LibNivForm">
+      <AttrNames>
+        <Item Value="LibNivForm"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isGenereAnonymat" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isGenereAnonymat"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isGenereAnonymat.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isGenereAnonymat_isGenereAnonymat_dataControl_dataProvider_isGenereAnonymat_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="anne" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="sessions" NDType="java.lang.Long"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

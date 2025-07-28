@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ScolNivFormIntegratedROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ScolNivFormIntegratedROVORowImpl"
+  ComponentClass="model.readOnlyView.ScolNivFormIntegratedROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ScolNivFormIntegratedROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT DISTINCT nf.ID_NIVEAU_FORMATION,nf.ANCIEN_CODE,nf.id_formation,fa.CODE_FORMATION,nf.LIBELLE_LONG,nf.LIBELLE_COURT,sec.code section_code,resp.Responsable        
+FROM SECTIONS@scolProdref sec        
+JOIN NIVEAUX_SECTIONS@scolProdref ns on sec.code=ns.section_code        
+join  NIVEAUX_SECTION_FORMATIONS@scolProdref nsf ON ns.CODE_NIV_SEC = nsf.CODE_NIV_SEC                      
+join Formation@scolProdref fr ON nsf.CODE_FORMATION = fr.CODE_FORMATION                     
+join FORMATION_ACC_FORMATION@scolProdref faf ON faf.ID_FORMATION = fr.CODE_FORMATION                     
+join FORMATION_ACCREDITE@scolProdref fa ON faf.ID_FORMATION_ACC = fa.CODE_FORMATION                 
+JOIN NIVEAUX_FORMATIONS nf on ns.code_niv_sec=nf.ANCIEN_CODE     
+Left Join (    
+Select unf.ID_NIVEAU_FORMATION,uti.ID_UTILISATEUR,pers.PRENOMS||' '|| pers.nom Responsable from UTILISATEUR_NIVEAUX_FORMATIONS unf     
+Join UTILISATEURS uti on unf.ID_UTILISATEUR=uti.ID_UTILISATEUR    
+Join PERSONNES pers on uti.ID_PERSONNE=pers.ID_PERSONNE     
+WHERE unf.ROLE='RESPONSABLE NIVEAU'    
+) resp on nf.ID_NIVEAU_FORMATION=resp.ID_NIVEAU_FORMATION    
+ORDER BY nf.LIBELLE_LONG]]></SQLQuery>
+  <ViewAttribute
+    Name="IdNiveauFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION"
+    Expression="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="AncienCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ANCIEN_CODE"
+    Expression="ANCIEN_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_FORMATION"
+    Expression="ID_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="CodeFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="CODE_FORMATION"
+    Expression="CODE_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="120"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="120"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleCourt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_COURT"
+    Expression="LIBELLE_COURT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SectionCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SECTION_CODE"
+    Expression="SECTION_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Responsable"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="301"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="RESPONSABLE"
+    Expression="RESPONSABLE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="301"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewLinkAccessor
+    Name="ScolDeptIntegrationFrROVO"
+    ViewLink="model.viewlink.ScolDeptToScolNivFormIntegratedVL"
+    Type="model.readOnlyView.ScolDeptIntegrationFrROVORowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ScolFormationIntegrationROVO"
+    ViewLink="model.viewlink.ScolFrToNivIntegratedVL"
+    Type="model.readOnlyView.ScolFormationIntegrationROVORowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

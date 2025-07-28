@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="initialisationPageDef"
+                Package="evaluation.initialisation">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Parcours" RangeSize="-1" DataControl="evaluationAppDataControl" id="ParcoursIterator"/>
+    <iterator Binds="isParametredCalendar" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="isParametredCalendarIterator"/>
+    <iterator Binds="isClosedInscription" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="isClosedInscriptionIterator"/>
+    <iterator Binds="ParcoursMaqAnCalendrier" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="ParcoursMaqAnCalendrierIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="ParcoursIterator" ListOperMode="navigation" ListIter="ParcoursIterator" id="Parcours"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <methodAction id="initialiserNoteModeEnsFiliere" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="initialiserNoteModeEnsFiliere" IsViewObjectMethod="false"
+                  DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.initialiserNoteModeEnsFiliere.dataControl.dataProvider">
+      <NamedData NDName="anne_univers" NDType="java.lang.Integer"/>
+      <NamedData NDName="niv_fomr_parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="session_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="isParametredCalendarIterator" id="isParametredCalendar"
+            InstanceName="evaluationAppDataControl.isParametredCalendar" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_semestre" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_session" NDType="java.lang.Integer"/>
+    </action>
+    <attributeValues IterBinding="ParcoursIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="isClosedInscriptionIterator" id="isClosedInscription"
+            InstanceName="evaluationAppDataControl.isClosedInscription" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="traitementEnjambiste" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="traitementEnjambiste" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.traitementEnjambiste.dataControl.dataProvider">
+      <NamedData NDName="niv_fomr_parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="anne_univers" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="Initialiser" RequiresUpdateModel="true" Action="invokeMethod" MethodName="Initialiser"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.Initialiser.dataControl.dataProvider">
+      <NamedData NDName="prcrs_mq_an_id" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="ParcoursMaqAnCalendrierIterator" id="getParcoursMaqAnCal"
+            InstanceName="evaluationAppDataControl.ParcoursMaqAnCalendrier" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="sess" NDType="java.lang.Long"/>
+      <NamedData NDName="maquette" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="isMaquetteValide" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isMaquetteValide"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isMaquetteValide.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isMaquetteValide_isMaquetteValide_dataControl_dataProvider_isMaquetteValide_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="anne" NDType="java.lang.Long"/>
+      <NamedData NDName="maquette" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getInsc" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getInsc"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getInsc.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getInsc_getInsc_dataControl_dataProvider_getInsc_result">
+      <NamedData NDName="pma" NDType="java.lang.Long"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

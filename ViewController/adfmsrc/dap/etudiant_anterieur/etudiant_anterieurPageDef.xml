@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="etudiant_anterieurPageDef"
+                Package="dap.etudiant_anterieur">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AnneeUniverROVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="AnneeUniverROVOIterator"/>
+    <iterator Binds="InscriptionsAntEtd" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="InscriptionsAntEtdIterator"/>
+    <searchRegion Binds="InscriptionsAntEtdIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="InscriptionsAntEtdQuery"/>
+  </executables>
+  <bindings>
+    <list IterBinding="AnneeUniverROVOIterator" ListOperMode="navigation" ListIter="AnneeUniverROVOIterator"
+          id="AnneeUniverROVO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="AnneeUniverROVOIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="InscriptionsAntEtdIterator" id="getInscriptionAntérieurs"
+            InstanceName="evaluationAppDataControl.InscriptionsAntEtd" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="etd_numero" NDType="java.lang.String"/>
+      <NamedData NDName="p_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="etab_code" NDType="java.lang.String"/>
+    </action>
+    <tree IterBinding="InscriptionsAntEtdIterator" id="InscriptionsAntEtd">
+      <nodeDefinition DefName="model.readOnlyView.InscriptionsAntEtdROVO" Name="InscriptionsAntEtd0">
+        <AttrNames>
+          <Item Value="Niveauformation"/>
+          <Item Value="Anneeunivers"/>
+          <Item Value="Liboption"/>
+          <Item Value="Resultat"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="InscriptionsAntEtdIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAntEtdIterator" id="Prenom">
+      <AttrNames>
+        <Item Value="Prenom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAntEtdIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAntEtdIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAntEtdIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAntEtdIterator" id="CodeNivSec">
+      <AttrNames>
+        <Item Value="CodeNivSec"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAntEtdIterator" id="CodeOption">
+      <AttrNames>
+        <Item Value="CodeOption"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

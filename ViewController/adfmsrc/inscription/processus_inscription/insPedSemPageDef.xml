@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="insPedSemPageDef"
+                Package="inscription.processus_inscription">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="InscriptPedSemRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="InscriptPedSemROIterator"/>
+    <iterator Binds="InscriptPedSemUeRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptPedSemUeROIterator"/>
+    <iterator Binds="InscriptionsPedagogiques" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptionsPedagogiquesIterator"/>
+    <taskFlow id="taskflowdetailcursus1"
+              taskFlowId="/inscription/cursus_etudiant/task-flow-detail-cursus.xml#task-flow-detail-cursus"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="detailhistoriqueinscription1"
+              taskFlowId="/inscription/historique_inscription/detail-historique-inscription.xml#detail-historique-inscription"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="tasketudbu1" taskFlowId="/inscription/etudiant_bu/task-etud-bu.xml#task-etud-bu" activation="deferred"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="paiementetudtk1" taskFlowId="/inscription/paiement_etudiant/paiement-etud-tk.xml#paiement-etud-tk"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <iterator Binds="listeInsPed" RangeSize="10" DataControl="inscriptionAppDataControl" id="listeInsPedIterator"/>
+    <iterator Binds="listeUeValide" RangeSize="10" DataControl="inscriptionAppDataControl" id="listeUeValideIterator"/>
+    <taskFlow id="responsableetudtk1" taskFlowId="/inscription/responsable/responsable-etud-tk.xml#responsable-etud-tk"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="etudianttictk1" taskFlowId="/inscription/etudiant_tic/etudiant-tic-tk.xml#etudiant-tic-tk"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <iterator Binds="Etudiants" RangeSize="10" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="Personnes" RangeSize="10" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="SemestreReDoubleRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="SemestreReDoubleROIterator"/>
+    <iterator Binds="SemRedoubleRO" RangeSize="10" DataControl="inscriptionAppDataControl" id="SemRedoubleROIterator"/>
+    <iterator Binds="LesInscPedSem" RangeSize="25" DataControl="inscriptionAppDataControl" id="LesInscPedSemIterator"/>
+    <iterator Binds="UeInsc" RangeSize="10" DataControl="inscriptionAppDataControl" id="UeInscIterator"/>
+  </executables>
+  <bindings>
+    <methodAction id="isInsPedSem" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isInsPedSem"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isInsPedSem.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isInsPedSem_isInsPedSem_dataControl_dataProvider_isInsPedSem_result">
+      <NamedData NDName="id_ins_ped" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="InscriptPedSemUeROIterator" id="ExecuteWithParams1"
+            InstanceName="inscriptionAppDataControl.InscriptPedSemUeRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Long"/>
+      <NamedData NDName="id_pers" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdParcoursMaquetAnnee">
+      <AttrNames>
+        <Item Value="IdParcoursMaquetAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isInsPedSemUe" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isInsPedSemUe"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isInsPedSemUe.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isInsPedSemUe_isInsPedSemUe_dataControl_dataProvider_isInsPedSemUe_result">
+      <NamedData NDName="id_ins_ped_sem" NDType="java.lang.Long"/>
+    </methodAction>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="listeInsPedIterator" id="IdNiveauFormation">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="listeUeValideIterator" id="getListeUeValider"
+            InstanceName="inscriptionAppDataControl.listeUeValide" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_niv_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Long"/>
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="listeInsPedIterator" id="IdInscriptionPedagogiqueListeInsc">
+      <AttrNames>
+        <Item Value="IdInscriptionPedagogique"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantsIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantsIterator" id="Mobilite">
+      <AttrNames>
+        <Item Value="Mobilite"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="SemestreReDoubleROIterator" ListOperMode="navigation" ListIter="SemestreReDoubleROIterator"
+          id="SemestreReDoubleRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="SemestreReDoubleROIterator" id="IdSemestreDoub">
+      <AttrNames>
+        <Item Value="IdSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="IdSemestre">
+      <AttrNames>
+        <Item Value="IdSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantsIterator" id="IdEtudiant">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="listeInsPedIterator" id="IdParcoursMaquetAnneeListInsc">
+      <AttrNames>
+        <Item Value="IdParcoursMaquetAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="listeInsPedIterator" id="Niveau">
+      <AttrNames>
+        <Item Value="Niveau"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="SemRedoubleROIterator" id="getResultRedouble"
+            InstanceName="inscriptionAppDataControl.SemRedoubleRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_parc_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="SemestreReDoubleROIterator" id="Execute"
+            InstanceName="inscriptionAppDataControl.SemestreReDoubleRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="iteratorExecute"/>
+    <attributeValues IterBinding="LesInscPedSemIterator" id="CumulCredit1">
+      <AttrNames>
+        <Item Value="CumulCredit"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LesInscPedSemIterator" id="DetteCredit1">
+      <AttrNames>
+        <Item Value="DetteCredit"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="LesInscPedSemIterator" id="InsPedValide1" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="InsPedValide"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="1"/>
+        <Item Value="0"/>
+      </ValueList>
+    </button>
+    <action IterBinding="LesInscPedSemIterator" id="getLesInscPedSem"
+            InstanceName="inscriptionAppDataControl.LesInscPedSem" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_insc_ped" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="UeInscIterator" id="getUeInsc" InstanceName="inscriptionAppDataControl.UeInsc"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_insc_ped" NDType="java.lang.Long"/>
+      <NamedData NDName="id_parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

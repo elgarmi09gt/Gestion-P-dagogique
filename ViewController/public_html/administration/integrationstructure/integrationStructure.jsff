@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="vertical" inlineStyle="margin:10px">
+    <af:panelGroupLayout id="pgl2" layout="vertical">
+    <af:outputFormatted value="Etablissement" id="of4"
+                                    inlineStyle="font-size:medium; font-weight:bolder; "/>
+      <af:selectOneChoice value="#{bindings.ScolEtablissement.inputValue}"
+                          required="#{bindings.ScolEtablissement.hints.mandatory}"
+                          shortDesc="#{bindings.ScolEtablissement.hints.tooltip}" id="soc1"
+                          contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:100%"
+                          autoSubmit="true" valueChangeListener="#{AdministrationBean.OnEtabValueChanged}">
+        <f:selectItems value="#{bindings.ScolEtablissement.items}" id="si1"/>
+        <f:validator binding="#{bindings.ScolEtablissement.validator}"/>
+      </af:selectOneChoice>
+    </af:panelGroupLayout>
+    <af:spacer width="10" height="10" id="s1"/>
+    <af:panelGroupLayout id="pgl3" layout="vertical">
+    <af:outputFormatted value="Département" id="of1" inlineStyle="font-size:medium; font-weight:bolder; "/>
+      <af:selectOneChoice value="#{bindings.ScolDepartement.inputValue}"
+                          required="#{bindings.ScolDepartement.hints.mandatory}"
+                          shortDesc="#{bindings.ScolDepartement.hints.tooltip}" id="soc2"
+                          contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:100%"
+                          autoSubmit="true" valueChangeListener="#{AdministrationBean.OnDeptValueChanged}">
+        <f:selectItems value="#{bindings.ScolDepartement.items}" id="si2"/>
+        <f:validator binding="#{bindings.ScolDepartement.validator}"/>
+      </af:selectOneChoice>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl4" layout="horizontal" binding="#{AdministrationBean.btnpan}">
+      <af:button text="Importer" id="b1"
+                 inlineStyle="font-size:small; border-radius:8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-top:10px"
+                 actionListener="#{AdministrationBean.onIntegrateStructClicked}"/>
+      <af:spacer width="10" height="10" id="s2"/>
+      <af:button text="Créer Admin Etablissement" id="b2"
+                 inlineStyle="font-size:small; border-radius:8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-top:10px"
+                 disabled="#{sessionScope.is_disi_creable == '1' ? false : true}">
+        <af:showPopupBehavior popupId="p1"/>
+      </af:button>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{AdministrationBean.popupchooseyear}">
+      <af:dialog id="d1" type="yesNo" affirmativeTextAndAccessKey="Enregistrer"
+                 noTextAndAccessKey="Annuler" dialogListener="#{AdministrationBean.OnCreateDisiAction}" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl10" layout="vertical" styleClass="AFStretchWidth">
+          <af:panelGroupLayout id="pgl5" layout="vertical" halign="center">
+            <af:outputFormatted value="Veuillez Choisir Une Année" id="of2"
+                                inlineStyle="font-size:medium; font-weight:bolder; "/>
+            <af:selectOneChoice value="#{bindings.AnneeUniverROVO.inputValue}"
+                                required="#{bindings.AnneeUniverROVO.hints.mandatory}"
+                                shortDesc="#{bindings.AnneeUniverROVO.hints.tooltip}" id="soc3"
+                                contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:100%"
+                                autoSubmit="true">
+              <f:selectItems value="#{bindings.AnneeUniverROVO.items}" id="si3"/>
+              <f:validator binding="#{bindings.AnneeUniverROVO.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+              binding="#{AdministrationBean.popupsuccessintegrated}">
+      <af:dialog id="d2" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl6" layout="vertical" halign="center">
+          <af:icon name="info" id="i3"/>
+          <af:outputFormatted value="Intégration éffectuée avec success" id="of3"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3"
+              binding="#{AdministrationBean.popupfailedintegration}">
+      <af:dialog id="d3" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl7" layout="vertical" halign="center">
+          <af:icon name="error" id="i2"/>
+          <af:outputFormatted value="L'intégration a échouée : #{sessionScope.msg}" id="of5"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p5" binding="#{AdministrationBean.popupDisiok}">
+      <af:dialog id="d4" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl8" layout="vertical" halign="center">
+          <af:icon name="info" id="i1"/>
+          <af:outputFormatted value="Import bien effectué !" id="of7"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{AdministrationBean.popupDisifailed}">
+      <af:dialog id="d5" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl9" layout="vertical" halign="center">
+          <af:icon name="error" id="i4"/>
+          <af:outputFormatted value="Import échoué : #{sessionScope.err_msg}" id="of6"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</ui:composition>

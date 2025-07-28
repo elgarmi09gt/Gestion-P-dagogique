@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="DelibSemFilEcROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.DelibSemFilEcROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="anne"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="sem"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="sess"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="fil_ue"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT DISTINCT fse.ID_FILIERE_UE_SEMSTRE_EC,ec.LIBELLE_LONG , fse.COEFFICIENT,mec.ID_PARCOURS_MAQUETTE_ANNEE,fus.ID_FILIERE_UE_SEMSTRE                    
+FROM  FILIERE_UE_SEMSTRE fus     
+join PARCOURS_MAQUETTE_ANNEE pma on fus.ID_MAQUETTE=pma.ID_MAQUETTE     
+join NIVEAUX_FORMATION_PARCOURS nfp on pma.ID_NIVEAU_FORMATION_PARCOURS=nfp.ID_NIVEAU_FORMATION_PARCOURS     
+join NIVEAU_FORMATION_COHORTES nfc on nfp.ID_NIVEAU_FORMATION_COHORTE=nfc.ID_NIVEAU_FORMATION_COHORTE     
+join CALENDRIER_DELIBERATION cd on nfc.ID_NIVEAU_FORMATION_COHORTE=cd.ID_NIVEAU_FORMATION_COHORTE     
+and fus.ID_SEMESTRE=cd.ID_SEMESTRE and pma.ID_ANNEES_UNIVERS=cd.ID_ANNEES_UNIVERS      
+join FILIERE_UE_SEMSTRE_EC fse on fus.ID_FILIERE_UE_SEMSTRE=fse.ID_FILIERE_UE_SEMSTRE     
+join MODE_CONTROLE_EC mec on fse.ID_FILIERE_UE_SEMSTRE_EC=mec.ID_FILIERE_UE_SEMSTRE_EC     
+and mec.ID_PARCOURS_MAQUETTE_ANNEE=pma.ID_PARCOURS_MAQUET_ANNEE     
+JOIN  ec ON ec.ID_EC = fse.ID_EC                    
+WHERE pma.ID_ANNEES_UNIVERS =:anne AND cd.ID_SEMESTRE =:sem AND pma.ID_PARCOURS_MAQUET_ANNEE =:parcours              
+AND cd.ID_SESSION =:sess AND fus.ID_FILIERE_UE_SEMSTRE=:fil_ue             
+ORDER BY fse.ID_FILIERE_UE_SEMSTRE_EC]]></SQLQuery>
+
+  <ViewAttribute
+    Name="IdFiliereUeSemstreEc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_FILIERE_UE_SEMSTRE_EC"
+    Expression="ID_FILIERE_UE_SEMSTRE_EC"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Coefficient"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="COEFFICIENT"
+    Expression="COEFFICIENT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdParcoursMaquetteAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PARCOURS_MAQUETTE_ANNEE"
+    Expression="ID_PARCOURS_MAQUETTE_ANNEE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdFiliereUeSemstre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_FILIERE_UE_SEMSTRE"
+    Expression="ID_FILIERE_UE_SEMSTRE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdFiliereUeSemstreEc"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="user_role_tf_user_role_tf_ExecuteWithParamsPageDef" Package="administration.userRoles"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="UtilisateurStructure" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="UtilisateurStructureIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="UtilisateurStructureIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="s_id" NDValue="#{sessionScope.id_str}" NDType="java.lang.Integer"/>
+    </action>
+  </bindings>
+</pageDefinition>

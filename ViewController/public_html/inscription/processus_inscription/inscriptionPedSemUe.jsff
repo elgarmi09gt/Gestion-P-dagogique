@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"/>
+  <af:table value="#{bindings.InscPedSemUe.collectionModel}" var="row" rows="#{bindings.InscPedSemUe.rangeSize}"
+            emptyText="#{bindings.InscPedSemUe.viewable ? 'No data to display.' : 'Access Denied.'}"
+            rowBandingInterval="0" selectedRowKeys="#{bindings.InscPedSemUe.collectionModel.selectedRow}"
+            selectionListener="#{bindings.InscPedSemUe.collectionModel.makeCurrent}" rowSelection="single"
+            fetchSize="#{bindings.InscPedSemUe.rangeSize}" filterModel="#{bindings.InscPedSemUeQuery.queryDescriptor}"
+            filterVisible="true" queryListener="#{bindings.InscPedSemUeQuery.processQuery}" varStatus="vs" id="t2"
+            inlineStyle="width:425px;" visible="#{sessionScope.pasInsUe == '1' ? false : true}">
+    <af:column sortProperty="#{bindings.InscPedSemUe.hints.Codification.name}" filterable="true" sortable="true"
+               headerText="#{bindings.InscPedSemUe.hints.Codification.label}" id="c1" width="300">
+      <af:outputText value="#{row.Codification}" shortDesc="#{bindings.InscPedSemUe.hints.Codification.tooltip}"
+                     id="ot1"/>
+    </af:column>
+    <af:column headerText="Sélect" id="c2">
+      <af:selectBooleanCheckbox value="#{row.bindings.case_cocher.inputValue}" label="#{row.bindings.case_cocher.label}"
+                                shortDesc="#{bindings.InscPedSemUe.hints.case_cocher.tooltip}" id="sbc1"/>
+    </af:column>
+  </af:table>
+  <af:table value="#{bindings.reInsResultUe.collectionModel}" var="row" rows="#{bindings.reInsResultUe.rangeSize}"
+            emptyText="#{bindings.reInsResultUe.viewable ? 'No data to display.' : 'Access Denied.'}"
+            rowBandingInterval="0" selectedRowKeys="#{bindings.reInsResultUe.collectionModel.selectedRow}"
+            selectionListener="#{bindings.reInsResultUe.collectionModel.makeCurrent}" rowSelection="single"
+            fetchSize="#{bindings.reInsResultUe.rangeSize}" filterModel="#{bindings.reInsResultUeQuery.queryDescriptor}"
+            filterVisible="true" queryListener="#{bindings.reInsResultUeQuery.processQuery}" varStatus="vs" id="t3"
+            inlineStyle="width:425px;" visible="#{sessionScope.InsUe == '1' ? false : true}">
+    <af:column sortProperty="#{bindings.reInsResultUe.hints.Codification.name}" filterable="true" sortable="true"
+               headerText="#{bindings.reInsResultUe.hints.Codification.label}" id="c4" width="300">
+      <af:outputText value="#{row.Codification}" shortDesc="#{bindings.reInsResultUe.hints.Codification.tooltip}"
+                     id="ot3"/>
+    </af:column>
+    <af:column headerText="Select" id="c3">
+      <af:selectBooleanCheckbox value="#{row.bindings.case_cocher1.inputValue}" label="#{row.bindings.case_cocher.label}"
+                                shortDesc="#{bindings.reInsResultUe.hints.case_cocher.tooltip}" id="sbc2"/>
+    </af:column>
+  </af:table>
+  <af:button text="&lt;&lt; Précédent" id="b1" inlineStyle="margin-top:20px;"/>
+  <af:button text="Suivant >>" id="b2" inlineStyle="margin-left:10px;" action="#{Inscriptionbean.validerInscPedSemUe}"/>
+</ui:composition>

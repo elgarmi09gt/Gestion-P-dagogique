@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:iterator id="i4" value="#{DeliberatioUeBean.getRegleRepech()}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll" halign="center"
+                       visible="#{pageFlowScope.etatDeliberation == 9 ? false : pageFlowScope.isAnClosed != 0 ?  false : true}">
+    <af:panelGroupLayout id="pgl2" layout="vertical"
+                         inlineStyle="margin:10px 0;border : none" halign="center">
+      <af:outputFormatted value="#{bindings.ParcoursInfo.inputValue}(SEMESTRE #{sessionScope.id_smstre} -- #{sessionScope.id_session != '1' ? 'SESSION DE RATTRAPAGE' : 'SESSION NORMALE'})"
+                          id="of4" inlineStyle="font-style:italic; font-size:large;color : #2898e8"/>
+      <af:panelGroupLayout id="pgl3" layout="vertical">
+        <af:outputFormatted value="Moyenne" id="of11" inlineStyle="font-weight: bold; font-size: 18px"
+                            styleUsage="pageStamp"/>
+        <af:panelGroupLayout id="pgl12" layout="horizontal">
+          <af:panelGroupLayout id="pgl11" layout="vertical">
+            <af:inputNumberSpinbox id="ins1" labelStyle="font-weight: bold; font-size: 18px"
+                                   contentStyle="font-size: 18px; width:150px; border: solid 2px #2897e8; border-radius: 5px; height:30px"
+                                   label="De" binding="#{DeliberationSemestrielleBean.repsemNote}" autoSubmit="true"/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl6" layout="vertical">
+            <af:inputNumberSpinbox id="ins2" labelStyle="font-weight: bold; font-size: 18px"
+                                   contentStyle="font-size: 18px; width:150px; border: solid 2px #2897e8; border-radius: 5px; height:30px"
+                                   label="à" binding="#{DeliberationSemestrielleBean.repsemnoteref}" autoSubmit="true"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:spacer width="30" height="10" id="s1"/>
+      <af:panelGroupLayout id="pgl13" layout="vertical">
+        <af:outputFormatted value="Crédit" id="of12" inlineStyle="font-weight: bold; font-size: 18px"
+                            styleUsage="pageStamp"/>
+        <af:panelGroupLayout id="pgl14" layout="horizontal">
+            
+          <af:inputNumberSpinbox label="De" id="ins3"
+                                 contentStyle="font-size: 18px; width:150px; border: solid 2px #2897e8; border-radius: 5px; height:30px"
+                                 labelStyle="font-weight: bold; font-size: 18px"
+                                 binding="#{DeliberationSemestrielleBean.repsemCred}" autoSubmit="true"/>
+          <af:inputNumberSpinbox label="à" id="ins4"
+                                 contentStyle="font-size: 18px; width:150px; border: solid 2px #2897e8; border-radius: 5px; height:30px"
+                                 labelStyle="font-weight: bold; font-size: 18px"
+                                 binding="#{DeliberationSemestrielleBean.repsemcredref}" autoSubmit="true"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl5" layout="vertical">
+        <af:button text="Rechercher" id="b1"
+                   inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px;"
+                   icon="/images/icons8-search-24.png"
+                   disabledIcon="/images/disable-24.png"
+                   actionListener="#{DeliberationSemestrielleBean.OnRepechableSemAction}"
+                   disabled="#{sessionScope.regle_repeche !=  '2'  ?  false : true }"/>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl4" binding="#{DeliberationSemestrielleBean.repSemPanGrp}" layout="scroll">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{DeliberationSemestrielleBean.repsemPanCol}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t3">
+            <af:button text="Repêcher Tous" id="b4"
+                       inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px;">
+              <af:showPopupBehavior popupId="::p5"/>
+            </af:button>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.RepechableSemestre.collectionModel}" var="row"
+                  rows="#{bindings.RepechableSemestre.rangeSize}"
+                  emptyText="#{bindings.RepechableSemestre.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.RepechableSemestre.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.RepechableSemestre.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.RepechableSemestre.rangeSize}"
+                  filterModel="#{bindings.RepechableSemestreQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.RepechableSemestreQuery.processQuery}" varStatus="vs" id="t1"
+                  scrollPolicy="page" binding="#{DeliberationSemestrielleBean.repSemTab}">
+          <af:column sortProperty="#{bindings.RepechableSemestre.hints.Numero.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.NUMERO}" id="c1" width="150">
+            <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.RepechableSemestre.hints.Prenoms.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle1.PENOM}" id="c2" width="250">
+            <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.RepechableSemestre.hints.Nom.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle1.NOM}" id="c3" width="150">
+            <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of3"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.RepechableSemestre.hints.Note.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.MOYENNE_SEMESTRE}" id="c4" width="100">
+            <af:outputFormatted value="#{row.bindings.Note.inputValue}" id="of16">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.RepechableSemestre.hints.Note.format}"/>
+            </af:outputFormatted>
+          </af:column>
+          <af:column headerText="#{viewcontrollerBundle.CREDIT}" id="c13">
+            <af:outputText value="#{row.Credit}" shortDesc="#{bindings.RepechableSemestre.hints.Credit.tooltip}"
+                           id="ot4">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.RepechableSemestre.hints.Credit.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.RepechableSemestre.hints.Resultat.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.RESULTAT}" id="c5" width="102">
+            <af:selectOneChoice value="#{row.bindings.Resultat.inputValue}" label="#{row.bindings.Resultat.label}"
+                                required="#{bindings.RepechableSemestre.hints.Resultat.mandatory}"
+                                shortDesc="#{bindings.RepechableSemestre.hints.Resultat.tooltip}" readOnly="true"
+                                id="soc1" inlineStyle="font-size:large;" contentStyle="font-size:large;">
+              <f:selectItems value="#{row.bindings.Resultat.items}" id="si1"/>
+              <f:validator binding="#{row.bindings.Resultat.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column id="c7" headerText="#{viewcontrollerBundle.DETAIL_NOTE}">
+            <af:button id="b3" icon="/images/details-24.png"
+                       actionListener="#{DeliberationSemestrielleBean.OnDetailNoteAction}" disabledIcon="/images/disable-24.png"/>
+          </af:column>
+          <af:column id="c6" headerText="#{viewcontrollerBundle.REPEACHER}" width="100">
+            <af:button id="b2" icon="/images/passed-24.png"
+                       disabledIcon="/images/disable-24.png">
+              <af:showPopupBehavior popupId=":::p2"/>
+            </af:button>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:panelGroupLayout id="pgl15" layout="vertical"
+                       visible="#{pageFlowScope.isAnClosed == 1 ? true : pageFlowScope.etatDeliberation == 9 ? true : false}" halign="center">
+    
+    <af:outputFormatted value="#{bindings.ParcoursInfo.inputValue}(SEMESTRE #{sessionScope.id_smstre} -- #{sessionScope.id_session != '1' ? 'SESSION DE RATTRAPAGE' : 'SESSION NORMALE'})"
+                          id="of14" inlineStyle="font-style:italic; font-size:large;color : #2898e8"/>
+    <af:outputFormatted value="Les repêchages ne sont plus autorisés, La session est clôturée !!!" id="of13"
+                        inlineStyle="font-style:italic; font-size:large;color : orange"/>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+            binding="#{DeliberationSemestrielleBean.popIntervalNote}">
+    <af:dialog id="d1" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl7" layout="vertical" halign="center">
+        <af:icon name="info" id="i1"/>
+        <af:outputFormatted value="Veuillez Entrer une Intervalle de Note !" id="of5"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+            binding="#{DeliberationSemestrielleBean.popConfirmRepeche}">
+    <af:dialog id="d2" type="yesNo" affirmativeTextAndAccessKey="Continuer" noTextAndAccessKey="Annuler" title="Info"
+               dialogListener="#{DeliberationSemestrielleBean.OnRepecheSemAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl8" layout="vertical" halign="center">
+        <af:icon name="info" id="i2"/>
+        <af:outputFormatted value="Confirmer le repêchage !" id="of6" inlineStyle="color:#2898e8; font-size:large;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p3"
+            binding="#{DeliberationSemestrielleBean.popSuccessRep}">
+    <af:dialog id="d3" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl9" layout="vertical" halign="center">
+        <af:icon name="info" id="i3"/>
+        <af:outputFormatted value="Repêchage bien effectué !" id="of7" inlineStyle="color:#2898e8; font-size:large;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p4"
+            binding="#{DeliberationSemestrielleBean.popDetailNote}">
+    <af:dialog id="d4" title="#{viewcontrollerBundle.DETAIL_ATTRIBUTION_DE_POINT_JURY}" type="cancel"
+               cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl10" layout="vertical">
+      <af:outputFormatted value="NB : La répartition des points de jury se fait entre les unités d'enseignement dont la moyenne est inférieure à la moyenne de repêchage" id="of8"
+                            styleUsage="pageStamp"
+                            inlineStyle="font-size:large; font-weight:bold; font-style:italic; overflow-wrap:break-word;"/>
+        <af:table value="#{bindings.FiliereUEInvalidRepech.collectionModel}" var="row"
+                  rows="#{bindings.FiliereUEInvalidRepech.rangeSize}"
+                  emptyText="#{bindings.FiliereUEInvalidRepech.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.FiliereUEInvalidRepech.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.FiliereUEInvalidRepech.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.FiliereUEInvalidRepech.rangeSize}"
+                  filterModel="#{bindings.FiliereUEInvalidRepechQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.FiliereUEInvalidRepechQuery.processQuery}" varStatus="vs" id="t2"
+                  scrollPolicy="page" columnStretching="column:c8">
+          <af:column sortProperty="#{bindings.FiliereUEInvalidRepech.hints.LibelleLong.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.FiliereUEInvalidRepech.hints.LibelleLong.label}" id="c8">
+            <af:outputText value="#{row.LibelleLong}"
+                           shortDesc="#{bindings.FiliereUEInvalidRepech.hints.LibelleLong.tooltip}" id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.FiliereUEInvalidRepech.hints.Coefficient.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.FiliereUEInvalidRepech.hints.Coefficient.label}" id="c9">
+            <af:outputText value="#{row.Coefficient}"
+                           shortDesc="#{bindings.FiliereUEInvalidRepech.hints.Coefficient.tooltip}" id="ot2">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.FiliereUEInvalidRepech.hints.Coefficient.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.FiliereUEInvalidRepech.hints.Note.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.FiliereUEInvalidRepech.hints.Note.label}" id="c10">
+            <af:outputText value="#{row.Note}" shortDesc="#{bindings.FiliereUEInvalidRepech.hints.Note.tooltip}"
+                           id="ot3">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.FiliereUEInvalidRepech.hints.Note.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column id="c12" headerText="#{viewcontrollerBundle.POINT_JURY}">
+            <af:outputFormatted value="#{( sessionScope.moy_ref_sem - bindings.Note.inputValue) * sessionScope.totalcoefSem / sessionScope.totalFilUENV}" id="of9"/>
+          </af:column>
+          <af:column id="c11" headerText="#{viewcontrollerBundle.NOTE_FINAL}">
+            <af:outputFormatted value="#{row.Note + ((sessionScope.moy_ref_sem - bindings.Note.inputValue) * sessionScope.totalcoefSem / sessionScope.totalFilUENV)}" id="of10"/>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p5" contentDelivery="lazyUncached">
+    <af:dialog id="d5" type="yesNo" title="Confirmation repêchage" affirmativeTextAndAccessKey="OUI"
+               cancelTextAndAccessKey="ANNULER" noTextAndAccessKey="ANNULER"
+               dialogListener="#{DeliberationSemestrielleBean.onConfirmRepechAllSemAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl16" layout="vertical" halign="center">
+        <af:icon name="info" id="i5"/>
+        <af:outputFormatted value="Voulez-vous repêcher ces étudiants (#{bindings.RepechableSemestreIterator.estimatedRowCount} au total)  ?" id="of15"
+                            inlineStyle="font-size:large; font-weight:bold; font-style:italic; overflow-wrap:break-word;"/>
+        <af:table value="#{bindings.RepechableSemestre1.collectionModel}" var="row"
+                  rows="#{bindings.RepechableSemestre1.rangeSize}"
+                  emptyText="#{bindings.RepechableSemestre1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.RepechableSemestre1.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.RepechableSemestre1.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.RepechableSemestre1.rangeSize}"
+                  filterModel="#{bindings.RepechableSemestreQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.RepechableSemestreQuery.processQuery}" varStatus="vs" id="t4"
+                  scrollPolicy="scroll" columnStretching="column:c15">
+          <af:column sortProperty="#{bindings.RepechableSemestre1.hints.Numero.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.NUMERO}" id="c14" width="150">
+            <af:outputText value="#{row.Numero}" shortDesc="#{bindings.RepechableSemestre1.hints.Numero.tooltip}"
+                           id="ot5"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.RepechableSemestre1.hints.Prenoms.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.PRENOMS}" id="c15">
+            <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.RepechableSemestre1.hints.Prenoms.tooltip}"
+                           id="ot6"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.RepechableSemestre1.hints.Nom.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.NOM}" id="c16" width="150">
+            <af:outputText value="#{row.Nom}" shortDesc="#{bindings.RepechableSemestre1.hints.Nom.tooltip}" id="ot7"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.RepechableSemestre1.hints.Note.name}" filterable="true" sortable="true"
+                     headerText="Note Initiale" id="c17">
+            <af:outputText value="#{row.Note}" shortDesc="#{bindings.RepechableSemestre1.hints.Note.tooltip}" id="ot8">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.RepechableSemestre1.hints.Note.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.RepechableSemestre1.hints.Credit.name}" filterable="true" sortable="true"
+                     headerText="Crédit Initial" id="c19">
+            <af:outputText value="#{row.Credit}" shortDesc="#{bindings.RepechableSemestre1.hints.Credit.tooltip}"
+                           id="ot10">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.RepechableSemestre1.hints.Credit.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.RepechableSemestre1.hints.Resultat.name}" filterable="true"
+                     sortable="true" headerText="Résultat initial" id="c21">
+            <af:selectOneChoice value="#{row.bindings.Resultat.inputValue}" label="#{row.bindings.Resultat.label}"
+                                required="#{bindings.RepechableSemestre1.hints.Resultat.mandatory}"
+                                shortDesc="#{bindings.RepechableSemestre1.hints.Resultat.tooltip}" readOnly="true"
+                                id="soc2">
+              <f:selectItems value="#{row.bindings.Resultat.items}" id="si2"/>
+              <f:validator binding="#{row.bindings.Resultat.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

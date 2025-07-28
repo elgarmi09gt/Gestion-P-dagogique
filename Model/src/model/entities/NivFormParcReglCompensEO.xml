@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NivFormParcReglCompensEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="NIV_FORM_PARC_REGL_COMPENS"
+  AliasName="NivFormParcReglCompensEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdNivFormParcReglCompens"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIV_FORM_PARC_REGL_COMPENS"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="NIV_FORM_PARC_REGL_COMPENS"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdNiveauFormationParcours"
+    IsNotNull="true"
+    Precision="5"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="NIV_FORM_PARC_REGL_COMPENS"/>
+  <Attribute
+    Name="IdAnneesUnivers"
+    IsNotNull="true"
+    Precision="5"
+    Scale="0"
+    ColumnName="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="NIV_FORM_PARC_REGL_COMPENS"/>
+  <Attribute
+    Name="IdRegleCompens"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_REGLE_COMPENS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NIV_FORM_PARC_REGL_COMPENS"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="NIV_FORM_PARC_REGL_COMPENS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="NIV_FORM_PARC_REGL_COMPENS"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="NIV_FORM_PARC_REGL_COMPENS"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="NIV_FORM_PARC_REGL_COMPENS"/>
+  <Key
+    Name="PkNivFormParcReglCompens"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_NIV_FORM_PARC_REGL_COMPENS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NivFormParcReglCompensEO.IdNivFormParcReglCompens"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkAnneeNiforparcreglcomp">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ANNEES_UNIVERS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_ANNEE_NIFORPARCREGLCOMP"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NivFormParcReglCompensEO.IdAnneesUnivers"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNformparcNiforparcreglcomp">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAU_FORMATION_PARCOURS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NFORMPARC_NIFORPARCREGLCOMP"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NivFormParcReglCompensEO.IdNiveauFormationParcours"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNiforparcreglcompUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIFORPARCREGLCOMP_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NivFormParcReglCompensEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNiforparcreglcompUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIFORPARCREGLCOMP_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NivFormParcReglCompensEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkReglcompNiforparcreglcomp">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_REGLES_COMPENSATION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_REGLCOMP_NIFORPARCREGLCOMP"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NivFormParcReglCompensEO.IdRegleCompens"/>
+    </AttrArray>
+  </Key>
+</Entity>

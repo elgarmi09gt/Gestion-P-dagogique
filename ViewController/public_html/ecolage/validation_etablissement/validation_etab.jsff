@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="vertical" inlineStyle="border:solid  2px #2897e8;">
+    <af:button text="Les opérations à  valider" id="b1"
+               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-bottom:10px;margin-top:5px;"
+               partialSubmit="false" disabled="true"/>
+    <af:table value="#{bindings.OperationAValEtabRO.collectionModel}" var="row"
+              rows="#{bindings.OperationAValEtabRO.rangeSize}"
+              emptyText="#{bindings.OperationAValEtabRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+              rowBandingInterval="0" selectedRowKeys="#{bindings.OperationAValEtabRO.collectionModel.selectedRow}"
+              selectionListener="#{bindings.OperationAValEtabRO.collectionModel.makeCurrent}" rowSelection="single"
+              fetchSize="#{bindings.OperationAValEtabRO.rangeSize}"
+              filterModel="#{bindings.OperationAValEtabROQuery.queryDescriptor}" filterVisible="true"
+              queryListener="#{bindings.OperationAValEtabROQuery.processQuery}" varStatus="vs" id="t1"
+              scrollPolicy="page">
+      <af:column sortProperty="#{bindings.OperationAValEtabRO.hints.DateOperation.name}" filterable="true"
+                 sortable="true" headerText="Date" id="c1">
+        <f:facet name="filter">
+          <af:inputDate value="#{bindings.OperationAValEtabROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateOperation.value}"
+                        id="id1">
+            <af:convertDateTime pattern="#{bindings.OperationAValEtabRO.hints.DateOperation.format}"/>
+          </af:inputDate>
+        </f:facet>
+        <af:outputText value="#{row.DateOperation}"
+                       shortDesc="#{bindings.OperationAValEtabRO.hints.DateOperation.tooltip}" id="ot1">
+          <af:convertDateTime pattern="#{bindings.OperationAValEtabRO.hints.DateOperation.format}"/>
+        </af:outputText>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValEtabRO.hints.Montant.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.OperationAValEtabRO.hints.Montant.label}" id="c2" width="150">
+        <af:outputText value="#{row.Montant}" shortDesc="#{bindings.OperationAValEtabRO.hints.Montant.tooltip}"
+                       id="ot2">
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.OperationAValEtabRO.hints.Montant.format}"/>
+        </af:outputText>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValEtabRO.hints.NumeroRecu.name}" filterable="true" sortable="true"
+                 headerText="Reçu" id="c3" width="150">
+        <af:outputText value="#{row.NumeroRecu}" shortDesc="#{bindings.OperationAValEtabRO.hints.NumeroRecu.tooltip}"
+                       id="ot3"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValEtabRO.hints.LibModePaie.name}" filterable="true" sortable="true"
+                 headerText="Mode" id="c4">
+        <af:outputText value="#{row.LibModePaie}" shortDesc="#{bindings.OperationAValEtabRO.hints.LibModePaie.tooltip}"
+                       id="ot4"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValEtabRO.hints.NumChqVir.name}" filterable="true" sortable="true"
+                 headerText="N° Chèque (Virement)" id="c5" width="150">
+        <af:outputText value="#{row.NumChqVir}" shortDesc="#{bindings.OperationAValEtabRO.hints.NumChqVir.tooltip}"
+                       id="ot5"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValEtabRO.hints.LibTypeCmpte.name}" filterable="true"
+                 sortable="true" headerText="Compte" id="c6" width="200">
+        <af:outputText value="#{row.LibTypeCmpte}"
+                       shortDesc="#{bindings.OperationAValEtabRO.hints.LibTypeCmpte.tooltip}" id="ot6"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValEtabRO.hints.Motif.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.OperationAValEtabRO.hints.Motif.label}" id="c7" width="370">
+        <af:outputText value="#{row.Motif}" shortDesc="#{bindings.OperationAValEtabRO.hints.Motif.tooltip}" id="ot7"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValEtabRO.hints.Proprietaire.name}" filterable="true"
+                 sortable="true" headerText="Bénéficiaire" id="c8" width="200">
+        <af:outputText value="#{row.Proprietaire}"
+                       shortDesc="#{bindings.OperationAValEtabRO.hints.Proprietaire.tooltip}" id="ot8"/>
+      </af:column>
+      <af:column headerText="Validée" id="c17" width="70">
+        <af:selectBooleanCheckbox value="#{row.bindings.OpValidee.inputValue}" label="#{row.bindings.OpValidee.label}"
+                                  shortDesc="#{bindings.OperationAValEtabRO.hints.OpValidee.tooltip}" id="sbc1"/>
+      </af:column>
+    </af:table>
+  </af:panelGroupLayout>
+  <af:button text="Valider" id="b2"
+             inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+             icon="/images/commit.png" action="#{ValidationEtabBean.onValiderEtab}"/>
+  <af:panelGroupLayout id="pgl2" layout="vertical" inlineStyle="border:solid  2px #2897e8;margin-top:20px;">
+    <af:button text="Les opérations validées" id="b3"
+               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-bottom:10px;margin-top:5px;"
+               partialSubmit="false" disabled="true"/>
+    <af:table value="#{bindings.OperationValEtabRO.collectionModel}" var="row"
+              rows="#{bindings.OperationValEtabRO.rangeSize}"
+              emptyText="#{bindings.OperationValEtabRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+              rowBandingInterval="0" selectedRowKeys="#{bindings.OperationValEtabRO.collectionModel.selectedRow}"
+              selectionListener="#{bindings.OperationValEtabRO.collectionModel.makeCurrent}" rowSelection="single"
+              fetchSize="#{bindings.OperationValEtabRO.rangeSize}"
+              filterModel="#{bindings.OperationValEtabROQuery.queryDescriptor}" filterVisible="true"
+              queryListener="#{bindings.OperationValEtabROQuery.processQuery}" varStatus="vs" id="t2"
+              scrollPolicy="page">
+      <af:column sortProperty="#{bindings.OperationValEtabRO.hints.DateOperation.name}" filterable="true"
+                 sortable="true" headerText="Date" id="c9">
+        <f:facet name="filter">
+          <af:inputDate value="#{bindings.OperationValEtabROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateOperation.value}"
+                        id="id2">
+            <af:convertDateTime pattern="#{bindings.OperationValEtabRO.hints.DateOperation.format}"/>
+          </af:inputDate>
+        </f:facet>
+        <af:outputText value="#{row.DateOperation}"
+                       shortDesc="#{bindings.OperationValEtabRO.hints.DateOperation.tooltip}" id="ot9">
+          <af:convertDateTime pattern="#{bindings.OperationValEtabRO.hints.DateOperation.format}"/>
+        </af:outputText>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValEtabRO.hints.Montant.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.OperationValEtabRO.hints.Montant.label}" id="c10" width="150">
+        <af:outputText value="#{row.Montant}" shortDesc="#{bindings.OperationValEtabRO.hints.Montant.tooltip}"
+                       id="ot10">
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.OperationValEtabRO.hints.Montant.format}"/>
+        </af:outputText>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValEtabRO.hints.NumeroRecu.name}" filterable="true" sortable="true"
+                 headerText="Reçu" id="c11" width="150">
+        <af:outputText value="#{row.NumeroRecu}" shortDesc="#{bindings.OperationValEtabRO.hints.NumeroRecu.tooltip}"
+                       id="ot11"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValEtabRO.hints.LibModePaie.name}" filterable="true" sortable="true"
+                 headerText="Mode" id="c12">
+        <af:outputText value="#{row.LibModePaie}" shortDesc="#{bindings.OperationValEtabRO.hints.LibModePaie.tooltip}"
+                       id="ot12"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValEtabRO.hints.NumChqVir.name}" filterable="true" sortable="true"
+                 headerText="N° Chèque (Virement)" id="c13" width="150">
+        <af:outputText value="#{row.NumChqVir}" shortDesc="#{bindings.OperationValEtabRO.hints.NumChqVir.tooltip}"
+                       id="ot13"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValEtabRO.hints.LibTypeCmpte.name}" filterable="true" sortable="true"
+                 headerText="Compte" id="c14" width="200">
+        <af:outputText value="#{row.LibTypeCmpte}" shortDesc="#{bindings.OperationValEtabRO.hints.LibTypeCmpte.tooltip}"
+                       id="ot14"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValEtabRO.hints.Motif.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.OperationValEtabRO.hints.Motif.label}" id="c15" width="370">
+        <af:outputText value="#{row.Motif}" shortDesc="#{bindings.OperationValEtabRO.hints.Motif.tooltip}" id="ot15"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValEtabRO.hints.Proprietaire.name}" filterable="true" sortable="true"
+                 headerText="Bénéficiaire" id="c16" width="200">
+        <af:outputText value="#{row.Proprietaire}" shortDesc="#{bindings.OperationValEtabRO.hints.Proprietaire.tooltip}"
+                       id="ot16"/>
+      </af:column>
+    </af:table>
+  </af:panelGroupLayout>
+              <af:popup childCreation="deferred" autoCancel="disabled" id="p13"
+                        binding="#{ValidationEtabBean.popConfVal}">
+    <af:dialog id="d13" title="Confirmation !" inlineStyle="text-align:center;"
+               dialogListener="#{ValidationEtabBean.onDialogValOper}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous valider ( #{ValidationEtabBean.nbr_valider} ) opération(s) ?" id="ot34" inlineStyle="font-size:large;" />
+      <af:serverListener type="onDialogEvent" method="#{ValidationEtabBean.onDialogValOperCan}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+    </af:dialog>
+  </af:popup>
+  
+          <af:popup childCreation="deferred" autoCancel="disabled" id="p14"
+                    binding="#{ValidationEtabBean.popAucunOper}">
+    <af:dialog id="d14" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Veuillez sélectionner au moins une opération à valider "
+                          id="of9"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{ValidationEtabBean.popNotOper}">
+    <af:dialog id="d1" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value=" Aucune opération à valider "
+                          id="of1"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+</ui:composition>

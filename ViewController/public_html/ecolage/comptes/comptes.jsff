@@ -1,0 +1,509 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <af:iterator value="#{CompteBean.compteEtablissement()}" id="i6"/>
+    <af:iterator value="#{CompteBean.compteDepartement()}" id="i1"/>
+    <af:iterator value="#{CompteBean.compteFormation()}" id="i2"/>
+    <af:selectOneChoice value="#{bindings.StructFormPayRO.inputValue}" label="Etablissement"
+                        required="#{bindings.StructFormPayRO.hints.mandatory}"
+                        shortDesc="#{bindings.StructFormPayRO.hints.tooltip}" id="soc1"
+                        contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:25px"
+                        inlineStyle="margin-top:10px;margin-bottom:20px;" labelStyle="font-size:large;">
+        <f:selectItems value="#{bindings.StructFormPayRO.items}" id="si1"/>
+        <f:validator binding="#{bindings.StructFormPayRO.validator}"/>
+    </af:selectOneChoice>
+    <af:panelTabbed id="pt1">
+        <af:showDetailItem id="tab1" text="Etablissement" disclosed="true">
+            <af:outputFormatted value="Compte Etablissement est déjà généré" id="of7"
+                                inlineStyle="font-size:large; color:#008400;margin-top:10px;margin-left:5px;"
+                                visible="#{sessionScope.cmpte_etab_deja_generer == '1' ? true : false}"/>
+            <af:table value="#{bindings.FormPayCompteEtabRO.collectionModel}" var="row"
+                      rows="#{bindings.FormPayCompteEtabRO.rangeSize}"
+                      emptyText="#{bindings.FormPayCompteEtabRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.FormPayCompteEtabRO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.FormPayCompteEtabRO.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.FormPayCompteEtabRO.rangeSize}"
+                      filterModel="#{bindings.FormPayCompteEtabROQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.FormPayCompteEtabROQuery.processQuery}" varStatus="vs" id="t1"
+                      inlineStyle="margin-top:10px;margin-left:5px;">
+                <af:column sortProperty="#{bindings.FormPayCompteEtabRO.hints.LibCompte.name}" filterable="true"
+                           sortable="true" headerText="Compte" id="c1" width="200">
+                    <af:outputText value="#{row.LibCompte}"
+                                   shortDesc="#{bindings.FormPayCompteEtabRO.hints.LibCompte.tooltip}" id="ot1"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.FormPayCompteEtabRO.hints.Proprietaire.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.FormPayCompteEtabRO.hints.Proprietaire.label}" id="c2"
+                           width="600">
+                    <af:outputText value="#{row.Proprietaire}"
+                                   shortDesc="#{bindings.FormPayCompteEtabRO.hints.Proprietaire.tooltip}" id="ot2"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.FormPayCompteEtabRO.hints.SoldeInitial.name}" filterable="true"
+                           sortable="true" headerText="Solde Initial" id="c3">
+                    <af:outputText value="#{row.SoldeInitial}"
+                                   shortDesc="#{bindings.FormPayCompteEtabRO.hints.SoldeInitial.tooltip}" id="ot3">
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.FormPayCompteEtabRO.hints.SoldeInitial.format}"/>
+                    </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.FormPayCompteEtabRO.hints.SoldeActuel.name}" filterable="true"
+                           sortable="true" headerText="Solde Actuel" id="c4">
+                    <af:outputText value="#{row.SoldeActuel}"
+                                   shortDesc="#{bindings.FormPayCompteEtabRO.hints.SoldeActuel.tooltip}" id="ot4">
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.FormPayCompteEtabRO.hints.SoldeActuel.format}"/>
+                    </af:outputText>
+                </af:column>
+            </af:table>
+            <af:button text="Générer Compte Etablissement" id="b1"
+                       inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;"
+                       disabled="#{sessionScope.cmpte_etab_deja_generer == '1' ? true : false}"
+                       actionListener="#{CompteBean.genererCompteEtab}" partialTriggers="b1"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab2" text="Départements">
+            <af:outputFormatted value="Compte Département est déjà généré" id="of3"
+                                inlineStyle="font-size:large; color:#008400;margin-top:10px;margin-left:5px;"
+                                visible="#{sessionScope.cmpte_dept_deja_generer == '1' ? true : false}"/>
+            <af:table value="#{bindings.FormPayCompteDeptRO.collectionModel}" var="row"
+                      rows="#{bindings.FormPayCompteDeptRO.rangeSize}"
+                      emptyText="#{bindings.FormPayCompteDeptRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.FormPayCompteDeptRO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.FormPayCompteDeptRO.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.FormPayCompteDeptRO.rangeSize}"
+                      filterModel="#{bindings.FormPayCompteDeptROQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.FormPayCompteDeptROQuery.processQuery}" varStatus="vs" id="t2">
+                <af:column sortProperty="#{bindings.FormPayCompteDeptRO.hints.LibCompte.name}" filterable="true"
+                           sortable="true" headerText="Compte" id="c5" width="200">
+                    <af:outputText value="#{row.LibCompte}"
+                                   shortDesc="#{bindings.FormPayCompteDeptRO.hints.LibCompte.tooltip}" id="ot5"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.FormPayCompteDeptRO.hints.Proprietaire.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.FormPayCompteDeptRO.hints.Proprietaire.label}" id="c6"
+                           width="600">
+                    <af:outputText value="#{row.Proprietaire}"
+                                   shortDesc="#{bindings.FormPayCompteDeptRO.hints.Proprietaire.tooltip}" id="ot6"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.FormPayCompteDeptRO.hints.SoldeInitial.name}" filterable="true"
+                           sortable="true" headerText="Solde Initial" id="c8">
+                    <af:outputText value="#{row.SoldeInitial}"
+                                   shortDesc="#{bindings.FormPayCompteDeptRO.hints.SoldeInitial.tooltip}" id="ot8">
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.FormPayCompteDeptRO.hints.SoldeInitial.format}"/>
+                    </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.FormPayCompteDeptRO.hints.SoldeActuel.name}" filterable="true"
+                           sortable="true" headerText="Solde Actuel" id="c7">
+                    <af:outputText value="#{row.SoldeActuel}"
+                                   shortDesc="#{bindings.FormPayCompteDeptRO.hints.SoldeActuel.tooltip}" id="ot7">
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.FormPayCompteDeptRO.hints.SoldeActuel.format}"/>
+                    </af:outputText>
+                </af:column>
+            </af:table>
+            <af:button text="Générer Compte Département" id="b2"
+                       inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;"
+                       disabled="#{sessionScope.cmpte_dept_deja_generer == '1' ? true : false}" partialTriggers="b2"
+                       actionListener="#{CompteBean.genererCompteDept}"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab3" text="Formations">
+            <af:panelGroupLayout id="pgl2" layout="horizontal" styleClass="AFStretchWidth"
+                                 inlineStyle="border:solid  2px #2897e8;">
+                <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="margin-top:20px;">
+                    <af:panelGroupLayout id="pgl3" inlineStyle="border:solid  1px #2897e8;width:580px;margin-left:5px;"
+                                         layout="vertical">
+                        <af:panelStretchLayout id="psl1" dimensionsFrom="children">
+                            <f:facet name="start"/>
+                            <f:facet name="end"/>
+                            <f:facet name="top"/>
+                            <f:facet name="bottom"/>
+                            <f:facet name="center">
+                                <af:table value="#{bindings.FormPayCompteFormRO.collectionModel}" var="row"
+                                          rows="#{bindings.FormPayCompteFormRO.rangeSize}"
+                                          emptyText="#{bindings.FormPayCompteFormRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                          rowBandingInterval="0"
+                                          selectedRowKeys="#{bindings.FormPayCompteFormRO.collectionModel.selectedRow}"
+                                          selectionListener="#{bindings.FormPayCompteFormRO.collectionModel.makeCurrent}"
+                                          rowSelection="single" fetchSize="#{bindings.FormPayCompteFormRO.rangeSize}"
+                                          filterModel="#{bindings.FormPayCompteFormROQuery.queryDescriptor}"
+                                          filterVisible="true"
+                                          queryListener="#{bindings.FormPayCompteFormROQuery.processQuery}"
+                                          varStatus="vs" id="t3" scrollPolicy="page">
+                                    <af:column sortProperty="#{bindings.FormPayCompteFormRO.hints.LibForm.name}"
+                                               filterable="true" sortable="true" headerText="Libellé Formation" id="c9"
+                                               width="400">
+                                        <af:outputText value="#{row.LibForm}"
+                                                       shortDesc="#{bindings.FormPayCompteFormRO.hints.LibForm.tooltip}"
+                                                       id="ot9"/>
+                                    </af:column>
+                                    <af:column id="c10" width="150"/>
+                                </af:table>
+                            </f:facet>
+                        </af:panelStretchLayout>
+                    </af:panelGroupLayout>
+                    <af:button text="Générer les comptes pour toutes les formations" id="b4"
+                               inlineStyle="margin-top:10px;margin-bottom:10px;margin-left:5px;font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                               action="#{CompteBean.onGenererCmpteFormation}"/>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl1" layout="vertical">
+                    <af:panelGroupLayout id="pgl5" layout="vertical"
+                                         inlineStyle="border:solid  1px #2897e8;width:950px;">
+                        <af:panelStretchLayout id="psl2" startWidth="50px" dimensionsFrom="children">
+                            <f:facet name="start"/>
+                            <f:facet name="end"/>
+                            <f:facet name="top"/>
+                            <f:facet name="bottom"/>
+                            <f:facet name="center">
+                                <af:table value="#{bindings.LesComptesFormRO.collectionModel}" var="row"
+                                          rows="#{bindings.LesComptesFormRO.rangeSize}"
+                                          emptyText="#{bindings.LesComptesFormRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                          rowBandingInterval="0"
+                                          selectedRowKeys="#{bindings.LesComptesFormRO.collectionModel.selectedRow}"
+                                          selectionListener="#{bindings.LesComptesFormRO.collectionModel.makeCurrent}"
+                                          rowSelection="single" fetchSize="#{bindings.LesComptesFormRO.rangeSize}"
+                                          filterModel="#{bindings.LesComptesFormROQuery.queryDescriptor}"
+                                          filterVisible="true"
+                                          queryListener="#{bindings.LesComptesFormROQuery.processQuery}" varStatus="vs"
+                                          id="t4" inlineStyle="margin-left:10px;">
+                                    <af:column sortProperty="#{bindings.LesComptesFormRO.hints.LibCompte.name}"
+                                               filterable="true" sortable="true" headerText="Compte" id="c11"
+                                               width="250">
+                                        <af:outputText value="#{row.LibCompte}"
+                                                       shortDesc="#{bindings.LesComptesFormRO.hints.LibCompte.tooltip}"
+                                                       id="ot11"/>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.LesComptesFormRO.hints.Proprietaire.name}"
+                                               filterable="true" sortable="true"
+                                               headerText="#{bindings.LesComptesFormRO.hints.Proprietaire.label}"
+                                               id="c12" width="450">
+                                        <af:outputText value="#{row.Proprietaire}"
+                                                       shortDesc="#{bindings.LesComptesFormRO.hints.Proprietaire.tooltip}"
+                                                       id="ot12"/>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.LesComptesFormRO.hints.SoldeInitial.name}"
+                                               filterable="true" sortable="true" headerText="Solde Initial" id="c14">
+                                        <af:outputText value="#{row.SoldeInitial}"
+                                                       shortDesc="#{bindings.LesComptesFormRO.hints.SoldeInitial.tooltip}"
+                                                       id="ot14">
+                                            <af:convertNumber groupingUsed="false"
+                                                              pattern="#{bindings.LesComptesFormRO.hints.SoldeInitial.format}"/>
+                                        </af:outputText>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.LesComptesFormRO.hints.SoldeActuel.name}"
+                                               filterable="true" sortable="true" headerText="Solde Actuel" id="c13">
+                                        <af:outputText value="#{row.SoldeActuel}"
+                                                       shortDesc="#{bindings.LesComptesFormRO.hints.SoldeActuel.tooltip}"
+                                                       id="ot13">
+                                            <af:convertNumber groupingUsed="false"
+                                                              pattern="#{bindings.LesComptesFormRO.hints.SoldeActuel.format}"/>
+                                        </af:outputText>
+                                    </af:column>
+                                </af:table>
+                            </f:facet>
+                        </af:panelStretchLayout>
+                    </af:panelGroupLayout>
+                    <af:button text="Generer les comptes" id="b3"
+                               inlineStyle="margin-top:10px;margin-bottom:10px;margin-left:5px;font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                               actionListener="#{CompteBean.onGenererCmptForm}"/>
+                </af:panelGroupLayout>
+            </af:panelGroupLayout>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab4" text="Etudiants">
+            <af:panelGroupLayout id="pgl6" layout="horizontal">
+                <af:panelGroupLayout id="pgl8" layout="vertical"
+                                     inlineStyle="border:solid  2px #2897e8;width:950px;margin-top:10px;margin-left:10px;">
+                    <af:panelGroupLayout id="pgl10" layout="vertical">
+                        <af:button text="Rechercher un Etudiant" id="b6"
+                                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;"
+                                   partialSubmit="false" disabled="true"/>
+                        <af:panelFormLayout id="pfl1" rows="3"
+                                            inlineStyle="border:solid  2px #2897e8;width:800px;margin-top:10px;margin-left:10px;">
+                            <f:facet name="footer"/>
+                            <af:inputText id="it13" autoSubmit="true" label="Numéro Etudiant"
+                                          value="#{CompteBean.numero_etud}">
+                                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                                <af:serverListener type="filterShuttle" method="#{CompteBean.onChangeNumeroEtud}"/>
+                            </af:inputText>
+                            <af:inputText id="it21" autoSubmit="true" label="Numéro d'identification Nationale"
+                                          contentStyle="margin-bottom:5px;" value="#{CompteBean.numero_cin}"
+                                          disabled="#{sessionScope.etudCpEtdNotNull == '1' ? true : false}"
+                                          partialTriggers="it13">
+                                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                                <af:serverListener type="filterShuttle" method="#{CompteBean.onChangeNumeroCin}"/>
+                            </af:inputText>
+                            <af:inputText id="it2" autoSubmit="true" converter="javax.faces.Integer"
+                                          label="Numéro Table" value="#{CompteBean.numero_table}"
+                                          disabled="#{sessionScope.cinCpEtdNotNull == '1' or sessionScope.etudCpEtdNotNull == '1' ? true : false}"
+                                          partialTriggers="it13 it21">
+                                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                                <af:serverListener type="filterShuttle" method="#{CompteBean.onChangeNumeroTable}"/>
+                            </af:inputText>
+                            <af:inputText id="it29" label="Prénom" value="#{CompteBean.prenom}"
+                                          disabled="#{sessionScope.tableCpEtdNotNull == '1' or sessionScope.etudCpEtdNotNull == '1'  or sessionScope.cinCpEtdNotNull == '1' ? true : false}"
+                                          partialTriggers="it13 it21 it2 b2"/>
+                            <af:inputText id="it30" label="Nom" value="#{CompteBean.nom}"
+                                          disabled="#{sessionScope.tableCpEtdNotNull == '1' or sessionScope.etudCpEtdNotNull == '1'  or sessionScope.cinCpEtdNotNull == '1' ? true : false}"
+                                          partialTriggers="it13 it21 it2 b2"/>
+                            <af:inputDate id="it31" label="Date Naissance" value="#{CompteBean.date_naiss}"
+                                          disabled="#{sessionScope.tableCpEtdNotNull == '1' or sessionScope.etudCpEtdNotNull == '1'  or sessionScope.cinCpEtdNotNull == '1' ? true : false}"
+                                          partialTriggers="it13 it21 it2 b2"/>
+                            <af:resource type="javascript">
+    function catchKeyStroke(event) {
+        component = event.getSource();
+        //if(component.getSubmittedValue().length == 0 || component.getSubmittedValue().length > 1)
+        //{
+            AdfCustomEvent.queue(component, "filterShuttle", 
+            {
+                filterKey : component.getSubmittedValue()
+            },true);
+            event.cancel();
+        //}
+    }
+  </af:resource>
+                        </af:panelFormLayout>
+                    </af:panelGroupLayout>
+                    <af:panelGroupLayout id="pgl7" layout="vertical"
+                                         inlineStyle="border:solid  2px #2897e8;margin-top:20px;width:300px;margin-left:5px;">
+                        <af:button text="Générer Compte Etudiant" id="b5"
+                                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+                                   actionListener="#{CompteBean.onGenererCompteEtud}"/>
+                    </af:panelGroupLayout>
+                    <af:button text="Le Compte de l'Etudiant" id="b7"
+                               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:30px;margin-bottom:10px;"
+                               partialSubmit="false" disabled="true"/>
+                    <af:table value="#{bindings.FormPayCompteEtudRO.collectionModel}" var="row"
+                              rows="#{bindings.FormPayCompteEtudRO.rangeSize}"
+                              emptyText="#{bindings.FormPayCompteEtudRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.FormPayCompteEtudRO.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.FormPayCompteEtudRO.collectionModel.makeCurrent}"
+                              rowSelection="single" fetchSize="#{bindings.FormPayCompteEtudRO.rangeSize}"
+                              filterModel="#{bindings.FormPayCompteEtudROQuery.queryDescriptor}" filterVisible="true"
+                              queryListener="#{bindings.FormPayCompteEtudROQuery.processQuery}" varStatus="vs" id="t5"
+                              width="650" inlineStyle="margin-left:10px;margin-bottom:10px;">
+                        <af:column sortProperty="#{bindings.FormPayCompteEtudRO.hints.LibCompte.name}" filterable="true"
+                                   sortable="true" headerText="Compte" id="c15" width="300">
+                            <af:outputText value="#{row.LibCompte}"
+                                           shortDesc="#{bindings.FormPayCompteEtudRO.hints.LibCompte.tooltip}"
+                                           id="ot10"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.FormPayCompteEtudRO.hints.Proprietaire.name}"
+                                   filterable="true" sortable="true" headerText="Propriétaire" id="c16">
+                            <af:outputText value="#{row.Proprietaire}"
+                                           shortDesc="#{bindings.FormPayCompteEtudRO.hints.Proprietaire.tooltip}"
+                                           id="ot15"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.FormPayCompteEtudRO.hints.SoldeInitial.name}"
+                                   filterable="true" sortable="true" headerText="Solde Initial" id="c17">
+                            <af:outputText value="#{row.SoldeInitial}"
+                                           shortDesc="#{bindings.FormPayCompteEtudRO.hints.SoldeInitial.tooltip}"
+                                           id="ot16">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.FormPayCompteEtudRO.hints.SoldeInitial.format}"/>
+                            </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.FormPayCompteEtudRO.hints.SoldeActuel.name}"
+                                   filterable="true" sortable="true" headerText="Solde Actuel" id="c18">
+                            <af:outputText value="#{row.SoldeActuel}"
+                                           shortDesc="#{bindings.FormPayCompteEtudRO.hints.SoldeActuel.tooltip}"
+                                           id="ot17">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.FormPayCompteEtudRO.hints.SoldeActuel.format}"/>
+                            </af:outputText>
+                        </af:column>
+                    </af:table>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl9" layout="vertical"
+                                     inlineStyle="border:solid  2px #2897e8;width:250px;margin-top:10px;margin-left:10px;">
+                    <af:button text="Générer le compte des étudiants" id="b8"
+                               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:30px;margin-bottom:10px;"
+                               actionListener="#{CompteBean.onGenererCompteTousEtud}"/>
+                </af:panelGroupLayout>
+            </af:panelGroupLayout>
+        </af:showDetailItem>
+    </af:panelTabbed>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{CompteBean.popRepExisteCle}"
+              contentDelivery="lazyUncached">
+        <af:dialog id="d3" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Veuillez vérifier la définition des clés de Répartition (#{bindings.LibelleLong}) !"
+                                id="of5" inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popRepTypEtb}">
+        <af:dialog id="d1" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="La Répartition (#{bindings.LibelleLong}) ne posséde pas le type Etablissement"
+                                id="of1" inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popAucnRep}">
+        <af:dialog id="d2" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Aucune répartition rattachée à cet établissement !" id="of2"
+                                inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p7" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popCommitCmpEtab}">
+        <af:dialog id="d7" title="Confirmation" inlineStyle="text-align:center;"
+                   dialogListener="#{CompteBean.onDialogCmptEtab}">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Voulez-vous générer le compte établissement" id="of8"
+                                inlineStyle="font-size:medium; color:Black;"/>
+            <af:clientListener method="onDialog" type="dialog"/>
+            <af:serverListener type="onDialogEvent" method="#{CompteBean.onDialogCanCmpteEtab}"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p4" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popRepTypDpt}">
+        <af:dialog id="d4" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="La Répartition (#{bindings.LibelleLong}) ne posséde pas le type Département"
+                                id="of4" inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p5" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popCommitCmpDpt}">
+        <af:dialog id="d5" title="Confirmation" inlineStyle="text-align:center;"
+                   dialogListener="#{CompteBean.onDialogCmptDpt}">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Voulez-vous générer le compte département" id="of6"
+                                inlineStyle="font-size:medium; color:Black;"/>
+            <af:clientListener method="onDialog" type="dialog"/>
+            <af:serverListener type="onDialogEvent" method="#{CompteBean.onDialogCanCmpteDpt}"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p6" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popRepFormt}">
+        <af:dialog id="d6" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="La Répartition (#{bindings.LibelleLong}) ne posséde pas le type Formation"
+                                id="of9" inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p8" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popFormExtDeja}">
+        <af:dialog id="d8" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Les Comptes de la Formation sont déjà générés" id="of10"
+                                inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p9" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popCommitCmpForm}">
+        <af:dialog id="d9" title="Confirmation" inlineStyle="text-align:center;"
+                   dialogListener="#{CompteBean.onDialogCmptForm}">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Voulez-vous générer les comptes de la Formation" id="of11"
+                                inlineStyle="font-size:medium; color:Black;"/>
+            <af:clientListener method="onDialog" type="dialog"/>
+            <af:serverListener type="onDialogEvent" method="#{CompteBean.onDialogCanCmptForm}"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p10" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popAucunForm}">
+        <af:dialog id="d10" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Aucune Formation disponible !" id="of12"
+                                inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p11" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popEtudNotInsc}">
+        <af:dialog id="d11" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="L'étudiant n'est pas inscrit !" id="of13"
+                                inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p12" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popEtudNotDef}">
+        <af:dialog id="d12" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="L'état d'inscription n'est pas définitif !" id="of14"
+                                inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p13" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popEtudGen}">
+        <af:dialog id="d13" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Le compte de l'étudiant est déjà généré !" id="of15"
+                                inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p14" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popCmptEtudCommit}">
+        <af:dialog id="d14" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Le compte de l'étudiant généré avec succès !" id="of16"
+                                inlineStyle="font-size:x-large; color:Black;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p15" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popAucunEtudInsc}">
+        <af:dialog id="d15" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Aucun étudiant inscrit dans pour le niveau de formation : #{bindings.LibNivForm} !"
+                                id="of17" inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p16" contentDelivery="lazyUncached"
+              binding="#{CompteBean.popConfEtudInsc}">
+        <af:dialog id="d16" type="ok" title="Information" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl11" layout="vertical">
+                <af:outputFormatted value="Pour le niveau de formation : #{bindings.LibNivForm}" id="of18"
+                                    inlineStyle="font-size:large;"/>
+                <af:outputFormatted id="of19" value="#{CompteBean.nbr_cmpt_gen} : compte(s) généré(s)"
+                                    inlineStyle="margin-top:10px;"/>
+                <af:outputFormatted id="of20" value="#{CompteBean.nbr_cmpt_deja} : compte(s) déjà généré(s)"/>
+                <af:outputFormatted id="of21"
+                                    value="#{CompteBean.nbr_def} étudiant(s) dont l'état de leur inscription n'est pas définitif"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p17" contentDelivery="lazyUncached"
+                  binding="#{CompteBean.popEtatInscNotVal}">
+        <af:dialog id="d17" type="ok" title="Impossible de générer le compte de l'étudiant !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Impossible de générer le compte de l'étudiant(e) ( #{sessionScope.etud_num_etud_cmpte} )"
+                                id="of22" inlineStyle="font-size:large;"/>
+            <af:panelGroupLayout id="pgl12" layout="vertical" inlineStyle="margin-top:10px;" halign="center">
+                <af:panelFormLayout id="pfl2">
+                    <f:facet name="footer"/>
+                    <af:outputFormatted value="#{sessionScope.etud_bu_enRegle_cmpt}" id="of23"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="#{sessionScope.etud_enLigne_cmpt}" id="of24"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="#{sessionScope.etud_Apte_cmpt}" id="of25"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="#{sessionScope.etud_Respnsable_cmpt}" id="of26"
+                                        inlineStyle="font-size:large;color:red;"/>
+                </af:panelFormLayout>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p18" contentDelivery="lazyUncached"
+                  binding="#{CompteBean.popTsCmpFormGen}">
+        <af:dialog id="d18" type="ok" title="Impossible de générer les comptes formation !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Tous les comptes formation sont déjà générés pour toutes les formations  : #{bindings.LibNivForm} !"
+                                id="of27" inlineStyle="font-size:x-large; color:red;"/>
+        </af:dialog>
+    </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p19" contentDelivery="lazyUncached"
+                  binding="#{CompteBean.popCommitTsCmpForm}">
+        <af:dialog id="d19" title="Confirmation" inlineStyle="text-align:center;"
+                   dialogListener="#{CompteBean.onDialogCmmTsCmpForm}">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Voulez-vous générer les comptes pour (#{sessionScope.nbr_form_gene}) formation(s)" id="of28"
+                                inlineStyle="font-size:medium; color:Black;"/>
+            <af:clientListener method="onDialog" type="dialog"/>
+            <af:serverListener type="onDialogEvent" method="#{CompteBean.onDialogCanCmmTsCmpForm}"/>
+        </af:dialog>
+    </af:popup>
+</ui:composition>

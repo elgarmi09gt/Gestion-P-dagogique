@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="list_nature_ecPageDef"
+                Package="parametrage.nature_ec">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="NatureEc" RangeSize="25" DataControl="parametrageAppDataControl" id="NatureEcIterator"/>
+    <searchRegion Binds="NatureEcIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="NatureEcQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="NatureEcIterator" id="NatureEc">
+      <nodeDefinition DefName="model.updatableview.NatureEcVO" Name="NatureEc0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="NatureEcIterator" id="NatureEc2">
+      <nodeDefinition DefName="model.updatableview.NatureEcVO" Name="NatureEc20">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+          <Item Value="DateModification"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="NatureEcIterator" id="CreateInsert" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="NatureEcIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NatureEcIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NatureEcIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NatureEcIterator" id="IdNatureEc">
+      <AttrNames>
+        <Item Value="IdNatureEc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NatureEcIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NatureEcIterator" id="DateModification">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NatureEcIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="NatureEcIterator" id="Delete" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+  </bindings>
+</pageDefinition>

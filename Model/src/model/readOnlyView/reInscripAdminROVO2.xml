@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="reInscripAdminROVO2"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.reInscripAdminROVO2RowImpl"
+  ComponentClass="model.readOnlyView.reInscripAdminROVO2Impl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.reInscripAdminROVO2_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_type_form"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_grade"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_etud"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_semestre"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select ips.id_inscription_pedagogique,id_inscription_ped_semestre,id_semestre, ia.id_inscription_admin from inscriptions_admin ia        
+join inscriptions_pedagogiques ip on ip.id_inscription_admin = ia.id_inscription_admin        
+join inscription_ped_semestre ips on ips.id_inscription_pedagogique = ip.id_inscription_pedagogique        
+where ia.id_type_formation=:id_type_form and ia.id_grade=:id_grade and ia.id_etudiant=:id_etud and  id_semestre=:id_semestre    
+and id_inscription_ped_semestre not in (select id_inscription_ped_semestre from resultats_semestre where (resultat = 2 or credit = 30))]]></SQLQuery>
+  <ViewAttribute
+    Name="IdInscriptionPedagogique"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_INSCRIPTION_PEDAGOGIQUE"
+    Expression="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionPedSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PED_SEMESTRE"
+    Expression="ID_INSCRIPTION_PED_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SEMESTRE"
+    Expression="ID_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionAdmin"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_ADMIN"
+    Expression="ID_INSCRIPTION_ADMIN"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdInscriptionPedagogique"/>
+    <Item Value="IdInscriptionAdmin"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

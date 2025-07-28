@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll" styleClass="AFStretchWidth" halign="center" valign="middle">
+    <af:outputFormatted value="Veuillez spécifier le rôle pour continuer" id="of7"
+                        inlineStyle="font-size:large; color:#2897e8; font-weight:bolder;margin-top:10px"/>
+    <af:selectOneChoice value="#{bindings.UtiRolesROVO.inputValue}" required="#{bindings.UtiRolesROVO.hints.mandatory}"
+                        shortDesc="#{bindings.UtiRolesROVO.hints.tooltip}" id="soc2"
+                        contentStyle="font-size:large;width: 100%;  border-radius: 8px;" inlineStyle="margin-top:10px">
+      <f:selectItems value="#{bindings.UtiRolesROVO.items}" id="si2"/>
+      <f:validator binding="#{bindings.UtiRolesROVO.validator}"/>
+    </af:selectOneChoice>
+    <af:button id="b2" iconPosition="trailing" useWindow="true" icon="/images/continue-24.png"
+               inlineStyle="border-radius:8px  ;margin-top:10px"
+               actionListener="#{ConnectionEvalBean.AfterSpecifyRoleAction}">
+      <af:setPropertyListener from="#{sessionScope.from}" type="action" to="#{sessionScope.TfID}"/>
+    </af:button>
+  </af:panelGroupLayout>
+</ui:composition>

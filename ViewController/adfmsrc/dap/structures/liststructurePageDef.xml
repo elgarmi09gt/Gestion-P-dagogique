@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="liststructurePageDef"
+                Package="dap.structures">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Structures" RangeSize="8" DataControl="gestdapAppDataControl" id="StructuresIterator"/>
+    <searchRegion Binds="StructuresIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="StructuresQuery"/>
+    <iterator Binds="HistoriquesStructuresStruct" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="HistoriquesStructuresStructIterator"/>
+    <searchRegion Binds="HistoriquesStructuresStructIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="HistoriquesStructuresStructQuery"/>
+    <iterator Binds="IsDeptEtabExist" RangeSize="10" DataControl="gestdapAppDataControl" id="IsDeptEtabExistIterator"/>
+    <iterator Binds="IsUtiEtabExist" RangeSize="10" DataControl="gestdapAppDataControl" id="IsUtiEtabExistIterator"/>
+    <iterator Binds="IsFormDeptExist" RangeSize="10" DataControl="gestdapAppDataControl" id="IsFormDeptExistIterator"/>
+    <iterator Binds="IsStructExist" RangeSize="10" DataControl="gestdapAppDataControl" id="IsStructExistIterator"/>
+    <iterator Binds="IsHStructExist" RangeSize="10" DataControl="gestdapAppDataControl" id="IsHStructExistIterator"/>
+    <iterator Binds="ScolEtabNotIntegrated" RangeSize="5" DataControl="gestdapAppDataControl"
+              id="ScolEtabNotIntegratedIterator"/>
+    <searchRegion Binds="ScolEtabNotIntegratedIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ScolEtabNotIntegratedQuery"/>
+    <iterator Binds="TypeSections" RangeSize="-1" DataControl="gestdapAppDataControl" id="TypeSectionsIterator"/>
+    <iterator Binds="grhUserEtab" RangeSize="10" DataControl="evaluationAppDataControl" id="grhUserEtabIterator"/>
+    <searchRegion Binds="grhUserEtabIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="grhUserEtab1Query"/>
+    <iterator Binds="grhUser" RangeSize="10" DataControl="evaluationAppDataControl" id="grhUserIterator"/>
+    <iterator Binds="AdminByEtablissement" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="AdminByEtablissementIterator"/>
+    <searchRegion Binds="AdminByEtablissementIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="AdminByEtablissementQuery"/>
+    <iterator Binds="isChefDeptExist" RangeSize="10" DataControl="gestdapAppDataControl" id="isChefDeptExistIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="StructuresIterator" id="Structures">
+      <nodeDefinition DefName="model.updatableview.StructuresVO" Name="Structures0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="Adresse"/>
+          <Item Value="Email"/>
+          <Item Value="Telephone"/>
+          <Item Value="Fax"/>
+          <Item Value="StructureParent"/>
+          <Item Value="Niveau"/>
+          <Item Value="Url"/>
+          <Item Value="HoraireTravail"/>
+          <Item Value="DateCreation"/>
+          <Item Value="Signature"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="StructuresIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructuresIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructuresIterator" id="Adresse">
+      <AttrNames>
+        <Item Value="Adresse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructuresIterator" id="Email">
+      <AttrNames>
+        <Item Value="Email"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructuresIterator" id="Telephone">
+      <AttrNames>
+        <Item Value="Telephone"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructuresIterator" id="Fax">
+      <AttrNames>
+        <Item Value="Fax"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="StructuresIterator" StaticList="false" Uses="LOV_StructureParent" id="StructureParent"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="StructuresIterator" StaticList="false" Uses="LOV_IdTypeSection" id="IdTypeSection"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="StructuresIterator" id="Niveau">
+      <AttrNames>
+        <Item Value="Niveau"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructuresIterator" id="Url">
+      <AttrNames>
+        <Item Value="Url"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructuresIterator" id="HoraireTravail">
+      <AttrNames>
+        <Item Value="HoraireTravail"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructuresIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="StructuresIterator" StaticList="false" Uses="LOV_IdSignataire" id="IdSignataire"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="StructuresIterator" id="Signature">
+      <AttrNames>
+        <Item Value="Signature"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="StructuresIterator" id="CreateStructure" InstanceName="gestdapAppDataControl.Structures"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="StructuresIterator" id="DeleteStructure" InstanceName="gestdapAppDataControl.Structures"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="StructuresIterator" id="IdStructure">
+      <AttrNames>
+        <Item Value="IdStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructuresIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructuresIterator" id="DateModification">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructuresIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="HistoriquesStructuresStructIterator" id="HistoriquesStructuresStruct">
+      <nodeDefinition DefName="model.updatableview.HistoriquesStructuresVO" Name="HistoriquesStructuresStruct0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateDebut"/>
+          <Item Value="DateFin"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="HistoriquesStructuresStructIterator" id="LibelleLong1">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoriquesStructuresStructIterator" id="LibelleCourt1">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="HistoriquesStructuresStructIterator" StaticList="false" Uses="LOV_IdStructures"
+          id="IdStructures" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="HistoriquesStructuresStructIterator" id="DateDebut">
+      <AttrNames>
+        <Item Value="DateDebut"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoriquesStructuresStructIterator" id="DateFin">
+      <AttrNames>
+        <Item Value="DateFin"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoriquesStructuresStructIterator" id="UtiCree1">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="HistoriquesStructuresStructIterator" id="CreateHStructure"
+            InstanceName="gestdapAppDataControl.HistoriquesStructuresStruct" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="HistoriquesStructuresStructIterator" id="DeleteHStructure"
+            InstanceName="gestdapAppDataControl.HistoriquesStructuresStruct" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="HistoriquesStructuresStructIterator" id="DateCreation1">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoriquesStructuresStructIterator" id="DateModification1">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoriquesStructuresStructIterator" id="UtiModifie1">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="IsDeptEtabExistIterator" id="IsDeptEtabExist"
+            InstanceName="gestdapAppDataControl.IsDeptEtabExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="str_id" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="IsUtiEtabExistIterator" id="IsUtiEtabExist"
+            InstanceName="gestdapAppDataControl.IsUtiEtabExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="str_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsFormDeptExistIterator" id="IsFormDeptExist"
+            InstanceName="gestdapAppDataControl.IsFormDeptExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="hs_id" NDType="java.lang.Integer"/>
+    </action>
+    <attributeValues IterBinding="HistoriquesStructuresStructIterator" id="IdHistoriquesStructure">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="IsStructExistIterator" id="IsStructExist"
+            InstanceName="gestdapAppDataControl.IsStructExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+      <NamedData NDName="abrev" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="IsHStructExistIterator" id="IsHStructExist"
+            InstanceName="gestdapAppDataControl.IsHStructExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="abrev" NDType="java.lang.String"/>
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <tree IterBinding="ScolEtabNotIntegratedIterator" id="ScolEtabNotIntegrated">
+      <nodeDefinition DefName="model.readOnlyView.ScolEtabNotIntegratedROVO" Name="ScolEtabNotIntegrated0">
+        <AttrNames>
+          <Item Value="isEtabSelected"/>
+          <Item Value="Libelle"/>
+          <Item Value="Sigle"/>
+          <Item Value="TypeEtab"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="createOrUpdateStruct" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateStruct" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateStruct.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateStruct_createOrUpdateStruct_dataControl_dataProvider_createOrUpdateStruct_result">
+      <NamedData NDName="anc_code" NDType="java.lang.String"/>
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+      <NamedData NDName="abrev" NDType="java.lang.String"/>
+      <NamedData NDName="tel" NDType="java.lang.String"/>
+      <NamedData NDName="addr" NDType="java.lang.String"/>
+      <NamedData NDName="type_etab" NDType="java.lang.String"/>
+      <NamedData NDName="grh_code" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <list IterBinding="TypeSectionsIterator" ListOperMode="navigation" ListIter="TypeSectionsIterator"
+          id="TypeSections" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="grhUserEtabIterator" id="grhUserEtab" InstanceName="evaluationAppDataControl.grhUserEtab"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="mat" NDType="java.lang.String"/>
+      <NamedData NDName="grh_code" NDType="java.lang.String"/>
+      <NamedData NDName="log" NDType="java.lang.String"/>
+    </action>
+    <tree IterBinding="grhUserEtabIterator" id="grhUserEtab1">
+      <nodeDefinition DefName="model.readOnlyView.grhUserEtab" Name="grhUserEtab10">
+        <AttrNames>
+          <Item Value="CodeMatricule"/>
+          <Item Value="Prenom"/>
+          <Item Value="Nom"/>
+          <Item Value="Emailucad"/>
+          <Item Value="LibClassification"/>
+          <Item Value="LibGrade"/>
+          <Item Value="LibStructure"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="CreateOrUpdateUserRole" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CreateOrUpdateUserRole" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.CreateOrUpdateUserRole.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.CreateOrUpdateUserRole_CreateOrUpdateUserRole_dataControl_dataProvider_CreateOrUpdateUserRole_result">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="getrole" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getrole"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getrole.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getrole_getrole_dataControl_dataProvider_getrole_result">
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getusername" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getusername"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getusername.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getusername_getusername_dataControl_dataProvider_getusername_result">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="createOrUpdateUser" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUser" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUser.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUser_createOrUpdateUser_dataControl_dataProvider_createOrUpdateUser_result">
+      <NamedData NDName="email" NDType="java.lang.String"/>
+      <NamedData NDName="struct_" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="AdminByEtablissementIterator" id="getAdminByEtablissement"
+            InstanceName="gestdapAppDataControl.AdminByEtablissement" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="str_id" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="AdminByEtablissementIterator" id="AdminByEtablissement">
+      <nodeDefinition DefName="model.readOnlyView.AdminByEtablissementROVO" Name="AdminByEtablissement0">
+        <AttrNames>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="DeleteUserRole" RequiresUpdateModel="true" Action="invokeMethod" MethodName="DeleteUserRole"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.DeleteUserRole.dataControl.dataProvider">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getMatricule" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getMatricule"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getMatricule.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getMatricule_getMatricule_dataControl_dataProvider_getMatricule_result">
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <tree IterBinding="grhUserEtabIterator" id="grhUserEtab2">
+      <nodeDefinition DefName="model.readOnlyView.grhUserEtab" Name="grhUserEtab20">
+        <AttrNames>
+          <Item Value="CodeMatricule"/>
+          <Item Value="Prenom"/>
+          <Item Value="Nom"/>
+          <Item Value="Emailucad"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="LibGrade"/>
+          <Item Value="Sexe"/>
+          <Item Value="Civilite"/>
+          <Item Value="Telephone"/>
+          <Item Value="Adresse"/>
+          <Item Value="LibStructure"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="isChefDeptExistIterator" id="isChefDeptExiste"
+            InstanceName="gestdapAppDataControl.isChefDeptExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="deptId" NDType="java.lang.String"/>
+    </action>
+    <methodAction id="createUserDet" RequiresUpdateModel="true" Action="invokeMethod" MethodName="createUserDet"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createUserDet.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createUserDet_createUserDet_dataControl_dataProvider_createUserDet_result">
+      <NamedData NDName="deptId" NDType="java.lang.Long"/>
+      <NamedData NDName="userId" NDType="java.lang.Long"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

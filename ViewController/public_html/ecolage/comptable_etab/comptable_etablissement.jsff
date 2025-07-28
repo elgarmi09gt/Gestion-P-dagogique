@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="vertical" inlineStyle="border:solid  2px #2897e8;">
+    <af:button text="Les opérations à  valider" id="b1"
+               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-bottom:10px;margin-top:5px;"
+               partialSubmit="false" disabled="true"/>
+    <af:table value="#{bindings.OperationAValCmptableRO.collectionModel}" var="row"
+              rows="#{bindings.OperationAValCmptableRO.rangeSize}"
+              emptyText="#{bindings.OperationAValCmptableRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+              rowBandingInterval="0" selectedRowKeys="#{bindings.OperationAValCmptableRO.collectionModel.selectedRow}"
+              selectionListener="#{bindings.OperationAValCmptableRO.collectionModel.makeCurrent}" rowSelection="single"
+              fetchSize="#{bindings.OperationAValCmptableRO.rangeSize}"
+              filterModel="#{bindings.OperationAValCmptableROQuery.queryDescriptor}" filterVisible="true"
+              queryListener="#{bindings.OperationAValCmptableROQuery.processQuery}" varStatus="vs" id="t1"
+              scrollPolicy="page">
+      <af:column sortProperty="#{bindings.OperationAValCmptableRO.hints.Strcture.name}" filterable="true"
+                 sortable="true" headerText="Etablissement" id="c1" width="550">
+        <af:outputText value="#{row.Strcture}" shortDesc="#{bindings.OperationAValCmptableRO.hints.Strcture.tooltip}"
+                       id="ot1"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValCmptableRO.hints.Departement.name}" filterable="true"
+                 sortable="true" headerText="Département" id="c2" width="250">
+        <af:outputText value="#{row.Departement}"
+                       shortDesc="#{bindings.OperationAValCmptableRO.hints.Departement.tooltip}" id="ot2"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValCmptableRO.hints.Formation.name}" filterable="true"
+                 sortable="true" headerText="#{bindings.OperationAValCmptableRO.hints.Formation.label}" id="c3"
+                 width="300">
+        <af:outputText value="#{row.Formation}" shortDesc="#{bindings.OperationAValCmptableRO.hints.Formation.tooltip}"
+                       id="ot3"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValCmptableRO.hints.LibTypeCmpte.name}" filterable="true"
+                 sortable="true" headerText="Compte" id="c4" width="250">
+        <af:outputText value="#{row.LibTypeCmpte}"
+                       shortDesc="#{bindings.OperationAValCmptableRO.hints.LibTypeCmpte.tooltip}" id="ot4"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValCmptableRO.hints.Montant.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.OperationAValCmptableRO.hints.Montant.label}" id="c5" width="150">
+        <af:outputText value="#{row.Montant}" shortDesc="#{bindings.OperationAValCmptableRO.hints.Montant.tooltip}"
+                       id="ot5">
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.OperationAValCmptableRO.hints.Montant.format}"/>
+        </af:outputText>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValCmptableRO.hints.NumeroRecu.name}" filterable="true"
+                 sortable="true" headerText="Reçu" id="c6">
+        <af:outputText value="#{row.NumeroRecu}"
+                       shortDesc="#{bindings.OperationAValCmptableRO.hints.NumeroRecu.tooltip}" id="ot6"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValCmptableRO.hints.DateOperation.name}" filterable="true"
+                 sortable="true" headerText="Date" id="c8">
+        <f:facet name="filter">
+          <af:inputDate value="#{bindings.OperationAValCmptableROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateOperation.value}"
+                        id="id1">
+            <af:convertDateTime pattern="#{bindings.OperationAValCmptableRO.hints.DateOperation.format}"/>
+          </af:inputDate>
+        </f:facet>
+        <af:outputText value="#{row.DateOperation}"
+                       shortDesc="#{bindings.OperationAValCmptableRO.hints.DateOperation.tooltip}" id="ot8">
+          <af:convertDateTime pattern="#{bindings.OperationAValCmptableRO.hints.DateOperation.format}"/>
+        </af:outputText>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValCmptableRO.hints.LibModePaie.name}" filterable="true"
+                 sortable="true" headerText="Mode" id="c9">
+        <af:outputText value="#{row.LibModePaie}"
+                       shortDesc="#{bindings.OperationAValCmptableRO.hints.LibModePaie.tooltip}" id="ot9"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValCmptableRO.hints.NumChqVir.name}" filterable="true"
+                 sortable="true" headerText="N° Chèque (Virement)" id="c10" width="150">
+        <af:outputText value="#{row.NumChqVir}" shortDesc="#{bindings.OperationAValCmptableRO.hints.NumChqVir.tooltip}"
+                       id="ot10"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValCmptableRO.hints.Proprietaire.name}" filterable="true"
+                 sortable="true" headerText="Bénéficiaire" id="c11" width="200">
+        <af:outputText value="#{row.Proprietaire}"
+                       shortDesc="#{bindings.OperationAValCmptableRO.hints.Proprietaire.tooltip}" id="ot11"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationAValCmptableRO.hints.Motif.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.OperationAValCmptableRO.hints.Motif.label}" id="c12" width="400">
+        <af:outputText value="#{row.Motif}" shortDesc="#{bindings.OperationAValCmptableRO.hints.Motif.tooltip}"
+                       id="ot12"/>
+      </af:column>
+      <af:column headerText="Validée" id="c7">
+        <af:selectBooleanCheckbox value="#{row.bindings.OpValidee.inputValue}" label="#{row.bindings.OpValidee.label}"
+                                  shortDesc="#{bindings.OperationAValCmptableRO.hints.OpValidee.tooltip}" id="sbc1"/>
+        <f:facet name="header">
+          <af:selectBooleanCheckbox text="Tout" id="sbc2" valueChangeListener="#{ComptableEtabBean.onSelectTout}"
+                                    autoSubmit="true" binding="#{ComptableEtabBean.chek}"/>
+        </f:facet>
+      </af:column>
+    </af:table>
+  </af:panelGroupLayout>
+  <af:button text="Valider" id="b2" inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+             icon="/images/commit.png" action="#{ComptableEtabBean.onValidationCmptableEtab}"/>
+  <af:panelGroupLayout id="pgl2" layout="vertical" inlineStyle="border:solid  2px #2897e8;">
+    <af:button text="Les opérations validées" id="b3"
+               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-bottom:10px;margin-top:5px;"
+               partialSubmit="false" disabled="true"/>
+    <af:table value="#{bindings.OperationValCmptableRO.collectionModel}" var="row"
+              rows="#{bindings.OperationValCmptableRO.rangeSize}"
+              emptyText="#{bindings.OperationValCmptableRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+              rowBandingInterval="0" selectedRowKeys="#{bindings.OperationValCmptableRO.collectionModel.selectedRow}"
+              selectionListener="#{bindings.OperationValCmptableRO.collectionModel.makeCurrent}" rowSelection="single"
+              fetchSize="#{bindings.OperationValCmptableRO.rangeSize}"
+              filterModel="#{bindings.OperationValCmptableROQuery.queryDescriptor}" filterVisible="true"
+              queryListener="#{bindings.OperationValCmptableROQuery.processQuery}" varStatus="vs" id="t2"
+              scrollPolicy="page">
+      <af:column sortProperty="#{bindings.OperationValCmptableRO.hints.Strcture.name}" filterable="true" sortable="true"
+                 headerText="Etablissement" id="c13" width="550">
+        <af:outputText value="#{row.Strcture}" shortDesc="#{bindings.OperationValCmptableRO.hints.Strcture.tooltip}"
+                       id="ot7"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValCmptableRO.hints.Departement.name}" filterable="true"
+                 sortable="true" headerText="Département" id="c14" width="250">
+        <af:outputText value="#{row.Departement}"
+                       shortDesc="#{bindings.OperationValCmptableRO.hints.Departement.tooltip}" id="ot13"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValCmptableRO.hints.Formation.name}" filterable="true"
+                 sortable="true" headerText="#{bindings.OperationValCmptableRO.hints.Formation.label}" id="c15"
+                 width="300">
+        <af:outputText value="#{row.Formation}" shortDesc="#{bindings.OperationValCmptableRO.hints.Formation.tooltip}"
+                       id="ot14"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValCmptableRO.hints.LibTypeCmpte.name}" filterable="true"
+                 sortable="true" headerText="Compte" id="c16" width="250">
+        <af:outputText value="#{row.LibTypeCmpte}"
+                       shortDesc="#{bindings.OperationValCmptableRO.hints.LibTypeCmpte.tooltip}" id="ot15"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValCmptableRO.hints.Montant.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.OperationValCmptableRO.hints.Montant.label}" id="c17" width="150">
+        <af:outputText value="#{row.Montant}" shortDesc="#{bindings.OperationValCmptableRO.hints.Montant.tooltip}"
+                       id="ot16">
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.OperationValCmptableRO.hints.Montant.format}"/>
+        </af:outputText>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValCmptableRO.hints.NumeroRecu.name}" filterable="true"
+                 sortable="true" headerText="Reçu" id="c18" width="150">
+        <af:outputText value="#{row.NumeroRecu}" shortDesc="#{bindings.OperationValCmptableRO.hints.NumeroRecu.tooltip}"
+                       id="ot17"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValCmptableRO.hints.DateOperation.name}" filterable="true"
+                 sortable="true" headerText="Date" id="c19">
+        <f:facet name="filter">
+          <af:inputDate value="#{bindings.OperationValCmptableROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateOperation.value}"
+                        id="id2">
+            <af:convertDateTime pattern="#{bindings.OperationValCmptableRO.hints.DateOperation.format}"/>
+          </af:inputDate>
+        </f:facet>
+        <af:outputText value="#{row.DateOperation}"
+                       shortDesc="#{bindings.OperationValCmptableRO.hints.DateOperation.tooltip}" id="ot18">
+          <af:convertDateTime pattern="#{bindings.OperationValCmptableRO.hints.DateOperation.format}"/>
+        </af:outputText>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValCmptableRO.hints.LibModePaie.name}" filterable="true"
+                 sortable="true" headerText="Mode" id="c20">
+        <af:outputText value="#{row.LibModePaie}"
+                       shortDesc="#{bindings.OperationValCmptableRO.hints.LibModePaie.tooltip}" id="ot19"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValCmptableRO.hints.NumChqVir.name}" filterable="true"
+                 sortable="true" headerText="N° Chèque (Virement)" id="c21" width="150">
+        <af:outputText value="#{row.NumChqVir}" shortDesc="#{bindings.OperationValCmptableRO.hints.NumChqVir.tooltip}"
+                       id="ot20"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValCmptableRO.hints.Proprietaire.name}" filterable="true"
+                 sortable="true" headerText="Bénéficiaire" id="c22" width="200">
+        <af:outputText value="#{row.Proprietaire}"
+                       shortDesc="#{bindings.OperationValCmptableRO.hints.Proprietaire.tooltip}" id="ot21"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.OperationValCmptableRO.hints.Motif.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.OperationValCmptableRO.hints.Motif.label}" id="c23" width="400">
+        <af:outputText value="#{row.Motif}" shortDesc="#{bindings.OperationValCmptableRO.hints.Motif.tooltip}"
+                       id="ot22"/>
+      </af:column>
+      <af:column headerText="Etat Opération" id="c24" width="200">
+        <af:selectOneChoice value="#{row.bindings.OpVal.inputValue}" label="#{row.bindings.OpVal.label}"
+                            required="#{bindings.OperationValCmptableRO.hints.OpVal.mandatory}"
+                            shortDesc="#{bindings.OperationValCmptableRO.hints.OpVal.tooltip}" readOnly="true"
+                            id="soc1">
+          <f:selectItems value="#{row.bindings.OpVal.items}" id="si1"/>
+          <f:validator binding="#{row.bindings.OpVal.validator}"/>
+        </af:selectOneChoice>
+      </af:column>
+    </af:table>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p13"
+                         binding="#{ComptableEtabBean.popConfVal}">
+    <af:dialog id="d13" title="Confirmation !" inlineStyle="text-align:center;"
+               dialogListener="#{ComptableEtabBean.onDialogValOper}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous valider ( #{ComptableEtabBean.nbr_valider} ) opération(s) ?" id="ot34" inlineStyle="font-size:large;" />
+      <af:serverListener type="onDialogEvent" method="#{ComptableEtabBean.onDialogValOperCan}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+    </af:dialog>
+  </af:popup>
+  
+          <af:popup childCreation="deferred" autoCancel="disabled" id="p14" binding="#{ComptableEtabBean.popAucunOper}">
+    <af:dialog id="d14" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Veuillez sélectionner au moins une opération à valider "
+                          id="of9"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{ComptableEtabBean.popNotOper}">
+    <af:dialog id="d1" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value=" Aucune opération à valider "
+                          id="of1"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p16" contentDelivery="lazyUncached"
+              binding="#{ComptableEtabBean.popConfOperCmptable}">
+        <af:dialog id="d16" type="ok" title="Information" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl11" layout="vertical">
+                <af:outputFormatted id="of19"
+                                    value="(#{ComptableEtabBean.nbr_op_valider}) opération(s) validée(s) avec succès "
+                                    inlineStyle="margin-top:10px;"/>
+                <af:outputFormatted id="of20"
+                                    value="(#{ComptableEtabBean.nbr_op_non_valider}) opération(s) non validée(s)"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>  
+</ui:composition>

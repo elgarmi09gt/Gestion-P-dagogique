@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="decaissement_etablissementPageDef" Package="ecolage.decaissement_etab">
+  <parameters/>
+<executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="CompteDeptDecaisseRechRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="CompteDeptDecaisseRechROIterator"/>
+                  
+        <iterator Binds="DetailsCompteRO" RangeSize="10" DataControl="ecolageAppDataControl" id="DetailsCompteROIterator"/>
+    <searchRegion Binds="DetailsCompteROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="DetailsCompteROQuery"/>
+    <iterator Binds="ModePaiements" RangeSize="25" DataControl="ecolageAppDataControl" id="ModePaiementsIterator"/>
+        <iterator Binds="BeneficiaireRO" RangeSize="10" DataControl="ecolageAppDataControl" id="BeneficiaireROIterator"/>
+    <searchRegion Binds="BeneficiaireROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="BeneficiaireROQuery"/>
+        <iterator Binds="Beneficaire" RangeSize="25" DataControl="ecolageAppDataControl" id="BeneficaireIterator"/>
+    <iterator Binds="OperationAnneeRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="OperationAnneeROIterator"/>
+    <iterator Binds="Operation" RangeSize="10" DataControl="ecolageAppDataControl" id="OperationIterator"/>
+    <iterator Binds="DetailOpCmpteDecaisseRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="DetailOpCmpteDecaisseROIterator"/>
+    <searchRegion Binds="DetailOpCmpteDecaisseROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="DetailOpCmpteDecaisseROQuery"/>
+    <iterator Binds="CompteEtabDecaisseRechRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="CompteEtabDecaisseRechROIterator"/>
+    <searchRegion Binds="CompteEtabDecaisseRechROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="CompteEtabDecaisseRechROQuery"/>
+  </executables>
+  <bindings>
+        <action IterBinding="DetailsCompteROIterator" id="getDetailCmpte"
+            InstanceName="ecolageAppDataControl.DetailsCompteRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_cmpte" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="DetailsCompteROIterator" id="DetailsCompteRO">
+      <nodeDefinition DefName="model.readOnlyView.DetailsCompteROVO" Name="DetailsCompteRO0">
+        <AttrNames>
+          <Item Value="LibCmpte"/>
+          <Item Value="NumeroCompte"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="DetailsCompteROIterator" id="SoldeActuel">
+      <AttrNames>
+        <Item Value="SoldeActuel"/>
+      </AttrNames>
+    </attributeValues>
+        <list IterBinding="ModePaiementsIterator" ListOperMode="navigation" ListIter="ModePaiementsIterator"
+          id="ModePaiements" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+        <attributeValues IterBinding="ModePaiementsIterator" id="IdModePaiement">
+      <AttrNames>
+        <Item Value="IdModePaiement"/>
+      </AttrNames>
+    </attributeValues>
+        <tree IterBinding="BeneficiaireROIterator" id="BeneficiaireRO">
+      <nodeDefinition DefName="model.readOnlyView.BeneficiaireROVO" Name="BeneficiaireRO0">
+        <AttrNames>
+          <Item Value="Proprietaire"/>
+          <Item Value="Telephone"/>
+          <Item Value="NumeroCompte"/>
+          <Item Value="NumCompteBanque"/>
+          <Item Value="Nom"/>
+          <Item Value="Prenom"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+        <attributeValues IterBinding="BeneficaireIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BeneficaireIterator" id="Prenom">
+      <AttrNames>
+        <Item Value="Prenom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BeneficaireIterator" id="Telephone">
+      <AttrNames>
+        <Item Value="Telephone"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BeneficaireIterator" id="NumCompteBanque">
+      <AttrNames>
+        <Item Value="NumCompteBanque"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="BeneficaireIterator" id="CreateInsertBeneficiaire" InstanceName="ecolageAppDataControl.Beneficaire"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="BeneficaireIterator" id="Proprietaire">
+      <AttrNames>
+        <Item Value="Proprietaire"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BeneficaireIterator" id="IdStructureBen">
+      <AttrNames>
+        <Item Value="IdStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BeneficaireIterator" id="UtiCreeBen">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BeneficaireIterator" id="NumeroCompteBen">
+      <AttrNames>
+        <Item Value="NumeroCompte"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="OperationAnneeROIterator" id="getOperationAnnee"
+            InstanceName="ecolageAppDataControl.OperationAnneeRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="CompteDeptDecaisseRechROIterator" id="getCompteDeptDec"
+            InstanceName="ecolageAppDataControl.CompteDeptDecaisseRechRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="next_seq_ben" RequiresUpdateModel="true" Action="invokeMethod" MethodName="next_seq_ben"
+                  IsViewObjectMethod="false" DataControl="ecolageAppDataControl"
+                  InstanceName="bindings.next_seq_ben.dataControl.dataProvider"
+                  ReturnName="data.ecolageAppDataControl.methodResults.next_seq_ben_next_seq_ben_dataControl_dataProvider_next_seq_ben_result"/>
+    <action id="Commit" DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+     
+     <action IterBinding="OperationIterator" id="CreateInsertOperation" InstanceName="ecolageAppDataControl.Operation"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="OperationIterator" id="MontantOper">
+      <AttrNames>
+        <Item Value="Montant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="DateOperation">
+      <AttrNames>
+        <Item Value="DateOperation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="TypeOperation">
+      <AttrNames>
+        <Item Value="TypeOperation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="IdModePaiementOper">
+      <AttrNames>
+        <Item Value="IdModePaiement"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="IdCompteOper">
+      <AttrNames>
+        <Item Value="IdCompte"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="NumeroChequeOper">
+      <AttrNames>
+        <Item Value="NumeroCheque"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="BanqueOper">
+      <AttrNames>
+        <Item Value="Banque"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="NumeroVirementOper">
+      <AttrNames>
+        <Item Value="NumeroVirement"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="MotifOper">
+      <AttrNames>
+        <Item Value="Motif"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="BeneficiareOper">
+      <AttrNames>
+        <Item Value="Beneficiare"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="DebitOper">
+      <AttrNames>
+        <Item Value="Debit"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="NumeroRecuOper">
+      <AttrNames>
+        <Item Value="NumeroRecu"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="ValideOper">
+      <AttrNames>
+        <Item Value="Valide"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="NumeroMandatOper">
+      <AttrNames>
+        <Item Value="NumeroMandat"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="AnnuleOper">
+      <AttrNames>
+        <Item Value="Annule"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="OpAnnuleOper">
+      <AttrNames>
+        <Item Value="OpAnnule"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="IdAnneesUniversOper">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="UtiCreeOper">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="UtiModifieOper">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OperationIterator" id="OpValidee">
+      <AttrNames>
+        <Item Value="OpValidee"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="DetailOpCmpteDecaisseROIterator" id="getDetailCompteDecaisse"
+            InstanceName="ecolageAppDataControl.DetailOpCmpteDecaisseRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_compte" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="DetailOpCmpteDecaisseROIterator" id="DetailOpCmpteDecaisseRO">
+      <nodeDefinition DefName="model.readOnlyView.DetailOpCmpteDecaisseROVO" Name="DetailOpCmpteDecaisseRO0">
+        <AttrNames>
+          <Item Value="Departement"/>
+          <Item Value="DateOperation"/>
+          <Item Value="LibTypeCmpte"/>
+          <Item Value="Montant"/>
+          <Item Value="LibModePaie"/>
+          <Item Value="NumeroRecu"/>
+          <Item Value="NumChqVir"/>
+          <Item Value="Proprietaire"/>
+          <Item Value="Motif"/>
+          <Item Value="OpVal"/>
+          <Item Value="Strcture"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="CompteEtabDecaisseRechROIterator" id="CompteEtabDecaisseRechRO">
+      <nodeDefinition DefName="model.readOnlyView.CompteEtabDecaisseRechROVO" Name="CompteEtabDecaisseRechRO0">
+        <AttrNames>
+          <Item Value="LibStrc"/>
+          <Item Value="LibTypeCmpte"/>
+          <Item Value="NumeroCompte"/>
+          <Item Value="SoldeInitial"/>
+          <Item Value="SoldeActuel"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="CompteEtabDecaisseRechROIterator" id="getCompteEtabDec"
+            InstanceName="ecolageAppDataControl.CompteEtabDecaisseRechRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>
+

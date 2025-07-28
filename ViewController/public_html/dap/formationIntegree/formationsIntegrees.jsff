@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <af:panelGroupLayout id="pgl5" layout="vertical" halign="center"
+                       inlineStyle="border: solid 3px  #2897e8; border-radius:13px ; margin-left:100px; margin-right:100px; font-size:large; background-color:#2897e8;margin-top:30px; width:1000px">
+    <af:panelGroupLayout id="pgl4" layout="horizontal">
+      <af:panelGroupLayout id="pgl1" inlineStyle="margin : 10px">
+        <af:outputFormatted value="ETABLISSEMENTS" id="of1"
+                            inlineStyle="font-size:large;  font-weight:bolder; "/>
+        <af:panelGroupLayout id="pgl6" inlineStyle="margin-left : 5px">
+          <af:selectOneChoice value="#{bindings.ScolEtablissement.inputValue}"
+                              required="#{bindings.ScolEtablissement.hints.mandatory}"
+                              shortDesc="#{bindings.ScolEtablissement.hints.tooltip}" id="soc1"
+                              contentStyle="font-size:large;border-radius: 8px;width:350px" autoSubmit="true">
+            <f:selectItems value="#{bindings.ScolEtablissement.items}" id="si1"/>
+            <f:validator binding="#{bindings.ScolEtablissement.validator}"/>
+          </af:selectOneChoice>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl2" inlineStyle="margin : 10px"
+                           visible="#{ bindings.ScolDeptDetailDapIterator.estimatedRowCount gt 1}"
+                           partialTriggers="soc2">
+        <af:outputFormatted value="DEPARTEMENTS" id="of2"
+                            inlineStyle="font-size:large; font-weight:bolder; "/>
+        <af:panelGroupLayout id="pgl7" inlineStyle="margin-left : 5px">
+          <af:selectOneChoice value="#{bindings.ScolDeptDetailDap.inputValue}"
+                              required="#{bindings.ScolDeptDetailDap.hints.mandatory}"
+                              shortDesc="#{bindings.ScolDeptDetailDap.hints.tooltip}" id="soc2"
+                              contentStyle="font-size:large;border-radius: 8px;width:350px" autoSubmit="true"
+                              partialTriggers="soc1">
+            <f:selectItems value="#{bindings.ScolDeptDetailDap.items}" id="si2"/>
+            <f:validator binding="#{bindings.ScolDeptDetailDap.validator}"/>
+          </af:selectOneChoice>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl3" inlineStyle="margin : 10px" partialTriggers="soc3"
+                         visible="#{bindings.ScolFormationIntegrationDapIterator.estimatedRowCount gt 1}">
+      <af:outputFormatted value="FORMATIONS" id="of3"
+                          inlineStyle="font-size:large;  font-weight:bolder; "/>
+      <af:selectOneChoice value="#{bindings.ScolFormationIntegrationDap.inputValue}"
+                          required="#{bindings.ScolFormationIntegrationDap.hints.mandatory}"
+                          shortDesc="#{bindings.ScolFormationIntegrationDap.hints.tooltip}" id="soc3"
+                          contentStyle="font-size:large;border-radius: 8px;width:800px" autoSubmit="true"
+                          partialTriggers="soc2">
+        <f:selectItems value="#{bindings.ScolFormationIntegrationDap.items}" id="si3"/>
+        <f:validator binding="#{bindings.ScolFormationIntegrationDap.validator}"/>
+      </af:selectOneChoice>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+    <f:facet name="menus"/>
+    <f:facet name="toolbar"/>
+    <f:facet name="statusbar"/>
+    <af:table value="#{bindings.NiveauxSectionDtailDAP.collectionModel}" var="row"
+              rows="#{bindings.NiveauxSectionDtailDAP.rangeSize}"
+              emptyText="#{bindings.NiveauxSectionDtailDAP.viewable ? 'No data to display.' : 'Access Denied.'}"
+              rowBandingInterval="0" selectedRowKeys="#{bindings.NiveauxSectionDtailDAP.collectionModel.selectedRow}"
+              selectionListener="#{bindings.NiveauxSectionDtailDAP.collectionModel.makeCurrent}" rowSelection="single"
+              fetchSize="#{bindings.NiveauxSectionDtailDAP.rangeSize}"
+              filterModel="#{bindings.NiveauxSectionDtailDAPQuery.queryDescriptor}" filterVisible="true"
+              queryListener="#{bindings.NiveauxSectionDtailDAPQuery.processQuery}" varStatus="vs" id="t1"
+              columnStretching="column:c1" scrollPolicy="page">
+      <af:column sortProperty="#{bindings.NiveauxSectionDtailDAP.hints.LibelleLong.name}" filterable="true"
+                 sortable="true" headerText="#{viewcontrollerBundle.LIBELLE}" id="c1">
+        <af:outputText value="#{row.LibelleLong}"
+                       shortDesc="#{bindings.NiveauxSectionDtailDAP.hints.LibelleLong.tooltip}" id="ot1"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.NiveauxSectionDtailDAP.hints.Niveau.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.NiveauxSectionDtailDAP.hints.Niveau.label}" id="c2" align="center">
+        <af:selectOneChoice value="#{row.bindings.Niveau.inputValue}" label="#{row.bindings.Niveau.label}"
+                            required="#{bindings.NiveauxSectionDtailDAP.hints.Niveau.mandatory}"
+                            shortDesc="#{bindings.NiveauxSectionDtailDAP.hints.Niveau.tooltip}" readOnly="true"
+                            id="soc4">
+          <f:selectItems value="#{row.bindings.Niveau.items}" id="si4"/>
+          <f:validator binding="#{row.bindings.Niveau.validator}"/>
+        </af:selectOneChoice>
+      </af:column>
+      <af:column sortProperty="#{bindings.NiveauxSectionDtailDAP.hints.Integre.name}" filterable="true" sortable="true"
+                 headerText="#{viewcontrollerBundle1.INTEGREE}" id="c3" align="center">
+        <af:selectOneChoice value="#{row.bindings.Integre.inputValue}" label="#{row.bindings.Integre.label}"
+                            required="#{bindings.NiveauxSectionDtailDAP.hints.Integre.mandatory}"
+                            shortDesc="#{bindings.NiveauxSectionDtailDAP.hints.Integre.tooltip}" readOnly="true"
+                            id="soc5">
+          <f:selectItems value="#{row.bindings.Integre.items}" id="si5"/>
+          <f:validator binding="#{row.bindings.Integre.validator}"/>
+        </af:selectOneChoice>
+      </af:column>
+      <af:column id="c4" headerText="Détails" align="center">
+        <af:link id="l1" icon="/images/icons8-eye-24.png">
+          <af:showPopupBehavior popupId=":::p1"/>
+        </af:link>
+      </af:column>
+    </af:table>
+  </af:panelCollection>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached">
+    <af:noteWindow id="nw1">
+      <af:panelFormLayout id="pfl1">
+        <af:panelGroupLayout id="pgl8" layout="vertical" inlineStyle="width:400px;">
+          <af:panelGroupLayout id="pgl10" layout="horizontal" inlineStyle="width:400px;">
+            <af:panelGroupLayout id="pgl11" layout="horizontal" inlineStyle="width:110px;" halign="left">
+              <af:outputFormatted value="Ouverte :" id="of4" inlineStyle="font-size:large;"/>
+              <af:selectOneChoice value="#{bindings.Ouvert.inputValue}" required="#{bindings.Ouvert.hints.mandatory}"
+                                  shortDesc="#{bindings.Ouvert.hints.tooltip}" readOnly="true" id="soc6"
+                                  contentStyle="font-size:large;  font-weight:bolder;">
+                <f:selectItems value="#{bindings.Ouvert.items}" id="si6"/>
+                <f:validator binding="#{bindings.Ouvert.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl12" layout="horizontal"
+                                 inlineStyle="width:100px;margin-left:50px" halign="left">
+              <af:outputFormatted value="Valide :" id="of6" inlineStyle="font-size:large;"/>
+              <af:selectOneChoice value="#{bindings.Valide.inputValue}" required="#{bindings.Valide.hints.mandatory}"
+                                  shortDesc="#{bindings.Valide.hints.tooltip}" readOnly="true" id="soc7"
+                                  contentStyle="font-size:large;  font-weight:bolder; ">
+                <f:selectItems value="#{bindings.Valide.items}" id="si7"/>
+                <f:validator binding="#{bindings.Valide.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl9" layout="horizontal" inlineStyle="width:400px;">
+            <af:panelGroupLayout id="pgl13" layout="horizontal" halign="left" inlineStyle="width:140px;">
+              <af:outputFormatted value="Présentielle :" id="of7" inlineStyle="font-size:large;"/>
+              <af:selectOneChoice value="#{bindings.Presntielle.inputValue}"
+                                  required="#{bindings.Presntielle.hints.mandatory}"
+                                  shortDesc="#{bindings.Presntielle.hints.tooltip}" readOnly="true" id="soc8"
+                                  contentStyle="font-size:large;  font-weight:bolder; ">
+                <f:selectItems value="#{bindings.Presntielle.items}" id="si8"/>
+                <f:validator binding="#{bindings.Presntielle.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl14" layout="horizontal" halign="left"
+                                 inlineStyle="width:115px;margin-left:10px">
+              <af:outputFormatted value="Payante :" id="of8" inlineStyle="font-size:large; "/>
+              <af:selectOneChoice value="#{bindings.Payante.inputValue}" required="#{bindings.Payante.hints.mandatory}"
+                                  shortDesc="#{bindings.Payante.hints.tooltip}" readOnly="true" id="soc9"
+                                  contentStyle="font-size:large;  font-weight:bolder; ">
+                <f:selectItems value="#{bindings.Payante.items}" id="si9"/>
+                <f:validator binding="#{bindings.Payante.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl15" layout="horizontal" halign="left"
+                                 inlineStyle="width:140px;margin-left:10px">
+              <af:outputFormatted value="Diplômante :" id="of5" inlineStyle="font-size:large;"/>
+              <af:selectOneChoice value="#{bindings.Diplomante.inputValue}"
+                                  required="#{bindings.Diplomante.hints.mandatory}"
+                                  shortDesc="#{bindings.Diplomante.hints.tooltip}" readOnly="true" id="soc10"
+                                  contentStyle="font-size:large;  font-weight:bolder; ">
+                <f:selectItems value="#{bindings.Diplomante.items}" id="si10"/>
+                <f:validator binding="#{bindings.Diplomante.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:panelFormLayout>
+    </af:noteWindow>
+  </af:popup>
+</ui:composition>

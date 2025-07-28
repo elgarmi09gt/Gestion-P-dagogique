@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="OptionANCNOParcoursROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.OptionANCNOParcoursROVORowImpl"
+  ComponentClass="model.readOnlyView.OptionANCNOParcoursROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.OptionANCNOParcoursROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="code_niv"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[Select distinct nso.code_niv_sec,op.CODE,op.LIBELLE,nso.annee_univ            
+    FROM NIVEAUX_SECTIONS@scolProdref ns            
+    JOIN NIVEAUX_SECTIONS_OPTIONS@scolProdref nso on nso.code_niv_sec=ns.CODE_NIV_SEC            
+    JOIN OPTIONS@scolProdref op On nso.option_1_code=op.CODE         
+    where nso.annee_univ=:annee AND nso.code_niv_sec=:code_niv]]></SQLQuery>
+  <ViewAttribute
+    Name="CodeNivSec"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Integer"
+    ColumnType="INTEGER"
+    AliasName="CODE_NIV_SEC"
+    Expression="CODE_NIV_SEC"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="Code"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODE"
+    Expression="CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Libelle"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE"
+    Expression="LIBELLE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="AnneeUniv"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ANNEE_UNIV"
+    Expression="ANNEE_UNIV"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="CodeNivSec"/>
+    <Item Value="Code"/>
+    <Item Value="AnneeUniv"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="ScolFilUeOptionsANCNOROVO"
+    ViewLink="model.viewlink.OptionsANCNOToFilUeOtionsANCNOVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

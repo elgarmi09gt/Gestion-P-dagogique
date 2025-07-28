@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="consultationPageDef"
+                Package="evaluation.consultation">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="InscriptionsEtudiant" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="InscriptionsEtudiantIterator"/>
+    <searchRegion Binds="InscriptionsEtudiantIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="InscriptionsEtudiantQuery"/>
+    <iterator Binds="ResultatSemestreEtudiant" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ResultatSemestreEtudiantIterator"/>
+    <searchRegion Binds="ResultatSemestreEtudiantIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ResultatSemestreEtudiantQuery"/>
+  </executables>
+  <bindings>
+    <action IterBinding="InscriptionsEtudiantIterator" id="getInscriptionEtudiant"
+            InstanceName="evaluationAppDataControl.InscriptionsEtudiant" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="p_numero" NDType="java.lang.String"/>
+    </action>
+    <attributeValues IterBinding="InscriptionsEtudiantIterator" id="Datelieunaiss">
+      <AttrNames>
+        <Item Value="Datelieunaiss"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="InscriptionsEtudiantIterator" id="InscriptionsEtudiant">
+      <nodeDefinition DefName="model.readOnlyView.InscriptionsEtudiantROVO" Name="InscriptionsEtudiant0">
+        <AttrNames>
+          <Item Value="Annee"/>
+          <Item Value="LibParcours"/>
+          <Item Value="Credit"/>
+          <Item Value="Resultat"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ResultatSemestreEtudiantIterator" id="ResultatSemestreEtudiant">
+      <nodeDefinition DefName="model.readOnlyView.ResultatSemestreEtudiantROVO" Name="ResultatSemestreEtudiant0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="Note"/>
+          <Item Value="Credit"/>
+          <Item Value="Resultat"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

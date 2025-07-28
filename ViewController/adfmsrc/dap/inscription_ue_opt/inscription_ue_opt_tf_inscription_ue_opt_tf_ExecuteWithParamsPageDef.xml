@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="inscription_ue_opt_tf_inscription_ue_opt_tf_ExecuteWithParamsPageDef"
+                Package="dap.inscription_ue_opt" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="ParcousInscriptionUeOpt" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="ParcousInscriptionUeOptIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="ParcousInscriptionUeOptIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="ida" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Long"/>
+      <NamedData NDName="str_id" NDValue="#{sessionScope.id_str}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

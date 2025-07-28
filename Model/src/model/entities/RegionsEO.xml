@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="RegionsEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="REGIONS"
+  AliasName="RegionsEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdRegion"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_REGION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="REGIONS"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="Libelle"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="100"
+    ColumnName="LIBELLE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="REGIONS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IdPays"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_PAYS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="REGIONS"/>
+  <Attribute
+    Name="Code"
+    IsUnique="true"
+    Precision="75"
+    ColumnName="CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="REGIONS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="REGIONS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="REGIONS"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="REGIONS"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="REGIONS"/>
+  <AccessorAttribute
+    Name="PaysEO"
+    Association="model.assoc.PaysToRegionsAssoc"
+    AssociationEnd="model.assoc.PaysToRegionsAssoc.PaysEO"
+    AssociationOtherEnd="model.assoc.PaysToRegionsAssoc.RegionsEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <AccessorAttribute
+    Name="VillesEO"
+    Association="model.assoc.RegionsToVillesAssoc"
+    AssociationEnd="model.assoc.RegionsToVillesAssoc.VillesEO"
+    AssociationOtherEnd="model.assoc.RegionsToVillesAssoc.RegionsEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkRegions"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_REGIONS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RegionsEO.IdRegion"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqRegionCode">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_REGION_CODE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RegionsEO.Code"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqRegionLibelle">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_REGION_LIBELLE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RegionsEO.Libelle"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkRegionPays">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_PAYS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_REGION_PAYS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RegionsEO.IdPays"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkRegionUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_REGION_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RegionsEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkRegionUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_REGION_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RegionsEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

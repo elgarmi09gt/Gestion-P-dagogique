@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="DepartementUserROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.DepartementUserROVORowImpl"
+  ComponentClass="model.readOnlyView.DepartementUserROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.DepartementUserROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="log"
+    Kind="where"
+    Type="java.lang.String"/>
+  <SQLQuery><![CDATA[SELECT DISTINCT hs.ID_HISTORIQUES_STRUCTURE, hs.LIBELLE_LONG, hs.LIBELLE_COURT, str.ID_STRUCTURE          
+FROM STRUCTURES str     
+JOIN HISTORIQUES_STRUCTURES hs ON str.ID_STRUCTURE=hs.ID_STRUCTURES      
+JOIN FORMATIONS fr ON hs.ID_HISTORIQUES_STRUCTURE = fr.ID_HISTORIQUES_STRUCTURE      
+JOIN UTILISATEUR_FORMATIONS uf ON uf.ID_FORMATION=fr.ID_FORMATION      
+JOIN UTILISATEURS ut ON uf.ID_UTILISATEUR=ut.ID_UTILISATEUR      
+WHERE ut.LOGIN=:log and uf.ACTIVE=1    
+ORDER BY hs.LIBELLE_LONG]]></SQLQuery>
+  <ViewAttribute
+    Name="IdHistoriquesStructure"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_HISTORIQUES_STRUCTURE"
+    Expression="ID_HISTORIQUES_STRUCTURE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleCourt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="75"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_COURT"
+    Expression="LIBELLE_COURT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdStructure"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_STRUCTURE"
+    Expression="ID_STRUCTURE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdHistoriquesStructure"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="StructureAccesByUsername"
+    ViewLink="model.viewlink.EtabUserToDeptUserVL"
+    Type="model.readOnlyView.StructureAccesByUsernameRowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ParcoursUserROVO"
+    ViewLink="model.viewlink.DeptUserToParcoursUserVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <LOVUIHints
+    ListType="105"
+    MRUCount="0"
+    NullValueFlag="start"
+    NullValueId="LOVUIHints_NullValueId">
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </LOVUIHints>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

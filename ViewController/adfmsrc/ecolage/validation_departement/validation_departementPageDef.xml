@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="validation_departementPageDef"
+                Package="ecolage.validation_departement">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="OperationAValDepartRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="OperationAValDepartROIterator"/>
+    <searchRegion Binds="OperationAValDepartROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="OperationAValDepartROQuery"/>
+    <iterator Binds="OperationValDepartRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="OperationValDepartROIterator"/>
+    <searchRegion Binds="OperationValDepartROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="OperationValDepartROQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="OperationAValDepartROIterator" id="OperationAValDepartRO">
+      <nodeDefinition DefName="model.readOnlyView.OperationAValDepartROVO" Name="OperationAValDepartRO0">
+        <AttrNames>
+          <Item Value="DateOperation"/>
+          <Item Value="Montant"/>
+          <Item Value="NumeroRecu"/>
+          <Item Value="LibModePaie"/>
+          <Item Value="NumChqVir"/>
+          <Item Value="Beneficiare"/>
+          <Item Value="LibTypeCmpte"/>
+          <Item Value="OpVal"/>
+          <Item Value="Motif"/>
+          <Item Value="Proprietaire"/>
+          <Item Value="OpValidee" Binds="OpValidee"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="OperationAValDepartROIterator" id="OpValidee" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="OpValidee"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="1"/>
+        <Item Value="0"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="OperationValDepartROIterator" id="OperationValDepartRO">
+      <nodeDefinition DefName="model.readOnlyView.OperationValDepartROVO" Name="OperationValDepartRO0">
+        <AttrNames>
+          <Item Value="DateOperation"/>
+          <Item Value="Montant"/>
+          <Item Value="NumeroRecu"/>
+          <Item Value="LibModePaie"/>
+          <Item Value="IdModePaiement"/>
+          <Item Value="IdOperation"/>
+          <Item Value="NumChqVir"/>
+          <Item Value="LibTypeCmpte"/>
+          <Item Value="Motif"/>
+          <Item Value="Proprietaire"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="findAndUpdateValOperation" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findAndUpdateValOperation" IsViewObjectMethod="false" DataControl="ecolageAppDataControl"
+                  InstanceName="bindings.findAndUpdateValOperation.dataControl.dataProvider">
+      <NamedData NDName="id_oper" NDType="java.lang.Long"/>
+      <NamedData NDName="annule" NDType="java.lang.String"/>
+      <NamedData NDName="util" NDType="java.lang.String"/>
+    </methodAction>
+    <action IterBinding="OperationAValDepartROIterator" id="getOperationAValidee"
+            InstanceName="ecolageAppDataControl.OperationAValDepartRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="OperationValDepartROIterator" id="getOperationValidee"
+            InstanceName="ecolageAppDataControl.OperationValDepartRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

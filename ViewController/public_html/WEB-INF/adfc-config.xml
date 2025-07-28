@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <view id="test">
+    <page>/test.jsf</page>
+  </view>
+  <task-flow-call id="list">
+    <task-flow-reference>
+      <document>/parametrage/cycles/list.xml</document>
+      <id>list</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type>
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <!--method-call id="ExecuteWithParams">
+    <method>#{bindings.ExecuteWithParams.execute}</method>
+    <outcome>
+      <fixed-outcome>ExecuteWithParams</fixed-outcome>
+    </outcome>
+  </method-call-->
+  <view id="etats">
+    <page>/etats.jsf</page>
+  </view>
+  <control-flow-rule id="__1">
+    <from-activity-id>test</from-activity-id>
+    <control-flow-case id="__2">
+      <from-outcome>lister</from-outcome>
+      <to-activity-id>list</to-activity-id>
+    </control-flow-case>
+  </control-flow-rule>
+  <control-flow-rule id="__6">
+    <from-activity-id>ExecuteWithParams</from-activity-id>
+    <control-flow-case id="__8">
+      <from-outcome>ExecuteWithParams</from-outcome>
+      <to-activity-id>etats</to-activity-id>
+    </control-flow-case>
+  </control-flow-rule>
+  <managed-bean id="__3">
+    <managed-bean-name>DeliberatioUeBean</managed-bean-name>
+    <managed-bean-class>view.beans.evaluation.deliberation_ue.DeliberatioUeBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__7">
+    <managed-bean-name>DeliberationSemestrielleBean</managed-bean-name>
+    <managed-bean-class>view.beans.evaluation.deliberation_sem.DeliberationSemestrielleBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__4">
+    <managed-bean-name>TestBean</managed-bean-name>
+    <managed-bean-class>view.beans.evaluation.relevesAttestations.TestBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__5">
+    <managed-bean-name>TestReportBean</managed-bean-name>
+    <managed-bean-class>view.beans.test.TestReportBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__9">
+    <managed-bean-name>LoginBean</managed-bean-name>
+    <managed-bean-class>view.beans.login.LoginBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__10">
+    <managed-bean-name>EtatBean</managed-bean-name>
+    <managed-bean-class>view.beans.evaluation.etats.EtatBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__11">
+    <managed-bean-name>SaisieResultbean</managed-bean-name>
+    <managed-bean-class>saisie_resultat.SaisieResultBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__14">
+    <managed-bean-name>ResponsableBean</managed-bean-name>
+    <managed-bean-class>responsable_etud.ResponsableBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__12">
+    <managed-bean-name>MaquetteBean</managed-bean-name>
+    <managed-bean-class>view.beans.maquette.MaquetteBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean id="__13">
+    <managed-bean-name>ConnectionEvalBean</managed-bean-name>
+    <managed-bean-class>view.beans.ConnectionEvalBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__16">
+    <managed-bean-name>AdministrationBean</managed-bean-name>
+    <managed-bean-class>view.beans.admin.AdministrationBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean id="__22">
+    <managed-bean-name>ModalitePaiementBean</managed-bean-name>
+    <managed-bean-class>modzlite_paiement.ModalitePaiementBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__17">
+    <managed-bean-name>ClesRepartitionBean</managed-bean-name>
+    <managed-bean-class>parametrage_cle_repartition.ClesRepartitionBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__15">
+    <managed-bean-name>RepartitionBean</managed-bean-name>
+    <managed-bean-class>repartition.RepartitionBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__23">
+    <managed-bean-name>RepFormationBean</managed-bean-name>
+    <managed-bean-class>repartition_formation.RepFormationBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__18">
+    <managed-bean-name>CompteBean</managed-bean-name>
+    <managed-bean-class>compte.CompteBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__19">
+    <managed-bean-name>EncaisseEtudBean</managed-bean-name>
+    <managed-bean-class>encaisse_etudiant.EncaisseEtudBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__20">
+    <managed-bean-name>DecaisserBean</managed-bean-name>
+    <managed-bean-class>decaissement.DecaisserBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__21">
+    <managed-bean-name>PaiementRetardBean</managed-bean-name>
+    <managed-bean-class>paiement_retard.PaiementRetardBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__24">
+    <managed-bean-name>SaisieNotesInterBean</managed-bean-name>
+    <managed-bean-class>saisie_notes_mode_ens_inter.SaisieNotesInterBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__25">
+    <managed-bean-name>SaisieNotesBean</managed-bean-name>
+    <managed-bean-class>saisie_notes_mode_ens.SaisieNotesBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__27">
+    <managed-bean-name>SaisieNotesBean</managed-bean-name>
+    <managed-bean-class>saisie_notes_mode_ens.SaisieNotesBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__26">
+    <managed-bean-name>resetBean</managed-bean-name>
+    <managed-bean-class>view.beans.resetpass.resetBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__28">
+    <managed-bean-name>resetBean</managed-bean-name>
+    <managed-bean-class>view.beans.resetpass.resetBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+</adfc-config>

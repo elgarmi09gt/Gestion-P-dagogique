@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="listeUeValide"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.listeUeValideRowImpl"
+  ComponentClass="model.readOnlyView.listeUeValideImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.listeUeValide_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_niv_form"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_sem"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="idpers"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select distinct a.ID_INSCRIPTION_ADMIN ,au.libelle_long as annee_val,p.id_inscription_pedagogique,ips.id_inscription_ped_semestre,fus.codification as codification_ue,rfus.note,rfus.credit,rfus.id_resultat_fil_ue_semestre , rfus.id_inscription_ped_sem_ue,cd.id_calendrier_deliberation,fus.id_filiere_ue_semstre,rfus.resultat            
+from inscriptions_admin a              
+join inscriptions_pedagogiques p on a.ID_INSCRIPTION_ADMIN = p.ID_INSCRIPTION_ADMIN         
+join inscription_ped_semestre ips on ips.id_inscription_pedagogique = p.id_inscription_pedagogique         
+join inscription_ped_sem_ue ipsu on ipsu.id_inscription_ped_semestre = ips.id_inscription_ped_semestre         
+join resultats_fil_ue_semestre rfus on rfus.id_inscription_ped_sem_ue = ipsu.id_inscription_ped_sem_ue         
+join parcours_maquette_annee pma on p.ID_PARCOURS_MAQUET_ANNEE = pma.ID_PARCOURS_MAQUET_ANNEE              
+JOIN niveaux_formation_parcours nfp on nfp.id_niveau_formation_parcours = pma.id_niveau_formation_parcours                                        
+JOIN niveau_formation_cohortes nfc on nfc.id_niveau_formation_cohorte = nfp.id_niveau_formation_cohorte                                        
+JOIN niveaux_formations nf on nfc.id_niveau_formation = nf.id_niveau_formation         
+join calendrier_deliberation cd on cd.id_calendrier_deliberation = rfus.id_calendrier_deliberation         
+join annees_univers au on au.id_annees_univers = cd.id_annees_univers         
+join filiere_ue_semstre fus on fus.id_filiere_ue_semstre = ipsu.id_filiere_ue_semstre         
+join etudiants e on a.id_etudiant = e.id_etudiant              
+where nf.id_niveau_formation=:id_niv_form and ips.id_semestre=:id_sem and e.id_personne=:idpers and ipsu.id_inscription_ped_sem_ue in (select id_inscription_ped_sem_ue from resultats_fil_ue_semestre where (resultat = 2 or resultat = 3 or note >= 10))]]></SQLQuery>
+  <ViewAttribute
+    Name="IdInscriptionAdmin"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_INSCRIPTION_ADMIN"
+    Expression="ID_INSCRIPTION_ADMIN"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="AnneeVal"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ANNEE_VAL"
+    Expression="ANNEE_VAL"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdInscriptionPedagogique"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PEDAGOGIQUE"
+    Expression="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionPedSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PED_SEMESTRE"
+    Expression="ID_INSCRIPTION_PED_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="CodificationUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODIFICATION_UE"
+    Expression="CODIFICATION_UE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Note"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="NOTE"
+    Expression="NOTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Credit"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="CREDIT"
+    Expression="CREDIT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdResultatFilUeSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_RESULTAT_FIL_UE_SEMESTRE"
+    Expression="ID_RESULTAT_FIL_UE_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionPedSemUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PED_SEM_UE"
+    Expression="ID_INSCRIPTION_PED_SEM_UE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdCalendrierDeliberation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_CALENDRIER_DELIBERATION"
+    Expression="ID_CALENDRIER_DELIBERATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdFiliereUeSemstre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_FILIERE_UE_SEMSTRE"
+    Expression="ID_FILIERE_UE_SEMSTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Resultat"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="RESULTAT"
+    Expression="RESULTAT"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

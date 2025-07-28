@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelFormLayout id="pfl1" rows="2"
+                      inlineStyle="border:solid  2px #2897e8;width:700px;margin-top:20px;margin-left:10px;">
+    <af:inputText value="#{bindings.Numero.inputValue}" label="Numéro"
+                  required="#{bindings.Numero.hints.mandatory}" columns="#{bindings.Numero.hints.displayWidth}"
+                  maximumLength="#{bindings.Numero.hints.precision}" shortDesc="#{bindings.Numero.hints.tooltip}"
+                  id="it1" readOnly="true">
+      <f:validator binding="#{bindings.Numero.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                  required="#{bindings.Nom.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Nom.hints.displayWidth}" maximumLength="#{bindings.Nom.hints.precision}"
+                  shortDesc="#{bindings.Nom.hints.tooltip}" id="it2">
+      <f:validator binding="#{bindings.Nom.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Prenoms.inputValue}" label="Prénoms"
+                  required="#{bindings.Prenoms.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Prenoms.hints.displayWidth}" maximumLength="#{bindings.Prenoms.hints.precision}"
+                  shortDesc="#{bindings.Prenoms.hints.tooltip}" id="it3">
+      <f:validator binding="#{bindings.Prenoms.validator}"/>
+    </af:inputText>
+    <af:inputDate value="#{bindings.DateNaissance.inputValue}" readOnly="true"
+                  label="Date Naissance" required="#{bindings.DateNaissance.hints.mandatory}"
+                  columns="#{bindings.DateNaissance.hints.displayWidth}"
+                  shortDesc="#{bindings.DateNaissance.hints.tooltip}" id="id1">
+      <f:validator binding="#{bindings.DateNaissance.validator}"/>
+      <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+    </af:inputDate>
+  </af:panelFormLayout>
+  <af:button text="Règlementation avec la BU" id="b2"
+             inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:30px;"
+             partialSubmit="false" disabled="true"/>
+  <af:panelLabelAndMessage label="#{bindings.Prenoms} #{bindings.Nom} est en régle avec la BU" id="plam1"
+                           inlineStyle="background-color:Yellow;margin-left:10px;margin-top:20px;margin-bottom:20px;margin-left:100px;"
+                           visible="#{sessionScope.is_en_regle == '1' ? true : false}"/>
+  <af:panelLabelAndMessage label="#{bindings.Prenoms} #{bindings.Nom} n'est pas en règle avec la BU"
+                           id="plam2" visible="#{sessionScope.is_not_en_regle == '1' ? true : false}"
+                           inlineStyle="background-color:Red; margin-left:10px; margin-top:20px; margin-bottom:20px; margin-left:100px;"/>
+  <af:panelFormLayout id="pfl2" inlineStyle="border:solid  2px #2897e8;width:650px;margin-top:20px;margin-left:10px;">
+    <af:selectOneChoice value="#{bindings.StructureEtudBuRO.inputValue}" label="Structure"
+                        required="#{bindings.StructureEtudBuRO.hints.mandatory}"
+                        shortDesc="#{bindings.StructureEtudBuRO.hints.tooltip}" id="soc1" autoSubmit="true"
+                        inlineStyle="margin-top:20px;margin-left:10px;"
+                        valueChangeListener="#{EudiantBubean.onChangeStructure}"
+                        visible="#{sessionScope.pas_de_struct == '1' ? false : true}"
+                        contentStyle="margin-top:10px;width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;">
+      <f:selectItems value="#{bindings.StructureEtudBuRO.items}" id="si1"/>
+      <f:validator binding="#{bindings.StructureEtudBuRO.validator}"/>
+    </af:selectOneChoice>
+    <af:selectBooleanCheckbox label="En Règle" id="sbc2" disabled="true"
+                              selected="#{sessionScope.is_en_regle == '1' ? true : false}"/>
+  </af:panelFormLayout>
+</ui:composition>

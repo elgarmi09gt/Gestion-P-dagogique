@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="IsResponsableFilUe"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.IsResponsableFilUeRowImpl"
+  ComponentClass="model.readOnlyView.IsResponsableFilUeImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.IsResponsableFilUe_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="fil_ue"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="user_id"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT Distinct ufs.ID_UTILIS_FILIER_UE_SEM        
+FROM UTILIS_FILIERE_UE_SEMESTRE ufs      
+WHERE ufs.ID_FILIERE_UE_SEMSTRE =:fil_ue        
+AND ufs.ID_UTILISATEUR =:user_id      
+AND ufs.ROLE ='RESPONSABLE UE']]></SQLQuery>
+  <ViewAttribute
+    Name="IdUtilisFilierUeSem"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="ID_UTILIS_FILIER_UE_SEM"
+    Expression="ID_UTILIS_FILIER_UE_SEM"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

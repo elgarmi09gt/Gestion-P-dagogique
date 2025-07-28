@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html">
+  <c:set var="viewcontrollerBundle"
+         value="#{adfBundle['viewcontroller.evaluation.initialisation.initialisationBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll" halign="center" inlineStyle="margin:50px;" valign="middle">
+    <af:selectOneChoice value="#{bindings.Parcours.inputValue}" label="#{viewcontrollerBundle.PARCOURS}"
+                        required="#{bindings.Parcours.hints.mandatory}" shortDesc="#{bindings.Parcours.hints.tooltip}"
+                        id="soc1"
+                        contentStyle="font-size: 18px; width:400px; border: solid 2px #2897e8; border-radius: 5px; height:50px"
+                        labelStyle="font-weight: bold; font-size: 18px" autoSubmit="true"
+                        valueChangeListener="#{InitialisationBean.OnParcoursChange}">
+      <f:selectItems value="#{bindings.Parcours.items}" id="si1"/>
+      <f:validator binding="#{bindings.Parcours.validator}"/>
+    </af:selectOneChoice>
+    <af:iterator id="i2"
+                 value="#{InitialisationBean.checkConfig(bindings.IdNiveauFormationParcours.inputValue, sessionScope.id_maquette)}"/>
+    <af:panelGridLayout id="pgl3"
+                        inlineStyle="font-size:large; font-weight:bold; line-height:50px;border: outset 2px #2897e8; border-radius: 4px; width:500px;margin-top:10px"
+                        binding="#{InitialisationBean.pgl}" partialTriggers="soc1 si1">
+      <af:gridRow marginTop="5px" height="auto" id="gr5">
+        <af:gridCell marginStart="5px" width="35%" id="gc10">
+          <af:outputFormatted value="Calendrier Paramétré" id="of1"/>
+        </af:gridCell>
+        <af:gridCell marginStart="5px" width="25%" id="gc11" halign="center">
+          <af:link id="b3" icon="#{sessionScope.icon_param_cal}" disabled="true"/>
+        </af:gridCell>
+      </af:gridRow>
+      <af:gridRow marginTop="5px" height="auto" id="gr6">
+        <af:gridCell marginStart="5px" width="35%" id="gc13">
+          <af:outputFormatted value="Maquette Validé" id="of2"/>
+        </af:gridCell>
+        <af:gridCell marginStart="5px" width="25%" marginEnd="5px" id="gc14" halign="center">
+          <af:link id="l1" icon="#{sessionScope.icon_valide_maq}" disabled="true"/>
+        </af:gridCell>
+      </af:gridRow>
+    </af:panelGridLayout>
+    <af:button text="Démarrer" id="b1"
+               inlineStyle="font-size:x-large; margin-top:30px; border-radius:10px ;background:#2897e8;color:#fff"
+               actionListener="#{InitialisationBean.BeforeOpened}" disabled="#{sessionScope.diseableBtn}"
+               partialTriggers="soc1"
+               icon="#{sessionScope.is_valid_maq ?  sessionScope.icon_param_cal :  sessionScope.icon_valide_maq}"/>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{InitialisationBean.successInitPopup}">
+      <af:dialog id="d1" title="Info" inlineStyle="text-align:center; font-size:medium;" type="cancel"
+                 cancelTextAndAccessKey="Fermer">
+        <af:icon name="info" id="i1"/>
+        <af:outputFormatted value="Initialisation Effectuée !!!" id="of6" inlineStyle="color:Lime;"/>
+        <f:facet name="buttonBar"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{InitialisationBean.popupNotCalYet}">
+      <af:dialog id="d3" title="Info" inlineStyle="text-align:center;" type="ok">
+        <af:panelGroupLayout id="pgl11" layout="vertical" inlineStyle="text-align:center;">
+          <af:icon name="warning" id="i3"/>
+          <af:outputFormatted value="Pas de Calendier définit" id="of7" inlineStyle="color:Orange; font-size:medium;"/>
+        </af:panelGroupLayout>
+        <f:facet name="buttonBar"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{InitialisationBean.noInscPopup}">
+      <af:dialog id="d2" title="Info" inlineStyle="text-align:center;" type="ok">
+        <af:panelGroupLayout id="pgl2" layout="vertical" inlineStyle="text-align:center;">
+          <af:icon name="warning" id="i4"/>
+          <af:outputFormatted value="Veuillez importer/inscrire les étudiants pour pouvoir initialiser" id="of3" inlineStyle="color:Orange; font-size:medium;"/>
+        </af:panelGroupLayout>
+        <f:facet name="buttonBar"/>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+  <!--oracle-jdev-comment:preferred-managed-bean-name:InitialisationBean-->
+</ui:composition>

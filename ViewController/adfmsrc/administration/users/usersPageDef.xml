@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="usersPageDef"
+                Package="administration.users">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Utilisateurs" RangeSize="8" DataControl="evaluationAppDataControl" id="UtilisateursIterator"/>
+    <searchRegion Binds="UtilisateursIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UtilisateursQuery"/>
+    <iterator Binds="grhUser" RangeSize="8" DataControl="evaluationAppDataControl" id="grhUserIterator"/>
+    <searchRegion Binds="grhUserIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="grhUser1Query"/>
+    <iterator Binds="grhUserEtab" RangeSize="8" DataControl="evaluationAppDataControl" id="grhUserEtabIterator"/>
+    <searchRegion Binds="grhUserEtabIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="grhUserEtab1Query"/>
+    <iterator Binds="UtilisateurEtabROVO" RangeSize="8" DataControl="evaluationAppDataControl"
+              id="UtilisateurEtabROVOIterator"/>
+    <searchRegion Binds="UtilisateurEtabROVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UtilisateurEtabROVOQuery"/>
+    <iterator Binds="grhUsers" RangeSize="10" DataControl="evaluationAppDataControl" id="grhUsersIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="grhUserIterator" id="grhUser" InstanceName="evaluationAppDataControl.grhUser"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="mat" NDType="java.lang.String"/>
+    </action>
+    <tree IterBinding="grhUserIterator" id="grhUser1">
+      <nodeDefinition DefName="model.readOnlyView.grhUser" Name="grhUser10">
+        <AttrNames>
+          <Item Value="LibClassification"/>
+          <Item Value="CodeMatricule"/>
+          <Item Value="Prenom"/>
+          <Item Value="Nom"/>
+          <Item Value="LibGrade"/>
+          <Item Value="Emailucad"/>
+          <Item Value="Sexe"/>
+          <Item Value="Civilite"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="Nationalite"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Telephone"/>
+          <Item Value="Adresse"/>
+          <Item Value="LibStructure"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="UtilisateursIterator" id="Utilisateurs1">
+      <nodeDefinition DefName="model.readOnlyView.UtilisateursROVO" Name="Utilisateurs10">
+        <AttrNames>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="LibelleCourt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <methodAction id="createOrUpdateUser" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUser" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUser.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUser_createOrUpdateUser_dataControl_dataProvider_createOrUpdateUser_result">
+      <NamedData NDName="email" NDType="java.lang.String"/>
+      <NamedData NDName="struct_" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="grhUserEtabIterator" id="grhUserEtab" InstanceName="evaluationAppDataControl.grhUserEtab"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="mat" NDType="java.lang.String"/>
+      <NamedData NDName="grh_code" NDType="java.lang.String"/>
+      <NamedData NDName="log" NDType="java.lang.String"/>
+    </action>
+    <tree IterBinding="grhUserEtabIterator" id="grhUserEtab1">
+      <nodeDefinition DefName="model.readOnlyView.grhUserEtab" Name="grhUserEtab10">
+        <AttrNames>
+          <Item Value="CodeMatricule"/>
+          <Item Value="Civilite"/>
+          <Item Value="Prenom"/>
+          <Item Value="Nom"/>
+          <Item Value="Emailucad"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Telephone"/>
+          <Item Value="Nationalite"/>
+          <Item Value="Sexe"/>
+          <Item Value="Adresse"/>
+          <Item Value="LibGrade"/>
+          <Item Value="LibStructure"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="UtilisateurEtabROVOIterator" id="UtilisateurEtabROVO">
+      <nodeDefinition DefName="model.readOnlyView.UtilisateurEtabROVO" Name="UtilisateurEtabROVO0">
+        <AttrNames>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="LibelleCourt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="getMatricule" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getMatricule"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getMatricule.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getMatricule_getMatricule_dataControl_dataProvider_getMatricule_result">
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="grhUsersIterator" id="ExecuteWithParams" InstanceName="evaluationAppDataControl.grhUsers"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="matr" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="grhUserEtabIterator" id="userEtabSearch"
+            InstanceName="evaluationAppDataControl.grhUserEtab" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="mat" NDType="java.lang.String"/>
+      <NamedData NDName="grh_code" NDType="java.lang.String"/>
+      <NamedData NDName="log" NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

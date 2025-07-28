@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+                <af:iterator value="#{RepFormationBean.refresh()}" 
+         id="i6" />
+  <af:selectOneChoice value="#{bindings.StructFormPayRO.inputValue}" label="Etablissement"
+                      required="#{bindings.StructFormPayRO.hints.mandatory}"
+                      shortDesc="#{bindings.StructFormPayRO.hints.tooltip}" id="soc1"
+                      contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:25px"
+                      inlineStyle="margin-top:10px;margin-bottom:20px;" labelStyle="font-size:large;" autoSubmit="true">
+    <f:selectItems value="#{bindings.StructFormPayRO.items}" id="si1"/>
+    <f:validator binding="#{bindings.StructFormPayRO.validator}"/>
+  </af:selectOneChoice>
+  <af:panelGroupLayout id="pgl3" inlineStyle="border:solid  1px #2897e8;width:900px;" layout="vertical">
+    <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+    <af:panelStretchLayout id="psl1" dimensionsFrom="children" endWidth="203px">
+      <f:facet name="start"/>
+      <f:facet name="end"/>
+      <f:facet name="top"/>
+      <f:facet name="bottom"/>
+      <f:facet name="center">
+        <af:panelGroupLayout id="pgl7" layout="vertical">
+          <af:outputFormatted value="Les Formations sont déjà attachées à la Répartition : #{bindings.LibRepartition}"
+                              id="of7" inlineStyle="font-size:large; color:#008400;"
+                              visible="#{sessionScope.rep_form_existe == '1' ? true : false}"/>
+          <af:selectOneChoice value="#{bindings.AnneeUniversEnCoursRO.inputValue}" label="Année Universitaire"
+                              required="#{bindings.AnneeUniversEnCoursRO.hints.mandatory}"
+                              shortDesc="#{bindings.AnneeUniversEnCoursRO.hints.tooltip}" id="soc3"
+                              inlineStyle="margin-top:20px;"
+                              contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:25px">
+            <f:selectItems value="#{bindings.AnneeUniversEnCoursRO.items}" id="si3"/>
+            <f:validator binding="#{bindings.AnneeUniversEnCoursRO.validator}"/>
+          </af:selectOneChoice>
+          <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.RepartitionStructRO.collectionModel}" var="row"
+                      rows="#{bindings.RepartitionStructRO.rangeSize}"
+                      emptyText="#{bindings.RepartitionStructRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.RepartitionStructRO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.RepartitionStructRO.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.RepartitionStructRO.rangeSize}"
+                      filterModel="#{bindings.RepartitionStructROQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.RepartitionStructROQuery.processQuery}" varStatus="vs" id="t1"
+                      displayRow="last">
+              <af:column sortProperty="#{bindings.RepartitionStructRO.hints.LibRep.name}" filterable="true"
+                         sortable="true" headerText="Libellé" id="c1" width="300">
+                <af:outputText value="#{row.LibRep}" shortDesc="#{bindings.RepartitionStructRO.hints.LibRep.tooltip}"
+                               id="ot1"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.RepartitionStructRO.hints.DateDebut.name}" filterable="true"
+                         sortable="true" headerText="Date Debut" id="c3">
+                <f:facet name="filter">
+                  <af:inputDate value="#{bindings.RepartitionStructROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateDebut.value}"
+                                id="id1">
+                    <af:convertDateTime pattern="#{bindings.RepartitionStructRO.hints.DateDebut.format}"/>
+                  </af:inputDate>
+                </f:facet>
+                <af:outputText value="#{row.DateDebut}"
+                               shortDesc="#{bindings.RepartitionStructRO.hints.DateDebut.tooltip}" id="ot3">
+                  <af:convertDateTime pattern="#{bindings.RepartitionStructRO.hints.DateDebut.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.RepartitionStructRO.hints.DateFin.name}" filterable="true"
+                         sortable="true" headerText="Date Fin" id="c4">
+                <f:facet name="filter">
+                  <af:inputDate value="#{bindings.RepartitionStructROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateFin.value}"
+                                id="id2">
+                    <af:convertDateTime pattern="#{bindings.RepartitionStructRO.hints.DateFin.format}"/>
+                  </af:inputDate>
+                </f:facet>
+                <af:outputText value="#{row.DateFin}" shortDesc="#{bindings.RepartitionStructRO.hints.DateFin.tooltip}"
+                               id="ot4">
+                  <af:convertDateTime pattern="#{bindings.RepartitionStructRO.hints.DateFin.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.RepartitionStructRO.hints.Actif.name}" filterable="true"
+                         sortable="true" headerText="#{bindings.RepartitionStructRO.hints.Actif.label}" id="c5">
+                <af:selectOneChoice value="#{row.bindings.Actif.inputValue}" label="#{row.bindings.Actif.label}"
+                                    required="#{bindings.RepartitionStructRO.hints.Actif.mandatory}"
+                                    shortDesc="#{bindings.RepartitionStructRO.hints.Actif.tooltip}" readOnly="true"
+                                    id="soc2">
+                  <f:selectItems value="#{row.bindings.Actif.items}" id="si2"/>
+                  <f:validator binding="#{row.bindings.Actif.validator}"/>
+                </af:selectOneChoice>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+          <af:button text="Appliquer A Toutes Les Formations" id="b1"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:30px;"
+                     icon="/images/commit.png" partialTriggers="b1"
+                     disabled="#{sessionScope.rep_form_existe == '1' ? true : false}"
+                     actionListener="#{RepFormationBean.appliquerFormations}"/>
+        </af:panelGroupLayout>
+      </f:facet>
+    </af:panelStretchLayout>
+  </af:panelGroupLayout>
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p7"
+                      binding="#{RepFormationBean.popCommitForm}" contentDelivery="lazyUncached">
+    <af:dialog id="d7" title="Information" inlineStyle="text-align:center;"
+               dialogListener="#{RepFormationBean.onDialogCompte}">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl5" layout="vertical">
+        <af:outputFormatted value="La Répartition (#{bindings.LibRep}) est appliquée aux : #{RepFormationBean.nombre_form} formations !" id="of8"
+                            inlineStyle="font-size:medium; color:#008400;"/>
+        <af:outputFormatted value=" Voulez générer les comptes" id="of1"
+                            inlineStyle="font-size:x-large; color:#008400;"/>
+      </af:panelGroupLayout>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{RepFormationBean.onDialogCanCompte}"/>
+    </af:dialog>
+  </af:popup>
+  
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{RepFormationBean.popEmptyForm}">
+    <af:dialog id="d1" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl6" layout="vertical">
+        <af:outputFormatted value="Aucune Formation dans l'Etablissement :" id="of2"
+                            inlineStyle="font-size:x-large; color:#008400;"/>
+        <af:outputFormatted id="of3"
+                            inlineStyle="font-size:x-large; color:#008400;" value="#{bindings.LibelleLongStruct}"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{RepFormationBean.popEmptyStrct}">
+    <af:dialog id="d2" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+        <af:outputFormatted value="Veuillez ajouter au moins une Répartition !" id="of4"
+                            inlineStyle="font-size:x-large; color:#008400;"/>
+
+    </af:dialog>
+  </af:popup>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{RepFormationBean.popRepExisteCle}">
+    <af:dialog id="d3" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+        <af:outputFormatted value="Veuillez vérifier la définition des clés de Répartition (#{bindings.LibRep}) !" id="of5"
+                            inlineStyle="font-size:x-large; color:red;"/>
+
+    </af:dialog>
+  </af:popup>
+</ui:composition>

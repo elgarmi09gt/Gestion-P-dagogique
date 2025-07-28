@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NumeroDiplomeVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  SelectListFlags="1"
+  FromListFlags="1"
+  WhereFlags="1"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  SelectAllAttributes="false"
+  PageIterMode="Full">
+  <Variable
+    Name="num_diplome"
+    Kind="viewcriteria"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="id_annee"
+    Kind="viewcriteria"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_struct"
+    Kind="viewcriteria"
+    Type="java.lang.Long"/>
+  <ViewAccessor
+    Name="AnneesUniversVO1"
+    ViewObjectName="model.updatableview.AnneesUniversVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="HistoriquesStructuresVO1"
+    ViewObjectName="model.updatableview.HistoriquesStructuresVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="AnneeUnivAnscInscROVO1"
+    ViewObjectName="model.readOnlyView.AnneeUnivAnscInscROVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_IdHistoriqueStructure"
+    ListVOName="HistoriquesStructuresVO1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdHistoriqueStructure"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdHistoriquesStructure"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_IdAnneesUnivers"
+    ListVOName="AnneeUnivAnscInscROVO1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdAnneesUnivers"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdAnneesUnivers"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage
+    Name="NumeroDiplomeEO"
+    Entity="model.entities.NumeroDiplomeEO"/>
+  <ViewAttribute
+    Name="IdNumeroDiplome"
+    IsUpdateable="while_insert"
+    PrecisionRule="true"
+    EntityAttrName="IdNumeroDiplome"
+    EntityUsage="NumeroDiplomeEO"
+    AliasName="ID_NUMERO_DIPLOME"/>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    PrecisionRule="true"
+    EntityAttrName="IdAnneesUnivers"
+    EntityUsage="NumeroDiplomeEO"
+    AliasName="ID_ANNEES_UNIVERS"
+    LOVName="LOV_IdAnneesUnivers">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Numero"
+    PrecisionRule="true"
+    EntityAttrName="Numero"
+    EntityUsage="NumeroDiplomeEO"
+    AliasName="NUMERO"/>
+  <ViewAttribute
+    Name="UtiCree"
+    PrecisionRule="true"
+    EntityAttrName="UtiCree"
+    EntityUsage="NumeroDiplomeEO"
+    AliasName="UTI_CREE"/>
+  <ViewAttribute
+    Name="UtiModifie"
+    PrecisionRule="true"
+    EntityAttrName="UtiModifie"
+    EntityUsage="NumeroDiplomeEO"
+    AliasName="UTI_MODIFIE"/>
+  <ViewAttribute
+    Name="DateCreation"
+    PrecisionRule="true"
+    EntityAttrName="DateCreation"
+    EntityUsage="NumeroDiplomeEO"
+    AliasName="DATE_CREATION"/>
+  <ViewAttribute
+    Name="DateModification"
+    PrecisionRule="true"
+    EntityAttrName="DateModification"
+    EntityUsage="NumeroDiplomeEO"
+    AliasName="DATE_MODIFICATION"/>
+  <ViewAttribute
+    Name="IdHistoriqueStructure"
+    PrecisionRule="true"
+    EntityAttrName="IdHistoriqueStructure"
+    EntityUsage="NumeroDiplomeEO"
+    AliasName="ID_HISTORIQUE_STRUCTURE"
+    LOVName="LOV_IdHistoriqueStructure">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="NumeroDiplomeVOCriteria"
+    ViewObjectName="model.updatableview.NumeroDiplomeVO"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="true"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="NumeroDiplomeVOCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="IdAnneesUnivers"
+        ViewAttribute="IdAnneesUnivers"
+        Operator="="
+        Conjunction="AND"
+        Value=":id_annee"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="Numero"
+        ViewAttribute="Numero"
+        Operator="="
+        Conjunction="AND"
+        Value=":num_diplome"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="IdHistoriqueStructure"
+        ViewAttribute="IdHistoriqueStructure"
+        Operator="="
+        Conjunction="AND"
+        Value=":id_struct"
+        IsBindVarValue="true"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+</ViewObject>

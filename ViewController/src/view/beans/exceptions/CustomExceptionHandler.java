@@ -1,0 +1,58 @@
+package view.beans.exceptions;
+
+import java.io.IOException;
+
+import java.sql.SQLIntegrityConstraintViolationException;
+
+import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
+
+import oracle.adf.controller.ControllerException;
+import oracle.adf.controller.TaskFlowId;
+import oracle.adf.view.rich.context.ExceptionHandler;
+
+public class CustomExceptionHandler extends ExceptionHandler {
+    private static final String defaultTF="/WEB-INF/menu/task-flow-default.xml#task-flow-default";
+      
+    public CustomExceptionHandler() {
+        super();
+    }
+
+    @Override
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void handleException(FacesContext facesContext, Throwable throwable, PhaseId phaseId) throws Throwable {
+        if (throwable instanceof ClassNotFoundException) {
+            System.out.println("ClassNotFoundException");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ClassNotFoundException", null );
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            TaskFlowId.parse(defaultTF);
+            
+        } else if (throwable instanceof ControllerException) {
+            System.out.println("ControllerException");
+            TaskFlowId.parse(defaultTF);
+            
+        }
+        /*if (throwable instanceof FacesException) {
+            //FacesContext fctx;
+            System.out.println("FacesException");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "FacesException", null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            TaskFlowId.parse(defaultTF);
+        }  else*/ if (throwable instanceof SQLIntegrityConstraintViolationException) {
+            //FacesContext fctx;
+            System.out.println("SQLIntegrityConstraintViolationException");
+            //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"FacesException", null );
+            //FacesContext.getCurrentInstance().addMessage(null, message);
+            //TaskFlowId.parse(defaultTF);
+
+        }
+        //oracle.adf.controller.ControllerException
+        /* else {
+            System.out.println("Other Exception");
+            TaskFlowId.parse(defaultTF);
+        } */
+    }
+}

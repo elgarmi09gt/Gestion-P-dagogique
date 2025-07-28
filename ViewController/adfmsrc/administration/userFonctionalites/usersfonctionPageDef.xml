@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="usersfonctionPageDef"
+                Package="administration.userFonctionalites">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UtilisateurStructure" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="UtilisateurStructureIterator"/>
+    <searchRegion Binds="UtilisateurStructureIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UtilisateurStructureQuery"/>
+    <iterator Binds="FonctionnalitesVO" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="FonctionnalitesVOIterator"/>
+    <searchRegion Binds="FonctionnalitesVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FonctionnalitesVOQuery"/>
+    <iterator Binds="IsFonctionUserExist" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsFonctionUserExistIterator"/>
+    <iterator Binds="UtilisateursFonctionnalitesVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="UtilisateursFonctionnalitesVOIterator"/>
+    <iterator Binds="UtilisateursFonctionnalites" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="UtilisateursFonctionnalitesIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="UtilisateurStructureIterator" id="UtilisateurStructure">
+      <nodeDefinition DefName="model.readOnlyView.UtilisateurStructureVO" Name="UtilisateurStructure0">
+        <AttrNames>
+          <Item Value="isUserSelected"/>
+          <Item Value="Prenomnom"/>
+          <Item Value="AdressMail"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="UtilisateurStructureIterator" id="isUserSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isUserSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="FonctionnalitesVOIterator" id="FonctionnalitesVO">
+      <nodeDefinition DefName="model.updatableview.FonctionnalitesVO" Name="FonctionnalitesVO0">
+        <AttrNames>
+          <Item Value="isFonctionSelected"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="FonctionnalitesVOIterator" id="isFonctionSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isFonctionSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <methodAction id="getSelectedUsers" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getSelectedUsers"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getSelectedUsers.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getSelectedUsers_getSelectedUsers_dataControl_dataProvider_getSelectedUsers_result"/>
+    <methodAction id="getSelectedFonction" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getSelectedFonction" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getSelectedFonction.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getSelectedFonction_getSelectedFonction_dataControl_dataProvider_getSelectedFonction_result"/>
+    <action IterBinding="IsFonctionUserExistIterator" id="IsFonctionUserExist"
+            InstanceName="evaluationAppDataControl.IsFonctionUserExist" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+      <NamedData NDName="fonction_id" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="UtilisateursFonctionnalitesIterator" id="AddUserFonction"
+            InstanceName="evaluationAppDataControl.UtilisateursFonctionnalites" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdUtilisateur" NDType="java.lang.String"/>
+      <NamedData NDName="IdFonctionnalite" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+    </action>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="UtilisateurStructureIterator" id="Prenomnom">
+      <AttrNames>
+        <Item Value="Prenomnom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UtilisateurStructureIterator" id="AdressMail">
+      <AttrNames>
+        <Item Value="AdressMail"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="UtilisateurStructureIterator" id="First" RequiresUpdateModel="true" Action="first"/>
+    <action IterBinding="UtilisateurStructureIterator" id="Previous" RequiresUpdateModel="true" Action="previous"/>
+    <action IterBinding="UtilisateurStructureIterator" id="Next" RequiresUpdateModel="true" Action="next"/>
+    <action IterBinding="UtilisateurStructureIterator" id="Last" RequiresUpdateModel="true" Action="last"/>
+    <tree IterBinding="UtilisateursFonctionnalitesIterator" id="UtilisateursFonctionnalites">
+      <nodeDefinition DefName="model.updatableview.UtilisateursFonctionnalitesVO" Name="UtilisateursFonctionnalites0">
+        <AttrNames>
+          <Item Value="IdUtilisateur"/>
+          <Item Value="IdFonctionnalite"/>
+          <Item Value="DateCreation"/>
+          <Item Value="DateModification"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+          <Item Value="IdUtilisateurFonctionnalite"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="UtilisateursFonctionnalitesIterator" id="Delete"
+            InstanceName="evaluationAppDataControl.UtilisateursFonctionnalites" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="getMatricule" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getMatricule"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getMatricule.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getMatricule_getMatricule_dataControl_dataProvider_getMatricule_result">
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

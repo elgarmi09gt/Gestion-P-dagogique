@@ -1,0 +1,356 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <af:panelGroupLayout id="pgl1" layout="vertical">
+    <af:iterator value="#{EtatsBean.isclosed()}"  id="i6"/>
+        <af:panelGroupLayout id="pgl5" layout="horizontal">
+            <af:panelGroupLayout id="pgl2" layout="vertical">
+                <af:outputFormatted value="Parcours" id="of1" styleUsage="instruction"
+                                    inlineStyle="font-size:large;margin-left:10px"/>
+                <af:selectOneChoice value="#{bindings.Parcours.inputValue}"
+                                    required="#{bindings.Parcours.hints.mandatory}"
+                                    shortDesc="#{bindings.Parcours.hints.tooltip}" id="soc1" autoSubmit="true"
+                                    valueChangeListener="#{EtatsBean.RefreshParcours}"
+                                    contentStyle="width:350px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                    inlineStyle="margin:10px">
+                    <f:selectItems value="#{bindings.Parcours.items}" id="si1"/>
+                    <f:validator binding="#{bindings.Parcours.validator}"/>
+                </af:selectOneChoice>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl13" layout="scroll" visible="false">
+                <af:outputFormatted value="Liste de Selection" id="of7" styleUsage="instruction"
+                                    inlineStyle="font-size:large;margin-left:10px"/>
+                <af:selectOneChoice value="#{bindings.ListRelevesChoice.inputValue}"
+                                    required="#{bindings.ListRelevesChoice.hints.mandatory}"
+                                    shortDesc="#{bindings.ListRelevesChoice.hints.tooltip}" id="soc2"
+                                    contentStyle="width:350px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                    <f:selectItems value="#{bindings.ListRelevesChoice.items}" id="si2"/>
+                    <f:validator binding="#{bindings.ListRelevesChoice.validator}"/>
+                </af:selectOneChoice>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl16" layout="scroll"
+                                 visible="#{bindings.MaquetteParcoursAnIterator.estimatedRowCount gt 1}"
+                                 partialTriggers="soc1">
+                <af:outputFormatted value="Maquette" id="of9" styleUsage="instruction"
+                                    inlineStyle="font-size:large;margin-left:10px"/>
+                <af:selectOneChoice value="#{bindings.MaquetteParcoursAn.inputValue}"
+                                    required="#{bindings.MaquetteParcoursAn.hints.mandatory}"
+                                    shortDesc="#{bindings.MaquetteParcoursAn.hints.tooltip}" id="soc3"
+                                    contentStyle="width:350px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                    valueChangeListener="#{EtatsBean.onMaquetteChanged}" autoSubmit="true">
+                    <f:selectItems value="#{bindings.MaquetteParcoursAn.items}" id="si3"/>
+                    <f:validator binding="#{bindings.MaquetteParcoursAn.validator}"/>
+                </af:selectOneChoice>
+                <!--af:selectOneChoice value="#{bindings.ListRelevesChoice.inputValue}"
+                                    required="#{bindings.ListRelevesChoice.hints.mandatory}"
+                                    shortDesc="#{bindings.ListRelevesChoice.hints.tooltip}" id="soc3"
+                                    contentStyle="width:350px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                    <f:selectItems value="#{bindings.ListRelevesChoice.items}" id="si3"/>
+                    <f:validator binding="#{bindings.ListRelevesChoice.validator}"/>
+                </af:selectOneChoice-->
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl3" layout="horizontal" styleClass="AFStretchWidth"
+                                 inlineStyle="text-align:center;">
+                <af:selectBooleanCheckbox text="Semestrielle" id="sbc1"
+                                          contentStyle="font-size:large; font-family:cursive;margin:10px; font-weight:bold"
+                                          valueChangeListener="#{EtatsBean.OnSelectDiselectSemestre}"
+                                          binding="#{EtatsBean.inputSemestre}" autoSubmit="true"
+                                          inlineStyle="font-weight:bold;"/>
+                <af:panelGroupLayout id="pgl17" layout="vertical" visible="false" binding="#{EtatsBean.panGrpSem}">
+                    <af:outputFormatted value="Semestre" id="of10"
+                                        inlineStyle="font-size:large; font-family:cursive;margin:10px; font-weight:bold"
+                                        styleUsage="instruction"/>
+                    <af:selectOneChoice value="#{bindings.SemestresByParcousMaq.inputValue}"
+                                        required="#{bindings.SemestresByParcousMaq.hints.mandatory}"
+                                        shortDesc="#{bindings.SemestresByParcousMaq.hints.tooltip}" id="soc4"
+                                        contentStyle="width:150px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                        partialTriggers="soc2" autoSubmit="true"
+                                        valueChangeListener="#{EtatsBean.onSemestreChanged}">
+                        <f:selectItems value="#{bindings.SemestresByParcousMaq.items}" id="si4"/>
+                        <f:validator binding="#{bindings.SemestresByParcousMaq.validator}"/>
+                    </af:selectOneChoice>
+                </af:panelGroupLayout>
+                <af:selectBooleanCheckbox text="Individuel" id="sbc2"
+                                          contentStyle="font-size:large; font-family:cursive;margin:10px; font-weight:bold"
+                                          autoSubmit="true"
+                                          valueChangeListener="#{EtatsBean.onSelectDiselectIndiv}"
+                                          binding="#{EtatsBean.inputIndiv}"/>
+                <af:panelGroupLayout id="pgl6" styleClass="AFStretchWidth" layout="horizontal" visible="false"
+                                     binding="#{EtatsBean.panelformetu}">
+                    <af:panelGroupLayout id="pgl8" layout="vertical">
+                        <af:outputFormatted value="Numéro étudiant" id="of3"
+                                            inlineStyle="font-size:large; font-family:cursive;margin:10px; font-weight:bold"
+                                            styleUsage="instruction"/>
+                        <af:inputText id="it1"
+                                      labelStyle="font-size:large; font-family:cursive;margin:10px; font-weight:bold"
+                                      contentStyle="width:150px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                      binding="#{EtatsBean.inputEtudiant}" autoSubmit="true"/>
+                    </af:panelGroupLayout>
+                    <af:button text="Consulter" id="b3"
+                               inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                               actionListener="#{EtatsBean.onShowDetailsClicked}"/>
+                </af:panelGroupLayout>
+            </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl15" layout="vertical" binding="#{EtatsBean.panDetEtd}">
+            <af:panelGroupLayout id="pgl10" layout="vertical" binding="#{EtatsBean.panedetSem}" visible="false">
+                <af:panelCollection id="pc1" binding="#{EtatsBean.panColDetSem}" styleClass="AFStretchWidth">
+                    <f:facet name="menus"/>
+                    <f:facet name="toolbar"/>
+                    <f:facet name="statusbar"/>
+                    <af:table value="#{bindings.DetailsSemestreEtudiant.collectionModel}" var="row"
+                              rows="#{bindings.DetailsSemestreEtudiant.rangeSize}"
+                              emptyText="#{bindings.DetailsSemestreEtudiant.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.DetailsSemestreEtudiant.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.DetailsSemestreEtudiant.collectionModel.makeCurrent}"
+                              rowSelection="single" fetchSize="#{bindings.DetailsSemestreEtudiant.rangeSize}"
+                              filterModel="#{bindings.DetailsSemestreEtudiantQuery.queryDescriptor}"
+                              filterVisible="true" queryListener="#{bindings.DetailsSemestreEtudiantQuery.processQuery}"
+                              varStatus="vs" id="t1" binding="#{EtatsBean.tabDetSem}">
+                        <af:column sortProperty="#{bindings.DetailsSemestreEtudiant.hints.Prenoms.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.DetailsSemestreEtudiant.hints.Prenoms.label}" id="c1"
+                                   width="250">
+                            <af:outputText value="#{row.Prenoms}"
+                                           shortDesc="#{bindings.DetailsSemestreEtudiant.hints.Prenoms.tooltip}"
+                                           id="ot1"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.DetailsSemestreEtudiant.hints.Nom.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.DetailsSemestreEtudiant.hints.Nom.label}"
+                                   id="c2" width="150">
+                            <af:outputText value="#{row.Nom}"
+                                           shortDesc="#{bindings.DetailsSemestreEtudiant.hints.Nom.tooltip}" id="ot2"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.DetailsSemestreEtudiant.hints.DateNaissance.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.DetailsSemestreEtudiant.hints.DateNaissance.label}" id="c3"
+                                   width="150">
+                            <f:facet name="filter">
+                                <af:inputDate value="#{bindings.DetailsSemestreEtudiantQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                                              id="id1">
+                                    <af:convertDateTime pattern="#{bindings.DetailsSemestreEtudiant.hints.DateNaissance.format}"/>
+                                </af:inputDate>
+                            </f:facet>
+                            <af:outputText value="#{row.DateNaissance}"
+                                           shortDesc="#{bindings.DetailsSemestreEtudiant.hints.DateNaissance.tooltip}"
+                                           id="ot3">
+                                <af:convertDateTime pattern="#{bindings.DetailsSemestreEtudiant.hints.DateNaissance.format}"/>
+                            </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.DetailsSemestreEtudiant.hints.LieuNaissance.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.DetailsSemestreEtudiant.hints.LieuNaissance.label}" id="c4"
+                                   width="250">
+                            <af:outputText value="#{row.LieuNaissance}"
+                                           shortDesc="#{bindings.DetailsSemestreEtudiant.hints.LieuNaissance.tooltip}"
+                                           id="ot4"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.DetailsSemestreEtudiant.hints.Note.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.DetailsSemestreEtudiant.hints.Note.label}"
+                                   id="c5">
+                            <af:outputText value="#{row.Note}"
+                                           shortDesc="#{bindings.DetailsSemestreEtudiant.hints.Note.tooltip}" id="ot5">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.DetailsSemestreEtudiant.hints.Note.format}"/>
+                            </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.DetailsSemestreEtudiant.hints.Credit.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.DetailsSemestreEtudiant.hints.Credit.label}" id="c6">
+                            <af:outputText value="#{row.Credit}"
+                                           shortDesc="#{bindings.DetailsSemestreEtudiant.hints.Credit.tooltip}"
+                                           id="ot6">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.DetailsSemestreEtudiant.hints.Credit.format}"/>
+                            </af:outputText>
+                        </af:column>
+                        <af:column headerText="#{bindings.DetailsSemestreEtudiant.hints.Resultat.label}" id="c16">
+                            <af:outputText value="#{row.Resultat}"
+                                           shortDesc="#{bindings.DetailsSemestreEtudiant.hints.Resultat.tooltip}"
+                                           id="ot14">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.DetailsSemestreEtudiant.hints.Resultat.format}"/>
+                            </af:outputText>
+                        </af:column>
+                        <af:column id="c13">
+                            <af:button id="b5" icon="/images/import24.png">
+                                <af:fileDownloadActionListener contentType="application/pdf"
+                                                               filename="#{sessionScope.file_name_sem_indiv}"
+                                                               method="#{EtatsBean.RelevesIndivSemClicked}"/>
+                            </af:button>
+                        </af:column>
+                    </af:table>
+                </af:panelCollection>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl11" layout="vertical" binding="#{EtatsBean.panedetAn}" visible="false">
+                <af:panelCollection id="pc2" binding="#{EtatsBean.panColDetAn}" styleClass="AFStretchWidth">
+                    <f:facet name="menus"/>
+                    <f:facet name="toolbar"/>
+                    <f:facet name="statusbar"/>
+                    <af:table value="#{bindings.DetailsAnnEtudiant.collectionModel}" var="row"
+                              rows="#{bindings.DetailsAnnEtudiant.rangeSize}"
+                              emptyText="#{bindings.DetailsAnnEtudiant.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.DetailsAnnEtudiant.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.DetailsAnnEtudiant.collectionModel.makeCurrent}"
+                              rowSelection="single" fetchSize="#{bindings.DetailsAnnEtudiant.rangeSize}"
+                              filterModel="#{bindings.DetailsAnnEtudiantQuery.queryDescriptor}" filterVisible="true"
+                              queryListener="#{bindings.DetailsAnnEtudiantQuery.processQuery}" varStatus="vs" id="t2"
+                              binding="#{EtatsBean.tabDetAn}" columnStretching="column:c7">
+                        <af:column sortProperty="#{bindings.DetailsAnnEtudiant.hints.Prenoms.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.DetailsAnnEtudiant.hints.Prenoms.label}"
+                                   id="c8" width="250">
+                            <af:outputText value="#{row.Prenoms}"
+                                           shortDesc="#{bindings.DetailsAnnEtudiant.hints.Prenoms.tooltip}" id="ot8"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.DetailsAnnEtudiant.hints.Nom.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.DetailsAnnEtudiant.hints.Nom.label}" id="c9"
+                                   width="150">
+                            <af:outputText value="#{row.Nom}"
+                                           shortDesc="#{bindings.DetailsAnnEtudiant.hints.Nom.tooltip}" id="ot9"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.DetailsAnnEtudiant.hints.DateNaissance.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.DetailsAnnEtudiant.hints.DateNaissance.label}" id="c10"
+                                   width="150">
+                            <f:facet name="filter">
+                                <af:inputDate value="#{bindings.DetailsAnnEtudiantQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                                              id="id2">
+                                    <af:convertDateTime pattern="#{bindings.DetailsAnnEtudiant.hints.DateNaissance.format}"/>
+                                </af:inputDate>
+                            </f:facet>
+                            <af:outputText value="#{row.DateNaissance}"
+                                           shortDesc="#{bindings.DetailsAnnEtudiant.hints.DateNaissance.tooltip}"
+                                           id="ot10">
+                                <af:convertDateTime pattern="#{bindings.DetailsAnnEtudiant.hints.DateNaissance.format}"/>
+                            </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.DetailsAnnEtudiant.hints.LieuNaissance.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.DetailsAnnEtudiant.hints.LieuNaissance.label}" id="c11"
+                                   width="300">
+                            <af:outputText value="#{row.LieuNaissance}"
+                                           shortDesc="#{bindings.DetailsAnnEtudiant.hints.LieuNaissance.tooltip}"
+                                           id="ot11"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.DetailsAnnEtudiant.hints.Credit.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.DetailsAnnEtudiant.hints.Credit.label}"
+                                   id="c12">
+                            <af:outputText value="#{row.Credit}"
+                                           shortDesc="#{bindings.DetailsAnnEtudiant.hints.Credit.tooltip}" id="ot12">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.DetailsAnnEtudiant.hints.Credit.format}"/>
+                            </af:outputText>
+                        </af:column>
+                        <af:column id="c7" width="200">
+                            <af:panelGroupLayout id="pgl18" layout="horizontal" inlineStyle="line-height:10px;">
+                                <af:button id="b6" icon="/images/import24.png"
+                                           actionListener="#{EtatsBean.OnreleveAnIndiv}" text="Relevé"
+                                           inlineStyle="font-size:medium; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                                           disabled="#{row.ChargerScol == '0' ? (row.AnneeCloturee != 'O' ? (row.Etat == '0' ? true : false) : false) : false}">
+                                    <af:fileDownloadActionListener contentType="application/pdf"
+                                                                   filename="#{sessionScope.releve_an_indiv_name}"
+                                                                   method="#{EtatsBean.ReleveIndivAnClicked}"/>
+                                </af:button>
+                                <af:button text="Attestation" id="b7" icon="/images/import24.png"
+                                           inlineStyle="margin-left : 5px;font-size:medium; color:White; font-family:cursive;border-radius:8px;background:#2897e8;" binding="#{EtatsBean.btnAttestationIndiv}"
+                                           actionListener="#{EtatsBean.onAttestationIndivAction}"
+                                           disabled="#{row.Diplomante == 0 ? true : (row.ChargerScol == '0' ? (row.AnneeCloturee != 'O' ? true : false) : false)}">
+                                    <af:fileDownloadActionListener method="#{EtatsBean.OnAttestationIndivClicked}"
+                                                                   contentType="application/pdf"
+                                                                   filename="Attestation_#{row.Numero}.pdf"/>
+                                </af:button>
+                            </af:panelGroupLayout>
+                        </af:column>
+                        <af:column headerText="#{bindings.DetailsAnnEtudiant.hints.ChargerScol.label}" id="c14"
+                                   visible="false">
+                            <af:outputText value="#{row.ChargerScol}"
+                                           shortDesc="#{bindings.DetailsAnnEtudiant.hints.ChargerScol.tooltip}"
+                                           id="ot7">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.DetailsAnnEtudiant.hints.ChargerScol.format}"/>
+                            </af:outputText>
+                        </af:column>
+                        <af:column headerText="#{bindings.DetailsAnnEtudiant.hints.Etat.label}" id="c15"
+                                   visible="false">
+                            <af:outputText value="#{row.Etat}"
+                                           shortDesc="#{bindings.DetailsAnnEtudiant.hints.Etat.tooltip}" id="ot13">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.DetailsAnnEtudiant.hints.Etat.format}"/>
+                            </af:outputText>
+                        </af:column>
+                    </af:table>
+                </af:panelCollection>
+            </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl4" layout="horizontal" inlineStyle="text-align:center;margin:30px"
+                             binding="#{EtatsBean.panebtn}">
+            <af:button text="Attestations" id="b1"
+                              inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                              binding="#{EtatsBean.btnAttestation}" partialTriggers="sbc1"
+                              icon="/images/import_48px.png">
+                <af:fileDownloadActionListener contentType="application/pdf" filename="#{sessionScope.file_name}"
+                                               method="#{EtatsBean.AttestationClicked}"/>
+            </af:button>
+            <af:button text="Releves" id="b2"
+                              inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;margin-left:30px"
+                              icon="/images/import_48px.png" binding="#{EtatsBean.btnReleves}">
+                <af:fileDownloadActionListener contentType="application/pdf"
+                                               method="#{EtatsBean.RelevesClicked}"
+                                               filename="#{sessionScope.file_name}"/>
+                                              <!-- #{sessionScope.isclosedue == '0' ? false : true} -->
+            </af:button>
+            <af:button text="testUser" id="b4" actionListener="#{AdministrationBean.TestSplit}" visible="false"/>
+        </af:panelGroupLayout>
+        <!--af:matchMediaBehavior matchedPropertyValue="vertical" propertyName="layout"
+                           mediaQuery="screen and (max-width:1000px)"/-->
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{EtatsBean.popupSuccessReport}">
+        <af:dialog id="d1" title="Info" cancelTextAndAccessKey="Fermer" type="cancel" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Document en registré dans  avec success !!!" id="of2"
+                                inlineStyle="color:Lime; font-size:large;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{EtatsBean.popupNoNum}">
+        <af:dialog id="d2" title="Info" inlineStyle="text-align:center;border-radius:4px" type="cancel"
+                   cancelTextAndAccessKey="FERMER">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl7" layout="vertical" inlineStyle="font-size:large; color:Orange;">
+                <af:icon name="warning" id="i1"/>
+                <af:outputFormatted value="Pas de résultat : Vérifier le numéro et rassurez-vous que l'étudiant s'est inscrit définitivement"
+                                    id="of4"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{EtatsBean.popupEnterNum}">
+        <af:dialog id="d3" title="Info" type="cancel" cancelTextAndAccessKey="FERMER">
+            <af:panelGroupLayout id="pgl9" layout="vertical"
+                                 inlineStyle="font-size:large; color:#2898e8; text-align:center;">
+                <af:icon name="info" id="i2"/>
+                <af:outputFormatted value="Enter le numéro d'étudiant" id="of5"/>
+            </af:panelGroupLayout>
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{EtatsBean.popupSemNotDelib}">
+        <af:dialog id="d4">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl12" layout="vertical">
+                <af:icon name="warning" id="i3" inlineStyle="color:Orange;"/>
+                <af:outputFormatted value="Semestre #{sessionScope.id_smstre} pas encore délibéreé !" id="of6"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p5" binding="#{EtatsBean.popupAnNotDelib}">
+        <af:dialog id="d5">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl14" layout="vertical">
+                <af:icon name="warning" id="i4" inlineStyle="color:Orange;"/>
+                <af:outputFormatted value="Année pas encore délibéreé !" id="of8"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    
+</ui:composition>

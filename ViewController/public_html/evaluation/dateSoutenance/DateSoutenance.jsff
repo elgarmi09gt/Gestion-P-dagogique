@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl5" layout="scroll" halign="center" inlineStyle="line-height:30px;">
+    <af:panelGroupLayout id="pgl4" layout="horizontal">
+      <af:panelGroupLayout id="pgl1" layout="vertical">
+        <af:outputFormatted value="Département" id="of1" inlineStyle="font-size:large;margin-left:10px"/>
+        <af:selectOneChoice value="#{bindings.HistoriqueStructureByUserName.inputValue}"
+                            required="#{bindings.HistoriqueStructureByUserName.hints.mandatory}"
+                            shortDesc="#{bindings.HistoriqueStructureByUserName.hints.tooltip}" id="soc1"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                            autoSubmit="true">
+          <f:selectItems value="#{bindings.HistoriqueStructureByUserName.items}" id="si1"/>
+          <f:validator binding="#{bindings.HistoriqueStructureByUserName.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl3" layout="vertical">
+        <af:outputFormatted value="Parcours" id="of2" inlineStyle="font-size:large;margin-left:10px"/>
+        <af:selectOneChoice value="#{bindings.NiveauxDiplomante.inputValue}"
+                            required="#{bindings.NiveauxDiplomante.hints.mandatory}"
+                            shortDesc="#{bindings.NiveauxDiplomante.hints.tooltip}" id="soc2"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                            autoSubmit="true">
+          <f:selectItems value="#{bindings.NiveauxDiplomante.items}" id="si2"/>
+          <f:validator binding="#{bindings.NiveauxDiplomante.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl2" layout="vertical" visible="#{bindings.MaquetteParcoursAnneeDiplIterator.estimatedRowCount gt 1}">
+      <af:outputFormatted value="Maquettes" id="of3" inlineStyle="font-size:large;margin-left:10px"/>
+      <af:selectOneChoice value="#{bindings.MaquetteParcoursAnneeDipl.inputValue}"
+                          required="#{bindings.MaquetteParcoursAnneeDipl.hints.mandatory}"
+                          shortDesc="#{bindings.MaquetteParcoursAnneeDipl.hints.tooltip}" id="soc3"
+                          contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:300px;"
+                          autoSubmit="true" partialTriggers="soc1 soc2">
+        <f:selectItems value="#{bindings.MaquetteParcoursAnneeDipl.items}" id="si3"/>
+        <f:validator binding="#{bindings.MaquetteParcoursAnneeDipl.validator}"/>
+      </af:selectOneChoice>
+    </af:panelGroupLayout>
+    <af:button text="Enregistrer" id="b1" actionListener="#{DeliberationSemestrielleBean.onSaveDateSoutAction}"
+               inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px;"/>
+    <af:panelGroupLayout id="pgl8" layout="vertical" halign="end" styleClass="AFStretchWidth">
+      <af:outputFormatted value="Année Universitaire : #{bindings.LibelleLong.inputValue}" id="of11"
+                          inlineStyle="font-style:italic; font-size:large;margin-top:-5px" partialTriggers="soc3"/>
+    </af:panelGroupLayout>
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                        binding="#{DeliberationSemestrielleBean.etuDiplomPanColect}">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar"/>
+      <af:table value="#{bindings.EtudiantsDiplomes.collectionModel}" var="row"
+                rows="#{bindings.EtudiantsDiplomes.rangeSize}"
+                emptyText="#{bindings.EtudiantsDiplomes.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.EtudiantsDiplomes.collectionModel.selectedRow}"
+                selectionListener="#{bindings.EtudiantsDiplomes.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.EtudiantsDiplomes.rangeSize}"
+                filterModel="#{bindings.EtudiantsDiplomesQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.EtudiantsDiplomesQuery.processQuery}" varStatus="vs" id="t1"
+                scrollPolicy="page" binding="#{DeliberationSemestrielleBean.etuDiplomTab}" columnStretching="column:c2">
+        <af:column sortProperty="#{bindings.EtudiantsDiplomes.hints.Numero.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.NUMERO}" id="c1" width="125">
+          <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of4"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.EtudiantsDiplomes.hints.Prenoms.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.PRENOMS}" id="c2">
+          <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of5"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.EtudiantsDiplomes.hints.Nom.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.NOM}" id="c3" width="150">
+          <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of6"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.EtudiantsDiplomes.hints.DateNaissance.name}" filterable="true"
+                   sortable="true" headerText="#{viewcontrollerBundle.DATE_DE_NAISSANCE}" id="c4"
+                   width="125">
+          <f:facet name="filter">
+            <af:inputDate value="#{bindings.EtudiantsDiplomesQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                          id="id1">
+              <af:convertDateTime pattern="#{bindings.EtudiantsDiplomes.hints.DateNaissance.format}"/>
+            </af:inputDate>
+          </f:facet>
+          <af:outputFormatted value="#{row.bindings.DateNaissance.inputValue}" id="of7">
+            <af:convertDateTime pattern="#{bindings.EtudiantsDiplomes.hints.DateNaissance.format}"/>
+          </af:outputFormatted>
+        </af:column>
+        <af:column sortProperty="#{bindings.EtudiantsDiplomes.hints.LieuNaissance.name}" filterable="true"
+                   sortable="true" headerText="#{viewcontrollerBundle.LIEU_DE_NAISSANCE}" id="c5"
+                   width="250">
+          <af:outputFormatted value="#{row.bindings.LieuNaissance.inputValue}" id="of8"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.EtudiantsDiplomes.hints.Datesoutenanceref.name}" filterable="true"
+                   sortable="true" headerText="#{viewcontrollerBundle.DATE_SOUTENANCE}" id="c6"
+                   width="125">
+          <f:facet name="filter">
+            <af:inputDate value="#{bindings.EtudiantsDiplomesQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.Datesoutenanceref.value}"
+                          id="id2">
+              <af:convertDateTime pattern="#{bindings.EtudiantsDiplomes.hints.Datesoutenanceref.format}"/>
+            </af:inputDate>
+          </f:facet>
+          <af:inputDate value="#{row.bindings.Datesoutenanceref.inputValue}"
+                        label="#{bindings.EtudiantsDiplomes.hints.Datesoutenanceref.label}"
+                        required="#{bindings.EtudiantsDiplomes.hints.Datesoutenanceref.mandatory}"
+                        columns="#{bindings.EtudiantsDiplomes.hints.Datesoutenanceref.displayWidth}"
+                        shortDesc="#{bindings.EtudiantsDiplomes.hints.Datesoutenanceref.tooltip}" id="id3"
+                        readOnly="#{row.bindings.IsUpdatable.inputValue eq 0}" autoSubmit="true">
+            <f:validator binding="#{row.bindings.Datesoutenanceref.validator}"/>
+            <af:convertDateTime pattern="#{bindings.EtudiantsDiplomes.hints.Datesoutenanceref.format}"/>
+          </af:inputDate>
+        </af:column>
+      </af:table>
+      <f:facet name="statusbar"/>
+    </af:panelCollection>
+    <af:button text="Enregistrer" id="b2" actionListener="#{DeliberationSemestrielleBean.onSaveDateSoutAction}"
+               inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px;"/>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+            binding="#{DeliberationSemestrielleBean.popDateSoutSucced}">
+    <af:dialog id="d1" title="Information" type="cancel" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl6" layout="vertical" halign="center">
+        <af:icon name="info" id="i1"/>
+        <af:outputFormatted value="Date de soutenance bien enregistrée" id="of9"
+                            inlineStyle="color:Green; font-size:large; font-weight:bolder;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+            binding="#{DeliberationSemestrielleBean.popNotDateSoutDef}">
+    <af:dialog id="d2" title="Information" type="cancel" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl7" layout="vertical" halign="center">
+        <af:icon name="info" id="i2"/>
+        <af:outputFormatted value="Vous n'avez apporté aucune modification" id="of10"
+                            inlineStyle="color:Green; font-size:large; font-weight:bolder;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

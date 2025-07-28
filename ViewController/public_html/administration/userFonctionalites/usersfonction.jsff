@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="vertical" halign="center">
+    <af:panelGroupLayout id="pgl2" layout="horizontal"
+                         inlineStyle="border:solid  2px #2897e8;margin-top:20px;margin-left:10px;">
+      <af:panelCollection id="pc1" styleClass="AFStretchwidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.UtilisateurStructure.collectionModel}" var="row"
+                  rows="#{bindings.UtilisateurStructure.rangeSize}"
+                  emptyText="#{bindings.UtilisateurStructure.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.UtilisateurStructure.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.UtilisateurStructure.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.UtilisateurStructure.rangeSize}"
+                  filterModel="#{bindings.UtilisateurStructureQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.UtilisateurStructureQuery.processQuery}" varStatus="vs" id="t1"
+                  columnStretching="last" partialTriggers=":::b2 :::b3 :::b4 :::b5">
+          <af:column sortProperty="#{bindings.UtilisateurStructure.hints.isUserSelected.name}" filterable="false"
+                     sortable="false" id="c1" inlineStyle="text-align:center;" width="100">
+            <af:selectBooleanCheckbox value="#{row.bindings.isUserSelected.inputValue}"
+                                      label="#{row.bindings.isUserSelected.label}"
+                                      shortDesc="#{bindings.UtilisateurStructure.hints.isUserSelected.tooltip}"
+                                      id="sbc1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurStructure.hints.Prenomnom.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.UtilisateurStructure.hints.Prenomnom.label}" id="c2"
+                     width="248">
+            <af:outputFormatted value="#{row.bindings.Prenomnom.inputValue}" id="of1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurStructure.hints.AdressMail.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.UtilisateurStructure.hints.AdressMail.label}" id="c3"
+                     width="102">
+            <af:outputFormatted value="#{row.bindings.AdressMail.inputValue}" id="of2"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+      <af:spacer width="10" height="10" id="s1"/>
+      <af:panelCollection id="pc2" styleClass="AFStretchwidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.FonctionnalitesVO.collectionModel}" var="row"
+                  rows="#{bindings.FonctionnalitesVO.rangeSize}"
+                  emptyText="#{bindings.FonctionnalitesVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.FonctionnalitesVO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.FonctionnalitesVO.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.FonctionnalitesVO.rangeSize}"
+                  filterModel="#{bindings.FonctionnalitesVOQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.FonctionnalitesVOQuery.processQuery}" varStatus="vs" id="t2"
+                  columnStretching="last">
+          <af:column sortProperty="#{bindings.FonctionnalitesVO.hints.isFonctionSelected.name}" id="c4"
+                     inlineStyle="text-align:center;">
+            <af:selectBooleanCheckbox value="#{row.bindings.isFonctionSelected.inputValue}"
+                                      label="#{row.bindings.isFonctionSelected.label}"
+                                      shortDesc="#{bindings.FonctionnalitesVO.hints.isFonctionSelected.tooltip}"
+                                      id="sbc2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.FonctionnalitesVO.hints.LibelleLong.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.FonctionnalitesVO.hints.LibelleLong.label}" id="c5">
+            <af:outputFormatted value="#{row.bindings.LibelleLong.inputValue}" id="of3"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+    <af:button text="Enregistrer" id="b1"
+               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+               actionListener="#{AdministrationBean.onUserFonctionSaved}"/>
+    <af:panelGroupLayout layout="scroll" id="pgl4"
+                         inlineStyle="border:solid  2px #2897e8;margin-left:10px;">
+      <af:panelHeader text="Utilisateurs" id="ph1" inlineStyle="text-align:left;margin:10px 35px 15px">
+        <af:panelFormLayout id="pfl1">
+          <af:panelLabelAndMessage label="#{viewcontrollerBundle.PRENOM_NOM}" id="plam2">
+            <af:outputText value="#{bindings.Prenomnom.inputValue}" shortDesc="#{bindings.Prenomnom.hints.tooltip}"
+                           id="ot2"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{viewcontrollerBundle.EMAIL}" id="plam3">
+            <af:outputText value="#{bindings.AdressMail.inputValue}" shortDesc="#{bindings.AdressMail.hints.tooltip}"
+                           id="ot3"/>
+          </af:panelLabelAndMessage>
+          <f:facet name="footer">
+            <af:panelGroupLayout layout="horizontal" id="pgl5">
+              <f:facet name="separator">
+                <af:spacer width="10" height="1" id="s2"/>
+              </f:facet>
+              <af:button actionListener="#{bindings.First.execute}" text="First" disabled="#{!bindings.First.enabled}"
+                         partialSubmit="true" id="b2"/>
+              <af:button actionListener="#{bindings.Previous.execute}" text="Previous"
+                         disabled="#{!bindings.Previous.enabled}" partialSubmit="true" id="b3"/>
+              <af:button actionListener="#{bindings.Next.execute}" text="Next" disabled="#{!bindings.Next.enabled}"
+                         partialSubmit="true" id="b4"/>
+              <af:button actionListener="#{bindings.Last.execute}" text="Last" disabled="#{!bindings.Last.enabled}"
+                         partialSubmit="true" id="b5"/>
+            </af:panelGroupLayout>
+          </f:facet>
+        </af:panelFormLayout>
+      </af:panelHeader>
+      <af:panelHeader text="Fonctionnalites" id="ph2">
+        <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t4">
+              <af:button id="b6" icon="/images/delete_icon.png"/>
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="statusbar"/>
+          <af:table rows="#{bindings.UtilisateursFonctionnalites.rangeSize}"
+                    fetchSize="#{bindings.UtilisateursFonctionnalites.rangeSize}"
+                    emptyText="#{bindings.UtilisateursFonctionnalites.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    var="row" value="#{bindings.UtilisateursFonctionnalites.collectionModel}" rowBandingInterval="0"
+                    selectedRowKeys="#{bindings.UtilisateursFonctionnalites.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.UtilisateursFonctionnalites.collectionModel.makeCurrent}"
+                    rowSelection="single" id="t3" columnStretching="last">
+            <af:column sortProperty="#{bindings.UtilisateursFonctionnalites.hints.IdFonctionnalite.name}"
+                       sortable="false" id="c7" inlineStyle="font-size:large;">
+              <af:selectOneChoice value="#{row.bindings.IdFonctionnalite.inputValue}"
+                                  label="#{row.bindings.IdFonctionnalite.label}"
+                                  required="#{bindings.UtilisateursFonctionnalites.hints.IdFonctionnalite.mandatory}"
+                                  shortDesc="#{bindings.UtilisateursFonctionnalites.hints.IdFonctionnalite.tooltip}"
+                                  readOnly="true" id="soc2" contentStyle="font-size:large;">
+                <f:selectItems value="#{row.bindings.IdFonctionnalite.items}" id="si2"/>
+                <f:validator binding="#{row.bindings.IdFonctionnalite.validator}"/>
+              </af:selectOneChoice>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:panelHeader>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1">
+      <af:dialog id="d1" title="Info" type="yesNo" affirmativeTextAndAccessKey="Oui" noTextAndAccessKey="Non"
+                 dialogListener="#{AdministrationBean.OnDeleteAction}">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl3" halign="center" layout="vertical">
+          <af:icon name="error" id="i1"/>
+          <af:outputFormatted value="Voulez-vous supprimer ?" id="of4"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</ui:composition>

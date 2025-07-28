@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="list_saisie_notes_mode_ens_list_saisie_notes_mode_ens_ExecuteWithParamsPageDef"
+                Package="evaluation.saisie_notes_mode_ens" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="UeEvalRO" RangeSize="25" DataControl="evaluationAppDataControl" id="UeEvalROIterator"
+              Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="UeEvalROIterator" id="ExecuteWithParams" RequiresUpdateModel="true" Action="executeWithParams"
+            InstanceName="evaluationAppDataControl.UeEvalRO" DataControl="evaluationAppDataControl">
+      <NamedData NDName="id_sem" NDValue="#{sessionScope.id_smstre}" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="id_annee" NDValue="#{sessionScope.id_annee}" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="parcours" NDValue="#{sessionScope.id_niv_form_parcours}" NDType="java.lang.Long"/>
+      <NamedData NDName="user_id" NDValue="#{sessionScope.id_user}" NDType="java.lang.Long"/>
+      <NamedData NDName="maquette" NDValue="#{sessionScope.id_maquette}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

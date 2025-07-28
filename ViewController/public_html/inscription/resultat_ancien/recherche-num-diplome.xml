@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="recherche-num-diplome">
+    <default-activity>recherche-diplome</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <return-value-definition id="__4">
+      <name>id_diplome</name>
+      <value>#{pageFlowScope.id_diplome}</value>
+    </return-value-definition>
+    <return-value-definition id="__5">
+      <name>submitOrCanDiplom</name>
+      <value>#{pageFlowScope.submitOrCanDiplom}</value>
+    </return-value-definition>
+    <managed-bean id="__3">
+      <managed-bean-name>RechercheNumDiplomebean</managed-bean-name>
+      <managed-bean-class>resultat_ancien_etud.RechercheNumDiplomeBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="recherche-diplome">
+      <page>/inscription/resultat_ancien/recherche-diplome.jsf</page>
+    </view>
+    <task-flow-return id="return">
+      <outcome>
+        <name>return</name>
+      </outcome>
+    </task-flow-return>
+    <control-flow-rule id="__1">
+      <from-activity-id>recherche-diplome</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>return</from-outcome>
+        <to-activity-id>return</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

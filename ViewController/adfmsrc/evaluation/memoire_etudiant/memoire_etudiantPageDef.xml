@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="memoire_etudiantPageDef"
+                Package="evaluation.memoire_etudiant">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables">
+      <variableUsage DataControl="evaluationAppDataControl" Binds="EtudiantMemoire.variablesMap.p_numero"
+                     Name="ExecuteWithParams_p_numero" IsQueriable="false"/>
+      <variableUsage DataControl="evaluationAppDataControl" Binds="EtudiantMemoire.variablesMap.p_numero"
+                     Name="ExecuteWithParams1_p_numero" IsQueriable="false"/>
+    </variableIterator>
+    <iterator Binds="MemoireEtudiantSaisie" RangeSize="8" DataControl="evaluationAppDataControl"
+              id="MemoireEtudiantSaisieIterator"/>
+    <iterator Binds="MemoireEtudiants" RangeSize="8" DataControl="evaluationAppDataControl"
+              id="MemoireEtudiantsIterator"/>
+    <iterator Binds="DepartementsEtabROVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DepartementsEtabROVOIterator"/>
+    <iterator Binds="ParcoursSaisieMemoire" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ParcoursSaisieMemoireIterator"/>
+    <iterator Binds="EtudiantMemoire" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="EtudiantMemoireIterator"/>
+    <searchRegion Binds="EtudiantMemoireIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtudiantMemoireQuery"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="MemoireEtudiantSaisieIterator" id="LibMemoire">
+      <AttrNames>
+        <Item Value="LibMemoire"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="MemoireEtudiantsIterator" id="CreateMemoire"
+            InstanceName="evaluationAppDataControl.MemoireEtudiants" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="MemoireEtudiantsIterator" id="IdParcoursMaquetAnnee">
+      <AttrNames>
+        <Item Value="IdParcoursMaquetAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MemoireEtudiantsIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MemoireEtudiantsIterator" id="DateSoutenance">
+      <AttrNames>
+        <Item Value="DateSoutenance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MemoireEtudiantsIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="MemoireEtudiantsIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="DepartementsEtabROVOIterator" ListOperMode="navigation" ListIter="DepartementsEtabROVOIterator"
+          id="DepartementsEtabROVO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="ParcoursSaisieMemoireIterator" ListOperMode="navigation" ListIter="ParcoursSaisieMemoireIterator"
+          id="ParcoursSaisieMemoire" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Parcours"/>
+      </AttrNames>
+    </list>
+    <action id="Rollback" DataControl="evaluationAppDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <action IterBinding="EtudiantMemoireIterator" id="getEtudiant"
+            InstanceName="evaluationAppDataControl.EtudiantMemoire" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="p_numero" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="EtudiantMemoireIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="p_numero" NDType="java.lang.Long" NDValue="${bindings.ExecuteWithParams_p_numero}"/>
+    </action>
+    <attributeValues IterBinding="variables" id="p_numero">
+      <AttrNames>
+        <Item Value="ExecuteWithParams_p_numero"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="EtudiantMemoireIterator" id="ExecuteWithParams1" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="p_numero" NDType="java.lang.String" NDValue="${bindings.ExecuteWithParams1_p_numero}"/>
+    </action>
+    <attributeValues IterBinding="variables" id="p_numero1">
+      <AttrNames>
+        <Item Value="ExecuteWithParams1_p_numero"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="EtudiantMemoireIterator" id="EtudiantMemoire">
+      <nodeDefinition DefName="model.readOnlyView.EtudiantMemoireROVO" Name="EtudiantMemoire0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="IdParcoursMaquetAnnee"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

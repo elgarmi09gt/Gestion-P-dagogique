@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NiveauxSuperieursOptionsROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.NiveauxSuperieursOptionsROVORowImpl"
+  ComponentClass="model.readOnlyView.NiveauxSuperieursOptionsROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.NiveauxSuperieursOptionsROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="code_niv_s"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select distinct code_niv_sec_sup, null Op_Code_Sup, NivSup , null libelle              
+from (             
+select res.CODE_NIV_SEC,ns2.code_niv_sec code_niv_sec_sup,ns2.LIBELLE_LONG NivSup     
+from (              
+    select fns.CODE_NIV_SEC,ns.LIBELLE_LONG,ns.NIVEAU_CODE,fns.code_formation,f.CODE_DEPARTEMENT              
+    from FORMATION@scolProdref f,FORMATION_NIV_SEC@scolProdref fns,NIVEAUX_SECTIONS@scolProdref ns              
+    where f.CODE_FORMATION=fns.CODE_FORMATION and fns.CODE_NIV_SEC=ns.CODE_NIV_SEC and fns.CODE_NIV_SEC=:code_niv_s              
+) res, FORMATION_NIV_SEC@scolProdref ff,NIVEAUX_SECTIONS@scolProdref ns2              
+where ff.CODE_FORMATION=res.code_formation and ns2.CODE_NIV_SEC=ff.CODE_NIV_SEC and res.NIVEAU_CODE+1=ns2.NIVEAU_CODE and ns2.ouvert=1              
+) nvSup           
+order by code_niv_sec_sup  
+/*select distinct code_niv_sec_sup, option_1_code Op_Code_Sup, NivSup || decode(libelle,null,'','-'||libelle) NivSup, libelle              
+from (             
+select res.CODE_NIV_SEC,ns2.code_niv_sec code_niv_sec_sup,ns2.LIBELLE_LONG NivSup     
+from (              
+    select fns.CODE_NIV_SEC,ns.LIBELLE_LONG,ns.NIVEAU_CODE,fns.code_formation,f.CODE_DEPARTEMENT              
+    from FORMATION@scolProdref f,FORMATION_NIV_SEC@scolProdref fns,NIVEAUX_SECTIONS@scolProdref ns              
+    where f.CODE_FORMATION=fns.CODE_FORMATION and fns.CODE_NIV_SEC=ns.CODE_NIV_SEC and fns.CODE_NIV_SEC=:code_niv_s              
+) res, FORMATION_NIV_SEC@scolProdref ff,NIVEAUX_SECTIONS@scolProdref ns2              
+where ff.CODE_FORMATION=res.code_formation and ns2.CODE_NIV_SEC=ff.CODE_NIV_SEC and res.NIVEAU_CODE+1=ns2.NIVEAU_CODE and ns2.ouvert=1              
+) nvSup              
+left join (              
+Select distinct option_1_code, code_niv_sec, annee_univ, op.libelle               
+from NIVEAUX_SECTIONS_OPTIONS@scolprodref nso              
+join OPTIONS@scolprodref op on nso.option_1_code = op.code              
+where annee_univ = :an_id              
+) opt on nvSup.code_niv_sec_sup = opt.code_niv_sec              
+order by code_niv_sec_sup, libelle*/]]></SQLQuery>
+  <ViewAttribute
+    Name="CodeNivSecSup"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Integer"
+    ColumnType="INTEGER"
+    AliasName="CODE_NIV_SEC_SUP"
+    Expression="CODE_NIV_SEC_SUP"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="OpCodeSup"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="9"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="OP_CODE_SUP"
+    Expression="OP_CODE_SUP"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="9"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nivsup"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="120"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NIVSUP"
+    Expression="NIVSUP"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="120"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Libelle"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="300"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE"
+    Expression="LIBELLE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="300"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="CodeNivSecSup"/>
+    <Item Value="OpCodeSup"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="isSpecialiteExistROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.isSpecialiteExistROVORowImpl"
+  ComponentClass="model.readOnlyView.isSpecialiteExistROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.isSpecialiteExistROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="lib"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="mention_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[Select sp.ID_SPECIALITE  
+FROM SPECIALITES sp  
+WHERE sp.LIBELLE_LONG=:lib 
+AND sp.ID_MENTION=:mention_id]]></SQLQuery>
+  <ViewAttribute
+    Name="IdSpecialite"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_SPECIALITE"
+    Expression="ID_SPECIALITE"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

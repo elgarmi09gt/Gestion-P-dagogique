@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="EtudiantGroupeSaisieEtudiant"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.EtudiantGroupeSaisieEtudiant_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="sem"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="annee"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="sess"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT Distinct etu.ID_ETUDIANT,etu.NUMERO, pers.prenoms||' '||pers.nom prenom_nom, pers.prenoms, pers.nom   
+FROM  INSCRIPTION_PED_SEMESTRE ips        
+JOIN  INSCRIPTIONS_PEDAGOGIQUES ip ON ip.ID_INSCRIPTION_PEDAGOGIQUE=ips.ID_INSCRIPTION_PEDAGOGIQUE        
+JOIN  INSCRIPTIONS_ADMIN ia ON ia.ID_INSCRIPTION_ADMIN=ip.ID_INSCRIPTION_ADMIN        
+JOIN  TYPE_FORMATION tf ON tf.ID_TYPE_FORMATION = ia.ID_TYPE_FORMATION        
+JOIN  ETUDIANTS etu ON etu.ID_ETUDIANT=ia.ID_ETUDIANT        
+JOIN  PERSONNES pers ON pers.ID_PERSONNE=etu.ID_PERSONNE        
+JOIN  PARCOURS_MAQUETTE_ANNEE pm ON pm.ID_PARCOURS_MAQUET_ANNEE=ip.ID_PARCOURS_MAQUET_ANNEE        
+JOIN  NIVEAUX_FORMATION_PARCOURS nfp ON nfp.ID_NIVEAU_FORMATION_PARCOURS=pm.ID_NIVEAU_FORMATION_PARCOURS     
+JOIN  CALENDRIER_DELIBERATION cd ON cd.ID_NIVEAU_FORMATION_COHORTE = nfp.ID_NIVEAU_FORMATION_COHORTE       
+WHERE nfp.ID_NIVEAU_FORMATION_PARCOURS =:parcours      
+AND ips.ID_SEMESTRE =:sem      
+AND ia.ID_ANNEES_UNIVERS =:annee      
+AND cd.ID_SESSION =:sess        
+AND   etu.ID_ETUDIANT NOT IN (        
+  SELECT gse.ID_ETUDIANT      
+  FROM  GROUPE_SAISIE_ETUDIANT gse JOIN GROUPE_SAISIE gs ON gse.ID_GROUPE_SAISIE = gs.ID_GROUPE_SAISIE     
+  JOIN  NIVEAUX_FORMATION_PARCOURS nfp ON gs.ID_NIVEAU_FORMATION_PARCOURS = nfp.ID_NIVEAU_FORMATION_PARCOURS     
+  JOIN  CALENDRIER_DELIBERATION cd ON cd.ID_NIVEAU_FORMATION_COHORTE = nfp.ID_NIVEAU_FORMATION_COHORTE     
+  WHERE gse.ID_ETUDIANT is not null       
+  AND nfp.ID_NIVEAU_FORMATION_PARCOURS =:parcours     
+  AND cd.ID_SEMESTRE =:sem      
+  AND cd.ID_ANNEES_UNIVERS =:annee      
+  AND cd.ID_SESSION =:sess      
+)        
+ORDER BY pers.nom,pers.prenoms]]></SQLQuery>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PrenomNom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="301"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOM_NOM"
+    Expression="PRENOM_NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="301"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenoms"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMS"
+    Expression="PRENOMS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SelectedStudent"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="VIEW_ATTR"
+    SQLType="BIT">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

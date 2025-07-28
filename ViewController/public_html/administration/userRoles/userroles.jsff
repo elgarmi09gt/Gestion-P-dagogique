@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:dvt="http://xmlns.oracle.com/dss/adf/faces">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll" halign="center">
+    <af:panelGroupLayout id="pgl3" layout="scroll"
+                         inlineStyle="border:solid  2px #2897e8;margin-top:20px;margin-left:10px;" visible="false">
+      <af:panelHeader text="Etablissements" id="ph2" visible="false">
+        <f:facet name="context"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="menuBar"/>
+        <f:facet name="legend"/>
+        <f:facet name="info"/>
+      </af:panelHeader>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl2" layout="horizontal"
+                         inlineStyle="border:solid  2px #2897e8;margin-top:20px;margin-left:10px;">
+      <af:panelHeader text="#{viewcontrollerBundle1.UTILISATEURS}" id="ph3">
+        <f:facet name="context"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="menuBar"/>
+        <f:facet name="legend"/>
+        <f:facet name="info"/>
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="statusbar"/>
+          <af:table value="#{bindings.UtilisateurStructure.collectionModel}" var="row"
+                    rows="#{bindings.UtilisateurStructure.rangeSize}"
+                    emptyText="#{bindings.UtilisateurStructure.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0"
+                    selectedRowKeys="#{bindings.UtilisateurStructure.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.UtilisateurStructure.collectionModel.makeCurrent}"
+                    rowSelection="single" fetchSize="#{bindings.UtilisateurStructure.rangeSize}"
+                    filterModel="#{bindings.UtilisateurStructureQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.UtilisateurStructureQuery.processQuery}" varStatus="vs" id="t1"
+                    columnStretching="last" partialTriggers=":::b2 :::b3 :::b4 :::b5" scrollPolicy="page"> <!-- partialTriggers=":::b2 :::b3 :::b4 :::b5" -->
+            <af:column sortProperty="#{bindings.UtilisateurStructure.hints.isUserSelected.name}" filterable="false"
+                       sortable="false" id="c3" inlineStyle="text-align:center;" width="101">
+              <af:selectBooleanCheckbox value="#{row.bindings.isUserSelected.inputValue}"
+                                        label="#{row.bindings.isUserSelected.label}"
+                                        shortDesc="#{bindings.UtilisateurStructure.hints.isUserSelected.tooltip}"
+                                        id="sbc1" autoSubmit="true"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.UtilisateurStructure.hints.Prenomnom.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle1.PRENOM_NOM}" id="c1" width="249">
+              <af:outputFormatted value="#{row.bindings.Prenomnom.inputValue}" id="of1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.UtilisateurStructure.hints.AdressMail.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle1.EMAIL}" id="c2" width="100">
+              <af:outputFormatted value="#{row.bindings.AdressMail.inputValue}" id="of2"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:panelHeader>
+      <af:spacer width="10" height="10" id="s1"/>
+      <af:panelHeader text="#{viewcontrollerBundle1.ROLES}" id="ph4">
+        <f:facet name="context"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="menuBar"/>
+        <f:facet name="legend"/>
+        <f:facet name="info"/>
+        <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <af:table value="#{bindings.RoleAAssignerVO.collectionModel}" var="row"
+                    rows="#{bindings.RoleAAssignerVO.rangeSize}"
+                    emptyText="#{bindings.RoleAAssignerVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.RoleAAssignerVO.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.RoleAAssignerVO.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.RoleAAssignerVO.rangeSize}"
+                    filterModel="#{bindings.RoleAAssignerVOQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.RoleAAssignerVOQuery.processQuery}" varStatus="vs" id="t2">
+            <af:column sortProperty="#{bindings.RoleAAssignerVO.hints.isRoleSelected.name}" filterable="true"
+                       sortable="true" headerText="#{bindings.RoleAAssignerVO.hints.isRoleSelected.label}" id="c4">
+              <af:selectBooleanCheckbox value="#{row.bindings.isRoleSelected.inputValue}"
+                                        label="#{row.bindings.isRoleSelected.label}"
+                                        shortDesc="#{bindings.RoleAAssignerVO.hints.isRoleSelected.tooltip}" id="sbc2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.RoleAAssignerVO.hints.IdRoles.name}" filterable="true" sortable="true"
+                       headerText="#{bindings.RoleAAssignerVO.hints.IdRoles.label}" id="c5">
+              <af:selectOneChoice value="#{row.bindings.IdRoles.inputValue}" label="#{row.bindings.IdRoles.label}"
+                                  required="#{bindings.RoleAAssignerVO.hints.IdRoles.mandatory}"
+                                  shortDesc="#{bindings.RoleAAssignerVO.hints.IdRoles.tooltip}" id="soc1"
+                                  readOnly="true">
+                <f:selectItems value="#{row.bindings.IdRoles.items}" id="si1"/>
+                <f:validator binding="#{row.bindings.IdRoles.validator}"/>
+              </af:selectOneChoice>
+            </af:column>
+          </af:table>
+          <f:facet name="statusbar"/>
+          <!--af:table value="#{bindings.RolesVO.collectionModel}" var="row" rows="#{bindings.RolesVO.rangeSize}"
+                    emptyText="#{bindings.RolesVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.RolesVO.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.RolesVO.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.RolesVO.rangeSize}" filterModel="#{bindings.RolesVOQuery.queryDescriptor}"
+                    filterVisible="true" queryListener="#{bindings.RolesVOQuery.processQuery}" varStatus="vs" id="t2"
+                    columnStretching="last" scrollPolicy="page">
+            <af:column sortProperty="#{bindings.RolesVO.hints.isRoleSeleced.name}" filterable="false" sortable="false"
+                       id="c4" inlineStyle="text-align:center;">
+              <af:selectBooleanCheckbox value="#{row.bindings.isRoleSeleced.inputValue}"
+                                        label="#{row.bindings.isRoleSeleced.label}"
+                                        shortDesc="#{bindings.RolesVO.hints.isRoleSeleced.tooltip}" id="sbc2"
+                                        autoSubmit="true"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.RolesVO.hints.LibelleLong.name}" filterable="true" sortable="true"
+                       headerText="#{viewcontrollerBundle.LIBELLE}" id="c5">
+              <af:outputFormatted value="#{row.bindings.LibelleLong.inputValue}" id="of3"/>
+            </af:column>
+          </af:table-->
+        </af:panelCollection>
+      </af:panelHeader>
+    </af:panelGroupLayout>
+    <af:button text="Enregistrer" id="b1"
+               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+               actionListener="#{AdministrationBean.onUserRoleSaved}"/>
+    <af:panelGroupLayout layout="scroll" id="pgl4"
+                         inlineStyle="border:solid  2px #2897e8;margin-left:10px;">
+      <af:panelHeader text="#{viewcontrollerBundle1.UTILISATEURS_ROLES}" id="ph1"
+                      inlineStyle="text-align:left;margin:10px 35px 15px"
+                      binding="#{AdministrationBean.pandetuserRole}">
+        <!--af:panelFormLayout id="pfl1">
+          <af:panelLabelAndMessage label="#{viewcontrollerBundle1.PRENOM_NOM}" id="plam2">
+            <af:outputText value="#{bindings.Prenomnom.inputValue}" shortDesc="#{bindings.Prenomnom.hints.tooltip}"
+                           id="ot2"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{viewcontrollerBundle1.EMAIL}" id="plam3">
+            <af:outputText value="#{bindings.AdressMail.inputValue}" shortDesc="#{bindings.AdressMail.hints.tooltip}"
+                           id="ot3"/>
+          </af:panelLabelAndMessage>
+          <f:facet name="footer">
+            <af:panelGroupLayout layout="horizontal" id="pgl5">
+              <f:facet name="separator">
+                <af:spacer width="10" height="1" id="s2"/>
+              </f:facet>
+              <af:button actionListener="#{bindings.First.execute}" text="First" disabled="#{!bindings.First.enabled}"
+                         partialSubmit="true" id="b2"/>
+              <af:button actionListener="#{bindings.Previous.execute}" text="Previous"
+                         disabled="#{!bindings.Previous.enabled}" partialSubmit="true" id="b3"/>
+              <af:button actionListener="#{bindings.Next.execute}" text="Next" disabled="#{!bindings.Next.enabled}"
+                         partialSubmit="true" id="b4"/>
+              <af:button actionListener="#{bindings.Last.execute}" text="Last" disabled="#{!bindings.Last.enabled}"
+                         partialSubmit="true" id="b5"/>
+            </af:panelGroupLayout>
+          </f:facet>
+        </af:panelFormLayout>
+        <af:panelCollection id="pc3" styleClass="AFStretchWidth" binding="#{AdministrationBean.detroleuser}">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t4">
+              <af:button id="b6" icon="/images/delete_icon.png">
+                <af:showPopupBehavior popupId="::p1"/>
+              </af:button>
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="statusbar"/>
+          <af:table rows="#{bindings.UtilisateursRoles.rangeSize}" fetchSize="#{bindings.UtilisateursRoles.rangeSize}"
+                    emptyText="#{bindings.UtilisateursRoles.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    var="row" value="#{bindings.UtilisateursRoles.collectionModel}" rowBandingInterval="0"
+                    selectedRowKeys="#{bindings.UtilisateursRoles.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.UtilisateursRoles.collectionModel.makeCurrent}" rowSelection="single"
+                    id="t3" columnStretching="last">
+            <af:column sortProperty="#{bindings.UtilisateursRoles.hints.IdRole.name}" sortable="false" id="c7">
+              <af:selectOneChoice value="#{row.bindings.IdRole.inputValue}" label="#{row.bindings.IdRole.label}"
+                                  required="#{bindings.UtilisateursRoles.hints.IdRole.mandatory}"
+                                  shortDesc="#{bindings.UtilisateursRoles.hints.IdRole.tooltip}" readOnly="true"
+                                  id="soc2" inlineStyle="font-size:large;" contentStyle="font-size:large;">
+                <f:selectItems value="#{row.bindings.IdRole.items}" id="si2"/>
+                <f:validator binding="#{row.bindings.IdRole.validator}"/>
+              </af:selectOneChoice>
+            </af:column>
+          </af:table>
+        </af:panelCollection-->
+        <af:panelGroupLayout layout="vertical" id="pgl5">
+          <af:panelFormLayout id="pfl1">
+            <af:panelLabelAndMessage label="#{viewcontrollerBundle1.PRENOM_NOM}" id="plam2">
+              <af:outputText value="#{bindings.Prenomnom.inputValue}" shortDesc="#{bindings.Prenomnom.hints.tooltip}"
+                             id="ot2"/>
+            </af:panelLabelAndMessage>
+            <af:panelLabelAndMessage label="#{viewcontrollerBundle1.EMAIL}" id="plam3">
+              <af:outputText value="#{bindings.AdressMail.inputValue}" shortDesc="#{bindings.AdressMail.hints.tooltip}"
+                             id="ot3"/>
+            </af:panelLabelAndMessage>
+            <f:facet name="footer">
+              <af:panelGroupLayout layout="horizontal" id="pgl7">
+                <f:facet name="separator">
+                  <af:spacer width="10" height="1" id="s2"/>
+                </f:facet>
+                <af:button actionListener="#{bindings.First.execute}" text="&lt;&lt;" disabled="#{!bindings.First.enabled}"
+                           partialSubmit="true" id="b2"/>
+                <af:button actionListener="#{bindings.Previous.execute}" text="Précédent"
+                           disabled="#{!bindings.Previous.enabled}" partialSubmit="true" id="b3"/>
+                <af:button actionListener="#{bindings.Next.execute}" text="Suivant" disabled="#{!bindings.Next.enabled}"
+                           partialSubmit="true" id="b4"/>
+                <af:button actionListener="#{bindings.Last.execute}" text=">>" disabled="#{!bindings.Last.enabled}"
+                           partialSubmit="true" id="b5"/>
+              </af:panelGroupLayout>
+            </f:facet>
+          </af:panelFormLayout>
+          <af:spacer width="10" height="10" id="s3"/>
+          <af:panelCollection id="pc3" styleClass="AFStretchWidth" binding="#{AdministrationBean.detroleuser}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar">
+              <af:toolbar id="t4">
+              <af:button id="b6" icon="/images/delete_icon.png">
+                <af:showPopupBehavior popupId="::p1"/>
+              </af:button>
+              </af:toolbar>
+            </f:facet>
+            <f:facet name="statusbar"/>
+            <af:table rows="#{bindings.UtilisateursRolesVO.rangeSize}"
+                      fetchSize="#{bindings.UtilisateursRolesVO.rangeSize}"
+                      emptyText="#{bindings.UtilisateursRolesVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      var="row" value="#{bindings.UtilisateursRolesVO.collectionModel}" rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.UtilisateursRolesVO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.UtilisateursRolesVO.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t3" columnStretching="last">
+              <af:column headerText="#{viewcontrollerBundle.ROLE}"
+                         sortProperty="#{bindings.UtilisateursRolesVO.hints.IdRole.name}" sortable="false" id="c7">
+                <af:selectOneChoice value="#{row.bindings.IdRole.inputValue}" label="#{row.bindings.IdRole.label}"
+                                    required="#{bindings.UtilisateursRolesVO.hints.IdRole.mandatory}"
+                                    shortDesc="#{bindings.UtilisateursRolesVO.hints.IdRole.tooltip}" readOnly="true"
+                                    id="soc2">
+                  <f:selectItems value="#{row.bindings.IdRole.items}" id="si2"/>
+                  <f:validator binding="#{row.bindings.IdRole.validator}"/>
+                </af:selectOneChoice>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelGroupLayout>
+      </af:panelHeader>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+              binding="#{AdministrationBean.popupConfirmDelUserRole}">
+      <af:dialog id="d1" title="Info" type="yesNo" affirmativeTextAndAccessKey="Oui" noTextAndAccessKey="Non"
+                 dialogListener="#{AdministrationBean.OnDeleteAction}">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl6" layout="vertical" halign="center">
+          <af:icon name="error" id="i1"/>
+          <af:outputFormatted value="Voulez-vous supprimer ?" id="of4"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</ui:composition>

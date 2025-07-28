@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="etatsPageDef"
+                Package="evaluation.etats">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Parcours" RangeSize="-1" DataControl="evaluationAppDataControl" id="ParcoursIterator"/>
+    <iterator Binds="isEtudiantNumeroValide" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="isEtudiantNumeroValideIterator"/>
+    <iterator Binds="DetailsSemestreEtudiant" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DetailsSemestreEtudiantIterator"/>
+    <searchRegion Binds="DetailsSemestreEtudiantIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="DetailsSemestreEtudiantQuery"/>
+    <iterator Binds="DetailsAnnEtudiant" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="DetailsAnnEtudiantIterator"/>
+    <searchRegion Binds="DetailsAnnEtudiantIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="DetailsAnnEtudiantQuery"/>
+    <iterator Binds="ListRelevesChoice" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ListRelevesChoiceIterator"/>
+    <iterator Binds="MaquetteParcoursAn" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="MaquetteParcoursAnIterator"/>
+    <iterator Binds="StructureAttestation" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="StructureAttestationIterator"/>
+    <iterator Binds="SemestresByParcousMaq" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="SemestresByParcousMaqIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="ParcoursIterator" ListOperMode="navigation" ListIter="ParcoursIterator" id="Parcours"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="ParcoursIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="isEtudiantNumeroValideIterator" id="ExecuteWithParams"
+            InstanceName="evaluationAppDataControl.isEtudiantNumeroValide" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="num_etu" NDType="java.lang.String"/>
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="DetailsSemestreEtudiantIterator" id="DetailsSemestreEtudiant">
+      <nodeDefinition DefName="model.readOnlyView.DetailsSemestreEtudiant" Name="DetailsSemestreEtudiant0">
+        <AttrNames>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Note"/>
+          <Item Value="Credit"/>
+          <Item Value="Resultat"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="DetailsSemestreEtudiantIterator" id="getDetailSemEtu"
+            InstanceName="evaluationAppDataControl.DetailsSemestreEtudiant" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="numero" NDType="java.lang.String"/>
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="DetailsAnnEtudiantIterator" id="GetDetailsAnEtu"
+            InstanceName="evaluationAppDataControl.DetailsAnnEtudiant" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="numero" NDType="java.lang.String"/>
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="sess" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="DetailsAnnEtudiantIterator" id="DetailsAnnEtudiant">
+      <nodeDefinition DefName="model.readOnlyView.DetailsAnnEtudiant" Name="DetailsAnnEtudiant0">
+        <AttrNames>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Credit"/>
+          <Item Value="Resultat"/>
+          <Item Value="Diplomante"/>
+          <Item Value="Numero"/>
+          <Item Value="AnneeCloturee"/>
+          <Item Value="ChargerScol"/>
+          <Item Value="Etat"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="isDelibratedSemestre" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isDelibratedSemestre" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isDelibratedSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isDelibratedSemestre_isDelibratedSemestre_dataControl_dataProvider_isDelibratedSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getCountFilEc" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getCountFilEc"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getCountFilEc.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getCountFilEc_getCountFilEc_dataControl_dataProvider_getCountFilEc_result">
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+      <NamedData NDName="prcrs_id" NDType="java.lang.Long"/>
+      <NamedData NDName="sem_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <list IterBinding="ListRelevesChoiceIterator" ListOperMode="navigation" ListIter="ListRelevesChoiceIterator"
+          id="ListRelevesChoice" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Libelle"/>
+      </AttrNames>
+    </list>
+    <methodAction id="IsDelibarateAn" RequiresUpdateModel="true" Action="invokeMethod" MethodName="IsDelibarateAn"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.IsDelibarateAn.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.IsDelibarateAn_IsDelibarateAn_dataControl_dataProvider_IsDelibarateAn_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="session_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <list IterBinding="MaquetteParcoursAnIterator" ListOperMode="navigation" ListIter="MaquetteParcoursAnIterator"
+          id="MaquetteParcoursAn" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="StructureAttestationIterator" id="getSigleStructure"
+            InstanceName="evaluationAppDataControl.StructureAttestation" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="str_id" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="isDiplomante" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isDiplomante"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isDiplomante.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isDiplomante_isDiplomante_dataControl_dataProvider_isDiplomante_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="UpdateResultatCycle" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="UpdateResultatCycle" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.UpdateResultatCycle.dataControl.dataProvider">
+      <NamedData NDName="code_fr" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="isPrcrsAttSpecExist" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isPrcrsAttSpecExist" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isPrcrsAttSpecExist.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isPrcrsAttSpecExist_isPrcrsAttSpecExist_dataControl_dataProvider_isPrcrsAttSpecExist_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getCountFilUe" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getCountFilUe"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getCountFilUe.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getCountFilUe_getCountFilUe_dataControl_dataProvider_getCountFilUe_result">
+      <NamedData NDName="prcrs_id" NDType="java.lang.Long"/>
+      <NamedData NDName="sem_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="ParcoursIterator" id="Niveauformation">
+      <AttrNames>
+        <Item Value="Niveauformation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ParcoursIterator" id="Cohorte">
+      <AttrNames>
+        <Item Value="Cohorte"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ParcoursIterator" id="Specialite">
+      <AttrNames>
+        <Item Value="Specialite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ParcoursIterator" id="Opt">
+      <AttrNames>
+        <Item Value="Opt"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isCCExiste" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isCCExiste"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.isCCExiste.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.isCCExiste_isCCExiste_dataControl_dataProvider_isCCExiste_result">
+      <NamedData NDName="prcrs_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getCountFilUeMaq" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getCountFilUeMaq"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getCountFilUeMaq.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getCountFilUeMaq_getCountFilUeMaq_dataControl_dataProvider_getCountFilUeMaq_result">
+      <NamedData NDName="prcrs_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getCountFilEcMaq" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getCountFilEcMaq"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getCountFilEcMaq.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getCountFilEcMaq_getCountFilEcMaq_dataControl_dataProvider_getCountFilEcMaq_result">
+      <NamedData NDName="prcrs_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <list IterBinding="SemestresByParcousMaqIterator" ListOperMode="navigation" ListIter="SemestresByParcousMaqIterator"
+          id="SemestresByParcousMaq" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="SemestresByParcousMaqIterator" id="IdSemestre">
+      <AttrNames>
+        <Item Value="IdSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isDelibSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isDelibSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isDelibSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isDelibSemestre_isDelibSemestre_dataControl_dataProvider_isDelibSemestre_result">
+      <NamedData NDName="prcrsMaqId" NDType="java.lang.Long"/>
+      <NamedData NDName="semId" NDType="java.lang.Long"/>
+      <NamedData NDName="anId" NDType="java.lang.Long"/>
+      <NamedData NDName="sessId" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="IsClosedAn" RequiresUpdateModel="true" Action="invokeMethod" MethodName="IsClosedAn"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.IsClosedAn.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.IsClosedAn_IsClosedAn_dataControl_dataProvider_IsClosedAn_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="session_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="IsOpenDoc" RequiresUpdateModel="true" Action="invokeMethod" MethodName="IsOpenDoc"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.IsOpenDoc.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.IsOpenDoc_IsOpenDoc_dataControl_dataProvider_IsOpenDoc_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="session_id" NDType="java.lang.Long"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

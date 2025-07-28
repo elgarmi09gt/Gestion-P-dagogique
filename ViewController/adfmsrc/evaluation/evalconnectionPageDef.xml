@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="evalconnectionPageDef"
+                Package="evaluation">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Sessions" RangeSize="-1" DataControl="evaluationAppDataControl" id="SessionsIterator"/>
+    <iterator Binds="Semestres" RangeSize="-1" DataControl="evaluationAppDataControl" id="SemestresIterator"/>
+    <iterator Binds="AnneeUnivers" RangeSize="-1" DataControl="evaluationAppDataControl" id="AnneeUniversIterator"
+              Refresh="always"/>
+
+    <iterator Binds="HistoriquesStructures" RangeSize="-1" DataControl="evaluationAppDataControl"
+
+              id="HistoriquesStructuresIterator"/>
+    <iterator Binds="Parcours" RangeSize="-1" DataControl="evaluationAppDataControl" id="ParcoursIterator"/>
+    <iterator id="CalendrierDeliberationsIterator" Binds="CalendrierDeliberationsRO"
+              DataControl="evaluationAppDataControl" RangeSize="-1"/>
+    <iterator Binds="UserByUserName" RangeSize="-1" DataControl="evaluationAppDataControl" id="UserByUserNameIterator"/>
+    <iterator Binds="HistoriquesStructuresVO1" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="HistoriquesStructuresVO1Iterator"/>
+    <iterator Binds="StructureAccesByUsername" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="StructureAccesByUsernameIterator"/>
+    <iterator Binds="HistoriqueStructureByUserName" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="HistoriqueStructureByUserNameIterator"/>
+    <iterator Binds="GradeSemestreROVO" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="GradeSemestreROVOIterator"/>
+    <iterator Binds="ModuleUsers" RangeSize="-1" DataControl="menuAppDataControl" id="ModuleUsersIterator"/>
+    <iterator Binds="FontionalitesUsers" RangeSize="-1" DataControl="menuAppDataControl"
+              id="FontionalitesUsersIterator"/>
+    <iterator Binds="UtiRolesROVO" RangeSize="-1" DataControl="gestdapAppDataControl" id="UtiRolesROVOIterator"/>
+    <iterator Binds="FonctionnalitesUsers" RangeSize="-1" DataControl="menuAppDataControl"
+              id="FonctionnalitesUsersIterator"/>
+    <iterator Binds="DepartementUser" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="DepartementUserIterator"/>
+    <iterator Binds="ParcoursUser" RangeSize="-1" DataControl="evaluationAppDataControl" id="ParcoursUserIterator"/>
+    <iterator Binds="GradeSemestre" RangeSize="-1" DataControl="evaluationAppDataControl" id="GradeSemestreIterator"/>
+    <iterator Binds="MaquetteParcoursAnnee" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="MaquetteParcoursAnneeIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="SessionsIterator" ListOperMode="navigation" ListIter="SessionsIterator" id="Sessions"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="SemestresIterator" ListOperMode="navigation" ListIter="SemestresIterator" id="Semestres"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="AnneeUniversIterator" ListOperMode="navigation" ListIter="AnneeUniversIterator"
+          id="AnneeUnivers" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="HistoriquesStructuresIterator" ListOperMode="navigation" ListIter="HistoriquesStructuresIterator"
+          id="HistoriquesStructures" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="ParcoursIterator" id="ExecuteWithParams" InstanceName="evaluationAppDataControl.Parcours"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_user" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="idDept" NDType="oracle.jbo.domain.Number"/>
+    </action>
+    <action IterBinding="CalendrierDeliberationsIterator" id="ExecuteWithParamsCalendrier"
+            InstanceName="evaluationAppDataControl.CalendrierDeliberationsRO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="id_session" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="id_niv_form" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="id_smstre" NDType="oracle.jbo.domain.Number"/>
+    </action>
+    <action IterBinding="UserByUserNameIterator" id="UserByUserName"
+            InstanceName="evaluationAppDataControl.UserByUserName" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="username" NDValue="#{sessionScope.userName}" NDType="java.lang.String"/>
+    </action>
+    <attributeValues IterBinding="HistoriquesStructuresVO1Iterator" id="IdHistoriquesStructure">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ParcoursIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ParcoursIterator" id="LibParcours">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ParcoursIterator" id="Niveauformation">
+      <AttrNames>
+        <Item Value="Niveauformation"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="StructureAccesByUsernameIterator" ListOperMode="navigation"
+          ListIter="StructureAccesByUsernameIterator" id="StructureAccesByUsername" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="HistoriqueStructureByUserNameIterator" id="HistoriqueStructureByUserName"
+            InstanceName="evaluationAppDataControl.HistoriqueStructureByUserName" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="log" NDType="java.lang.String"/>
+      <NamedData NDName="str_id" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="GradeSemestreROVOIterator" id="GetGradeSemestre"
+            InstanceName="evaluationAppDataControl.GradeSemestreROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="nfp_id" NDType="java.lang.Long"/>
+    </action>
+    <list IterBinding="GradeSemestreROVOIterator" ListOperMode="navigation" ListIter="GradeSemestreROVOIterator"
+          id="GradeSemestreROVO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="GradeSemestreROVOIterator" id="Delete" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="ModuleUsersIterator" id="ExecuteWithParams1" InstanceName="menuAppDataControl.ModuleUsers"
+            DataControl="menuAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="log" NDType="java.lang.String"/>
+      <NamedData NDName="role" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="FontionalitesUsersIterator" id="ExecuteWithParams2"
+            InstanceName="menuAppDataControl.FontionalitesUsers" DataControl="menuAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="role" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="UtiRolesROVOIterator" id="getUtiRole" InstanceName="gestdapAppDataControl.UtiRolesROVO"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="user_name" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="FonctionnalitesUsersIterator" id="FonctionnalitesUsers"
+            InstanceName="menuAppDataControl.FonctionnalitesUsers" DataControl="menuAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="log" NDType="java.lang.String"/>
+      <NamedData NDName="module" NDType="java.lang.Long"/>
+    </action>
+    <list IterBinding="DepartementUserIterator" ListOperMode="navigation" ListIter="DepartementUserIterator"
+          id="DepartementUser" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="ParcoursUserIterator" ListOperMode="navigation" ListIter="ParcoursUserIterator"
+          id="ParcoursUser" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="GradeSemestreIterator" ListOperMode="navigation" ListIter="GradeSemestreIterator"
+          id="GradeSemestre" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="MaquetteParcoursAnneeIterator" ListOperMode="navigation" ListIter="MaquetteParcoursAnneeIterator"
+          id="MaquetteParcoursAnnee" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="MaquetteParcoursAnneeIterator" id="ExecuteWithParams3"
+            InstanceName="evaluationAppDataControl.MaquetteParcoursAnnee" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+      <NamedData NDName="str_id" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="StructureAccesByUsernameIterator" id="IdStructure">
+      <AttrNames>
+        <Item Value="IdStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneeUniversIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ParcoursUserIterator" id="IdNiveauFormationParcours1">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

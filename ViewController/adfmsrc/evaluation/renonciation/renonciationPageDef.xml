@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="renonciationPageDef"
+                Package="evaluation.renonciation">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UeEvalNew" RangeSize="25" DataControl="evaluationAppDataControl" id="UeEvalNewIterator"/>
+    <iterator Binds="EcEvalNew" RangeSize="25" DataControl="evaluationAppDataControl" id="EcEvalNewIterator"/>
+    <iterator Binds="EtudiantsRenonciationNote" RangeSize="20" DataControl="evaluationAppDataControl"
+              id="EtudiantsRenonciationNoteIterator"/>
+    <searchRegion Binds="EtudiantsRenonciationNoteIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtudiantsRenonciationNoteQuery"/>
+    <iterator Binds="FiliereUeRenonciation" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="FiliereUeRenonciationIterator"/>
+    <iterator Binds="FiliereEcRenonciationNote" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="FiliereEcRenonciationNoteIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="UeEvalNewIterator" ListOperMode="navigation" ListIter="UeEvalNewIterator" id="UeEvalNew"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="EcEvalNewIterator" ListOperMode="navigation" ListIter="EcEvalNewIterator" id="EcEvalNew"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="EtudiantsRenonciationNoteIterator" id="EtudiantsRenonciationNote">
+      <nodeDefinition DefName="model.readOnlyView.EtudiantsRenonciationNote" Name="EtudiantsRenonciationNote0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Noteec"/>
+          <Item Value="isEtdSelcted" Binds="isEtdSelcted"/>
+          <Item Value="DateRenonciation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="EtudiantsRenonciationNoteIterator" id="isEtdSelcted" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="isEtdSelcted"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="1"/>
+        <Item Value="0"/>
+      </ValueList>
+    </button>
+    <methodAction id="RenoncerNote" RequiresUpdateModel="true" Action="invokeMethod" MethodName="RenoncerNote"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.RenoncerNote.dataControl.dataProvider">
+      <NamedData NDName="p_etd_id" NDType="java.lang.Long"/>
+      <NamedData NDName="p_prcrs_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="p_fil_ec" NDType="java.lang.Long"/>
+      <NamedData NDName="p_uti" NDType="java.lang.Long"/>
+      <NamedData NDName="p_date" NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="EtudiantsRenonciationNoteIterator" id="DateRenonciation">
+      <AttrNames>
+        <Item Value="DateRenonciation"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="FiliereUeRenonciationIterator" ListOperMode="navigation" ListIter="FiliereUeRenonciationIterator"
+          id="FiliereUeRenonciation" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="FiliereEcRenonciationNoteIterator" ListOperMode="navigation"
+          ListIter="FiliereEcRenonciationNoteIterator" id="FiliereEcRenonciationNote" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="EtudiantsRenonciationNoteIterator" id="EtudiantsRenonciationNote1">
+      <nodeDefinition DefName="model.readOnlyView.EtudiantsRenonciationNote" Name="EtudiantsRenonciationNote10">
+        <AttrNames>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Numero"/>
+          <Item Value="Noteec"/>
+          <Item Value="isEtdSelcted" Binds="isEtdSelcted"/>
+          <Item Value="DateRenonciation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

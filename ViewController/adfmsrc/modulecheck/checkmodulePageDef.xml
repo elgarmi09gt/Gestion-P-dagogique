@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="checkmodulePageDef"
+                Package="modulecheck">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ModuleUsers" RangeSize="10" DataControl="menuAppDataControl" id="ModuleUsersIterator"/>
+    <iterator Binds="ApplicationsROVO" RangeSize="25" DataControl="menuAppDataControl" id="ApplicationsROVOIterator"/>
+    <iterator Binds="ModulesROVO" RangeSize="10" DataControl="menuAppDataControl" id="ModulesROVOIterator"/>
+    <iterator Binds="FonctionnalitesUsers" RangeSize="10" DataControl="menuAppDataControl"
+              id="FonctionnalitesUsersIterator"/>
+    <iterator Binds="UserByUserName" RangeSize="10" DataControl="evaluationAppDataControl" id="UserByUserNameIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="ApplicationsROVOIterator" ListOperMode="navigation" ListIter="ApplicationsROVOIterator"
+          id="ApplicationsROVO1" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="ModulesROVOIterator" id="ModulesROVO1">
+      <nodeDefinition DefName="model.readOnlyView.ModulesROVO" Name="ModulesROVO10">
+        <AttrNames>
+          <Item Value="CheminImage"/>
+          <Item Value="LibelleLong"/>
+          <Item Value="UrlConnection"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="FonctionnalitesUsersIterator" id="FonctionnalitesUsers"
+            InstanceName="menuAppDataControl.FonctionnalitesUsers" DataControl="menuAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="log" NDType="java.lang.String"/>
+      <NamedData NDName="module" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="UserByUserNameIterator" id="UserByUserName"
+            InstanceName="evaluationAppDataControl.UserByUserName" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="username" NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

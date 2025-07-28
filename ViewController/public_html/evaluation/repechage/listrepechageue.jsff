@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <af:panelGroupLayout id="pgl2" layout="scroll">
+    <af:panelGroupLayout id="pgl12" layout="scroll"
+                         inlineStyle="line-height:normal;border: solid 2px #2898e8;border-radius:8px;">
+      <af:panelGroupLayout id="pgl1" layout="horizontal" valign="middle" halign="center" inlineStyle="border:none">
+        <af:panelGroupLayout id="pgl3" layout="vertical">
+          <af:inputNumberSpinbox label="De" id="ins1" labelStyle="font-weight: bold; font-size: 18px"
+                                 contentStyle="font-size: 18px; width:150px; border: solid 2px #2897e8; border-radius: 5px; height:30px"
+                                 binding="#{DeliberatioUeBean.noteInf}"/>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="margin-left:50px">
+          <af:inputNumberSpinbox label="à" id="ins2" labelStyle="font-weight: bold; font-size: 18px"
+                                 contentStyle="font-size: 18px; width:150px; border: solid 2px #2897e8; border-radius: 5px; height:30px"
+                                 binding="#{DeliberatioUeBean.noteSup}"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl5" layout="vertical" halign="center" inlineStyle="line-height:30px;">
+        <af:selectOneChoice value="#{bindings.RepecheFilUe.inputValue}"
+                            required="#{bindings.RepecheFilUe.hints.mandatory}"
+                            shortDesc="#{bindings.RepecheFilUe.hints.tooltip}" id="soc5"
+                            contentStyle="font-size: 18px; width:300px; border: solid 2px #2897e8; border-radius: 5px; height:30px">
+          <f:selectItems value="#{bindings.RepecheFilUe.items}" id="si5"/>
+          <f:validator binding="#{bindings.RepecheFilUe.validator}"/>
+        </af:selectOneChoice>
+        <af:button text="Rechercher" id="b1"
+                   inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px;"
+                   icon="/images/icons8-search-24.png" actionListener="#{DeliberatioUeBean.OnRepechableSearchClicked}"/>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl8" layout="scroll" styleClass="AFStretchWidth" halign="center">
+      <af:panelGroupLayout id="pgl10" layout="horizontal" inlineStyle="margin:5px">
+        <af:panelHeader text="Details Ues" id="ph1" inlineStyle="border: solid 2px #2898e8;">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelGroupLayout id="pgl6" layout="scroll">
+            <af:panelCollection id="pc1">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar"/>
+              <f:facet name="statusbar"/>
+              <af:table value="#{bindings.ResultatsFilUeSemestreVO.collectionModel}" var="row"
+                        rows="#{bindings.ResultatsFilUeSemestreVO.rangeSize}"
+                        emptyText="#{bindings.ResultatsFilUeSemestreVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0"
+                        selectedRowKeys="#{bindings.ResultatsFilUeSemestreVO.collectionModel.selectedRow}"
+                        selectionListener="#{DeliberatioUeBean.onUeSelected}"
+                        rowSelection="single" fetchSize="#{bindings.ResultatsFilUeSemestreVO.rangeSize}"
+                        filterModel="#{bindings.ResultatsFilUeSemestreVOQuery.queryDescriptor}" filterVisible="true"
+                        queryListener="#{bindings.ResultatsFilUeSemestreVOQuery.processQuery}" varStatus="vs" id="t1"
+                        binding="#{DeliberatioUeBean.resTable}" columnStretching="last" scrollPolicy="page">
+                <af:column sortProperty="#{bindings.ResultatsFilUeSemestreVO.hints.Anonymat.name}" filterable="true"
+                           headerText="#{bindings.ResultatsFilUeSemestreVO.hints.Anonymat.label}" id="c1">
+                  <af:outputFormatted value="#{row.bindings.Anonymat.inputValue}" id="of3"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.ResultatsFilUeSemestreVO.hints.Note.name}" filterable="true"
+                           headerText="#{bindings.ResultatsFilUeSemestreVO.hints.Note.label}" id="c2">
+                  <af:outputFormatted value="#{row.bindings.Note.inputValue}" id="of5">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.ResultatsFilUeSemestreVO.hints.Note.format}"/>
+                  </af:outputFormatted>
+                </af:column>
+                <af:column sortProperty="#{bindings.ResultatsFilUeSemestreVO.hints.Credit.name}" filterable="true"
+                           headerText="#{bindings.ResultatsFilUeSemestreVO.hints.Credit.label}" id="c3">
+                  <af:outputFormatted value="#{row.bindings.Credit.inputValue}" id="of6">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.ResultatsFilUeSemestreVO.hints.Credit.format}"/>
+                  </af:outputFormatted>
+                </af:column>
+                <af:column sortProperty="#{bindings.ResultatsFilUeSemestreVO.hints.Resultat.name}" filterable="true"
+                           headerText="#{bindings.ResultatsFilUeSemestreVO.hints.Resultat.label}" id="c4">
+                  <af:selectOneChoice value="#{row.bindings.Resultat.inputValue}" label="#{row.bindings.Resultat.label}"
+                                      required="#{bindings.ResultatsFilUeSemestreVO.hints.Resultat.mandatory}"
+                                      shortDesc="#{bindings.ResultatsFilUeSemestreVO.hints.Resultat.tooltip}"
+                                      readOnly="true" id="soc1">
+                    <f:selectItems value="#{row.bindings.Resultat.items}" id="si1"/>
+                    <f:validator binding="#{row.bindings.Resultat.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+                <af:column headerText="#{bindings.ResultatsFilUeSemestreVO.hints.Resultat.label}" id="c8">
+                  <af:selectOneChoice value="#{row.bindings.Resultat.inputValue}" label="#{row.bindings.Resultat.label}"
+                                      required="#{bindings.ResultatsFilUeSemestreVO.hints.Resultat.mandatory}"
+                                      shortDesc="#{bindings.ResultatsFilUeSemestreVO.hints.Resultat.tooltip}" id="soc4">
+                    <f:selectItems value="#{row.bindings.Resultat.items}" id="si4"/>
+                    <f:validator binding="#{row.bindings.Resultat.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:panelGroupLayout>
+        </af:panelHeader>
+        <af:spacer width="10" height="10" id="s1"/>
+        <af:panelHeader text="Details Notes" id="ph2" inlineStyle="border: solid 2px #2898e8;">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info">
+            <af:inputText label="Mouenne UE" id="it2" value="#{DeliberatioUeBean.moyenneUe}" readOnly="true"
+                          binding="#{DeliberatioUeBean.inputMoyenneUe}" inlineStyle="font-size:large; font-weight:bold;"
+                          contentStyle="font-size:large; font-weight:bold;"
+                          labelStyle="font-size:large; font-weight:bold;"/>
+          </f:facet>
+          <af:panelGroupLayout id="pgl7" layout="scroll">
+            <af:panelCollection id="pc2" binding="#{DeliberatioUeBean.detailsPanelColection}"
+                                styleClass="AFStretchWidth">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar"/>
+              <af:table value="#{bindings.NotesModeEnseignementVO.collectionModel}" var="row"
+                        rows="#{bindings.NotesModeEnseignementVO.rangeSize}"
+                        emptyText="#{bindings.NotesModeEnseignementVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0"
+                        selectedRowKeys="#{bindings.NotesModeEnseignementVO.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.NotesModeEnseignementVO.collectionModel.makeCurrent}"
+                        rowSelection="single" fetchSize="#{bindings.NotesModeEnseignementVO.rangeSize}"
+                        filterModel="#{bindings.NotesModeEnseignementVOQuery.queryDescriptor}" filterVisible="true"
+                        queryListener="#{bindings.NotesModeEnseignementVOQuery.processQuery}" varStatus="vs" id="t2">
+                <af:column sortProperty="#{bindings.NotesModeEnseignementVO.hints.IdFiliereUeSemstreEc.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.NotesModeEnseignementVO.hints.IdFiliereUeSemstreEc.label}" id="c5"
+                           width="101">
+                  <af:selectOneChoice value="#{row.bindings.IdFiliereUeSemstreEc.inputValue}"
+                                      label="#{row.bindings.IdFiliereUeSemstreEc.label}"
+                                      required="#{bindings.NotesModeEnseignementVO.hints.IdFiliereUeSemstreEc.mandatory}"
+                                      shortDesc="#{bindings.NotesModeEnseignementVO.hints.IdFiliereUeSemstreEc.tooltip}"
+                                      readOnly="true" id="soc2">
+                    <f:selectItems value="#{row.bindings.IdFiliereUeSemstreEc.items}" id="si2"/>
+                    <f:validator binding="#{row.bindings.IdFiliereUeSemstreEc.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.NotesModeEnseignementVO.hints.IdTypeControle.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.NotesModeEnseignementVO.hints.IdTypeControle.label}" id="c6"
+                           width="99">
+                  <af:selectOneChoice value="#{row.bindings.IdTypeControle.inputValue}"
+                                      label="#{row.bindings.IdTypeControle.label}"
+                                      required="#{bindings.NotesModeEnseignementVO.hints.IdTypeControle.mandatory}"
+                                      shortDesc="#{bindings.NotesModeEnseignementVO.hints.IdTypeControle.tooltip}"
+                                      readOnly="true" id="soc3">
+                    <f:selectItems value="#{row.bindings.IdTypeControle.items}" id="si3"/>
+                    <f:validator binding="#{row.bindings.IdTypeControle.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.NotesModeEnseignementVO.hints.Note.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.NotesModeEnseignementVO.hints.Note.label}" id="c7"
+                           width="100">
+                  <af:outputText value="#{row.Note}" shortDesc="#{bindings.NotesModeEnseignementVO.hints.Note.tooltip}"
+                                 id="ot1">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.NotesModeEnseignementVO.hints.Note.format}"/>
+                  </af:outputText>
+                </af:column>
+              </af:table>
+              <f:facet name="statusbar"/>
+            </af:panelCollection>
+          </af:panelGroupLayout>
+        </af:panelHeader>
+      </af:panelGroupLayout>
+      <af:button text="Enregistrer" id="b2"
+                 inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px;"
+                 icon="/images/save-30.png" actionListener="#{DeliberatioUeBean.OnValideRepecheClicked}"/>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{DeliberatioUeBean.popupSaveRepeche}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d1" title="Info !" affirmativeTextAndAccessKey="OUI" noTextAndAccessKey="ANNULER" type="yesNo"
+               dialogListener="#{DeliberatioUeBean.OnRepecheDialogueAction}">
+      <af:panelGroupLayout id="pgl9" layout="vertical" inlineStyle="text-align:center;">
+        <af:icon name="info" id="i1"/>
+        <af:outputFormatted value="Confirmer le repêchage" id="of4" inlineStyle="font-size:large; font-weight:bold;"/>
+      </af:panelGroupLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{DeliberatioUeBean.popupEnterInterval}">
+    <af:dialog id="d2" type="cancel" cancelTextAndAccessKey="Fermer" title="Info"
+               inlineStyle="text-align:center;border-radius:8px">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl11" layout="vertical">
+        <af:icon name="warning" id="i2"/>
+        <af:outputFormatted value="Veuillez entrer l'intervalle de repêchage" id="of2"
+                            inlineStyle="font-size:large; font-weight:bold; font-style:italic;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="statusbar"/>
+      <af:table value="#{bindings.ParcoursParamSaisieNoteEc.collectionModel}" var="row"
+                rows="#{bindings.ParcoursParamSaisieNoteEc.rangeSize}"
+                emptyText="#{bindings.ParcoursParamSaisieNoteEc.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0"
+                selectedRowKeys="#{bindings.ParcoursParamSaisieNoteEc.collectionModel.selectedRow}"
+                selectionListener="#{bindings.ParcoursParamSaisieNoteEc.collectionModel.makeCurrent}"
+                rowSelection="single" fetchSize="#{bindings.ParcoursParamSaisieNoteEc.rangeSize}"
+                filterModel="#{bindings.ParcoursParamSaisieNoteEcQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.ParcoursParamSaisieNoteEcQuery.processQuery}" varStatus="vs" id="t1"
+                scrollPolicy="page" columnStretching="last">
+        <af:column sortProperty="#{bindings.ParcoursParamSaisieNoteEc.hints.Niveauformationparcours.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.PARCOURS}" id="c1">
+          <af:outputText value="#{row.Niveauformationparcours}"
+                         shortDesc="#{bindings.ParcoursParamSaisieNoteEc.hints.Niveauformationparcours.tooltip}"
+                         id="ot1"/>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+    <af:panelGroupLayout id="pgl3" layout="horizontal" inlineStyle="margin-top:-10px">
+      <af:panelGroupLayout layout="vertical" id="pgl2">
+        <af:panelHeader text="Utilisateurs" id="ph2" inlineStyle="width:800px;">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="margin:5px;border:solid 1px #2898e8">
+            <af:query id="qryId1" headerText="Search" disclosed="true"
+                      value="#{bindings.UtilisateursByQuery.queryDescriptor}"
+                      model="#{bindings.UtilisateursByQuery.queryModel}"
+                      queryListener="#{bindings.UtilisateursByQuery.processQuery}"
+                      queryOperationListener="#{bindings.UtilisateursByQuery.processQueryOperation}"
+                      resultComponentId="::pc3:resId1" displayMode="compact" saveQueryMode="hidden"/>
+          </af:panelGroupLayout>
+          <af:iterator id="i4" value="#{EcsAccesBean.initTopUti()}"/>
+          <af:iterator id="i3" value="#{EcsAccesBean.initUti()}"/>
+          <af:panelCollection id="pc3" styleClass="AFStretchWidth" inlineStyle="margin:5px;border:solid 1px #2898e8"
+                              binding="#{EcsAccesBean.userPanCol}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <af:table value="#{bindings.UtilisateursROVO.collectionModel}" var="row"
+                      rows="#{bindings.UtilisateursROVO.rangeSize}"
+                      emptyText="#{bindings.UtilisateursROVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.UtilisateursROVO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.UtilisateursROVO.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.UtilisateursROVO.rangeSize}"
+                      filterModel="#{bindings.UtilisateursByQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.UtilisateursByQuery.processQuery}" varStatus="vs" id="resId1"
+                      columnStretching="last" scrollPolicy="page" binding="#{EcsAccesBean.userTable}">
+              <af:column sortProperty="#{bindings.UtilisateursROVO.hints.isUserSelected.name}" id="c5" align="center"
+                         width="100">
+                <af:selectBooleanCheckbox value="#{row.bindings.isUserSelected.inputValue}"
+                                          label="#{row.bindings.isUserSelected.label}"
+                                          shortDesc="#{bindings.UtilisateursROVO.hints.isUserSelected.tooltip}"
+                                          id="sbc2" autoSubmit="true"/>
+                <f:facet name="header">
+                  <af:selectBooleanCheckbox id="sbc5" autoSubmit="true"
+                                            valueChangeListener="#{EcsAccesBean.OnUserSelected}"
+                                            binding="#{EcsAccesBean.is_uti}"/>
+                </f:facet>
+              </af:column>
+              <af:column sortProperty="#{bindings.UtilisateursROVO.hints.Prenom.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.PENOM}" id="c12" width="200">
+                <af:outputFormatted value="#{row.bindings.Prenom.inputValue}" id="of7"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.UtilisateursROVO.hints.Nom.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.NOM}" id="c13" width="150">
+                <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of8"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.UtilisateursROVO.hints.Email.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.EMAIL}" id="c14" width="210">
+                <af:outputFormatted value="#{row.bindings.Email.inputValue}" id="of9"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.UtilisateursROVO.hints.Etablissement.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.ETABLISSEMENT}" id="c15">
+                <af:outputFormatted value="#{row.bindings.Etablissement.inputValue}" id="of10"/>
+              </af:column>
+              <f:facet name="header"/>
+            </af:table>
+          </af:panelCollection>
+        </af:panelHeader>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl8" layout="scroll">
+        <af:selectOneChoice value="#{bindings.PrcrsMaquette.inputValue}"
+                            required="#{bindings.PrcrsMaquette.hints.mandatory}"
+                            shortDesc="#{bindings.PrcrsMaquette.hints.tooltip}" id="soc1" autoSubmit="true"
+                            visible="#{bindings.PrcrsMaquetteIterator.estimatedRowCount gt 1}"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;">
+          <f:selectItems value="#{bindings.PrcrsMaquette.items}" id="si1"/>
+          <f:validator binding="#{bindings.PrcrsMaquette.validator}"/>
+        </af:selectOneChoice>
+        <af:panelCollection id="pc2" styleClass="AFStretchWidth" inlineStyle="border:solid 1px #2898e8" visible="false">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="statusbar"/>
+          <af:table value="#{bindings.FiliereUeSemestreEcPrcrs.collectionModel}" var="row"
+                    rows="#{bindings.FiliereUeSemestreEcPrcrs.rangeSize}"
+                    emptyText="#{bindings.FiliereUeSemestreEcPrcrs.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0"
+                    selectedRowKeys="#{bindings.FiliereUeSemestreEcPrcrs.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.FiliereUeSemestreEcPrcrs.collectionModel.makeCurrent}"
+                    rowSelection="single" fetchSize="#{bindings.FiliereUeSemestreEcPrcrs.rangeSize}"
+                    filterModel="#{bindings.FiliereUeSemestreEcPrcrsQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.FiliereUeSemestreEcPrcrsQuery.processQuery}" varStatus="vs" id="t2"
+                    scrollPolicy="page" columnStretching="last">
+            <af:column sortProperty="#{bindings.FiliereUeSemestreEcPrcrs.hints.isSelected.name}" filterable="true"
+                       sortable="true" id="c2" align="center">
+              <af:selectBooleanCheckbox value="#{row.bindings.isSelected.inputValue}"
+                                        label="#{row.bindings.isSelected.label}"
+                                        shortDesc="#{bindings.FiliereUeSemestreEcPrcrs.hints.isSelected.tooltip}"
+                                        id="sbc1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.FiliereUeSemestreEcPrcrs.hints.Codification.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle.CODIFICATION}" id="c3" width="150">
+              <af:outputFormatted value="#{row.bindings.Codification.inputValue}" id="of1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.FiliereUeSemestreEcPrcrs.hints.LibelleLong.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle.LIBELLE}" id="c4">
+              <af:outputFormatted value="#{row.bindings.LibelleLong.inputValue}" id="of2"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+        <af:panelHeader text="Eléments Constitutifs" id="ph1" inlineStyle="margin:10px">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <af:iterator id="i6" value="#{EcsAccesBean.initTopEc()}"/>
+          <af:iterator id="i5" value="#{EcsAccesBean.initEc()}"/>
+          <af:panelCollection id="pc4" styleClass="AFStretchWidth" inlineStyle="border:solid 1px #2898e8"
+                              binding="#{EcsAccesBean.ecPanCol}">
+            <!--visible="#{securityContext.userInRole['Responsable-ec']}"-->
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <af:table value="#{bindings.FiliereUeSemEcByResp.collectionModel}" var="row"
+                      rows="#{bindings.FiliereUeSemEcByResp.rangeSize}"
+                      emptyText="#{bindings.FiliereUeSemEcByResp.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.FiliereUeSemEcByResp.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.FiliereUeSemEcByResp.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.FiliereUeSemEcByResp.rangeSize}"
+                      filterModel="#{bindings.FiliereUeSemEcByRespQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.FiliereUeSemEcByRespQuery.processQuery}" varStatus="vs" id="t3"
+                      binding="#{EcsAccesBean.ecTable}" columnStretching="last" scrollPolicy="page"
+                      partialTriggers=":::soc1">
+              <af:column sortProperty="#{bindings.FiliereUeSemEcByResp.hints.isEcSelected.name}" id="c6" align="center">
+                <af:selectBooleanCheckbox value="#{row.bindings.isEcSelected.inputValue}"
+                                          label="#{row.bindings.isEcSelected.label}"
+                                          shortDesc="#{bindings.FiliereUeSemEcByResp.hints.isEcSelected.tooltip}"
+                                          id="sbc3" autoSubmit="true"/>
+                <f:facet name="header">
+                  <af:selectBooleanCheckbox id="sbc4" autoSubmit="true"
+                                            valueChangeListener="#{EcsAccesBean.onEcSelected}"
+                                            binding="#{EcsAccesBean.is_ec}"/>
+                </f:facet>
+              </af:column>
+              <af:column sortProperty="#{bindings.FiliereUeSemEcByResp.hints.Codification.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.CODIFICATION}" id="c7" width="115">
+                <af:outputFormatted value="#{row.bindings.Codification.inputValue}" id="of5"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.FiliereUeSemEcByResp.hints.LibelleLong.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" id="c8">
+                <af:outputFormatted value="#{row.bindings.LibelleLong.inputValue}" id="of6"/>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelHeader>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl5" layout="vertical" halign="center">
+      <af:button text="Enregistrer" id="b1"
+                 inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+                 actionListener="#{EcsAccesBean.OnSaveAccessClicked}"/>
+    </af:panelGroupLayout>
+    <af:panelHeader text="Acces Accordés" id="ph3" binding="#{EcsAccesBean.accessPanH}">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <af:panelCollection id="pc5" styleClass="AFStretchWidth" binding="#{EcsAccesBean.accessPancol}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.UserAccesEc.collectionModel}" var="row" rows="#{bindings.UserAccesEc.rangeSize}"
+                  emptyText="#{bindings.UserAccesEc.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.UserAccesEc.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.UserAccesEc.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.UserAccesEc.rangeSize}"
+                  filterModel="#{bindings.UserAccesEcQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.UserAccesEcQuery.processQuery}" varStatus="vs" id="t4" scrollPolicy="page"
+                  columnStretching="column:c10" binding="#{EcsAccesBean.accesEcTable}">
+          <af:column sortProperty="#{bindings.UserAccesEc.hints.Codification.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.CODIFICATION}" id="c9" width="150">
+            <af:outputText value="#{row.Codification}" shortDesc="#{bindings.UserAccesEc.hints.Codification.tooltip}"
+                           id="ot6"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UserAccesEc.hints.LibelleLong.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" id="c10">
+            <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.UserAccesEc.hints.LibelleLong.tooltip}"
+                           id="ot7"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UserAccesEc.hints.Utilisateur.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.UTILISATEURS}" id="c11" width="250">
+            <af:outputText value="#{row.Utilisateur}" shortDesc="#{bindings.UserAccesEc.hints.Utilisateur.tooltip}"
+                           id="ot8"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{EcsAccesBean.noUserSelected}">
+    <af:dialog id="d1" title="Info">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl6" layout="vertical" halign="center">
+        <af:icon id="i1" name="warning"/>
+        <af:outputFormatted value="Aucun utilisateur sélectionné ! " id="of3"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{EcsAccesBean.noEcSelected}">
+    <af:dialog id="d2" title="Info">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl7" layout="vertical" halign="center">
+        <af:icon name="warning" id="i2"/>
+        <af:outputFormatted value="Aucune unité d'enseignement sélectionnée ! " id="of4"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

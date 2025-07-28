@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="testTreePageDef"
+                Package="view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="PaysVO1" RangeSize="10" DataControl="parametrageAppDataControl" id="PaysVO1Iterator"/>
+    <iterator Binds="RegionsVO1" RangeSize="10" DataControl="parametrageAppDataControl" id="RegionsVO1Iterator"/>
+    <iterator Binds="VillesVO1" RangeSize="10" DataControl="parametrageAppDataControl" id="VillesVO1Iterator"/>
+    <taskFlow id="task1" taskFlowId="/parametrage/pays/task.xml#task" activation="deferred"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <iterator Binds="ZoneGeographiques" RangeSize="10" DataControl="parametrageAppDataControl"
+              id="ZoneGeographiquesIterator"/>
+    <taskFlow id="task2" taskFlowId="/parametrage/pays/task.xml#task" activation="deferred"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ZoneGeographiquesIterator" id="ZoneGeographiques">
+      <nodeDefinition DefName="model.updatableview.ZoneGeographiquesVO" Name="ZoneGeographiques0"
+                      TargetIterator="${bindings.ZoneGeographiquesIterator}">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="PaysVO"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="model.updatableview.PaysVO" Name="ZoneGeographiques1"
+                      TargetIterator="${bindings.PaysVO1Iterator}">
+        <AttrNames>
+          <Item Value="Libelle"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="RegionsVO"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="model.updatableview.RegionsVO" Name="ZoneGeographiques2"
+                      TargetIterator="${bindings.RegionsVO1Iterator}">
+        <AttrNames>
+          <Item Value="Libelle"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="VillesVO"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="model.updatableview.VillesVO" Name="ZoneGeographiques3"
+                      TargetIterator="${bindings.VillesVO1Iterator}">
+        <AttrNames>
+          <Item Value="Libelle"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

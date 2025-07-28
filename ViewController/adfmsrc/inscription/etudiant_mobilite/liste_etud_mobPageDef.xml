@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="liste_etud_mobPageDef"
+                Package="inscription.etudiant_mobilite">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="listeEtudMobiliteRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="listeEtudMobiliteROIterator"/>
+    <searchRegion Binds="listeEtudMobiliteROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="listeEtudMobiliteROQuery"/>
+    <iterator Binds="listeEtudMobUeRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="listeEtudMobUeROIterator"/>
+    <searchRegion Binds="listeEtudMobUeROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="listeEtudMobUeROQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="listeEtudMobiliteROIterator" id="listeEtudMobiliteRO">
+      <nodeDefinition DefName="model.readOnlyView.listeEtudMobiliteROVO" Name="listeEtudMobiliteRO0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="listeEtudMobUeROIterator" id="listeEtudMobUeRO">
+      <nodeDefinition DefName="model.readOnlyView.listeEtudMobUeROVO" Name="listeEtudMobUeRO0">
+        <AttrNames>
+          <Item Value="LibUe"/>
+          <Item Value="Codification"/>
+          <Item Value="Semestre"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

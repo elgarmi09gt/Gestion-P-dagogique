@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="repartition_formation_tk_repartition_formation_tk_ExecuteWithParamsPageDef"
+                Package="ecolage.repartition_formation" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="StructFormPayRO" RangeSize="25" DataControl="ecolageAppDataControl" id="StructFormPayROIterator"
+              Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="StructFormPayROIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="id_hs" NDValue="#{sessionScope.id_hs}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

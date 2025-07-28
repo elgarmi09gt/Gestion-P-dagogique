@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="detail_cursus_etudiantPageDef"
+                Package="inscription.cursus_etudiant">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="DiplomeEtudiantGradeRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="DiplomeEtudiantGradeROIterator"/>
+    <searchRegion Binds="DiplomeEtudiantGradeROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="DiplomeEtudiantGradeRO1Query"/>
+    <iterator Binds="Etudiants" RangeSize="10" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="Personnes" RangeSize="10" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="DiplomeEtudiantROIterator" StaticList="false" Uses="LOV_IdTypeMention" id="IdTypeMention"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="DiplomeEtudiantROIterator" StaticList="false" Uses="LOV_IdGradesFormation"
+          id="IdGradesFormation" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="DiplomeEtudiantROIterator" StaticList="false" Uses="LOV_IdSpecialite" id="IdSpecialite"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="DiplomeEtudiantROIterator" StaticList="false" Uses="LOV_IdOption" id="IdOption"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="DiplomeEtudiantROIterator" StaticList="false" Uses="LOV_PaysObtention" id="PaysObtention"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="DiplomeEtudiantROIterator" StaticList="false" Uses="LOV_IdEtab" id="IdEtab"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <tree IterBinding="DiplomeEtudiantGradeROIterator" id="DiplomeEtudiantGradeRO1">
+      <nodeDefinition DefName="model.readOnlyView.DiplomeEtudiantGradeROVO" Name="DiplomeEtudiantGradeRO10">
+        <AttrNames>
+          <Item Value="DateObtention"/>
+          <Item Value="Numero"/>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="IdEtab"/>
+          <Item Value="IdGradesFormation"/>
+          <Item Value="IdOption"/>
+          <Item Value="IdSpecialite"/>
+          <Item Value="IdTypeMention"/>
+          <Item Value="Lieu"/>
+          <Item Value="PaysObtention"/>
+          <Item Value="Serie"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Adresse"/>
+          <Item Value="PieceIdentification"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="EtudiantsIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

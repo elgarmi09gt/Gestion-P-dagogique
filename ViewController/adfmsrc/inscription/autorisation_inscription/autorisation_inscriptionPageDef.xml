@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="autorisation_inscriptionPageDef" Package="inscription.autorisation_inscription">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="NivFormAutoriseRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="NivFormAutoriseROIterator"/>
+    <iterator Binds="ListePersonnesRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="ListePersonnesROIterator"/>
+    <iterator Binds="ListePersAutorise" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="ListePersAutoriseIterator"/>
+    <iterator Binds="Personnes" RangeSize="25" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="Autorises" RangeSize="10" DataControl="inscriptionAppDataControl" id="AutorisesIterator"/>
+    <iterator Binds="Etudiants" RangeSize="10" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="InscriptionsAdmin" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptionsAdminIterator"/>
+    <iterator Binds="InscInfoGlobleForm" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscInfoGlobleFormIterator"/>
+    <iterator Binds="DroitNiveauPaysRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="DroitNiveauPaysROIterator"/>
+    <iterator Binds="InscriptionsPedagogiques" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptionsPedagogiquesIterator"/>
+    <iterator Binds="InscriptionPedSemestre" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptionPedSemestreIterator"/>
+    <iterator Binds="EtudiantExcluSuspenduRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="EtudiantExcluSuspenduROIterator"/>
+    <iterator Binds="EtudiantResultatCycleRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="EtudiantResultatCycleROIterator"/>
+    <iterator Binds="ListePersAutNewRO" RangeSize="5" DataControl="inscriptionAppDataControl"
+              id="ListePersAutNewROIterator"/>
+    <searchRegion Binds="ListePersAutNewROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ListePersAutNewROQuery"/>
+    <iterator Binds="ListePersonnesROVO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="ListePersonnesROVOIterator"/>
+    <iterator Binds="PersDejaAutoriserRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="PersDejaAutoriserROIterator"/>
+    <iterator Binds="PersonneLastInsertRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="PersonneLastInsertROIterator"/>
+    <iterator Binds="InscDoubleRO" RangeSize="10" DataControl="inscriptionAppDataControl" id="InscDoubleROIterator"/>
+    <iterator Binds="Pays" RangeSize="25" DataControl="inscriptionAppDataControl" id="PaysIterator"/>
+    <iterator Binds="Civilites" RangeSize="25" DataControl="inscriptionAppDataControl" id="CivilitesIterator"/>
+    <iterator Binds="PaysNationalite" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="PaysNationaliteIterator"/>
+    <iterator Binds="PersonneExiste" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="PersonneExisteIterator"/>
+    <iterator Binds="ListeSuspensioneEtudRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="ListeSuspensioneEtudROIterator"/>
+    <iterator Binds="AnneeUniversEnCoursRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="AnneeUniversEnCoursROIterator"/>
+    <iterator Binds="AttrComplAutorisation" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="AttrComplAutorisationIterator"/>
+    <iterator Binds="Sexe" RangeSize="25" DataControl="inscriptionAppDataControl" id="SexeIterator"/>
+    <iterator Binds="NouveauxBacheliers" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="NouveauxBacheliersIterator"/>
+    <iterator Binds="SerieBac" RangeSize="10" DataControl="inscriptionAppDataControl" id="SerieBacIterator"/>
+    <iterator Binds="TypeMention" RangeSize="25" DataControl="inscriptionAppDataControl" id="TypeMentionIterator"/>
+    <iterator Binds="Lycee" RangeSize="25" DataControl="inscriptionAppDataControl" id="LyceeIterator"/>
+    <iterator Binds="AutoResulAnnValideRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="AutoResulAnnValideROIterator"/>
+    <iterator Binds="AnneeUniversPasseeRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="AnneeUniversPasseeROIterator"/>
+    <iterator Binds="InsChangementCycleRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InsChangementCycleROIterator"/>
+    <iterator Binds="InscAncienneRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscAncienneROIterator"/>
+    <iterator Binds="ResultatAnnuelRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="ResultatAnnuelROIterator"/>
+    <iterator Binds="InscPedagogiqueRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscPedagogiqueROIterator"/>
+    <iterator Binds="InscNombreMaxiRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscNombreMaxiROIterator"/>
+    <iterator Binds="AnneeUniverRO" RangeSize="10" DataControl="inscriptionAppDataControl" id="AnneeUniverROIterator"/>
+    <iterator Binds="InscAncienneNiv1" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscAncienneNiv1Iterator"/>
+    <iterator Binds="InscAncienneNiv2" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscAncienneNiv2Iterator"/>
+    <iterator Binds="LesInscPedRO" RangeSize="10" DataControl="inscriptionAppDataControl" id="LesInscPedROIterator"/>
+    <iterator Binds="ResultatAnnuelInscPedRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="ResultatAnnuelInscPedROIterator"/>
+    <iterator Binds="NiveauInscPedRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="NiveauInscPedROIterator"/>
+    <iterator Binds="DerogationEtudRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="DerogationEtudROIterator"/>
+    <iterator Binds="InscPedEtatInscRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscPedEtatInscROIterator"/>
+    <iterator Binds="EquivalenceRechercheRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="EquivalenceRechercheROIterator"/>
+    <iterator Binds="NiveauFormationSupRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="NiveauFormationSupROIterator"/>
+    <iterator Binds="InscPedFormPayEcolRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscPedFormPayEcolROIterator"/>
+    <iterator Binds="FormPayEcolRegleRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="FormPayEcolRegleROIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="ListePersonnesROIterator" id="ExecuteWithParams"
+            InstanceName="inscriptionAppDataControl.ListePersonnesRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_niv_formation" NDType="java.lang.Long"/>
+      <NamedData NDName="adresse_bn" NDType="java.lang.String"/>
+      <NamedData NDName="lieu_naiss" NDType="java.lang.String"/>
+      <NamedData NDName="nom_bn" NDType="java.lang.String"/>
+      <NamedData NDName="cin" NDType="java.lang.String"/>
+      <NamedData NDName="prenom" NDType="java.lang.String"/>
+      <NamedData NDName="date_naiss" NDType="java.sql.Timestamp"/>
+      <NamedData NDName="id_parc_maquette" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="ListePersAutoriseIterator" id="ExecuteWithParams1"
+            InstanceName="inscriptionAppDataControl.ListePersAutorise" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_niv_form" NDType="java.lang.Long"/>
+      <NamedData NDName="nom_var_bn" NDType="java.lang.String"/>
+      <NamedData NDName="prenom_var_bn" NDType="java.lang.String"/>
+      <NamedData NDName="cin_var_bn" NDType="java.lang.String"/>
+      <NamedData NDName="id_parc_maquette" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <list IterBinding="NivFormAutoriseROIterator" ListOperMode="navigation" ListIter="NivFormAutoriseROIterator"
+          id="NivFormAutoriseRO1" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Libform"/>
+      </AttrNames>
+    </list>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="PersonnesIterator" id="CreateInsertPersonne" InstanceName="inscriptionAppDataControl.Personnes"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="PersonnesIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isEtudiant_isEtudiant_dataControl_dataProvider_isEtudiant_result">
+      <NamedData NDName="id_pers" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="NivFormAutoriseROIterator" id="Niveau">
+      <AttrNames>
+        <Item Value="Niveau"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="AutorisesIterator" id="CreateInsertAutorises" InstanceName="inscriptionAppDataControl.Autorises"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="AutorisesIterator" id="UtiCreeAutorisation">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AutorisesIterator" id="IdParcoursMaquetAnneeAuto">
+      <AttrNames>
+        <Item Value="IdParcoursMaquetAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AutorisesIterator" id="IdPersonneAutorise">
+      <AttrNames>
+        <Item Value="IdPersonne"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AutorisesIterator" id="IdAnneesUniversAutorisation">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormAutoriseROIterator" id="IdParcoursMaquetAnneeNivForm">
+      <AttrNames>
+        <Item Value="IdParcoursMaquetAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isNouvBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNouvBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNouvBac.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNouvBac_isNouvBac_dataControl_dataProvider_isNouvBac_result">
+      <NamedData NDName="id_pers" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="EtudiantsIterator" id="CreateInsertEtudiant" InstanceName="inscriptionAppDataControl.Etudiants"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="EtudiantsIterator" id="IdEtudiant">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantsIterator" id="IdPersonneEtud">
+      <AttrNames>
+        <Item Value="IdPersonne"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantsIterator" id="UtiCreeEtud">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormAutoriseROIterator" id="IdGradeNivForm">
+      <AttrNames>
+        <Item Value="IdGrade"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormAutoriseROIterator" id="IdTypeFormationNivForm">
+      <AttrNames>
+        <Item Value="IdTypeFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="InscriptionsAdminIterator" id="CreateInsertInscAdmin"
+            InstanceName="inscriptionAppDataControl.InscriptionsAdmin" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="InscriptionsAdminIterator" id="IdInscriptionAdmin">
+      <AttrNames>
+        <Item Value="IdInscriptionAdmin"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAdminIterator" id="IdTypeFormationInscAdmin">
+      <AttrNames>
+        <Item Value="IdTypeFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAdminIterator" id="IdAnneesUniversInscAdmin">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAdminIterator" id="IdGradeInscAdmin">
+      <AttrNames>
+        <Item Value="IdGrade"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAdminIterator" id="IdEtudiantInscAdmin">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsAdminIterator" id="UtiCreeInscAdmin">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="InscInfoGlobleFormIterator" id="getInfoForm"
+            InstanceName="inscriptionAppDataControl.InscInfoGlobleForm" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_parc_maq" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="DroitNiveauPaysROIterator" id="getDroitNiveauPays"
+            InstanceName="inscriptionAppDataControl.DroitNiveauPaysRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_niveau" NDType="java.lang.Long"/>
+      <NamedData NDName="id_pays_nation" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="InscriptionsPedagogiquesIterator" id="CreateInsertInscPed"
+            InstanceName="inscriptionAppDataControl.InscriptionsPedagogiques" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdInscriptionPedagogique">
+      <AttrNames>
+        <Item Value="IdInscriptionPedagogique"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdInscriptionAdminPed">
+      <AttrNames>
+        <Item Value="IdInscriptionAdmin"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdHorairesTd">
+      <AttrNames>
+        <Item Value="IdHorairesTd"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdStatut">
+      <AttrNames>
+        <Item Value="IdStatut"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdOption">
+      <AttrNames>
+        <Item Value="IdOption"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdBourse">
+      <AttrNames>
+        <Item Value="IdBourse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdCohorte">
+      <AttrNames>
+        <Item Value="IdCohorte"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdTypeConvention">
+      <AttrNames>
+        <Item Value="IdTypeConvention"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdOperateur">
+      <AttrNames>
+        <Item Value="IdOperateur"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="EtatInscrEtatInscrId">
+      <AttrNames>
+        <Item Value="EtatInscrEtatInscrId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="Tarif">
+      <AttrNames>
+        <Item Value="Tarif"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="NbInsc">
+      <AttrNames>
+        <Item Value="NbInsc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="DernierInscription">
+      <AttrNames>
+        <Item Value="DernierInscription"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="OrdreInscription">
+      <AttrNames>
+        <Item Value="OrdreInscription"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdParcoursMaquetAnneePed">
+      <AttrNames>
+        <Item Value="IdParcoursMaquetAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="UtiPermetDoublInsPed">
+      <AttrNames>
+        <Item Value="UtiPermetDoublIns"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="UtiCreeInscPed">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="InscriptionPedSemestreIterator" id="CreateInsertInscPedSem"
+            InstanceName="inscriptionAppDataControl.InscriptionPedSemestre" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="IdInscriptionPedagogiqueSem">
+      <AttrNames>
+        <Item Value="IdInscriptionPedagogique"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="IdSemestreInscSem">
+      <AttrNames>
+        <Item Value="IdSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="CumulCredit">
+      <AttrNames>
+        <Item Value="CumulCredit"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="DetteCredit">
+      <AttrNames>
+        <Item Value="DetteCredit"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="UtiCreeInscSem">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemestreIterator" id="IdInscriptionPedSemestre">
+      <AttrNames>
+        <Item Value="IdInscriptionPedSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="EtudiantExcluSuspenduROIterator" id="etatEtudExcluSuspendu"
+            InstanceName="inscriptionAppDataControl.EtudiantExcluSuspenduRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_exclu" NDType="java.lang.Long"/>
+      <NamedData NDName="id_suspendu" NDType="java.lang.Long"/>
+      <NamedData NDName="id_pers" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="EtudiantResultatCycleROIterator" id="etudiantResultatCycle"
+            InstanceName="inscriptionAppDataControl.EtudiantResultatCycleRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_pers" NDType="java.lang.Long"/>
+      <NamedData NDName="id_prem_cycle" NDType="java.lang.Long"/>
+      <NamedData NDName="id_deux_cycle" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="ListePersAutNewROIterator" id="ListePersAutNewRO">
+      <nodeDefinition DefName="model.readOnlyView.ListePersAutNewROVO" Name="ListePersAutNewRO0">
+        <AttrNames>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="PieceIdentification"/>
+          <Item Value="Numero"/>
+          <Item Value="Nationalite"/>
+          <Item Value="AnneeBac"/>
+          <Item Value="IdLycee"/>
+          <Item Value="IdModeEntree"/>
+          <Item Value="IdSerieBac"/>
+          <Item Value="IdTypeMention"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="ListePersonnesROVOIterator" id="case_cocher" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="case_cocher"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="True"/>
+        <Item Value="False"/>
+      </ValueList>
+    </button>
+    <action IterBinding="NivFormAutoriseROIterator" id="Execute"
+            InstanceName="inscriptionAppDataControl.NivFormAutoriseRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="iteratorExecute"/>
+    <attributeValues IterBinding="NivFormAutoriseROIterator" id="Libform">
+      <AttrNames>
+        <Item Value="Libform"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="getIdPersBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersBac.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersBac_getIdPersBac_dataControl_dataProvider_getIdPersBac_result">
+      <NamedData NDName="num_table" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getIdPersCin" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersCin"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersCin.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersCin_getIdPersCin_dataControl_dataProvider_getIdPersCin_result">
+      <NamedData NDName="cin" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getIdPersEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersEtudiant_getIdPersEtudiant_dataControl_dataProvider_getIdPersEtudiant_result">
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </methodAction>
+    <action IterBinding="PersonnesIterator" id="getDetailPers" InstanceName="inscriptionAppDataControl.Personnes"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers_var" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="isNumNouvBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumNouvBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumNouvBac.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumNouvBac_isNumNouvBac_dataControl_dataProvider_isNumNouvBac_result">
+      <NamedData NDName="num_table" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isNumCin" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumCin"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumCin.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumCin_isNumCin_dataControl_dataProvider_isNumCin_result">
+      <NamedData NDName="num_cin" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="isNumEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumEtudiant_isNumEtudiant_dataControl_dataProvider_isNumEtudiant_result">
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </methodAction>
+    <action IterBinding="ListePersAutNewROIterator" id="Execute1"
+            InstanceName="inscriptionAppDataControl.ListePersAutNewRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="iteratorExecute"/>
+    <action IterBinding="ListePersAutNewROIterator" id="refreshTableAutorise"
+            InstanceName="inscriptionAppDataControl.ListePersAutNewRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_parc_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="PersDejaAutoriserROIterator" id="getInfoAutorise"
+            InstanceName="inscriptionAppDataControl.PersDejaAutoriserRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_pers" NDType="java.lang.Long"/>
+      <NamedData NDName="id_parc_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="PersonneLastInsertROIterator" id="Last"
+            InstanceName="inscriptionAppDataControl.PersonneLastInsertRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="last"/>
+    <attributeValues IterBinding="PersonnesIterator" id="IdPays1">
+      <AttrNames>
+        <Item Value="IdPays"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="IdPaysNationalite1">
+      <AttrNames>
+        <Item Value="IdPaysNationalite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="IdCivilite1">
+      <AttrNames>
+        <Item Value="IdCivilite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="IdPersonne">
+      <AttrNames>
+        <Item Value="IdPersonne"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="AutorisesIterator" id="getAutorisation" InstanceName="inscriptionAppDataControl.Autorises"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_autorise" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="ListePersAutNewROIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListePersAutNewROIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListePersAutNewROIterator" id="Numero1">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormAutoriseROIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="EtudiantsIterator" id="getEtudiant" InstanceName="inscriptionAppDataControl.Etudiants"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </action>
+    <attributeValues IterBinding="EtudiantsIterator" id="IdEtudiant1">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="InscDoubleROIterator" id="doubleInscription"
+            InstanceName="inscriptionAppDataControl.InscDoubleRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="id_parc_maq" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="AutorisesIterator" id="DeleteAutorise" InstanceName="inscriptionAppDataControl.Autorises"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="PersDejaAutoriserROIterator" id="Valide">
+      <AttrNames>
+        <Item Value="Valide"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersDejaAutoriserROIterator" id="IdAutorise">
+      <AttrNames>
+        <Item Value="IdAutorise"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="PaysIterator" ListOperMode="navigation" ListIter="PaysIterator" id="Pays" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Libelle"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="CivilitesIterator" ListOperMode="navigation" ListIter="CivilitesIterator" id="Civilites"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="PersonnesIterator" id="IdPays">
+      <AttrNames>
+        <Item Value="IdPays"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="IdPaysNationalite">
+      <AttrNames>
+        <Item Value="IdPaysNationalite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="IdCivilite">
+      <AttrNames>
+        <Item Value="IdCivilite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="UtiCreePersonne">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="PaysNationaliteIterator" ListOperMode="navigation" ListIter="PaysNationaliteIterator"
+          id="PaysNationalite" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Nationalite"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="PaysIterator" id="getPaysPers" InstanceName="inscriptionAppDataControl.Pays"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_pays" NDType="java.lang.Long"/>
+      <NamedData NDName="id_nationalite" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="PaysNationaliteIterator" id="getPaysNationalite"
+            InstanceName="inscriptionAppDataControl.PaysNationalite" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_pays" NDType="java.lang.Long"/>
+      <NamedData NDName="id_nationalite" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="CivilitesIterator" id="getCivilitePers" InstanceName="inscriptionAppDataControl.Civilites"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_civilite" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom1">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms1">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="EmailPersonnel">
+      <AttrNames>
+        <Item Value="EmailPersonnel"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Adresse">
+      <AttrNames>
+        <Item Value="Adresse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Portable">
+      <AttrNames>
+        <Item Value="Portable"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="PieceIdentification">
+      <AttrNames>
+        <Item Value="PieceIdentification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="IdPersonne1">
+      <AttrNames>
+        <Item Value="IdPersonne"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CivilitesIterator" id="IdCiviliteCivilite">
+      <AttrNames>
+        <Item Value="IdCivilite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaysIterator" id="IdPaysPays">
+      <AttrNames>
+        <Item Value="IdPays"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaysNationaliteIterator" id="IdPaysNationaliteSearch">
+      <AttrNames>
+        <Item Value="IdPays"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="PersonneExisteIterator" id="getPersExiste"
+            InstanceName="inscriptionAppDataControl.PersonneExiste" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_civi" NDType="java.lang.Long"/>
+      <NamedData NDName="id_paays" NDType="java.lang.Long"/>
+      <NamedData NDName="id_nation" NDType="java.lang.Long"/>
+      <NamedData NDName="adress" NDType="java.lang.String"/>
+      <NamedData NDName="date_naiss" NDType="java.lang.String"/>
+      <NamedData NDName="email_pers" NDType="java.lang.String"/>
+      <NamedData NDName="lieu_naiss" NDType="java.lang.String"/>
+      <NamedData NDName="cin" NDType="java.lang.String"/>
+      <NamedData NDName="prenom" NDType="java.lang.String"/>
+      <NamedData NDName="portable_pers" NDType="java.lang.String"/>
+      <NamedData NDName="nom_pers" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="ListeSuspensioneEtudROIterator" id="getListeSuspension"
+            InstanceName="inscriptionAppDataControl.ListeSuspensioneEtudRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="AnneeUniversEnCoursROIterator" id="getAnneeEnCours"
+            InstanceName="inscriptionAppDataControl.AnneeUniversEnCoursRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="DroitInsPed">
+      <AttrNames>
+        <Item Value="DroitInsPed"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="DroitInsAdm">
+      <AttrNames>
+        <Item Value="DroitInsAdm"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="CoutFormation">
+      <AttrNames>
+        <Item Value="CoutFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Ine">
+      <AttrNames>
+        <Item Value="Ine"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="AttrComplAutorisationIterator" StaticList="false" Uses="LOV_ModeEntree" id="ModeEntree"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="AttrComplAutorisationIterator" id="AnneeBac">
+      <AttrNames>
+        <Item Value="AnneeBac"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="SexeIterator" ListOperMode="navigation" ListIter="SexeIterator" id="Sexe" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="SexeIterator" id="getSexePers" InstanceName="inscriptionAppDataControl.Sexe"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_sexe" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="NouveauxBacheliersIterator" id="getNouvBachelier"
+            InstanceName="inscriptionAppDataControl.NouveauxBacheliers" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="SerieBacIterator" id="getSerieBachelier" InstanceName="inscriptionAppDataControl.SerieBac"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_serie_bac" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="AttrComplAutorisationIterator" id="SerieBacAttr">
+      <AttrNames>
+        <Item Value="SerieBac"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="SerieBacIterator" ListOperMode="navigation" ListIter="SerieBacIterator" id="SerieBac"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Serie"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="TypeMentionIterator" ListOperMode="navigation" ListIter="TypeMentionIterator" id="TypeMention"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="LyceeIterator" ListOperMode="navigation" ListIter="LyceeIterator" id="Lycee"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="TypeMentionIterator" id="getTypeMent"
+            InstanceName="inscriptionAppDataControl.TypeMention" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_type_mention" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="LyceeIterator" id="getLyceeEtab" InstanceName="inscriptionAppDataControl.Lycee"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_lycee" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="SerieBacIterator" id="IdSerieBac">
+      <AttrNames>
+        <Item Value="IdSerieBac"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeMentionIterator" id="IdTypeMention">
+      <AttrNames>
+        <Item Value="IdTypeMention"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LyceeIterator" id="IdLycee">
+      <AttrNames>
+        <Item Value="IdLycee"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AutorisesIterator" id="IdModeEntreeAuto">
+      <AttrNames>
+        <Item Value="IdModeEntree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AutorisesIterator" id="IdLyceeAuto">
+      <AttrNames>
+        <Item Value="IdLycee"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AutorisesIterator" id="IdSerieBacAuto">
+      <AttrNames>
+        <Item Value="IdSerieBac"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AutorisesIterator" id="IdTypeMentionAuto">
+      <AttrNames>
+        <Item Value="IdTypeMention"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AutorisesIterator" id="AnneeBacAuto">
+      <AttrNames>
+        <Item Value="AnneeBac"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SexeIterator" id="IdSexeSexe">
+      <AttrNames>
+        <Item Value="IdSexe"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="IdSexePers">
+      <AttrNames>
+        <Item Value="IdSexe"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="AutoResulAnnValideROIterator" id="getResulAnnValide"
+            InstanceName="inscriptionAppDataControl.AutoResulAnnValideRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+      <NamedData NDName="id_parcours" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="AnneeUniversPasseeROIterator" id="getAnneeUniversPassee"
+            InstanceName="inscriptionAppDataControl.AnneeUniversPasseeRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="InsChangementCycleROIterator" id="getInscAnneePassee"
+            InstanceName="inscriptionAppDataControl.InsChangementCycleRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="niveau_form" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="InscAncienneROIterator" id="getLastInsc"
+            InstanceName="inscriptionAppDataControl.InscAncienneRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="ResultatAnnuelROIterator" id="getResultatAnnuel"
+            InstanceName="inscriptionAppDataControl.ResultatAnnuelRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="InscPedagogiqueROIterator" id="getDetailInscPedAnc"
+            InstanceName="inscriptionAppDataControl.InscPedagogiqueRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_insc_ped" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="InscNombreMaxiROIterator" id="getNombreInscription"
+            InstanceName="inscriptionAppDataControl.InscNombreMaxiRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_parc_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="AnneeUniverROIterator" id="ExecuteWithParams2"
+            InstanceName="inscriptionAppDataControl.AnneeUniverRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="lib_annee" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="InscAncienneNiv1Iterator" id="getInscAncienneNiv1"
+            InstanceName="inscriptionAppDataControl.InscAncienneNiv1" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+      <NamedData NDName="niv" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="InscAncienneNiv2Iterator" id="getInscAncienneNiv2"
+            InstanceName="inscriptionAppDataControl.InscAncienneNiv2" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+      <NamedData NDName="niv" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="LesInscPedROIterator" id="getListeInscPed"
+            InstanceName="inscriptionAppDataControl.LesInscPedRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="getNiveau" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getNiveau"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getNiveau.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getNiveau_getNiveau_dataControl_dataProvider_getNiveau_result">
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="ResultatAnnuelInscPedROIterator" id="getResultatAnnuelInscPed"
+            InstanceName="inscriptionAppDataControl.ResultatAnnuelInscPedRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_insc_ped" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="getNbreInsPed" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getNbreInsPed"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getNbreInsPed.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getNbreInsPed_getNbreInsPed_dataControl_dataProvider_getNbreInsPed_result">
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="NiveauInscPedROIterator" id="getNiveauInscPed"
+            InstanceName="inscriptionAppDataControl.NiveauInscPedRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_insc_ped" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="DerogationEtudROIterator" id="getDerogationEtud"
+            InstanceName="inscriptionAppDataControl.DerogationEtudRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_parc" NDType="java.lang.Long"/>
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="InscPedEtatInscROIterator" id="getEtatInscPed"
+            InstanceName="inscriptionAppDataControl.InscPedEtatInscRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_insc_ped" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="EquivalenceRechercheROIterator" id="getEquivalence"
+            InstanceName="inscriptionAppDataControl.EquivalenceRechercheRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="num_cin" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_niv_form" NDType="java.lang.Long"/>
+      <NamedData NDName="prenom" NDType="java.lang.String"/>
+      <NamedData NDName="nom_etud" NDType="java.lang.String"/>
+      <NamedData NDName="date_naiss" NDType="java.lang.String"/>
+      <NamedData NDName="lieu_naiss" NDType="java.lang.String"/>
+    </action>
+    <attributeValues IterBinding="NivFormAutoriseROIterator" id="IdNiveauFormation">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="NiveauFormationSupROIterator" id="getNiveauFormationSup"
+            InstanceName="inscriptionAppDataControl.NiveauFormationSupRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="niv" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="NivFormAutoriseROIterator" id="IdFormation">
+      <AttrNames>
+        <Item Value="IdFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="InscPedFormPayEcolROIterator" id="getInscPedFormPayEcol"
+            InstanceName="inscriptionAppDataControl.InscPedFormPayEcolRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_ped" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="FormPayEcolRegleROIterator" id="getFormPayEcolRegle"
+            InstanceName="inscriptionAppDataControl.FormPayEcolRegleRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="id_niv_form" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

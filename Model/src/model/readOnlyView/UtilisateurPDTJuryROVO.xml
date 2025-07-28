@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="UtilisateurPDTJuryROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.UtilisateurPDTJuryROVORowImpl"
+  ComponentClass="model.readOnlyView.UtilisateurPDTJuryROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.UtilisateurPDTJuryROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="utilisateur"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="semestre"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[SELECT utij.ID_UTILISATEUR ,utij.ID_JURY  
+FROM jury j  
+Join UTILISATEURS_JURY utij on j.ID_JURY=utij.ID_JURY    
+Where utij.ROLE='PRESIDENT' and utij.ID_UTILISATEUR=:utilisateur and j.ID_NIVEAU_FORMATION_PARCOURS=:parcours     
+and j.ID_ANNEES_UNIVERS=:annee and j.ID_SEMESTRE=:semestre]]></SQLQuery>
+  <ViewAttribute
+    Name="IdUtilisateur"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_UTILISATEUR"
+    Expression="ID_UTILISATEUR"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdJury"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_JURY"
+    Expression="ID_JURY"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdUtilisateur"/>
+    <Item Value="IdJury"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,322 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll" halign="center" binding="#{AdministrationBean.panroot}">
+    <af:panelGroupLayout id="pgl2" layout="scroll">
+      <af:panelStretchLayout id="psl1" dimensionsFrom="children" bottomHeight="5px" startWidth="5px" endWidth="5px"
+                             topHeight="40px">
+        <f:facet name="start"/>
+        <f:facet name="end"/>
+        <f:facet name="top">
+          <af:panelFormLayout id="pfl2" inlineStyle="text-align:start;margin-left:50px">
+            <f:facet name="footer"/>
+            <af:panelGroupLayout id="pgl8">
+              <af:panelGroupLayout id="pgl9" layout="horizontal" halign="start" styleClass="AFStretchWidth">
+                <af:inputText id="it1" binding="#{AdministrationBean.m_}" label="Email"/>
+                <!--af:inputText id="it2" binding="#{AdministrationBean.mat_}" visible="false"/-->
+                <!-- validator="#{AdministrationBean.EmailValidator}" autoSubmit="true" -->
+                <af:button text="Rechercher" id="b1" actionListener="#{AdministrationBean.OnSearchClicked}"
+                           icon="/images/icons8-search-16.png"/>
+              </af:panelGroupLayout>
+            </af:panelGroupLayout>
+          </af:panelFormLayout>
+        </f:facet>
+        <f:facet name="bottom"/>
+        <f:facet name="center">
+          <af:panelGroupLayout id="pgl7" layout="scroll">
+            <af:panelCollection id="pc2" styleClass="AFStretchWidth" binding="#{AdministrationBean.detAgentPan}"
+                                visible="#{securityContext.userInRole['Admin']}">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar">
+                <af:toolbar id="t6">
+                  <af:button text="Admin" id="b4" visible="false"/>
+                </af:toolbar>
+              </f:facet>
+              <f:facet name="statusbar">
+                <af:toolbar id="t3"/>
+              </f:facet>
+              <af:table value="#{bindings.grhUser1.collectionModel}" var="row" rows="#{bindings.grhUser1.rangeSize}"
+                        emptyText="#{bindings.grhUser1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" selectedRowKeys="#{bindings.grhUser1.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.grhUser1.collectionModel.makeCurrent}" rowSelection="single"
+                        fetchSize="#{bindings.grhUser1.rangeSize}"
+                        filterModel="#{bindings.grhUser1Query.queryDescriptor}"
+                        queryListener="#{bindings.grhUser1Query.processQuery}" varStatus="vs" id="t2"
+                        binding="#{AdministrationBean.detagent}" columnStretching="last"
+                        visible="#{securityContext.userInRole['Admin']}" scrollPolicy="page">
+                <af:column sortProperty="#{bindings.grhUser1.hints.CodeMatricule.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.grhUser1.hints.CodeMatricule.label}" id="c4">
+                  <af:outputText value="#{row.CodeMatricule}"
+                                 shortDesc="#{bindings.grhUser1.hints.CodeMatricule.tooltip}" id="ot4"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.Civilite.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUser1.hints.Civilite.label}" id="c10">
+                  <af:outputText value="#{row.Civilite}" shortDesc="#{bindings.grhUser1.hints.Civilite.tooltip}"
+                                 id="ot10"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.Prenom.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUser1.hints.Prenom.label}" id="c5">
+                  <af:outputText value="#{row.Prenom}" shortDesc="#{bindings.grhUser1.hints.Prenom.tooltip}" id="ot5"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.Nom.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUser1.hints.Nom.label}" id="c6">
+                  <af:outputText value="#{row.Nom}" shortDesc="#{bindings.grhUser1.hints.Nom.tooltip}" id="ot6"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.Emailucad.name}" filterable="true" sortable="true"
+                           headerText="#{viewcontrollerBundle.EMAIL}" id="c8">
+                  <af:outputText value="#{row.Emailucad}" shortDesc="#{bindings.grhUser1.hints.Emailucad.tooltip}"
+                                 id="ot8"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.DateNaissance.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.grhUser1.hints.DateNaissance.label}" id="c11">
+                  <f:facet name="filter">
+                    <af:inputDate value="#{bindings.grhUser1Query.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                                  id="id1">
+                      <af:convertDateTime pattern="#{bindings.grhUser1.hints.DateNaissance.format}"/>
+                    </af:inputDate>
+                  </f:facet>
+                  <af:outputText value="#{row.DateNaissance}"
+                                 shortDesc="#{bindings.grhUser1.hints.DateNaissance.tooltip}" id="ot11">
+                    <af:convertDateTime pattern="#{bindings.grhUser1.hints.DateNaissance.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.LieuNaissance.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.grhUser1.hints.LieuNaissance.label}" id="c13">
+                  <af:outputText value="#{row.LieuNaissance}"
+                                 shortDesc="#{bindings.grhUser1.hints.LieuNaissance.tooltip}" id="ot13"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.Telephone.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUser1.hints.Telephone.label}" id="c14">
+                  <af:outputText value="#{row.Telephone}" shortDesc="#{bindings.grhUser1.hints.Telephone.tooltip}"
+                                 id="ot14"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.Nationalite.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUser1.hints.Nationalite.label}" id="c12">
+                  <af:outputText value="#{row.Nationalite}" shortDesc="#{bindings.grhUser1.hints.Nationalite.tooltip}"
+                                 id="ot12"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.Sexe.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUser1.hints.Sexe.label}" id="c9">
+                  <af:outputText value="#{row.Sexe}" shortDesc="#{bindings.grhUser1.hints.Sexe.tooltip}" id="ot9"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.Adresse.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUser1.hints.Adresse.label}" id="c15">
+                  <af:outputText value="#{row.Adresse}" shortDesc="#{bindings.grhUser1.hints.Adresse.tooltip}"
+                                 id="ot15"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.LibClassification.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.TYPE_AGENT}" id="c3">
+                  <af:outputText value="#{row.LibClassification}"
+                                 shortDesc="#{bindings.grhUser1.hints.LibClassification.tooltip}" id="ot3"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUser1.hints.LibStructure.name}" filterable="true" sortable="true"
+                           headerText="#{viewcontrollerBundle.STRUCTURE}" id="c16">
+                  <af:outputText value="#{row.LibStructure}" shortDesc="#{bindings.grhUser1.hints.LibStructure.tooltip}"
+                                 id="ot16"/>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+            <af:panelCollection id="pc3" styleClass="AFStretchWidth" binding="#{AdministrationBean.detAgentEtabPan}"
+                                visible="#{!(securityContext.userInRole['Admin'])}">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar">
+                <af:toolbar id="t5">
+                  <af:button text="No Admin" id="b3" visible="false"/>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.grhUserEtab1.collectionModel}" var="row"
+                        rows="#{bindings.grhUserEtab1.rangeSize}"
+                        emptyText="#{bindings.grhUserEtab1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" selectedRowKeys="#{bindings.grhUserEtab1.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.grhUserEtab1.collectionModel.makeCurrent}" rowSelection="single"
+                        fetchSize="#{bindings.grhUserEtab1.rangeSize}"
+                        filterModel="#{bindings.grhUserEtab1Query.queryDescriptor}" filterVisible="true"
+                        queryListener="#{bindings.grhUserEtab1Query.processQuery}" varStatus="vs" id="t1"
+                        columnStretching="last" binding="#{AdministrationBean.detagentEtab}"
+                        visible="#{!(securityContext.userInRole['Admin'])}" scrollPolicy="page">
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.CodeMatricule.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.grhUserEtab1.hints.CodeMatricule.label}" id="c1">
+                  <af:outputText value="#{row.CodeMatricule}"
+                                 shortDesc="#{bindings.grhUserEtab1.hints.CodeMatricule.tooltip}" id="ot1"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.Civilite.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUserEtab1.hints.Civilite.label}" id="c7">
+                  <af:outputText value="#{row.Civilite}" shortDesc="#{bindings.grhUserEtab1.hints.Civilite.tooltip}"
+                                 id="ot7"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.Prenom.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUserEtab1.hints.Prenom.label}" id="c17">
+                  <af:outputText value="#{row.Prenom}" shortDesc="#{bindings.grhUserEtab1.hints.Prenom.tooltip}"
+                                 id="ot17"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.Nom.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUserEtab1.hints.Nom.label}" id="c20">
+                  <af:outputText value="#{row.Nom}" shortDesc="#{bindings.grhUserEtab1.hints.Nom.tooltip}" id="ot20"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.Emailucad.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.EMAIL}" id="c21">
+                  <af:outputText value="#{row.Emailucad}" shortDesc="#{bindings.grhUserEtab1.hints.Emailucad.tooltip}"
+                                 id="ot21"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.DateNaissance.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.grhUserEtab1.hints.DateNaissance.label}" id="c22">
+                  <f:facet name="filter">
+                    <af:inputDate value="#{bindings.grhUserEtab1Query.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                                  id="id2">
+                      <af:convertDateTime pattern="#{bindings.grhUserEtab1.hints.DateNaissance.format}"/>
+                    </af:inputDate>
+                  </f:facet>
+                  <af:outputText value="#{row.DateNaissance}"
+                                 shortDesc="#{bindings.grhUserEtab1.hints.DateNaissance.tooltip}" id="ot22">
+                    <af:convertDateTime pattern="#{bindings.grhUserEtab1.hints.DateNaissance.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.LieuNaissance.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.grhUserEtab1.hints.LieuNaissance.label}" id="c23">
+                  <af:outputText value="#{row.LieuNaissance}"
+                                 shortDesc="#{bindings.grhUserEtab1.hints.LieuNaissance.tooltip}" id="ot23"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.Telephone.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.grhUserEtab1.hints.Telephone.label}" id="c24">
+                  <af:outputText value="#{row.Telephone}" shortDesc="#{bindings.grhUserEtab1.hints.Telephone.tooltip}"
+                                 id="ot24"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.Nationalite.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.grhUserEtab1.hints.Nationalite.label}" id="c25">
+                  <af:outputText value="#{row.Nationalite}"
+                                 shortDesc="#{bindings.grhUserEtab1.hints.Nationalite.tooltip}" id="ot25"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.Sexe.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUserEtab1.hints.Sexe.label}" id="c26">
+                  <af:outputText value="#{row.Sexe}" shortDesc="#{bindings.grhUserEtab1.hints.Sexe.tooltip}" id="ot26"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.Adresse.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.grhUserEtab1.hints.Adresse.label}" id="c27">
+                  <af:outputText value="#{row.Adresse}" shortDesc="#{bindings.grhUserEtab1.hints.Adresse.tooltip}"
+                                 id="ot27"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.LibGrade.name}" filterable="true" sortable="true"
+                           headerText="#{viewcontrollerBundle.TYPE_AGENT}" id="c28">
+                  <af:outputText value="#{row.LibGrade}" shortDesc="#{bindings.grhUserEtab1.hints.LibGrade.tooltip}"
+                                 id="ot28"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.grhUserEtab1.hints.LibStructure.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.STRUCTURE}" id="c29">
+                  <af:outputText value="#{row.LibStructure}"
+                                 shortDesc="#{bindings.grhUserEtab1.hints.LibStructure.tooltip}" id="ot29"/>
+                </af:column>
+              </af:table>
+              <f:facet name="statusbar"/>
+            </af:panelCollection>
+            <af:button text="Enregistrer" id="b2"
+                       inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+                       actionListener="#{AdministrationBean.OnSaveAgentClicked}" icon="/images/save-16.png"/>
+            <!--af:button text="Split_test" id="b7" actionListener="#{AdministrationBean.TestSplit}"/-->
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl3" layout="scroll" binding="#{AdministrationBean.pangrpuser}">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{AdministrationBean.pancoluser}"
+                          visible="#{securityContext.userInRole['Admin']}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t8">
+            <af:button text="Admin" id="b6" visible="false"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.Utilisateurs1.collectionModel}" var="row" rows="#{bindings.Utilisateurs1.rangeSize}"
+                  emptyText="#{bindings.Utilisateurs1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.Utilisateurs1.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.Utilisateurs1.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.Utilisateurs1.rangeSize}"
+                  filterModel="#{bindings.UtilisateursQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.UtilisateursQuery.processQuery}" varStatus="vs" id="t4"
+                  columnStretching="last" binding="#{AdministrationBean.tabuser}" scrollPolicy="page">
+          <af:column sortProperty="#{bindings.Utilisateurs1.hints.Prenoms.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle1.PENOM}" id="c2" width="350">
+            <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.Utilisateurs1.hints.Prenoms.tooltip}" id="ot2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.Utilisateurs1.hints.Nom.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle1.NOM}" id="c18" width="250">
+            <af:outputText value="#{row.Nom}" shortDesc="#{bindings.Utilisateurs1.hints.Nom.tooltip}" id="ot18"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.Utilisateurs1.hints.LibelleCourt.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.STRUCTURE}" id="c19">
+            <af:outputText value="#{row.LibelleCourt}" shortDesc="#{bindings.Utilisateurs1.hints.LibelleCourt.tooltip}"
+                           id="ot19"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+      <af:panelCollection id="pc4" visible="#{!(securityContext.userInRole['Admin'])}" styleClass="AFStretchWidth"
+                          binding="#{AdministrationBean.pancoluseretab}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t7">
+            <af:button text="No Admin" id="b5" visible="false"/>
+          </af:toolbar>
+        </f:facet>
+        <af:table value="#{bindings.UtilisateurEtabROVO.collectionModel}" var="row"
+                  rows="#{bindings.UtilisateurEtabROVO.rangeSize}"
+                  emptyText="#{bindings.UtilisateurEtabROVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.UtilisateurEtabROVO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.UtilisateurEtabROVO.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.UtilisateurEtabROVO.rangeSize}"
+                  filterModel="#{bindings.UtilisateurEtabROVOQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.UtilisateurEtabROVOQuery.processQuery}" varStatus="vs" id="t9"
+                  columnStretching="last" visible="#{!(securityContext.userInRole['Admin'])}"
+                  binding="#{AdministrationBean.tabuseretab}" scrollPolicy="page">
+          <af:column sortProperty="#{bindings.UtilisateurEtabROVO.hints.Prenoms.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle1.PENOM}" id="c30" width="350">
+            <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.UtilisateurEtabROVO.hints.Prenoms.tooltip}"
+                           id="ot30"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurEtabROVO.hints.Nom.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle1.NOM}" id="c31" width="250">
+            <af:outputText value="#{row.Nom}" shortDesc="#{bindings.UtilisateurEtabROVO.hints.Nom.tooltip}" id="ot31"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurEtabROVO.hints.LibelleCourt.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.STRUCTURE}" id="c32">
+            <af:outputText value="#{row.LibelleCourt}"
+                           shortDesc="#{bindings.UtilisateurEtabROVO.hints.LibelleCourt.tooltip}" id="ot32"/>
+          </af:column>
+        </af:table>
+        <f:facet name="statusbar"/>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+              binding="#{AdministrationBean.usersuccesscreated}">
+      <af:dialog id="d1" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl4" layout="vertical" halign="center">
+          <af:icon name="info" id="i3"/>
+          <af:outputFormatted value="Utilisateur ajouté !!!" id="of1" inlineStyle="color:Green;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{AdministrationBean.usercreatefailed}">
+      <af:dialog id="d2" type="cancel" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl5" layout="vertical" halign="center">
+          <af:icon name="error" id="i2"/>
+          <af:outputFormatted value="L'ajout de l'utilisateur a échoué : veuillez réessayer !!!" id="of2"
+                              inlineStyle="color:Red;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+      
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{AdministrationBean.usernotfound}">
+      <af:dialog id="d3" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl6" layout="vertical" halign="center">
+          <af:icon name="warning" id="i1"/>
+          <af:outputFormatted value="Aucun utilisateur n'a cet email !!!" id="of3"
+                              inlineStyle="color:Orange;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</ui:composition>

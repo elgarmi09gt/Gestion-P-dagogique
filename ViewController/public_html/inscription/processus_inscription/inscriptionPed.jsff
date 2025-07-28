@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"
+            inlineStyle="height:120px;"/>
+  <af:panelSplitter id="ps1" splitterPosition="700" inlineStyle="width:1300px; height:425px;" firstBorder="all"
+                    secondBorder="all">
+    <f:facet name="first">
+      <af:panelFormLayout id="pfl2">
+        <f:facet name="footer"/>
+        <af:inputText value="#{bindings.IdInscriptionAdmin.inputValue}"
+                      label="#{bindings.IdInscriptionAdmin.hints.label}"
+                      required="#{bindings.IdInscriptionAdmin.hints.mandatory}"
+                      columns="#{bindings.IdInscriptionAdmin.hints.displayWidth}"
+                      maximumLength="#{bindings.IdInscriptionAdmin.hints.precision}"
+                      shortDesc="#{bindings.IdInscriptionAdmin.hints.tooltip}" id="it1" visible="false">
+          <f:validator binding="#{bindings.IdInscriptionAdmin.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.IdInscriptionAdmin.format}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdHorairesTd.inputValue}" label="Horaires Td"
+                            required="#{bindings.IdHorairesTd.hints.mandatory}"
+                            shortDesc="#{bindings.IdHorairesTd.hints.tooltip}" id="soc1">
+          <f:selectItems value="#{bindings.IdHorairesTd.items}" id="si1"/>
+          <f:validator binding="#{bindings.IdHorairesTd.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdStatut.inputValue}" label="Statut"
+                            required="#{bindings.IdStatut.hints.mandatory}"
+                            shortDesc="#{bindings.IdStatut.hints.tooltip}" id="soc2">
+          <f:selectItems value="#{bindings.IdStatut.items}" id="si2"/>
+          <f:validator binding="#{bindings.IdStatut.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.EtatInscrEtatInscrId.inputValue}"
+                            label="Etat Inscription"
+                            required="#{bindings.EtatInscrEtatInscrId.hints.mandatory}"
+                            shortDesc="#{bindings.EtatInscrEtatInscrId.hints.tooltip}" id="soc8">
+          <f:selectItems value="#{bindings.EtatInscrEtatInscrId.items}" id="si9"/>
+          <f:validator binding="#{bindings.EtatInscrEtatInscrId.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdOption.inputValue}" label="Option"
+                            required="#{bindings.IdOption.hints.mandatory}"
+                            shortDesc="#{bindings.IdOption.hints.tooltip}" id="soc3">
+          <f:selectItems value="#{bindings.IdOption.items}" id="si3"/>
+          <f:validator binding="#{bindings.IdOption.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdBourse.inputValue}" label="Bourse"
+                            required="#{bindings.IdBourse.hints.mandatory}"
+                            shortDesc="#{bindings.IdBourse.hints.tooltip}" id="soc4">
+          <f:selectItems value="#{bindings.IdBourse.items}" id="si4"/>
+          <f:validator binding="#{bindings.IdBourse.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdCohorte.inputValue}" label="Cohorte"
+                            required="#{bindings.IdCohorte.hints.mandatory}"
+                            shortDesc="#{bindings.IdCohorte.hints.tooltip}" id="soc5">
+          <f:selectItems value="#{bindings.IdCohorte.items}" id="si5"/>
+          <f:validator binding="#{bindings.IdCohorte.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdTypeConvention.inputValue}" label="Type Convention"
+                            required="#{bindings.IdTypeConvention.hints.mandatory}"
+                            shortDesc="#{bindings.IdTypeConvention.hints.tooltip}" id="soc6">
+          <f:selectItems value="#{bindings.IdTypeConvention.items}" id="si6"/>
+          <f:validator binding="#{bindings.IdTypeConvention.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdOperateur.inputValue}" label="Opérateur"
+                            required="#{bindings.IdOperateur.hints.mandatory}"
+                            shortDesc="#{bindings.IdOperateur.hints.tooltip}" id="soc7">
+          <f:selectItems value="#{bindings.IdOperateur.items}" id="si7"/>
+          <f:validator binding="#{bindings.IdOperateur.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.Motif.inputValue}" label="#{bindings.Motif.hints.label}"
+                      required="#{bindings.Motif.hints.mandatory}" columns="#{bindings.Motif.hints.displayWidth}"
+                      maximumLength="#{bindings.Motif.hints.precision}" shortDesc="#{bindings.Motif.hints.tooltip}"
+                      id="it2">
+          <f:validator binding="#{bindings.Motif.validator}"/>
+        </af:inputText>
+        <af:selectOneRadio value="#{bindings.Redoublement.inputValue}" label="#{bindings.Redoublement.label}"
+                           required="#{bindings.Redoublement.hints.mandatory}"
+                           shortDesc="#{bindings.Redoublement.hints.tooltip}" id="sor1" layout="horizontal"
+                           autoSubmit="true">
+          <f:selectItems value="#{bindings.Redoublement.items}" id="si8"/>
+          <f:validator binding="#{bindings.Redoublement.validator}"/>
+        </af:selectOneRadio>
+        <af:selectOneRadio value="#{bindings.OrdreInscription.inputValue}" label="Ordre Inscription"
+                           required="#{bindings.OrdreInscription.hints.mandatory}"
+                           shortDesc="#{bindings.OrdreInscription.hints.tooltip}" id="sor6" layout="horizontal">
+          <f:selectItems value="#{bindings.OrdreInscription.items}" id="si14"/>
+          <f:validator binding="#{bindings.OrdreInscription.validator}"/>
+        </af:selectOneRadio>
+        <af:inputText value="#{bindings.DernierInscription.inputValue}"
+                      label="Dernière Inscription"
+                      required="#{bindings.DernierInscription.hints.mandatory}"
+                      columns="#{bindings.DernierInscription.hints.displayWidth}"
+                      maximumLength="#{bindings.DernierInscription.hints.precision}"
+                      shortDesc="#{bindings.DernierInscription.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.DernierInscription.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.DernierInscription.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </f:facet>
+    <f:facet name="second">
+      <af:panelFormLayout id="pfl3">
+        <f:facet name="footer"/>
+        <af:inputText value="#{bindings.Quittance.inputValue}" label="#{bindings.Quittance.hints.label}"
+                      required="#{bindings.Quittance.hints.mandatory}"
+                      columns="#{bindings.Quittance.hints.displayWidth}"
+                      maximumLength="#{bindings.Quittance.hints.precision}"
+                      shortDesc="#{bindings.Quittance.hints.tooltip}" id="it3">
+          <f:validator binding="#{bindings.Quittance.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Tarif.inputValue}" label="#{bindings.Tarif.hints.label}"
+                      required="#{bindings.Tarif.hints.mandatory}" columns="#{bindings.Tarif.hints.displayWidth}"
+                      maximumLength="#{bindings.Tarif.hints.precision}" shortDesc="#{bindings.Tarif.hints.tooltip}"
+                      id="it4">
+          <f:validator binding="#{bindings.Tarif.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Tarif.format}"/>
+        </af:inputText>
+        <af:selectOneRadio value="#{bindings.NbInsc.inputValue}" label="Nbre Inscription"
+                           required="#{bindings.NbInsc.hints.mandatory}" shortDesc="#{bindings.NbInsc.hints.tooltip}"
+                           id="sor2" layout="horizontal">
+          <f:selectItems value="#{bindings.NbInsc.items}" id="si10"/>
+          <f:validator binding="#{bindings.NbInsc.validator}"/>
+        </af:selectOneRadio>
+        <af:selectOneRadio value="#{bindings.PermetDoubleInscription.inputValue}"
+                           label="Double Inscription"
+                           required="#{bindings.PermetDoubleInscription.hints.mandatory}"
+                           shortDesc="#{bindings.PermetDoubleInscription.hints.tooltip}" id="sor3" layout="horizontal">
+          <f:selectItems value="#{bindings.PermetDoubleInscription.items}" id="si11"/>
+          <f:validator binding="#{bindings.PermetDoubleInscription.validator}"/>
+        </af:selectOneRadio>
+        <af:selectOneRadio value="#{bindings.Assimile.inputValue}" label="#{bindings.Assimile.label}"
+                           required="#{bindings.Assimile.hints.mandatory}"
+                           shortDesc="#{bindings.Assimile.hints.tooltip}" id="sor4" layout="horizontal">
+          <f:selectItems value="#{bindings.Assimile.items}" id="si12"/>
+          <f:validator binding="#{bindings.Assimile.validator}"/>
+        </af:selectOneRadio>
+        <af:selectOneRadio value="#{bindings.Cartetiree.inputValue}" label="Carte tirée"
+                           required="#{bindings.Cartetiree.hints.mandatory}"
+                           shortDesc="#{bindings.Cartetiree.hints.tooltip}" id="sor5" layout="horizontal">
+          <f:selectItems value="#{bindings.Cartetiree.items}" id="si13"/>
+          <f:validator binding="#{bindings.Cartetiree.validator}"/>
+        </af:selectOneRadio>
+        <af:inputText value="#{bindings.CodeAConserver.inputValue}" label="Code"
+                      required="#{bindings.CodeAConserver.hints.mandatory}"
+                      columns="#{bindings.CodeAConserver.hints.displayWidth}"
+                      maximumLength="#{bindings.CodeAConserver.hints.precision}"
+                      shortDesc="#{bindings.CodeAConserver.hints.tooltip}" id="it6">
+          <f:validator binding="#{bindings.CodeAConserver.validator}"/>
+        </af:inputText>
+        <af:inputDate value="#{bindings.DateEditionCarte.inputValue}" label="Date Edition Carte"
+                      required="#{bindings.DateEditionCarte.hints.mandatory}"
+                      columns="#{bindings.DateEditionCarte.hints.displayWidth}"
+                      shortDesc="#{bindings.DateEditionCarte.hints.tooltip}" id="id1">
+          <f:validator binding="#{bindings.DateEditionCarte.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateEditionCarte.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it7" visible="false">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiPermetDoublIns.inputValue}" label="#{bindings.UtiPermetDoublIns.hints.label}"
+                      required="#{bindings.UtiPermetDoublIns.hints.mandatory}"
+                      columns="#{bindings.UtiPermetDoublIns.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiPermetDoublIns.hints.precision}"
+                      shortDesc="#{bindings.UtiPermetDoublIns.hints.tooltip}" id="it8" visible="false">
+          <f:validator binding="#{bindings.UtiPermetDoublIns.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiPermetDoublIns.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.IdParcoursMaquetAnnee.inputValue}"
+                      label="#{bindings.IdParcoursMaquetAnnee.hints.label}"
+                      required="#{bindings.IdParcoursMaquetAnnee.hints.mandatory}"
+                      columns="#{bindings.IdParcoursMaquetAnnee.hints.displayWidth}"
+                      maximumLength="#{bindings.IdParcoursMaquetAnnee.hints.precision}"
+                      shortDesc="#{bindings.IdParcoursMaquetAnnee.hints.tooltip}" id="it9" visible="false">
+          <f:validator binding="#{bindings.IdParcoursMaquetAnnee.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.IdParcoursMaquetAnnee.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </f:facet>
+  </af:panelSplitter>
+  <af:button text="&lt;&lt; Précédent" id="b1" action="#{Inscriptionbean.autorisePreviousStop}"
+             inlineStyle="margin-top:20px;"/>
+  <af:button text="Suivant >>" id="b2" inlineStyle="margin-left:10px;"
+             action="#{Inscriptionbean.validerInscriptionPed}"/>
+  <af:button text="button 1" id="b3" action="#{Inscriptionbean.validerModInsPed}"/>
+</ui:composition>

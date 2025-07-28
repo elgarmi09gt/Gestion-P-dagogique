@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ValidationDelibAnnuelEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="VALIDATION_DELIB_ANNUEL"
+  AliasName="ValidationDelibAnnuelEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdValidationDelibAnnuel"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_VALIDATION_DELIB_ANNUEL"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="VALIDATION_DELIB_ANNUEL"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="IdCalendrierDeliberation"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_CALENDRIER_DELIBERATION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="VALIDATION_DELIB_ANNUEL"/>
+  <Attribute
+    Name="AnneeDeliberee"
+    Precision="1"
+    ColumnName="ANNEE_DELIBEREE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="VALIDATION_DELIB_ANNUEL">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="AnneeCloturee"
+    Precision="1"
+    ColumnName="ANNEE_CLOTUREE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="VALIDATION_DELIB_ANNUEL">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ResultatPublie"
+    Precision="1"
+    ColumnName="RESULTAT_PUBLIE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="VALIDATION_DELIB_ANNUEL">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="VALIDATION_DELIB_ANNUEL"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="VALIDATION_DELIB_ANNUEL"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="VALIDATION_DELIB_ANNUEL"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="VALIDATION_DELIB_ANNUEL"/>
+  <Attribute
+    Name="IdNiveauFormationParcours"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="VALIDATION_DELIB_ANNUEL"/>
+  <Key
+    Name="PkValidationDelibAnnuel"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_VALIDATION_DELIB_ANNUEL"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ValidationDelibAnnuelEO.IdValidationDelibAnnuel"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkValidDelibanNivformparc">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAU_FORMATION_PARCOURS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_VALID_DELIBAN_NIVFORMPARC"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ValidationDelibAnnuelEO.IdNiveauFormationParcours"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkValiddelibanCalendrier">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_CALENDRIER_DELIBERATION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_VALIDDELIBAN_CALENDRIER"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ValidationDelibAnnuelEO.IdCalendrierDeliberation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkValiddelibanUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_VALIDDELIBAN_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ValidationDelibAnnuelEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkValiddelibanUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_VALIDDELIBAN_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ValidationDelibAnnuelEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

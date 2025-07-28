@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="DelibSemInsPedSem"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.DelibSemInsPedSem_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="annee"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="sem"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="num"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT distinct ips.ID_INSCRIPTION_PED_SEMESTRE          
+FROM  ETUDIANTS etd    
+join INSCRIPTIONS_ADMIN ia on etd.ID_ETUDIANT=ia.ID_ETUDIANT    
+join INSCRIPTIONS_PEDAGOGIQUES ip on ia.ID_INSCRIPTION_ADMIN=ip.ID_INSCRIPTION_ADMIN    
+join INSCRIPTION_PED_SEMESTRE ips on ip.ID_INSCRIPTION_PEDAGOGIQUE=ips.ID_INSCRIPTION_PEDAGOGIQUE    
+join PARCOURS_MAQUETTE_ANNEE pma on ip.ID_PARCOURS_MAQUET_ANNEE=pma.ID_PARCOURS_MAQUET_ANNEE    
+and ia.ID_ANNEES_UNIVERS=pma.ID_ANNEES_UNIVERS  
+WHERE ia.ID_ANNEES_UNIVERS =:annee AND ips.ID_SEMESTRE=:sem AND etd.NUMERO=:num     
+AND pma.ID_PARCOURS_MAQUET_ANNEE =:parcours]]></SQLQuery>
+  <ViewAttribute
+    Name="IdInscriptionPedSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_INSCRIPTION_PED_SEMESTRE"
+    Expression="ID_INSCRIPTION_PED_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdInscriptionPedSemestre"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="deliberationsemestriellePageDef" Package="evaluation.deliberation_semestrielle">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="DelibSemRepFiltreLOV" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DelibSemRepFiltreLOVIterator"/>
+    <iterator Binds="DelibSemRepCritereCompLOV" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DelibSemRepCritereCompLOVIterator"/>
+    <iterator Binds="DelibSemRepecherSurLOV" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DelibSemRepecherSurLOVIterator"/>
+    <iterator Binds="DeliberationSemestrielle" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="DeliberationSemestrielleIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="DelibSemRepFiltreLOVIterator" ListOperMode="navigation" ListIter="DelibSemRepFiltreLOVIterator"
+          id="DelibSemRepFiltreLOV" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="libelle"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="DelibSemRepCritereCompLOVIterator" ListOperMode="navigation"
+          ListIter="DelibSemRepCritereCompLOVIterator" id="DelibSemRepCritereCompLOV" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="libelle"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="DelibSemRepCritereCompLOVIterator" id="code">
+      <AttrNames>
+        <Item Value="code"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="DelibSemRepecherSurLOVIterator" ListOperMode="navigation"
+          ListIter="DelibSemRepecherSurLOVIterator" id="DelibSemRepecherSurLOV" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="libellerep"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="DelibSemRepFiltreLOVIterator" id="codeFiltre">
+      <AttrNames>
+        <Item Value="code"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="DelibSemRepecherSurLOVIterator" id="coderep">
+      <AttrNames>
+        <Item Value="coderep"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="DeliberationSemestrielleIterator" id="ExecuteWithParams"
+            InstanceName="evaluationAppDataControl.DeliberationSemestrielle" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee_univ" NDType="java.lang.Long"/>
+      <NamedData NDName="id_semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="id_niv_form_parc" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="DeliberationSemestrielleIterator" id="IdInscriptionPedSemUe">
+      <AttrNames>
+        <Item Value="IdInscriptionPedSemUe"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="DeliberationSemestrielleIterator" id="IdFiliereUeSemstre">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="DeliberationSemestrielleIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="DeliberationSemestrielleIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="calculMoyenneSemestrielle" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="calculMoyenneSemestrielle" IsViewObjectMethod="false"
+                  DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.calculMoyenneSemestrielle.dataControl.dataProvider">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="deliberationSemestrielle" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deliberationSemestrielle" IsViewObjectMethod="false"
+                  DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.deliberationSemestrielle.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.deliberationSemestrielle_deliberationSemestrielle_dataControl_dataProvider_deliberationSemestrielle_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="DeliberationSemestrielleIterator" id="IdSemestre">
+      <AttrNames>
+        <Item Value="IdSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isClosedSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isClosedSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isClosedSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isClosedSemestre_isClosedSemestre_dataControl_dataProvider_isClosedSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isClosedAnnee" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isClosedAnnee"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isClosedAnnee.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isClosedAnnee_isClosedAnnee_dataControl_dataProvider_isClosedAnnee_result">
+      <NamedData NDName="parcours_pma" NDType="java.lang.Long"/>
+      <NamedData NDName="session_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isDelibratedSemestre" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isDelibratedSemestre" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isDelibratedSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isDelibratedSemestre_isDelibratedSemestre_dataControl_dataProvider_isDelibratedSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="clotureSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="clotureSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.clotureSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.clotureSemestre_clotureSemestre_dataControl_dataProvider_clotureSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="compenseSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="compenseSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.compenseSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.compenseSemestre_compenseSemestre_dataControl_dataProvider_compenseSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

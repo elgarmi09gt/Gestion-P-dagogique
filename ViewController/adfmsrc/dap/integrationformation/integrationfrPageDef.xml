@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="integrationfrPageDef"
+                Package="dap.integrationformation">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ScolDeptIntegrationFr" RangeSize="-1" DataControl="gestdapAppDataControl"
+              id="ScolDeptIntegrationFrIterator"/>
+    <iterator Binds="ScolNivFormIntegrated" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="ScolNivFormIntegratedIterator"/>
+    <searchRegion Binds="ScolNivFormIntegratedIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ScolNivFormIntegratedQuery"/>
+    <iterator Binds="ScolNivFormNotIntegrated" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="ScolNivFormNotIntegratedIterator"/>
+    <iterator Binds="getsemestregrade" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="getsemestregradeIterator"/>
+    <iterator Binds="isUserResponsable" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isUserResponsableIterator"/>
+    <iterator Binds="AdminEtab" RangeSize="10" DataControl="gestdapAppDataControl" id="AdminEtabIterator"/>
+    <iterator id="HightLevelRolesIterator" Binds="HightLevelRoles" DataControl="gestdapAppDataControl" RangeSize="25"/>
+    <iterator Binds="isUserRespNivFormation" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isUserRespNivFormationIterator"/>
+    <iterator Binds="ScolFormationIntegration" RangeSize="-1" DataControl="gestdapAppDataControl"
+              id="ScolFormationIntegrationIterator"/>
+    <iterator Binds="ScolNivFormPrcrsNotIntegrated" RangeSize="8" DataControl="gestdapAppDataControl"
+              id="ScolNivFormPrcrsNotIntegratedIterator"/>
+    <searchRegion Binds="ScolNivFormPrcrsNotIntegratedIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ScolNivFormPrcrsNotIntegratedQuery"/>
+    <iterator Binds="ScolNivFormPrcrsIntegrated" RangeSize="8" DataControl="gestdapAppDataControl"
+              id="ScolNivFormPrcrsIntegratedIterator"/>
+    <searchRegion Binds="ScolNivFormPrcrsIntegratedIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ScolNivFormPrcrsIntegratedQuery"/>
+  </executables>
+  <bindings>
+    <list IterBinding="ScolDeptIntegrationFrIterator" ListOperMode="navigation" ListIter="ScolDeptIntegrationFrIterator"
+          id="ScolDeptIntegrationFr" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="ScolNivFormIntegratedIterator" id="ScolNivFormIntegrated">
+      <nodeDefinition DefName="model.readOnlyView.ScolNivFormIntegratedROVO" Name="ScolNivFormIntegrated0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="Responsable"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ScolNivFormNotIntegratedIterator" id="ScolNivFormNotIntegrated">
+      <nodeDefinition DefName="model.readOnlyView.ScolNivFormNotIntegratedROVO" Name="ScolNivFormNotIntegrated0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="NiveauCode"/>
+          <Item Value="Cohorte"/>
+          <Item Value="NombreEtudiant"/>
+          <Item Value="isNivSelected"/>
+          <Item Value="Responsable"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="getSelectedNiveaux" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getSelectedNiveaux" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getSelectedNiveaux.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getSelectedNiveaux_getSelectedNiveaux_dataControl_dataProvider_getSelectedNiveaux_result"/>
+    <methodAction id="createOrUpdateDept" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateDept" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateDept.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateDept_createOrUpdateDept_dataControl_dataProvider_createOrUpdateDept_result">
+      <NamedData NDName="anc_code" NDType="java.lang.String"/>
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+      <NamedData NDName="abrev" NDType="java.lang.String"/>
+      <NamedData NDName="str_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="integrateForm" RequiresUpdateModel="true" Action="invokeMethod" MethodName="integrateForm"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.integrateForm.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.integrateForm_integrateForm_dataControl_dataProvider_integrateForm_result">
+      <NamedData NDName="anc_code" NDType="java.lang.String"/>
+      <NamedData NDName="libelle" NDType="java.lang.String"/>
+      <NamedData NDName="departement" NDType="java.lang.String"/>
+      <NamedData NDName="type_fr" NDType="java.lang.String"/>
+      <NamedData NDName="payante" NDType="java.lang.String"/>
+      <NamedData NDName="presentielle" NDType="java.lang.String"/>
+      <NamedData NDName="grade_fr" NDType="java.lang.String"/>
+      <NamedData NDName="mention" NDType="java.lang.String"/>
+      <NamedData NDName="ouvert" NDType="java.lang.String"/>
+      <NamedData NDName="valide" NDType="java.lang.String"/>
+      <NamedData NDName="professionalisante" NDType="java.lang.String"/>
+      <NamedData NDName="cycl" NDType="java.lang.String"/>
+      <NamedData NDName="reconnue" NDType="java.lang.String"/>
+      <NamedData NDName="obs" NDType="java.lang.String"/>
+      <NamedData NDName="spec" NDType="java.lang.String"/>
+      <NamedData NDName="opt" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="integrateNiveauForm" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="integrateNiveauForm" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.integrateNiveauForm.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.integrateNiveauForm_integrateNiveauForm_dataControl_dataProvider_integrateNiveauForm_result">
+      <NamedData NDName="anc_code" NDType="java.lang.String"/>
+      <NamedData NDName="libelle" NDType="java.lang.String"/>
+      <NamedData NDName="abrev" NDType="java.lang.String"/>
+      <NamedData NDName="a_select" NDType="java.lang.String"/>
+      <NamedData NDName="aut_permise" NDType="java.lang.String"/>
+      <NamedData NDName="presentielle" NDType="java.lang.String"/>
+      <NamedData NDName="nbr_insc_permis" NDType="java.lang.String"/>
+      <NamedData NDName="diplomante" NDType="java.lang.String"/>
+      <NamedData NDName="formation" NDType="java.lang.String"/>
+      <NamedData NDName="ouvert" NDType="java.lang.String"/>
+      <NamedData NDName="niveau" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="integrateNiveauFormCrt" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="integrateNiveauFormCrt" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.integrateNiveauFormCrt.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.integrateNiveauFormCrt_integrateNiveauFormCrt_dataControl_dataProvider_integrateNiveauFormCrt_result">
+      <NamedData NDName="niv_fr" NDType="java.lang.Long"/>
+      <NamedData NDName="crt_code" NDType="java.lang.String"/>
+      <NamedData NDName="actif" NDType="java.lang.String"/>
+      <NamedData NDName="nbr_etd" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="integrateNiveauFormPrcrs" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="integrateNiveauFormPrcrs" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.integrateNiveauFormPrcrs.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.integrateNiveauFormPrcrs_integrateNiveauFormPrcrs_dataControl_dataProvider_integrateNiveauFormPrcrs_result">
+      <NamedData NDName="fr_id" NDType="java.lang.Long"/>
+      <NamedData NDName="niv_form_crt" NDType="java.lang.Long"/>
+      <NamedData NDName="spec" NDType="java.lang.String"/>
+      <NamedData NDName="opt" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="CreateOrUpdateDeptByNiveau" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CreateOrUpdateDeptByNiveau" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.CreateOrUpdateDeptByNiveau.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.CreateOrUpdateDeptByNiveau_CreateOrUpdateDeptByNiveau_dataControl_dataProvider_CreateOrUpdateDeptByNiveau_result">
+      <NamedData NDName="niv_sec" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="CreateOrUpdateFormByNiv" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CreateOrUpdateFormByNiv" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.CreateOrUpdateFormByNiv.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.CreateOrUpdateFormByNiv_CreateOrUpdateFormByNiv_dataControl_dataProvider_CreateOrUpdateFormByNiv_result">
+      <NamedData NDName="niv_sec" NDType="java.lang.String"/>
+      <NamedData NDName="form_" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="CreateOrUpdateNivFormByNiv" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CreateOrUpdateNivFormByNiv" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.CreateOrUpdateNivFormByNiv.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.CreateOrUpdateNivFormByNiv_CreateOrUpdateNivFormByNiv_dataControl_dataProvider_CreateOrUpdateNivFormByNiv_result">
+      <NamedData NDName="niv_sec" NDType="java.lang.String"/>
+      <NamedData NDName="form_" NDType="java.lang.String"/>
+      <NamedData NDName="id_fr" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="createOrUpdateUserForm" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUserForm" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUserForm.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUserForm_createOrUpdateUserForm_dataControl_dataProvider_createOrUpdateUserForm_result">
+      <NamedData NDName="user_" NDType="java.lang.Long"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="form_" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="createOrUpdateUserNivForm" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUserNivForm" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUserNivForm.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUserNivForm_createOrUpdateUserNivForm_dataControl_dataProvider_createOrUpdateUserNivForm_result">
+      <NamedData NDName="user_" NDType="java.lang.Long"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="niv_form_" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="getSelectedNiveauSections" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getSelectedNiveauSections" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getSelectedNiveauSections.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getSelectedNiveauSections_getSelectedNiveauSections_dataControl_dataProvider_getSelectedNiveauSections_result"/>
+    <methodAction id="getNiveau" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getNiveau"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getNiveau.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getNiveau_getNiveau_dataControl_dataProvider_getNiveau_result">
+      <NamedData NDName="anc_code" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getgradeFormation" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getgradeFormation"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getgradeFormation.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getgradeFormation_getgradeFormation_dataControl_dataProvider_getgradeFormation_result">
+      <NamedData NDName="anc_code" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="isCalendrierExist" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isCalendrierExist"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.isCalendrierExist.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.isCalendrierExist_isCalendrierExist_dataControl_dataProvider_isCalendrierExist_result">
+      <NamedData NDName="niv_crt_id" NDType="java.lang.Long"/>
+      <NamedData NDName="sem_id" NDType="java.lang.Long"/>
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="getsemestregradeIterator" id="getsemestregrade"
+            InstanceName="gestdapAppDataControl.getsemestregrade" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="niv_id" NDType="java.lang.Long"/>
+      <NamedData NDName="gf_id" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="CreateOrUpdateCalendar" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CreateOrUpdateCalendar" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.CreateOrUpdateCalendar.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.CreateOrUpdateCalendar_CreateOrUpdateCalendar_dataControl_dataProvider_CreateOrUpdateCalendar_result">
+      <NamedData NDName="niv_crt_id" NDType="java.lang.Long"/>
+      <NamedData NDName="sem_id" NDType="java.lang.Long"/>
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess_id" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="getResponsableFr" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getResponsableFr"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getResponsableFr.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getResponsableFr_getResponsableFr_dataControl_dataProvider_getResponsableFr_result">
+      <NamedData NDName="fr_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getResponsableNvFr" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getResponsableNvFr" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getResponsableNvFr.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getResponsableNvFr_getResponsableNvFr_dataControl_dataProvider_getResponsableNvFr_result">
+      <NamedData NDName="niv_fr_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getUserResponsableFr" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getUserResponsableFr" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getUserResponsableFr.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getUserResponsableFr_getUserResponsableFr_dataControl_dataProvider_getUserResponsableFr_result">
+      <NamedData NDName="u_fr_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getUserResponsableNivFr" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getUserResponsableNivFr" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getUserResponsableNivFr.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getUserResponsableNivFr_getUserResponsableNivFr_dataControl_dataProvider_getUserResponsableNivFr_result">
+      <NamedData NDName="u_nfr_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="createOrUpdateUserForm1" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUserForm1" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUserForm1.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUserForm1_createOrUpdateUserForm1_dataControl_dataProvider_createOrUpdateUserForm1_result">
+      <NamedData NDName="user_" NDType="java.lang.Long"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="form_" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="createOrUpdateUserNivForm1" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUserNivForm1" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUserNivForm1.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUserNivForm1_createOrUpdateUserNivForm1_dataControl_dataProvider_createOrUpdateUserNivForm1_result">
+      <NamedData NDName="user_" NDType="java.lang.Long"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="niv_form_" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="createOrUpdateUser" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUser" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUser.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUser_createOrUpdateUser_dataControl_dataProvider_createOrUpdateUser_result">
+      <NamedData NDName="email" NDType="java.lang.String"/>
+      <NamedData NDName="struct_" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="isUserResponsableIterator" id="isUserResponsable"
+            InstanceName="gestdapAppDataControl.isUserResponsable" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="isUserRespNivFormationIterator" id="isUserResponsableNiv"
+            InstanceName="gestdapAppDataControl.isUserRespNivFormation" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="DeleteUserRole" RequiresUpdateModel="true" Action="invokeMethod" MethodName="DeleteUserRole"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.DeleteUserRole.dataControl.dataProvider">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getusername" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getusername"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getusername.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getusername_getusername_dataControl_dataProvider_getusername_result">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getrole" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getrole"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getrole.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getrole_getrole_dataControl_dataProvider_getrole_result">
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="CreateOrUpdateUserRole" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CreateOrUpdateUserRole" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.CreateOrUpdateUserRole.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.CreateOrUpdateUserRole_CreateOrUpdateUserRole_dataControl_dataProvider_CreateOrUpdateUserRole_result">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="AdminEtabIterator" id="getAdminEtab" InstanceName="gestdapAppDataControl.AdminEtab"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="str_id" NDValue="#{sessionScope.id_str}" NDType="java.lang.Long"/>
+    </action>
+    <list IterBinding="ScolFormationIntegrationIterator" ListOperMode="navigation"
+          ListIter="ScolFormationIntegrationIterator" id="ScolFormationIntegration" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="ScolNivFormPrcrsNotIntegratedIterator" id="ScolNivFormPrcrsNotIntegrated">
+      <nodeDefinition DefName="model.readOnlyView.ScolNivFormPrcrsNotIntegratedROVO"
+                      Name="ScolNivFormPrcrsNotIntegrated0">
+        <AttrNames>
+          <Item Value="isNivSelected" Binds="isNivSelected"/>
+          <Item Value="LibParcours"/>
+          <Item Value="NombreEtudiant"/>
+          <Item Value="Responsable"/>
+          <Item Value="SectionCode"/>
+          <Item Value="CodeFormation"/>
+          <Item Value="IdNiveauFormationParcours"/>
+          <Item Value="isChecked" Binds="isChecked"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="ScolNivFormPrcrsNotIntegratedIterator" id="isNivSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isNivSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <methodAction id="getSelectedScolParcours" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getSelectedScolParcours" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getSelectedScolParcours.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getSelectedScolParcours_getSelectedScolParcours_dataControl_dataProvider_getSelectedScolParcours_result"/>
+    <methodAction id="integrateNiveauFormOpt" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="integrateNiveauFormOpt" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.integrateNiveauFormOpt.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.integrateNiveauFormOpt_integrateNiveauFormOpt_dataControl_dataProvider_integrateNiveauFormOpt_result">
+      <NamedData NDName="niv_fr" NDType="java.lang.Long"/>
+      <NamedData NDName="niv_fr_spec" NDType="java.lang.Long"/>
+      <NamedData NDName="opt_code" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="integrateNiveauFormSpec" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="integrateNiveauFormSpec" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.integrateNiveauFormSpec.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.integrateNiveauFormSpec_integrateNiveauFormSpec_dataControl_dataProvider_integrateNiveauFormSpec_result">
+      <NamedData NDName="niv_fr" NDType="java.lang.Long"/>
+      <NamedData NDName="spec_code" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="integrateNivFormPrcrs" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="integrateNivFormPrcrs" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.integrateNivFormPrcrs.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.integrateNivFormPrcrs_integrateNivFormPrcrs_dataControl_dataProvider_integrateNivFormPrcrs_result">
+      <NamedData NDName="niv_form_crt" NDType="java.lang.Long"/>
+      <NamedData NDName="niv_form_spec" NDType="java.lang.Long"/>
+      <NamedData NDName="niv_form_opt" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <tree IterBinding="ScolNivFormPrcrsIntegratedIterator" id="ScolNivFormPrcrsIntegrated">
+      <nodeDefinition DefName="model.readOnlyView.ScolNivFormPrcrsIntegratedROVO" Name="ScolNivFormPrcrsIntegrated0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="Responsable"/>
+          <Item Value="Libelle"/>
+          <Item Value="LibelleOption"/>
+          <Item Value="LibelleSpecialite"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="testType" RequiresUpdateModel="true" Action="invokeMethod" MethodName="testType"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.testType.dataControl.dataProvider"/>
+    <methodAction id="isAncMaquetteExiste" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isAncMaquetteExiste" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.isAncMaquetteExiste.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.isAncMaquetteExiste_isAncMaquetteExiste_dataControl_dataProvider_isAncMaquetteExiste_result">
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="code_niv_sec" NDType="java.lang.String"/>
+      <NamedData NDName="code_fr" NDType="java.lang.String"/>
+    </methodAction>
+    <button IterBinding="ScolNivFormPrcrsNotIntegratedIterator" id="isChecked" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="isChecked"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="1"/>
+        <Item Value="0"/>
+      </ValueList>
+    </button>
+    <methodAction id="UpdateResponsableFr" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="UpdateResponsableFr" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.UpdateResponsableFr.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.UpdateResponsableFr_UpdateResponsableFr_dataControl_dataProvider_UpdateResponsableFr_result">
+      <NamedData NDName="p_old" NDType="java.lang.Long"/>
+      <NamedData NDName="p_new" NDType="java.lang.Long"/>
+      <NamedData NDName="p_fr" NDType="java.lang.Long"/>
+      <NamedData NDName="p_user" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="getUserRespFr" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getUserRespFr"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getUserRespFr.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getUserRespFr_getUserRespFr_dataControl_dataProvider_getUserRespFr_result">
+      <NamedData NDName="fr_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="UpdateResponsableNivFr" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="UpdateResponsableNivFr" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.UpdateResponsableNivFr.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.UpdateResponsableNivFr_UpdateResponsableNivFr_dataControl_dataProvider_UpdateResponsableNivFr_result">
+      <NamedData NDName="p_old" NDType="java.lang.Long"/>
+      <NamedData NDName="p_new" NDType="java.lang.Long"/>
+      <NamedData NDName="p_niv_fr" NDType="java.lang.Long"/>
+      <NamedData NDName="p_user" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="getUserRespNivFr" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getUserRespNivFr"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getUserRespNivFr.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getUserRespNivFr_getUserRespNivFr_dataControl_dataProvider_getUserRespNivFr_result">
+      <NamedData NDName="niv_fr_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="ScolFormationIntegrationIterator" id="CodeFormation">
+      <AttrNames>
+        <Item Value="CodeFormation"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

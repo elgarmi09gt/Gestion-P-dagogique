@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="InscriptionsAdminEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="INSCRIPTIONS_ADMIN"
+  AliasName="InscriptionsAdminEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdInscriptionAdmin"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_INSCRIPTION_ADMIN"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTIONS_ADMIN"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdTypeFormation"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_TYPE_FORMATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTIONS_ADMIN"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdAnneesUnivers"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTIONS_ADMIN"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdGrade"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_GRADE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTIONS_ADMIN"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdEtudiant"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ETUDIANT"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTIONS_ADMIN"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="INSCRIPTIONS_ADMIN"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="INSCRIPTIONS_ADMIN"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTIONS_ADMIN"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTIONS_ADMIN"/>
+  <Attribute
+    Name="InscLigne"
+    Precision="1"
+    Scale="0"
+    ColumnName="INSC_LIGNE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTIONS_ADMIN"/>
+  <Key
+    Name="PkInscriptionsAdmin"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_INSCRIPTIONS_ADMIN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionsAdminEO.IdInscriptionAdmin"/>
+      <Item Value="model.entities.InscriptionsAdminEO.IdTypeFormation"/>
+      <Item Value="model.entities.InscriptionsAdminEO.IdAnneesUnivers"/>
+      <Item Value="model.entities.InscriptionsAdminEO.IdGrade"/>
+      <Item Value="model.entities.InscriptionsAdminEO.IdEtudiant"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsAdmEtudiants">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ETUDIANTS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_ADM_ETUDIANTS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionsAdminEO.IdEtudiant"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsAdmGradeFrom">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_GRADES_FORMATION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_ADM_GRADE_FROM"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionsAdminEO.IdGrade"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsAdmTypeAnUnivers">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ANNEES_UNIVERS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_ADM_TYPE_AN_UNIVERS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionsAdminEO.IdAnneesUnivers"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsAdmTypeFormation">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_TYPE_FORMATION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_ADM_TYPE_FORMATION"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionsAdminEO.IdTypeFormation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsAdmUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_ADM_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionsAdminEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsAdmUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_ADM_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionsAdminEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

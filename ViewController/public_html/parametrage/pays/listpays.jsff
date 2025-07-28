@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelStretchLayout id="psl1" dimensionsFrom="parent">
+    <f:facet name="start"/>
+    <f:facet name="end"/>
+    <f:facet name="top"/>
+    <f:facet name="bottom"/>
+    <f:facet name="center">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t2">
+            <af:button text="New" id="b1"/>
+            <af:button text="Edit" id="b2"/>
+            <af:button text="Delete" id="b3"/>
+          </af:toolbar>
+        </f:facet>
+        <af:table value="#{bindings.PaysVO1.collectionModel}" var="row" rows="#{bindings.PaysVO1.rangeSize}"
+                  emptyText="#{bindings.PaysVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.PaysVO1.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.PaysVO1.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.PaysVO1.rangeSize}" id="t1">
+          <af:column headerText="#{bindings.PaysVO1.hints.IdPays.label}" id="c1">
+            <af:outputText value="#{row.IdPays}" shortDesc="#{bindings.PaysVO1.hints.IdPays.tooltip}" id="ot1">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.PaysVO1.hints.IdPays.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.PaysVO1.hints.Libelle.label}" id="c2">
+            <af:outputText value="#{row.Libelle}" shortDesc="#{bindings.PaysVO1.hints.Libelle.tooltip}" id="ot2"/>
+          </af:column>
+          <af:column headerText="#{bindings.PaysVO1.hints.CodeIso.label}" id="c3">
+            <af:outputText value="#{row.CodeIso}" shortDesc="#{bindings.PaysVO1.hints.CodeIso.tooltip}" id="ot3"/>
+          </af:column>
+          <af:column headerText="#{bindings.PaysVO1.hints.Nationalite.label}" id="c4">
+            <af:outputText value="#{row.Nationalite}" shortDesc="#{bindings.PaysVO1.hints.Nationalite.tooltip}"
+                           id="ot4"/>
+          </af:column>
+          <af:column headerText="#{bindings.PaysVO1.hints.IdZoneGeographiques.label}" id="c5">
+            <af:outputText value="#{row.IdZoneGeographiques}"
+                           shortDesc="#{bindings.PaysVO1.hints.IdZoneGeographiques.tooltip}" id="ot5">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.PaysVO1.hints.IdZoneGeographiques.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.PaysVO1.hints.DateCreation.label}" id="c6">
+            <af:outputText value="#{row.DateCreation}" shortDesc="#{bindings.PaysVO1.hints.DateCreation.tooltip}"
+                           id="ot6">
+              <af:convertDateTime pattern="#{bindings.PaysVO1.hints.DateCreation.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.PaysVO1.hints.DateModification.label}" id="c7">
+            <af:outputText value="#{row.DateModification}"
+                           shortDesc="#{bindings.PaysVO1.hints.DateModification.tooltip}" id="ot7">
+              <af:convertDateTime pattern="#{bindings.PaysVO1.hints.DateModification.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.PaysVO1.hints.UtiCree.label}" id="c8">
+            <af:outputText value="#{row.UtiCree}" shortDesc="#{bindings.PaysVO1.hints.UtiCree.tooltip}" id="ot8">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.PaysVO1.hints.UtiCree.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.PaysVO1.hints.UtiModifie.label}" id="c9">
+            <af:outputText value="#{row.UtiModifie}" shortDesc="#{bindings.PaysVO1.hints.UtiModifie.tooltip}" id="ot9">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.PaysVO1.hints.UtiModifie.format}"/>
+            </af:outputText>
+          </af:column>
+        </af:table>
+        <f:facet name="statusbar"/>
+      </af:panelCollection>
+    </f:facet>
+  </af:panelStretchLayout>
+</ui:composition>

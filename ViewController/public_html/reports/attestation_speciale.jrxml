@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="attestationCycle" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="06946f97-80b1-4995-8d86-a518908dc659">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="annee_univers" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_hs" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parcours" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Works\\GestionPedagogique\\ViewController\\public_html\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+etu.NUMERO, pers.prenoms,pers.nom,pers.prenoms||' '||pers.nom PrenomNom, replace(to_char(pers.DATE_NAISSANCE,'DD-Month-YYYY'),' ','') DATE_NAISSANCE, pers.LIEU_NAISSANCE,
+DECODE(pers.DATE_NAISSANCE, null,' VERS '||pers.DATE_ESTIMEE||' à '||pers.LIEU_NAISSANCE,to_char(pers.DATE_NAISSANCE,'DD-MM-YYYY')||' à '||pers.LIEU_NAISSANCE) DateLieuNaiss,pers.id_sexe
+,cv.LIBELLE_LONG Civilite,
+an.LIBELLE_LONG AnneeUnivers,an.ID_ANNEES_UNIVERS
+,DECODE(tmtAn.ID_TYPE_MENTION, 81, '',tmtAn.LIBELLE_LONG) Mention
+,nf.LIBELLE_LONG ||' '|| DECODE(nfp.ID_NIVFORM_OPTION, NULL, '', ' Option : ' || op.lib_option|| DECODE(nfp.ID_NIVFORM_SPECIALITE, NULL, '', ' (Spécialité : ' || sp.lib_specialite)) Parcours
+, gf.LIBELLE_LONG Resultat
+,dm.LIBELLE_LONG Domaine,s.LIBELLE_LONG Structures,s.LIB_SIGNATAIRE,s.LIBELLE_COURT Sigle,mnt.LIBELLE_LONG MentionFr, spec.LIBELLE_LONG Specialite,
+DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, s.EMAIL,inst.EMAIL) Email,
+DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, s.FAX, inst.FAX) Fax,
+DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, s.TELEPHONE,inst.TELEPHONE) Telephone,
+DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, 'Tél. : '||s.TELEPHONE,inst.TELEPHONE)||''||DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL,' -- Email : ' ||s.EMAIL,inst.EMAIL) TelEmail,
+DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, s.LIBELLE_COURT,institut) Institut,
+'Département : '||hs.LIBELLE_LONG Departement
+,signataire
+FROM  INSCRIPTION_PED_SEM_UE ipsu
+JOIN  INSCRIPTION_PED_SEMESTRE ips ON ips.ID_INSCRIPTION_PED_SEMESTRE = ipsu.ID_INSCRIPTION_PED_SEMESTRE
+JOIN  INSCRIPTIONS_PEDAGOGIQUES ip ON ip.ID_INSCRIPTION_PEDAGOGIQUE=ips.ID_INSCRIPTION_PEDAGOGIQUE
+JOIN  INSCRIPTIONS_ADMIN ia ON ia.ID_INSCRIPTION_ADMIN=ip.ID_INSCRIPTION_ADMIN
+JOIN  ANNEES_UNIVERS an on ia.ID_ANNEES_UNIVERS = an.ID_ANNEES_UNIVERS
+JOIN  TYPE_FORMATION tf ON tf.ID_TYPE_FORMATION = ia.ID_TYPE_FORMATION
+JOIN  ETUDIANTS etu ON etu.ID_ETUDIANT=ia.ID_ETUDIANT
+JOIN  PERSONNES pers ON pers.ID_PERSONNE=etu.ID_PERSONNE
+JOIN  CIVILITES cv on pers.ID_CIVILITE = cv.ID_CIVILITE
+JOIN  PARCOURS_MAQUETTE_ANNEE pma ON pma.ID_PARCOURS_MAQUET_ANNEE=ip.ID_PARCOURS_MAQUET_ANNEE
+JOIN  NIVEAUX_FORMATION_PARCOURS nfp ON nfp.ID_NIVEAU_FORMATION_PARCOURS=pma.ID_NIVEAU_FORMATION_PARCOURS
+JOIN  (
+        SELECT nfc.ID_NIVEAU_FORMATION_COHORTE, ct.LIBELLE cohorte, nfc.ID_NIVEAU_FORMATION
+        FROM NIVEAU_FORMATION_COHORTES nfc JOIN COHORTES ct ON nfc.ID_COHORTE = ct.ID_COHORTE
+      ) crt On crt.ID_NIVEAU_FORMATION_COHORTE=nfp.ID_NIVEAU_FORMATION_COHORTE
+JOIN  NIVEAUX_FORMATIONS nf on crt.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION
+JOIN  FORMATIONS f on nf.ID_FORMATION = f.ID_FORMATION
+JOIN  GRADES_FORMATION gf ON f.ID_GRADES_FORMATION = gf.ID_GRADES_FORMATION
+JOIN  RESULTATS_CYCLES rc on f.ID_FORMATION = rc.ID_FORMATION and etu.ID_ETUDIANT = rc.ID_ETUDIANT
+LEFT JOIN  (
+            Select distinct tm.LIBELLE_LONG,tm.ID_TYPE_MENTION
+            from TYPE_MENTION tm join RESULTATS_CYCLES rc on rc.ID_TYPE_MENTION = tm.ID_TYPE_MENTION
+            ) tmtAn on tmtAn.ID_TYPE_MENTION = rc.ID_TYPE_MENTION
+JOIN  NIVEAUX nv on nv.ID_NIVEAU = nf.ID_NIVEAU
+JOIN  MENTIONS mnt on f.ID_MENTION = mnt.ID_MENTION
+JOIN  DOMAINES dm on mnt.ID_DOMAINE = dm.ID_DOMAINE
+JOIN  HISTORIQUES_STRUCTURES hs on f.ID_HISTORIQUES_STRUCTURE = hs.ID_HISTORIQUES_STRUCTURE
+JOIN  STRUCTURES s on hs.ID_STRUCTURES = s.ID_STRUCTURE
+LEFT JOIN  (
+            Select distinct pers.PRENOMS || ' '||pers.NOM signataire,sg.ID_SIGNATAIRE
+            from PERSONNES pers, SIGNATAIRE sg
+            WHERE pers.ID_PERSONNE=sg.ID_PERSONNE
+            ) sign on sign.ID_SIGNATAIRE = s.ID_SIGNATAIRE
+LEFT JOIN (
+    SELECT  nfs.CODESPECSCOL ,sp.LIBELLE_LONG lib_specialite, nfs.ID_NIVEAU_FORMATION_SPECIALITE
+    FROM NIVEAUX_FORMATIONS_SPECIALITES nfs
+    JOIN SPECNIVSECSCOL sp ON nfs.CODESPECSCOL = sp.CODE
+    ) sp ON sp.ID_NIVEAU_FORMATION_SPECIALITE = nfp.ID_NIVFORM_SPECIALITE
+LEFT JOIN (
+    SELECT nfo.CODEOPTIONSCOL,op.LIBELLE lib_option,nfo.ID_NIV_FORM_SPEC_OPTION
+    FROM NIV_FORM_SPECIALITE_OPTION nfo
+    JOIN OPTIONNIVSECSCOL op ON nfo.CODEOPTIONSCOL = op.CODE
+    ) op ON op.ID_NIV_FORM_SPEC_OPTION = nfp.ID_NIVFORM_OPTION
+LEFT JOIN (
+          SELECT hst.ID_HISTORIQUES_STRUCTURE,ins.LIBELLE_LONG institut, ins.EMAIL, ins.TELEPHONE, ins.FAX
+          FROM HISTORIQUES_STRUCTURES hst JOIN INSTITUTS ins on hst.ID_HISTORIQUES_STRUCTURE = ins.STRUCTURE_PARENT
+          ) inst ON inst.ID_HISTORIQUES_STRUCTURE = hs.ID_HISTORIQUES_STRUCTURE
+LEFT JOIN (
+  Select fs.ID_FORMATION,sp.LIBELLE_LONG from SPECIALITES sp join FORMATIONS_SPECIALITES fs on sp.ID_SPECIALITE = fs.ID_SPECIALITE
+) spec on f.ID_FORMATION=spec.ID_FORMATION
+WHERE pma.ID_PARCOURS_MAQUET_ANNEE=$P{parcours}
+AND ia.ID_ANNEES_UNIVERS=$P{annee_univers}
+AND hs.ID_HISTORIQUES_STRUCTURE=$P{id_hs}]]>
+	</queryString>
+	<field name="NUMERO" class="java.lang.String"/>
+	<field name="PRENOMS" class="java.lang.String"/>
+	<field name="NOM" class="java.lang.String"/>
+	<field name="PRENOMNOM" class="java.lang.String"/>
+	<field name="DATE_NAISSANCE" class="java.lang.String"/>
+	<field name="LIEU_NAISSANCE" class="java.lang.String"/>
+	<field name="DATELIEUNAISS" class="java.lang.String"/>
+	<field name="ID_SEXE" class="java.math.BigDecimal"/>
+	<field name="CIVILITE" class="java.lang.String"/>
+	<field name="ANNEEUNIVERS" class="java.lang.String"/>
+	<field name="ID_ANNEES_UNIVERS" class="java.math.BigDecimal"/>
+	<field name="MENTION" class="java.lang.String"/>
+	<field name="PARCOURS" class="java.lang.String"/>
+	<field name="RESULTAT" class="java.lang.String"/>
+	<field name="DOMAINE" class="java.lang.String"/>
+	<field name="STRUCTURES" class="java.lang.String"/>
+	<field name="LIB_SIGNATAIRE" class="java.lang.String"/>
+	<field name="SIGLE" class="java.lang.String"/>
+	<field name="MENTIONFR" class="java.lang.String"/>
+	<field name="SPECIALITE" class="java.lang.String"/>
+	<field name="EMAIL" class="java.lang.String"/>
+	<field name="FAX" class="java.lang.String"/>
+	<field name="TELEPHONE" class="java.lang.String"/>
+	<field name="TELEMAIL" class="java.lang.String"/>
+	<field name="INSTITUT" class="java.lang.String"/>
+	<field name="DEPARTEMENT" class="java.lang.String"/>
+	<field name="SIGNATAIRE" class="java.lang.String"/>
+	<group name="Etd_Grp">
+		<groupExpression><![CDATA[$F{NUMERO}]]></groupExpression>
+		<groupHeader>
+			<band height="68">
+				<staticText>
+					<reportElement x="336" y="4" width="140" height="20" uuid="f4cd4fd4-f0d5-4ed8-a3d3-edac553b68bb"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ ANNEE UNIVERSITAIRE :]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="476" y="4" width="64" height="20" uuid="0b24f89d-09f9-4094-a76a-34662db0d3b1"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ANNEEUNIVERS}]]></textFieldExpression>
+				</textField>
+				<rectangle radius="10">
+					<reportElement mode="Opaque" x="87" y="32" width="364" height="33" backcolor="#F0F0F0" uuid="70ed3288-2377-4820-82e7-62ec3b733cc6"/>
+					<graphicElement>
+						<pen lineStyle="Solid"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement mode="Transparent" x="87" y="32" width="365" height="33" backcolor="#FFFFFF" uuid="76297fff-47f6-4b34-b7ec-60cae5e07d54"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="18" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ATTESTATION DE DIPLOME]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6">
+				<break>
+					<reportElement x="0" y="5" width="100" height="1" uuid="5349d627-2fc3-4bb1-90dc-2a47a0e4bcc5"/>
+				</break>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band height="792">
+			<image>
+				<reportElement x="10" y="173" width="540" height="535" uuid="6975c3d5-bee3-4d6e-a95a-da0646fd9c2a"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR} + "logo_tr.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<pageHeader>
+		<band height="133" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="18" forecolor="#284EA0" uuid="f9354c40-6db4-4605-a3a1-36889f08bff9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSITE CHEIKH ANTA DIOP DE DAKAR]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="22" width="554" height="16" forecolor="#28B1EF" uuid="c43b7bf2-89b1-43e4-aaf8-d230817a64f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRUCTURES}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="181" y="37" width="226" height="15" forecolor="#28C6EF" uuid="becaecab-e972-47eb-9068-53838b22a58f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TELEMAIL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="407" y="37" width="95" height="15" forecolor="#28C6EF" uuid="859fe78b-3fc8-421b-97a6-37db54ee8a28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DAKAR-SENEGAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="78" y="37" width="104" height="15" forecolor="#28C6EF" uuid="cd8e1eb5-0a94-4d1a-adaa-4145e77cf97f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[B.P. 5005 Dakar-Fann]]></text>
+			</staticText>
+			<line>
+				<reportElement x="223" y="19" width="100" height="1" forecolor="#284EA0" uuid="aef72fa8-cd91-4336-a086-77eb79037159"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="47" y="56" width="158" height="70" uuid="013ead52-a58e-4c00-96c9-e1d770567c7c"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR} + "arcop_att_spec.png"]]></imageExpression>
+			</image>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement positionType="Float" x="335" y="56" width="201" height="70" uuid="84934866-dea3-4628-a9d3-944d70517461"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR} +"Logo_ena_senegal_att.png"]]></imageExpression>
+			</image>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="205" y="56" width="130" height="70" uuid="4bcfbbd1-ead1-4058-889c-c8935ae4cfc6"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR} +"ucad_att_spec.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="533" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="49" width="328" height="20" uuid="351cfaf4-0f3e-42ba-ad64-57971afcbf7d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[de l'Université Cheikh Anta Diop de Dakar soussigné, atteste que :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="20" y="83" width="510" height="20" uuid="96ec9969-3182-4414-8d96-cd1a7ecff38b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CIVILITE}+" <b>"+$F{PRENOMNOM}.toUpperCase()+"</b>"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement x="20" y="113" width="510" height="20" uuid="d80049dd-f5de-4ed8-bdcc-ba0341961319">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{ID_SEXE} == 1 ? "né le " : "née le ")+"<b>"+$F{DATE_NAISSANCE}+"</b> à "+"<b>"+$F{LIEU_NAISSANCE}+"</b>"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="20" y="143" width="510" height="20" uuid="a7844454-4851-425e-a8ea-402d31914f3c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{ID_SEXE} == 1 ? "inscrit en " : "inscrite en ")+"<b>"+$F{PARCOURS}+"</b>"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="299" y="452" width="255" height="20" uuid="51343433-98ce-4a06-84dc-3b01a710bfa9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIGNATAIRE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="375" y="390" width="90" height="20" uuid="64c8cb69-4dca-470f-bd43-433b9b39d4ef"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<text><![CDATA[Fait à Dakar, le]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="466" y="390" width="88" height="20" uuid="06d1dae3-d151-4f24-959a-30c34d70a725"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="1" y="507" width="129" height="22" backcolor="#D8BF4A" uuid="ccd3d83f-8593-4530-9f02-32c706f4c7e4">
+					<printWhenExpression><![CDATA[false]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="2" y="508" width="45" height="20" forecolor="#B8706C" backcolor="#D8BF4A" uuid="0a25eb2f-2eab-4f50-927a-e281ceea8484">
+					<printWhenExpression><![CDATA[false]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Verdana" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIGLE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="48" y="508" width="82" height="20" forecolor="#B8706C" uuid="d8fe32b8-5140-4603-a5a3-30e9b0fd5d70">
+					<printWhenExpression><![CDATA[false]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Verdana" isBold="true"/>
+				</textElement>
+				<text><![CDATA[- N° 0009000]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="21" width="490" height="20" uuid="84714656-f010-42ad-9733-4d47723188e5"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIB_SIGNATAIRE} + " de l'<b>INSTITUT DES POLITIQUES PUBLIQUES</b>"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="21" y="174" width="510" height="20" uuid="99d7bc2f-cd48-4ee5-bfc6-db33e52571a3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["sous le numéro <b>"+$F{NUMERO}+"</b>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="20" y="206" width="510" height="20" uuid="3d4abb18-d2ac-41e9-b2bf-03d15262f1f6">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Domaine : <b>"+$F{DOMAINE}+"</b>"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="20" y="253" width="510" height="20" isRemoveLineWhenBlank="true" uuid="c8b4faa6-9cef-4a94-a5a6-733f49b7b5b0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[!$F{SPECIALITE}.equals( null )]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Spécialité : <b>"+$F{SPECIALITE}+"</b>"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="20" y="230" width="510" height="20" uuid="b8ec076e-79c3-4853-b000-9a967f39931d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Mention : <b>"+$F{MENTIONFR}+"</b>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="20" y="285" width="510" height="20" uuid="2864f9d4-93cc-4857-ba19-487d4768d121">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["a obtenu le <b>"+$F{RESULTAT}+"</b>"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="20" y="343" width="510" height="20" uuid="83412663-1d36-4951-9c84-d4c5b88fa843">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<text><![CDATA[En foi de quoi, la présente attestation lui est délivrée pour servir et valoir ce que de droit]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="20" y="313" width="510" height="20" uuid="5fdc2b4f-229b-4833-bb6a-4ccae2836937">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["de l'année académique <b>"+$F{ANNEEUNIVERS}+"</b> avec la mention <b>"+$F{MENTION}+"</b>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="299" y="432" width="255" height="20" uuid="0a4ed8da-34c2-4bca-9ef8-cb42daa3dd91"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIB_SIGNATAIRE}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="33" y="410" width="54" height="50" uuid="ad33ec0c-202a-43c9-9e91-584e28379d5d"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(     new com.google.zxing.qrcode.QRCodeWriter().encode($F{NUMERO} +";"+ $F{PRENOMS}+";"+$F{NOM}+";"+$F{PARCOURS}+";"+$F{ANNEEUNIVERS},         com.google.zxing.BarcodeFormat.QR_CODE, 50, 50))]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="555" height="31" uuid="bfca2bd9-1bdd-4843-b9a7-7310d7671362"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NB : Il n'est délivré qu'une seule attestation. Il appartient au titulaire d'en etablir et de faire certifier conformes les copies nécessaires.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

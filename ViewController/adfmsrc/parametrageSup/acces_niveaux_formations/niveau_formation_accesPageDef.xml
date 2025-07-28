@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="niveau_formation_accesPageDef"
+                Package="parametrageSup.acces_niveaux_formations">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Structures" RangeSize="8" DataControl="evaluationAppDataControl" id="StructuresIterator"/>
+    <iterator Binds="UtilisateurStructure" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="UtilisateurStructureIterator"/>
+    <iterator Binds="AccesNiveauFormation" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="AccesNiveauFormationIterator"/>
+    <iterator Binds="UtilisateurNiveauFormation" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="UtilisateurNiveauFormationIterator"/>
+    <searchRegion Binds="AccesNiveauFormationIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="AccesNiveauFormationQuery"/>
+    <iterator Binds="UtilisateurNiveauxFormationsVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="UtilisateurNiveauxFormationsVOIterator"/>
+    <iterator Binds="OptionROVO" RangeSize="10" DataControl="evaluationAppDataControl" id="OptionROVOIterator"/>
+    <iterator Binds="SpecialiteROVO1" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="SpecialiteROVO1Iterator"/>
+    <iterator Binds="IsNivFormAccesAllowed" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="IsNivFormAccesAllowedIterator"/>
+    <iterator Binds="Utilisateurs" RangeSize="25" DataControl="evaluationAppDataControl" id="UtilisateursIterator"/>
+    <iterator Binds="NivFormSpecialiteROVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="NivFormSpecialiteROVOIterator"/>
+    <iterator Binds="NivFormSpecOptionROVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="NivFormSpecOptionROVOIterator"/>
+    <searchRegion Binds="UtilisateurNiveauFormationIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UtilisateurNiveauFormationQuery"/>
+    <iterator Binds="AccesNiveauFormationList" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="AccesNiveauFormationListIterator"/>
+    <iterator Binds="isNivFormAccessAllowed" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="isNivFormAccessAllowedIterator"/>
+    <iterator Binds="isNivFormSpecAccessAllowed" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="isNivFormSpecAccessAllowedIterator"/>
+    <iterator Binds="isNivFormSpecOptAccessAllowed" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="isNivFormSpecOptAccessAllowedIterator"/>
+    <iterator Binds="isRespNivFormExist" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="isRespNivFormExistIterator"/>
+    <iterator Binds="isRespNivFormSpecExist" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="isRespNivFormSpecExistIterator"/>
+    <iterator Binds="isRespNivFormSpecOptExist" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="isRespNivFormSpecOptExistIterator"/>
+    <iterator Binds="UtilisateursROVO1" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="UtilisateursROVO1Iterator"/>
+    <iterator Binds="DepartementsEtabROVO" RangeSize="8" DataControl="evaluationAppDataControl"
+              id="DepartementsEtabROVOIterator"/>
+    <searchRegion Binds="DepartementsEtabROVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="DepartementsEtabROVOQuery"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="UtilisateursROVO1Iterator" id="IdUtilisateur">
+      <AttrNames>
+        <Item Value="IdUtilisateur"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="UtilisateurNiveauxFormationsVOIterator" id="AllowedAccessTo"
+            InstanceName="evaluationAppDataControl.UtilisateurNiveauxFormationsVO"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdUtilisateur" NDType="java.lang.String"/>
+      <NamedData NDName="IdNiveauFormation" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+      <NamedData NDName="Role" NDType="java.lang.String"/>
+      <NamedData NDName="IdNiveauFormationSpecialite" NDType="java.lang.String"/>
+      <NamedData NDName="IdNivFormSpecOption" NDType="java.lang.String"/>
+    </action>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="isNivFormAccessAllowedIterator" id="IsNivFormAccesAllowed"
+            InstanceName="evaluationAppDataControl.isNivFormAccessAllowed" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_user" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_niv_fr" NDType="java.lang.Integer"/>
+    </action>
+    <list IterBinding="UtilisateursROVO1Iterator" ListOperMode="navigation" ListIter="UtilisateursIterator"
+          id="Utilisateurs" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Prenomnom"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="NivFormSpecialiteROVOIterator" ListOperMode="navigation" ListIter="NivFormSpecialiteROVOIterator"
+          id="NivFormSpecialiteROVO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="NivFormSpecOptionROVOIterator" ListOperMode="navigation" ListIter="NivFormSpecOptionROVOIterator"
+          id="NivFormSpecOptionROVO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="UtilisateurNiveauFormationIterator" id="UtilisateurNiveauFormation">
+      <nodeDefinition DefName="model.readOnlyView.UtilisateurNiveauFormationROVO" Name="UtilisateurNiveauFormation0">
+        <AttrNames>
+          <Item Value="NiveauFormation"/>
+          <Item Value="Role"/>
+          <Item Value="LibSpecialite"/>
+          <Item Value="LibOption"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="AccesNiveauFormationIterator" id="GetNiveauFormation"
+            InstanceName="evaluationAppDataControl.AccesNiveauFormation" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="s_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_user" NDType="java.lang.Integer"/>
+    </action>
+    <list IterBinding="AccesNiveauFormationIterator" ListOperMode="navigation" ListIter="AccesNiveauFormationIterator"
+          id="AccesNiveauFormation" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Niveauformation"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="AccesNiveauFormationIterator" id="IdNiveauFormation">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormSpecialiteROVOIterator" id="IdNiveauFormationSpecialite">
+      <AttrNames>
+        <Item Value="IdNiveauFormationSpecialite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormSpecOptionROVOIterator" id="IdNivFormSpecOption">
+      <AttrNames>
+        <Item Value="IdNivFormSpecOption"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="AccesNiveauFormationListIterator" ListOperMode="navigation"
+          ListIter="AccesNiveauFormationListIterator" id="AccesNiveauFormationList" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="libelle"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="isNivFormSpecAccessAllowedIterator" id="IsNivFormSpecAccesAllowed"
+            InstanceName="evaluationAppDataControl.isNivFormSpecAccessAllowed" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_user" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_niv_fr" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_spec" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="isNivFormSpecOptAccessAllowedIterator" id="IsNivFormSpecOptAccesAllowed"
+            InstanceName="evaluationAppDataControl.isNivFormSpecOptAccessAllowed" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_user" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_niv_fr" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_spec" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_op" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="isRespNivFormExistIterator" id="isRespNivFormExist"
+            InstanceName="evaluationAppDataControl.isRespNivFormExist" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_niv_fr" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="isRespNivFormSpecExistIterator" id="isRespNivFormSpecExist"
+            InstanceName="evaluationAppDataControl.isRespNivFormSpecExist" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_niv_fr" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_spec" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="isRespNivFormSpecOptExistIterator" id="isRespNivFormSpecOptExist"
+            InstanceName="evaluationAppDataControl.isRespNivFormSpecOptExist" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_niv_fr" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_spec" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_op" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="UpdateRoleNivFormation" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="UpdateRoleNivFormation" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.UpdateRoleNivFormation.dataControl.dataProvider">
+      <NamedData NDName="idUser" NDType="java.lang.Integer"/>
+      <NamedData NDName="idNivFormation" NDType="java.lang.Integer"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="utimodif" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_uti_niv_formation" NDType="java.lang.Integer"/>
+    </methodAction>
+    <attributeValues IterBinding="UtilisateursROVO1Iterator" id="Prenomnom">
+      <AttrNames>
+        <Item Value="Prenomnom"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="UtilisateurNiveauFormationIterator" id="GetUtilisateurNivForm"
+            InstanceName="evaluationAppDataControl.UtilisateurNiveauFormation" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_user" NDType="java.lang.Integer"/>
+    </action>
+    <tree IterBinding="StructuresIterator" id="Structures">
+      <nodeDefinition DefName="model.updatableview.StructuresVO" Name="Structures0">
+        <AttrNames>
+          <Item Value="IdStructure"/>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="Adresse"/>
+          <Item Value="Email"/>
+          <Item Value="Telephone"/>
+          <Item Value="Fax"/>
+          <Item Value="StructureParent"/>
+          <Item Value="IdTypeSection"/>
+          <Item Value="Niveau"/>
+          <Item Value="Url"/>
+          <Item Value="HoraireTravail"/>
+          <Item Value="DateCreation"/>
+          <Item Value="DateModification"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+          <Item Value="IdSignataire"/>
+          <Item Value="Signature"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="DepartementsEtabROVOIterator" id="DepartementsEtabROVO">
+      <nodeDefinition DefName="model.readOnlyView.DepartementsEtabROVO" Name="DepartementsEtabROVO0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="DepartementsEtabROVOIterator" id="IdHistoriquesStructure">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="CreateOrUpdateUserRole" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CreateOrUpdateUserRole" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.CreateOrUpdateUserRole.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.CreateOrUpdateUserRole_CreateOrUpdateUserRole_dataControl_dataProvider_CreateOrUpdateUserRole_result">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="DeleteUserRole" RequiresUpdateModel="true" Action="invokeMethod" MethodName="DeleteUserRole"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.DeleteUserRole.dataControl.dataProvider">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getusername" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getusername"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getusername.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getusername_getusername_dataControl_dataProvider_getusername_result">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getrole" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getrole"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getrole.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getrole_getrole_dataControl_dataProvider_getrole_result">
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

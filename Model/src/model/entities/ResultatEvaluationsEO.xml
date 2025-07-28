@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ResultatEvaluationsEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="RESULTAT_EVALUATIONS"
+  AliasName="ResultatEvaluationsEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdResultat"
+    IsNotNull="true"
+    Precision="2"
+    Scale="0"
+    ColumnName="ID_RESULTAT"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="RESULTAT_EVALUATIONS"
+    PrimaryKey="true"/>
+  <Attribute
+    Name="LibelleLong"
+    Precision="250"
+    ColumnName="LIBELLE_LONG"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="RESULTAT_EVALUATIONS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="LibelleCourt"
+    Precision="100"
+    ColumnName="LIBELLE_COURT"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="RESULTAT_EVALUATIONS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="RESULTAT_EVALUATIONS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="RESULTAT_EVALUATIONS"/>
+  <Attribute
+    Name="UtiCree"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="RESULTAT_EVALUATIONS"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="RESULTAT_EVALUATIONS"/>
+  <AccessorAttribute
+    Name="UtilisateursEO"
+    Association="model.entities.FkResEvalUtiModifAssoc"
+    AssociationEnd="model.entities.FkResEvalUtiModifAssoc.UtilisateursEO"
+    AssociationOtherEnd="model.entities.FkResEvalUtiModifAssoc.ResultatEvaluationsEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <AccessorAttribute
+    Name="UtilisateursEO1"
+    Association="model.entities.FkResEvalUtiCreeAssoc"
+    AssociationEnd="model.entities.FkResEvalUtiCreeAssoc.UtilisateursEO1"
+    AssociationOtherEnd="model.entities.FkResEvalUtiCreeAssoc.ResultatEvaluationsEO1"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <Key
+    Name="PkResultatEvaluations"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_RESULTAT_EVALUATIONS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ResultatEvaluationsEO.IdResultat"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkResEvalUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_RES_EVAL_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ResultatEvaluationsEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkResEvalUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_RES_EVAL_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ResultatEvaluationsEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="IsUserRespNivFormROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.IsUserRespNivFormROVORowImpl"
+  ComponentClass="model.readOnlyView.IsUserRespNivFormROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.IsUserRespNivFormROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="utilisateur"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[Select unf.ID_UTILIS_NIVEAU_FORMATION,unf.ID_NIVEAU_FORMATION   
+from UTILISATEUR_NIVEAUX_FORMATIONS unf 
+Join NIVEAU_FORMATION_COHORTES nfc on unf.ID_NIVEAU_FORMATION=nfc.ID_NIVEAU_FORMATION  
+Join NIVEAUX_FORMATION_PARCOURS nfp on nfc.ID_NIVEAU_FORMATION_COHORTE=nfp.ID_NIVEAU_FORMATION_COHORTE  
+where unf.ID_UTILISATEUR=:utilisateur and nfp.ID_NIVEAU_FORMATION_PARCOURS=:parcours   
+and unf.ROLE='RESPONSABLE NIVEAU']]></SQLQuery>
+  <ViewAttribute
+    Name="IdUtilisNiveauFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_UTILIS_NIVEAU_FORMATION"
+    Expression="ID_UTILIS_NIVEAU_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION"
+    Expression="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdUtilisNiveauFormation"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

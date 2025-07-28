@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll" inlineStyle="margin:10px 15px;">
+    <af:outputFormatted value="Parcours" id="of2" inlineStyle="font-size:large; font-weight:bolder; "/>
+      <af:selectOneChoice value="#{bindings.ParcoursInscriptionDeliberation.inputValue}"
+                      required="#{bindings.ParcoursInscriptionDeliberation.hints.mandatory}"
+                      shortDesc="#{bindings.ParcoursInscriptionDeliberation.hints.tooltip}" id="soc1"
+                      contentStyle="font-size:large; border-radius: 8px;" autoSubmit="true">
+    <f:selectItems value="#{bindings.ParcoursInscriptionDeliberation.items}" id="si1"/>
+    <f:validator binding="#{bindings.ParcoursInscriptionDeliberation.validator}"/>
+  </af:selectOneChoice>
+    <af:panelGroupLayout id="pgl2" layout="scroll">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.StudentInsDeliberation.collectionModel}" var="row"
+                  rows="#{bindings.StudentInsDeliberation.rangeSize}"
+                  emptyText="#{bindings.StudentInsDeliberation.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.StudentInsDeliberation.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.StudentInsDeliberation.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.StudentInsDeliberation.rangeSize}"
+                  filterModel="#{bindings.StudentInsDeliberationQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.StudentInsDeliberationQuery.processQuery}" varStatus="vs" id="t1"
+                  partialTriggers=":::soc1" scrollPolicy="page" columnStretching="last">
+          <af:column sortProperty="#{bindings.StudentInsDeliberation.hints.isDlbrleStd.name}" filterable="true"
+                     sortable="true" id="c1" align="center">
+            <af:selectBooleanCheckbox value="#{row.bindings.isDlbrleStd.inputValue}"
+                                      label="#{row.bindings.isDlbrleStd.label}"
+                                      shortDesc="#{bindings.StudentInsDeliberation.hints.isDlbrleStd.tooltip}" id="sbc1"
+                                      autoSubmit="true"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.StudentInsDeliberation.hints.Numero.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.NUMERO}" id="c2">
+            <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.StudentInsDeliberation.hints.Prenoms.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.PRENOMS}" id="c3" width="200">
+            <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of3"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.StudentInsDeliberation.hints.Nom.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.NOM}" id="c4" width="150">
+            <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of4"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.StudentInsDeliberation.hints.InscriptionsPedagogiquesVO.NbInsc.name}"
+                     filterable="true" sortable="true" headerText="#{viewcontrollerBundle.NOMBRE_INSCRIPTION}" id="c7">
+            <af:outputFormatted value="#{row.InscriptionsPedagogiquesVO.bindings.NbInsc.inputValue}"
+                                rendered="#{row.InscriptionsPedagogiquesVO != null}" id="of7">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StudentInsDeliberation.hints.InscriptionsPedagogiquesVO.NbInsc.format}"/>
+            </af:outputFormatted>
+          </af:column>
+          <af:column sortProperty="#{bindings.StudentInsDeliberation.hints.DateNaissance.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.DATE_NAISSANCE}" id="c5">
+            <f:facet name="filter">
+              <af:inputDate value="#{bindings.StudentInsDeliberationQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                            id="id1">
+                <af:convertDateTime pattern="#{bindings.StudentInsDeliberation.hints.DateNaissance.format}"/>
+              </af:inputDate>
+            </f:facet>
+            <af:outputFormatted value="#{row.bindings.DateNaissance.inputValue}" id="of5">
+              <af:convertDateTime pattern="#{bindings.StudentInsDeliberation.hints.DateNaissance.format}"/>
+            </af:outputFormatted>
+          </af:column>
+          <af:column sortProperty="#{bindings.StudentInsDeliberation.hints.LieuNaissance.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.LIEU_DE_NAISSANCE}" id="c6" width="100">
+            <af:outputFormatted value="#{row.bindings.LieuNaissance.inputValue}" id="of6"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl3" layout="vertical" halign="center">
+      <af:button text="Enregistrer" id="b2" disabled="#{!bindings.Commit.enabled}"
+                 actionListener="#{InscriptionDeliberationBean.OnInscriptionUpdated}"
+                 inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                 icon="/images/save-24.png"/>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+              binding="#{InscriptionDeliberationBean.popSuccess}">
+        <af:dialog id="d1" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl4" layout="scroll" halign="center">
+          <af:icon name="info" id="i1"/>
+          <af:outputText value="Enregistrement effectué" id="ot5"
+                         inlineStyle="color:Green; font-size:large; font-family:'' Times New Roman ''; font-weight:bold;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+  
+</ui:composition>

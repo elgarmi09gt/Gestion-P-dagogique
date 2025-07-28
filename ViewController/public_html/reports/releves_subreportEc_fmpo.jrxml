@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="releves_subreportEc" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b1883d6e-1465-4feb-98d9-56cbe019c8c5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IdFilUe" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IdInsPedSemUe" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT distinct ec.LIBELLE_LONG Ec, fec.ID_FILIERE_UE_SEMSTRE_EC IdFilEc, nc.NOTE, fec.COEFFICIENT
+FROM FILIERE_UE_SEMSTRE_EC fec
+JOIN FILIERE_UE_SEMSTRE fus ON fec.ID_FILIERE_UE_SEMSTRE=fus.ID_FILIERE_UE_SEMSTRE
+JOIN ec ON ec.ID_EC = fec.ID_EC
+JOIN NOTES_EC nc on nc.ID_FILIERE_UE_SEMSTRE_EC = fec.ID_FILIERE_UE_SEMSTRE_EC
+JOIN INSCRIPTION_PED_SEM_UE ipu on ipu.ID_INSCRIPTION_PED_SEM_UE = nc.ID_INSCRIPTION_PED_SEM_UE and ipu.ID_FILIERE_UE_SEMSTRE = fus.ID_FILIERE_UE_SEMSTRE
+WHERE fus.ID_FILIERE_UE_SEMSTRE=$P{IdFilUe}
+AND ipu.ID_INSCRIPTION_PED_SEM_UE=$P{IdInsPedSemUe} and nc.valide=1]]>
+	</queryString>
+	<field name="EC" class="java.lang.String"/>
+	<field name="IDFILEC" class="java.math.BigDecimal"/>
+	<field name="NOTE" class="java.math.BigDecimal"/>
+	<field name="COEFFICIENT" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="196" height="12" uuid="27a44ca5-8887-4b68-b740-46c2f128e07e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="00.00" isBlankWhenNull="true">
+				<reportElement x="196" y="0" width="37" height="12" uuid="edeaa717-30cc-4e60-9395-1856462ef59b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="0" width="16" height="12" uuid="20b98bed-bd8c-43f0-afcf-e504caf22078"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COEFFICIENT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

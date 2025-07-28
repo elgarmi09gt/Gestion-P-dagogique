@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="DateSoutenancePageDef"
+                Package="evaluation.dateSoutenance">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="HistoriqueStructureByUserName" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="HistoriqueStructureByUserNameIterator"/>
+    <iterator Binds="NiveauxDiplomante" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="NiveauxDiplomanteIterator"/>
+    <iterator Binds="MaquetteParcoursAnneeDipl" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="MaquetteParcoursAnneeDiplIterator"/>
+    <iterator Binds="EtudiantsDiplomes" RangeSize="12" DataControl="gestdapAppDataControl"
+              id="EtudiantsDiplomesIterator"/>
+    <searchRegion Binds="EtudiantsDiplomesIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtudiantsDiplomesQuery"/>
+  </executables>
+  <bindings>
+    <list IterBinding="HistoriqueStructureByUserNameIterator" ListOperMode="navigation"
+          ListIter="HistoriqueStructureByUserNameIterator" id="HistoriqueStructureByUserName" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="NiveauxDiplomanteIterator" ListOperMode="navigation" ListIter="NiveauxDiplomanteIterator"
+          id="NiveauxDiplomante" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="MaquetteParcoursAnneeDiplIterator" ListOperMode="navigation"
+          ListIter="MaquetteParcoursAnneeDiplIterator" id="MaquetteParcoursAnneeDipl" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <methodAction id="saveDateSoutenance" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="saveDateSoutenance" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.saveDateSoutenance.dataControl.dataProvider">
+      <NamedData NDName="etu_id" NDType="java.lang.Long"/>
+      <NamedData NDName="prcrs_maq_id" NDType="java.lang.Long"/>
+      <NamedData NDName="u_id" NDType="java.lang.Long"/>
+      <NamedData NDName="d_id" NDType="java.lang.String"/>
+    </methodAction>
+    <tree IterBinding="EtudiantsDiplomesIterator" id="EtudiantsDiplomes">
+      <nodeDefinition DefName="model.readOnlyView.EtudiantsDiplomesROVO" Name="EtudiantsDiplomes0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Datesoutenanceref"/>
+          <Item Value="IsUpdatable"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="EtudiantsDiplomesIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

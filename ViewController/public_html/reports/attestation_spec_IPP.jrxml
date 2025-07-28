@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="attestation_speciale_ipp" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2666c199-7a3d-490c-82ef-293a424eb4c6">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="266"/>
+	<parameter name="parcours" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="annee_univers" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\Niang\\works\\GestionPedagogiqueProd\\GestionPedagogique\\ViewController\\public_html\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+etu.NUMERO, pers.prenoms,pers.nom,pers.prenoms||' '||pers.nom PrenomNom, replace(to_char(pers.DATE_NAISSANCE,'DD-Month-YYYY'),' ','') DATE_NAISSANCE, pers.LIEU_NAISSANCE,
+DECODE(pers.DATE_NAISSANCE, null,' VERS '||pers.DATE_ESTIMEE||' à '||pers.LIEU_NAISSANCE,to_char(pers.DATE_NAISSANCE,'DD-MM-YYYY')||' à '||pers.LIEU_NAISSANCE) DateLieuNaiss
+,Decode(pers.ID_SEXE,1,'Monsieur','Madame' ) Civilite,
+an.LIBELLE_LONG AnneeUnivers,an.ID_ANNEES_UNIVERS
+,DECODE(tm.ID_TYPE_MENTION, 81, '',tm.LIBELLE_LONG) Mention,replace(to_char(me.DATE_SOUTENANCE,'DD-Month-YYYY'),' ','') DATE_SOUTENANCE,'« '||me.LIBELLE_LONG||' »' LIBELLE_LONG
+,s.LIBELLE_LONG Structures, sign.signataire,s.LIB_SIGNATAIRE
+FROM  INSCRIPTIONS_PEDAGOGIQUES ip
+JOIN  INSCRIPTIONS_ADMIN ia ON ia.ID_INSCRIPTION_ADMIN=ip.ID_INSCRIPTION_ADMIN
+JOIN  ANNEES_UNIVERS an on ia.ID_ANNEES_UNIVERS = an.ID_ANNEES_UNIVERS
+JOIN  TYPE_FORMATION tf ON tf.ID_TYPE_FORMATION = ia.ID_TYPE_FORMATION
+JOIN  ETUDIANTS etu ON etu.ID_ETUDIANT=ia.ID_ETUDIANT
+JOIN  PERSONNES pers ON pers.ID_PERSONNE=etu.ID_PERSONNE
+JOIN  CIVILITES cv on pers.ID_CIVILITE = cv.ID_CIVILITE
+JOIN  PARCOURS_MAQUETTE_ANNEE pma ON pma.ID_PARCOURS_MAQUET_ANNEE=ip.ID_PARCOURS_MAQUET_ANNEE AND pma.ID_ANNEES_UNIVERS=an.ID_ANNEES_UNIVERS
+JOIN  NIVEAUX_FORMATION_PARCOURS nfp ON nfp.ID_NIVEAU_FORMATION_PARCOURS=pma.ID_NIVEAU_FORMATION_PARCOURS
+JOIN  MEMOIRE_ETUDIANTS me on etu.ID_ETUDIANT = me.ID_ETUDIANT AND me.ID_PARCOURS_MAQUET_ANNEE=pma.ID_PARCOURS_MAQUET_ANNEE
+JOIN RESULTATS_ANNUELS ra on ip.ID_INSCRIPTION_PEDAGOGIQUE=ra.ID_INSCRIPTION_PEDAGOGIQUE
+JOIN TYPE_MENTION tm ON ra.ID_TYPE_MENTION=tm.ID_TYPE_MENTION
+JOIN NIVEAU_FORMATION_COHORTES nfc ON nfp.ID_NIVEAU_FORMATION_COHORTE=nfc.ID_NIVEAU_FORMATION_COHORTE
+JOIN NIVEAUX_FORMATIONS nf ON nfc.ID_NIVEAU_FORMATION=nf.ID_NIVEAU_FORMATION
+JOIN FORMATIONS fr ON nf.ID_FORMATION=fr.ID_FORMATION
+JOIN  HISTORIQUES_STRUCTURES hs on fr.ID_HISTORIQUES_STRUCTURE = hs.ID_HISTORIQUES_STRUCTURE
+JOIN  STRUCTURES s on hs.ID_STRUCTURES = s.ID_STRUCTURE
+LEFT JOIN  (
+            Select distinct pers.PRENOMS || ' '||pers.NOM signataire,sg.ID_SIGNATAIRE
+            from PERSONNES pers, SIGNATAIRE sg
+            WHERE pers.ID_PERSONNE=sg.ID_PERSONNE
+            ) sign on sign.ID_SIGNATAIRE = s.ID_SIGNATAIRE
+WHERE nfp.ID_NIVEAU_FORMATION_PARCOURS=$P{parcours}
+AND ia.ID_ANNEES_UNIVERS=$P{annee_univers}
+AND ra.RESULTAT=5]]>
+	</queryString>
+	<field name="NUMERO" class="java.lang.String"/>
+	<field name="PRENOMS" class="java.lang.String"/>
+	<field name="NOM" class="java.lang.String"/>
+	<field name="PRENOMNOM" class="java.lang.String"/>
+	<field name="DATE_NAISSANCE" class="java.lang.String"/>
+	<field name="LIEU_NAISSANCE" class="java.lang.String"/>
+	<field name="DATELIEUNAISS" class="java.lang.String"/>
+	<field name="CIVILITE" class="java.lang.String"/>
+	<field name="ANNEEUNIVERS" class="java.lang.String"/>
+	<field name="ID_ANNEES_UNIVERS" class="java.math.BigDecimal"/>
+	<field name="MENTION" class="java.lang.String"/>
+	<field name="DATE_SOUTENANCE" class="java.lang.String"/>
+	<field name="LIBELLE_LONG" class="java.lang.String"/>
+	<field name="STRUCTURES" class="java.lang.String"/>
+	<field name="SIGNATAIRE" class="java.lang.String"/>
+	<field name="LIB_SIGNATAIRE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="217" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="22" forecolor="#284EA0" uuid="8e5121e7-97e8-477a-90e7-255d2eb3376c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSITE CHEIKH ANTA DIOP DE DAKAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="21" width="555" height="18" forecolor="#284EA0" uuid="c6171bfd-2666-4ad7-9718-2724ee9b953e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSTITUT DES POLITIQUES PUBLIQUES ]]></text>
+			</staticText>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="224" y="43" width="130" height="70" uuid="e71675a1-f081-451a-a43b-e2741e34eabd"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR} +"ucad_att_spec.png"]]></imageExpression>
+			</image>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement positionType="Float" x="354" y="43" width="201" height="70" uuid="0f1f0bef-ba73-46b4-b4b1-2e70a19fd4e2"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR} +"Logo_ena_senegal_att.png"]]></imageExpression>
+			</image>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="26" y="43" width="198" height="70" uuid="d50c82b1-6463-48d4-a0a6-99be83be909a"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR} + "arcop_att_spec.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="47" y="118" width="471" height="41" uuid="62143845-8582-401a-b044-25ea18f8729f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MASTER PROFESSIONNEL EN MANAGEMENT ET RÉGULATION DES MACHÉS PUBLICS]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="41" y="164" width="486" height="50" backcolor="#00CCFF" uuid="952996f8-8edd-4b9c-b7a0-9aaffa61d50e"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="41" y="166" width="486" height="47" forecolor="#FFFFFF" backcolor="#33CCFF" uuid="ea357873-99a6-4a26-b85e-e750f5e03cfc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ATTESTATION DE REUSSITE ET D’OBTENTION DU DIPLÔME DE MASTER]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="445" splitType="Stretch">
+			<staticText>
+				<reportElement x="26" y="10" width="501" height="33" uuid="b29fb17e-95ac-4678-b422-9cac1701da0e"/>
+				<textElement>
+					<font fontName="Arial" size="13"/>
+				</textElement>
+				<text><![CDATA[Le Responsable Administratif et Financier de l’Institut des Politiques Publiques (IPP) de l’Université Cheikh Anta Diop (UCAD) de Dakar soussigné, atteste que :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="73" width="45" height="20" uuid="f9c8bebe-da75-4777-9681-61f5c10e7f50"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Né(e) le]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="127" width="201" height="20" uuid="89d794a0-5953-4e91-b824-4fc302f2027e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[A soutenu, devant un jury, en date du]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="158" width="504" height="20" uuid="41da174b-3eac-400e-9bd8-46618f7734c9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Un mémoire intitulé :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="26" y="284" width="94" height="20" uuid="2d6b5276-cd98-4669-9839-d41c16a3f036"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Avec la mention : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="101" width="52" height="20" uuid="e566dd60-7622-4a9a-b319-df800a96ea4e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Numéro : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="26" y="209" width="132" height="20" uuid="efef9424-10cc-4947-843e-935acc70e0c3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Le Jury a déclaré admis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="75" y="234" width="108" height="20" uuid="c14a5104-b418-42f7-9cb0-41fb1312a021"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Digne du grade de : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="75" y="257" width="60" height="20" uuid="10b84fd9-6d1e-4db4-9434-d682c661b01a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Spécialité : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="184" y="234" width="343" height="20" uuid="01df66dd-6a0c-4b0d-bb9e-a4a1675b297c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MASTER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="137" y="257" width="390" height="20" uuid="1dae1e68-79a7-4bf9-b13d-64abca4f5151"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MANAGEMENT ET RÉGULATION DES MARCHÉS PUBLICS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="26" y="308" width="112" height="20" uuid="3ff8a257-1e7a-4146-8351-df088a96ea56"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Année académique :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="23" y="422" width="86" height="20" uuid="c564b240-8e8e-4eb2-8c2c-ad26c0fa6d4e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Fait à Dakar, le ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="78" y="47" width="449" height="20" uuid="5f3631fb-97d6-4425-9b3e-6f9f49bcac20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRENOMNOM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="71" y="73" width="113" height="20" uuid="d93b75ab-b081-45d7-8709-9ecf136dce39"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATE_NAISSANCE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="185" y="73" width="14" height="20" uuid="b701fcfa-6db6-408c-9ef4-7158ed8e5922"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[à]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="200" y="73" width="327" height="20" uuid="6eee8047-b04f-4148-95d2-d7fce5261239"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIEU_NAISSANCE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="120" y="284" width="407" height="20" uuid="c2c3ae65-0505-4a06-8765-a26b94bb5e23"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MENTION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="138" y="308" width="389" height="20" uuid="23c750a9-befd-4539-bab1-c07b31237d9f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ANNEEUNIVERS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="78" y="101" width="449" height="20" uuid="40a6ab7d-d31f-4a18-ad79-565f207e33b9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NUMERO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="127" width="297" height="20" uuid="ad3c340f-e00f-4534-bec0-298758497651"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATE_SOUTENANCE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="26" y="183" width="501" height="20" uuid="38688300-671a-4627-bc86-25a754f685d9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIBELLE_LONG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="215" y="209" width="310" height="20" uuid="f61a1cce-f620-41bb-9bf1-6c19114c4683"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRENOMNOM}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement positionType="Float" x="109" y="422" width="88" height="20" uuid="dbd6812a-3697-4f92-951c-92617bd670af"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="282" y="334" width="245" height="20" uuid="f293278e-5d24-4cf6-96f6-1df57145b631"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIB_SIGNATAIRE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="282" y="353" width="245" height="20" uuid="e02694e6-321b-4e36-8a64-8f816d78a49f"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SIGNATAIRE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="26" y="47" width="52" height="20" uuid="5a17efb7-7f4e-4744-8c1c-7ce9dac09684"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CIVILITE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="160" y="209" width="52" height="20" uuid="2bf55bc9-3f6a-4851-ac94-aaa69c3d8e5c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CIVILITE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="71" splitType="Stretch">
+			<staticText>
+				<reportElement x="23" y="2" width="283" height="20" uuid="df0dfd7f-a645-4b9c-a8eb-e6e8ec1bb832"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[NB : cette attestation n’est délivrée qu’une seule fois.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="26" width="486" height="40" uuid="38d42267-7eda-4d97-aaae-5bf5463db5b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Institut des Politiques Publiques (IPP), UCAD-2, Bâtiment Pédagogique, rez-de-chaussée
+BP. 5005 Dakar-Fann - Contact : +221 771435478 - E.mail : ipp@ucad.edu.sn
+]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

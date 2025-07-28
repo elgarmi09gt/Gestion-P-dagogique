@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="entete_report" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="748f7c1e-b3d5-45b4-9d72-87ef4231d3fc">
+	<property name="ireport.zoom" value="2.5937424601000023"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_hs" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select etb.libelle_long Etablissement, etb.bp, etb.adresse, etb.lieu_siege, etb.logo, s.LIBELLE_LONG Structures
+,DECODE(inst.id_institut, NULL, s.LIBELLE_COURT,Sigle) Institut,
+DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, 'Tél. : '||s.TELEPHONE,inst.TELEPHONE)||''||DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL,' -- Email : ' ||s.EMAIL,inst.EMAIL) TelEmail
+from HISTORIQUES_STRUCTURES hs
+JOIN  STRUCTURES s on hs.ID_STRUCTURES = s.ID_STRUCTURE
+JOIN etablissements etb on s.id_etablissement=etb.id_etablissement
+LEFT JOIN (
+          SELECT id_institut,hst.ID_HISTORIQUES_STRUCTURE,ins.LIBELLE_LONG institut,ins.LIBELLE_COURT Sigle, ins.EMAIL, ins.TELEPHONE, ins.FAX
+          FROM HISTORIQUES_STRUCTURES hst JOIN INSTITUTS ins on hst.ID_HISTORIQUES_STRUCTURE = ins.STRUCTURE_PARENT
+          ) inst ON inst.ID_HISTORIQUES_STRUCTURE = hs.ID_HISTORIQUES_STRUCTURE
+where hs.ID_HISTORIQUES_STRUCTURE=$P{id_hs}]]>
+	</queryString>
+	<field name="ETABLISSEMENT" class="java.lang.String"/>
+	<field name="BP" class="java.lang.String"/>
+	<field name="ADRESSE" class="java.lang.String"/>
+	<field name="LIEU_SIEGE" class="java.lang.String"/>
+	<field name="LOGO" class="java.io.InputStream"/>
+	<field name="STRUCTURES" class="java.lang.String"/>
+	<field name="INSTITUT" class="java.lang.String"/>
+	<field name="TELEMAIL" class="java.lang.String"/>
+	<detail>
+		<band height="56">
+			<image hAlign="Center">
+				<reportElement x="0" y="0" width="85" height="53" uuid="3488832d-3aba-4654-acb8-2477f9676759"/>
+				<imageExpression><![CDATA[$F{LOGO}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="85" y="0" width="452" height="13" forecolor="#284EA0" uuid="c0f14e9d-10ff-4a79-890c-3f7d9be33359"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ETABLISSEMENT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="85" y="14" width="452" height="12" forecolor="#28B1EF" uuid="2252a05e-4281-4178-bfd4-6922f145d32e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRUCTURES}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="85" y="25" width="452" height="12" uuid="45ca18e4-72d8-489c-a313-44ba473f26af"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{INSTITUT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="85" y="38" width="452" height="12" forecolor="#28C6EF" uuid="03ecc690-9202-44f8-baba-b9b005607f80"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Times New Roman" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BP}+" "+$F{TELEMAIL}+" - "+$F{ADRESSE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

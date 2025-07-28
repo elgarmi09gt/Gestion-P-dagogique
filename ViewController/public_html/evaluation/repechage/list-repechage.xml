@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="list-repechage">
+    <default-activity>IsClosedAn</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <method-call id="ExecuteWithParams">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="listrepechages">
+      <page>/evaluation/repechage/listrepechages.jsff</page>
+    </view>
+    <method-call id="ExecuteWithParams1">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="listrepechagesemestre">
+      <page>/evaluation/repechage/listrepechagesemestre.jsff</page>
+    </view>
+    <view id="listrepsemestre">
+      <page>/evaluation/repechage/listrepsemestre.jsff</page>
+    </view>
+    <method-call id="IsClosedAn">
+      <method>#{bindings.IsClosedAn.execute}</method>
+      <return-value>#{pageFlowScope.isAnClosed}</return-value>
+      <outcome>
+        <fixed-outcome>IsClosedAn</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="ExecuteWithParams2">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="getEtatDeliberation">
+      <method>#{bindings.getEtatDeliberation.execute}</method>
+      <return-value>#{pageFlowScope.etatDeliberation}</return-value>
+      <outcome>
+        <fixed-outcome>getEtatDeliberation</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="ExecuteWithParams3">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__3">
+      <from-activity-id>ExecuteWithParams1</from-activity-id>
+      <control-flow-case id="__4">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>listrepechages</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__5">
+      <from-activity-id>IsClosedAn</from-activity-id>
+      <control-flow-case id="__6">
+        <from-outcome>IsClosedAn</from-outcome>
+        <to-activity-id>ExecuteWithParams2</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__1">
+      <from-activity-id>ExecuteWithParams2</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>getEtatDeliberation</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__7">
+      <from-activity-id>getEtatDeliberation</from-activity-id>
+      <control-flow-case id="__8">
+        <from-outcome>getEtatDeliberation</from-outcome>
+        <to-activity-id>ExecuteWithParams3</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__9">
+      <from-activity-id>ExecuteWithParams3</from-activity-id>
+      <control-flow-case id="__10">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>listrepsemestre</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

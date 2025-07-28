@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NiveauFormationMaquetteAnneEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="NIVEAU_FORMATION_MAQUETTE_ANNE"
+  AliasName="NiveauFormationMaquetteAnneE1"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdNivFormationMaquetteAnne"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIV_FORMATION_MAQUETTE_ANNE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_MAQUETTE_ANNE"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdNiveauFormation"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_MAQUETTE_ANNE"/>
+  <Attribute
+    Name="IdAnneesUnivers"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_MAQUETTE_ANNE"/>
+  <Attribute
+    Name="IdMaquette"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_MAQUETTE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_MAQUETTE_ANNE"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="NIVEAU_FORMATION_MAQUETTE_ANNE"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="NIVEAU_FORMATION_MAQUETTE_ANNE"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_MAQUETTE_ANNE"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_MAQUETTE_ANNE"/>
+  <Attribute
+    Name="IdNiveauFormationSpecialite"
+    Precision="5"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION_SPECIALITE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_MAQUETTE_ANNE"/>
+  <Attribute
+    Name="IdNivFormSpecOption"
+    Precision="5"
+    Scale="0"
+    ColumnName="ID_NIV_FORM_SPEC_OPTION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_MAQUETTE_ANNE"/>
+  <AccessorAttribute
+    Name="MaquettesEO"
+    Association="model.assoc.MaquetteToNivFormMaqAnAssoc"
+    AssociationEnd="model.assoc.MaquetteToNivFormMaqAnAssoc.MaquettesEO"
+    AssociationOtherEnd="model.assoc.MaquetteToNivFormMaqAnAssoc.NiveauFormationMaquetteAnneEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <ViewLinkAccessor
+    Name="MaquettesVO"
+    ViewLink="model.viewlink.MaquetteToNivForMaqAnVL"
+    ViewLinkEnd="model.viewlink.MaquetteToNivForMaqAnVL.MaquettesVO"
+    ViewLinkOtherEnd="model.viewlink.MaquetteToNivForMaqAnVL.NiveauFormationMaquetteAnneVO"
+    Type="oracle.jbo.server.ViewRowImpl"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkNivFormatioMaquettAnne"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_NIV_FORMATIO_MAQUETT_ANNE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationMaquetteAnneEO.IdNivFormationMaquetteAnne"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormMaqAnOptio">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ID_NIV_FORM_SPEC_OPTION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORM_MAQ_AN_OPTIO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationMaquetteAnneEO.IdNivFormSpecOption"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormMaqAnSpec">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAU_FORMATION_SPECIALITE"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORM_MAQ_AN_SPEC"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationMaquetteAnneEO.IdNiveauFormationSpecialite"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormatiMaquetUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORMATI_MAQUET_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationMaquetteAnneEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormatioMaqUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORMATIO_MAQ_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationMaquetteAnneEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormatioMaquettAnne">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ANNEES_UNIVERS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORMATIO_MAQUETT_ANNE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationMaquetteAnneEO.IdAnneesUnivers"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormatioMaquettMaquet">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_MAQUETTES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORMATIO_MAQUETT_MAQUET"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationMaquetteAnneEO.IdMaquette"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormatioMaquettNivfor">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAUX_FORMATIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORMATIO_MAQUETT_NIVFOR"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationMaquetteAnneEO.IdNiveauFormation"/>
+    </AttrArray>
+  </Key>
+</Entity>

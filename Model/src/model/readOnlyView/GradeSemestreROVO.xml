@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="GradeSemestreROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.GradeSemestreROVORowImpl"
+  ComponentClass="model.readOnlyView.GradeSemestreROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.GradeSemestreROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT Distinct sm.ID_SEMESTRE, sm.LIBELLE_LONG, sm.LIBELLE_COURT,nfp.ID_NIVEAU_FORMATION_PARCOURS    
+FROM NIVEAUX_FORMATION_PARCOURS nfp    
+JOIN NIVEAU_FORMATION_COHORTES nfc ON nfp.ID_NIVEAU_FORMATION_COHORTE=nfc.ID_NIVEAU_FORMATION_COHORTE    
+JOIN NIVEAUX_FORMATIONS nf ON nfc.ID_NIVEAU_FORMATION=nf.ID_NIVEAU_FORMATION    
+JOIN FORMATIONS fr ON nf.ID_FORMATION=fr.ID_FORMATION    
+JOIN GRADES_FORMATION gf on fr.ID_GRADES_FORMATION=gf.ID_GRADES_FORMATION    
+JOIN GRADE_SEMESTRE gs on gf.ID_GRADES_FORMATION = gs.ID_GRADE and gs.ID_NIVEAU=nf.ID_NIVEAU    
+JOIN SEMESTRES sm on gs.ID_SEMESTRE=sm.ID_SEMESTRE   
+ORDER BY sm.ID_SEMESTRE]]></SQLQuery>
+  <ViewAttribute
+    Name="IdSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_SEMESTRE"
+    Expression="ID_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleCourt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="75"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_COURT"
+    Expression="LIBELLE_COURT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <ViewLinkAccessor
+    Name="ParcoursUserROVO"
+    ViewLink="model.viewlink.ParcoursUserToGradeSemestreVL"
+    Type="model.readOnlyView.ParcoursUserROVORowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

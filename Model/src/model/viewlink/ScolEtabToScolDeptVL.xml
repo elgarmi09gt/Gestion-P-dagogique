@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ScolEtabToScolDeptVL"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge">
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.viewlink.ScolEtabToScolDeptVL_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewLinkDefEnd
+    Name="ScolEtablissement"
+    Cardinality="1"
+    Source="true"
+    Owner="model.readOnlyView.ScolEtablissement">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_accessor" Value="true"/>
+      <Attr Name="_finderName" Value="ScolEtablissement"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.readOnlyView.ScolEtablissement.CodeScol"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="ScolDepartement"
+    Cardinality="-1"
+    Owner="model.readOnlyView.ScolDepartement">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_finderName" Value="ScolDepartement"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.readOnlyView.ScolDepartement.EtablissemCode"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewLink>

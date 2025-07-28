@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="CalendrierDeliberationEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="CALENDRIER_DELIBERATION"
+  AliasName="CalendrierDeliberationEO"
+  BindingStyle="OracleName"
+  xmlns:validation="http://xmlns.oracle.com/adfm/validation">
+  <Attribute
+    Name="IdCalendrierDeliberation"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_CALENDRIER_DELIBERATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="CALENDRIER_DELIBERATION"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="LibelleLong"
+    Precision="200"
+    ColumnName="LIBELLE_LONG"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="CALENDRIER_DELIBERATION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="LibelleCourt"
+    Precision="75"
+    ColumnName="LIBELLE_COURT"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="CALENDRIER_DELIBERATION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="IdAnneesUnivers"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CALENDRIER_DELIBERATION"/>
+  <Attribute
+    Name="IdSession"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_SESSION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CALENDRIER_DELIBERATION"/>
+  <Attribute
+    Name="IdSemestre"
+    Precision="5"
+    Scale="0"
+    ColumnName="ID_SEMESTRE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CALENDRIER_DELIBERATION"/>
+  <Attribute
+    Name="DateDebutDelibProvisoir"
+    IsNotNull="true"
+    ColumnName="DATE_DEBUT_DELIB_PROVISOIR"
+    SQLType="DATE"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="CALENDRIER_DELIBERATION">
+    <validation:CompareValidationBean
+      Name="DateDebutDelibProvisoirRule0"
+      ResId="model.entities.CalendrierDeliberationEO.DateDebutDelibProvisoir_Rule_0"
+      OnAttribute="DateDebutDelibProvisoir"
+      OperandType="EXPR"
+      Inverse="false"
+      CompareType="GREATERTHANEQUALTO">
+      <validation:TransientExpression
+        Name="ValidationRuleScript"
+        trustMode="untrusted"
+        CodeSourceName="CalendrierDeliberationEORow"/>
+    </validation:CompareValidationBean>
+  </Attribute>
+  <Attribute
+    Name="DateFinDelibProvisoir"
+    IsNotNull="true"
+    ColumnName="DATE_FIN_DELIB_PROVISOIR"
+    SQLType="DATE"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="CALENDRIER_DELIBERATION">
+    <validation:CompareValidationBean
+      Name="DateFinDelibProvisoirRule0"
+      ResId="model.entities.CalendrierDeliberationEO.DateFinDelibProvisoir_Rule_0"
+      OnAttribute="DateFinDelibProvisoir"
+      OperandType="EXPR"
+      Inverse="false"
+      CompareType="GREATERTHANEQUALTO">
+      <validation:TransientExpression
+        Name="ValidationRuleScript"
+        trustMode="untrusted"
+        CodeSourceName="CalendrierDeliberationEORow"/>
+    </validation:CompareValidationBean>
+    <Dependencies>
+      <Item
+        Value="DateDebutDelibProvisoir"
+        Type="notify"/>
+    </Dependencies>
+  </Attribute>
+  <Attribute
+    Name="DateDebutDelibDefinitive"
+    IsNotNull="true"
+    ColumnName="DATE_DEBUT_DELIB_DEFINITIVE"
+    SQLType="DATE"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="CALENDRIER_DELIBERATION">
+    <validation:CompareValidationBean
+      Name="DateDebutDelibDefinitiveRule0"
+      ResId="model.entities.CalendrierDeliberationEO.DateDebutDelibDefinitive_Rule_0"
+      OnAttribute="DateDebutDelibDefinitive"
+      OperandType="EXPR"
+      Inverse="false"
+      CompareType="GREATERTHANEQUALTO">
+      <validation:TransientExpression
+        Name="ValidationRuleScript"
+        trustMode="untrusted"
+        CodeSourceName="CalendrierDeliberationEORow"/>
+    </validation:CompareValidationBean>
+    <Dependencies>
+      <Item
+        Value="DateFinReclammation"
+        Type="notify"/>
+    </Dependencies>
+  </Attribute>
+  <Attribute
+    Name="DateFinDelibDefinitive"
+    IsNotNull="true"
+    ColumnName="DATE_FIN_DELIB_DEFINITIVE"
+    SQLType="DATE"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="CALENDRIER_DELIBERATION">
+    <validation:CompareValidationBean
+      Name="DateFinDelibDefinitiveRule0"
+      ResId="model.entities.CalendrierDeliberationEO.DateFinDelibDefinitive_Rule_0"
+      OnAttribute="DateFinDelibDefinitive"
+      OperandType="EXPR"
+      Inverse="false"
+      CompareType="GREATERTHANEQUALTO">
+      <validation:TransientExpression
+        Name="ValidationRuleScript"
+        trustMode="untrusted"
+        CodeSourceName="CalendrierDeliberationEORow"/>
+    </validation:CompareValidationBean>
+    <Dependencies>
+      <Item
+        Value="DateDebutDelibDefinitive"
+        Type="notify"/>
+    </Dependencies>
+  </Attribute>
+  <Attribute
+    Name="DateDebutReclammation"
+    IsNotNull="true"
+    ColumnName="DATE_DEBUT_RECLAMMATION"
+    SQLType="DATE"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="CALENDRIER_DELIBERATION">
+    <validation:CompareValidationBean
+      Name="DateDebutReclammationRule0"
+      ResId="model.entities.CalendrierDeliberationEO.DateDebutReclammation_Rule_0"
+      OnAttribute="DateDebutReclammation"
+      OperandType="EXPR"
+      Inverse="false"
+      CompareType="GREATERTHANEQUALTO">
+      <validation:TransientExpression
+        Name="ValidationRuleScript"
+        trustMode="untrusted"
+        CodeSourceName="CalendrierDeliberationEORow"/>
+    </validation:CompareValidationBean>
+    <Dependencies>
+      <Item
+        Value="DateFinDelibProvisoir"
+        Type="notify"/>
+    </Dependencies>
+  </Attribute>
+  <Attribute
+    Name="DateFinReclammation"
+    IsNotNull="true"
+    ColumnName="DATE_FIN_RECLAMMATION"
+    SQLType="DATE"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="CALENDRIER_DELIBERATION">
+    <validation:CompareValidationBean
+      Name="DateFinReclammationRule0"
+      ResId="model.entities.CalendrierDeliberationEO.DateFinReclammation_Rule_0"
+      OnAttribute="DateFinReclammation"
+      OperandType="EXPR"
+      Inverse="false"
+      CompareType="GREATERTHANEQUALTO">
+      <validation:TransientExpression
+        Name="ValidationRuleScript"
+        trustMode="untrusted"
+        CodeSourceName="CalendrierDeliberationEORow"/>
+    </validation:CompareValidationBean>
+    <Dependencies>
+      <Item
+        Value="DateDebutReclammation"
+        Type="notify"/>
+    </Dependencies>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="CALENDRIER_DELIBERATION"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="CALENDRIER_DELIBERATION"/>
+  <Attribute
+    Name="UtiCree"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CALENDRIER_DELIBERATION"
+    IsNotNull="true"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="CALENDRIER_DELIBERATION"/>
+  <Attribute
+    Name="IdNiveauFormationCohorte"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION_COHORTE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CALENDRIER_DELIBERATION"/>
+  <ViewLinkAccessor
+    Name="NiveauFormationParcours"
+    ViewLink="model.viewlink.NiveauFormationParcourToCalendrierDelib"
+    ViewLinkEnd="model.viewlink.NiveauFormationParcourToCalendrierDelib.NiveauFormationParcours"
+    ViewLinkOtherEnd="model.viewlink.NiveauFormationParcourToCalendrierDelib.CalendrierDeliberationVO"
+    Type="oracle.jbo.server.ViewRowImpl"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkCalendrierDeliberation"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_CALENDRIER_DELIBERATION"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CalendrierDeliberationEO.IdCalendrierDeliberation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCalendrierAnUnivers">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ANNEES_UNIVERS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CALENDRIER_AN_UNIVERS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CalendrierDeliberationEO.IdAnneesUnivers"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCalendrierNivFormCoh">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAU_FORMATION_COHORTES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CALENDRIER_NIV_FORM_COH"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CalendrierDeliberationEO.IdNiveauFormationCohorte"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCalendrierSemestre">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_SEMESTRES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CALENDRIER_SEMESTRE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CalendrierDeliberationEO.IdSemestre"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCalendrierSession">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_SESSIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CALENDRIER_SESSION"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CalendrierDeliberationEO.IdSession"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCalendrierUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CALENDRIER_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CalendrierDeliberationEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCalendrierUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CALENDRIER_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CalendrierDeliberationEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</Entity>

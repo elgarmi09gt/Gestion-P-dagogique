@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="UeEvalNewROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.UeEvalNewROVORowImpl"
+  ComponentClass="model.readOnlyView.UeEvalNewROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.UeEvalNewROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_sem"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="user_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="maquette"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_sess"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <ViewAccessor
+    Name="ParcoursInfoLOV1"
+    ViewObjectName="model.readOnlyView.ParcoursInfoLOV"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_IdNiveauFormationParcours"
+    ListVOName="ParcoursInfoLOV1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdNiveauFormationParcours"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdNiveauFormationParcours"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibParcours"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[SELECT distinct         
+    fus.ID_FILIERE_UE_SEMSTRE,         
+    fus.CODIFICATION,         
+    fus.ID_SEMESTRE,      
+    pma.ID_ANNEES_UNIVERS,        
+    cd.ID_CALENDRIER_DELIBERATION,    
+    crt.ID_COHORTE,    
+    UE.LIBELLE_LONG,         
+    ufus.ID_UTILISATEUR,         
+    pma.ID_PARCOURS_MAQUET_ANNEE,         
+    nfp.ID_NIVEAU_FORMATION_PARCOURS,         
+    nf.LIBELLE_LONG AS lib_niv_form,         
+    au.LIBELLE_LONG AS lib_annee,         
+    ufu.ID_UTILISATEUR UtiAccess,  
+    pdt_j.ID_UTILISATEUR Pdt_Jury,  
+    crt.LIBELLE    
+FROM         
+    ((((((((MAQUETTES m       
+    JOIN FILIERE_UE_SEMSTRE fus ON m.ID_MAQUETTE = fus.ID_MAQUETTE)       
+    JOIN PARCOURS_MAQUETTE_ANNEE pma ON pma.ID_MAQUETTE = fus.ID_MAQUETTE)       
+    JOIN UTILIS_FILIERE_UE_SEMESTRE ufu ON pma.ID_PARCOURS_MAQUET_ANNEE = ufu.ID_PARCOURS_MAQ_ANNEE AND fus.ID_FILIERE_UE_SEMSTRE = ufu.ID_FILIERE_UE_SEMSTRE)       
+    JOIN NIVEAUX_FORMATION_PARCOURS nfp ON nfp.ID_NIVEAU_FORMATION_PARCOURS = pma.ID_NIVEAU_FORMATION_PARCOURS)       
+    JOIN NIVEAU_FORMATION_COHORTES nfc ON nfc.ID_NIVEAU_FORMATION_COHORTE = nfp.ID_NIVEAU_FORMATION_COHORTE)       
+    JOIN COHORTES crt on nfc.ID_COHORTE=crt.ID_COHORTE    
+    JOIN NIVEAUX_FORMATIONS nf ON nfc.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION)       
+    JOIN UE ON UE.ID_UE = fus.ID_UE)       
+    JOIN ANNEES_UNIVERS au ON pma.ID_ANNEES_UNIVERS = au.ID_ANNEES_UNIVERS)       
+    JOIN CALENDRIER_DELIBERATION cd ON au.ID_ANNEES_UNIVERS=cd.ID_ANNEES_UNIVERS AND fus.ID_SEMESTRE=cd.ID_SEMESTRE AND nfc.ID_NIVEAU_FORMATION_COHORTE=cd.ID_NIVEAU_FORMATION_COHORTE      
+    LEFT JOIN (        
+        SELECT         
+            ufs.ID_UTILISATEUR,         
+            ufs.ID_FILIERE_UE_SEMSTRE,         
+            ufs.ID_PARCOURS_MAQ_ANNEE         
+        FROM         
+            UTILIS_FILIERE_UE_SEMESTRE ufs         
+        WHERE         
+            ufs.ROLE = 'RESPONSABLE UE'        
+    ) ufus ON ufus.ID_FILIERE_UE_SEMSTRE = fus.ID_FILIERE_UE_SEMSTRE AND ufus.ID_PARCOURS_MAQ_ANNEE = pma.ID_PARCOURS_MAQUET_ANNEE     
+  LEFT JOIN (  
+    Select distinct uj.ID_UTILISATEUR,pma.ID_PARCOURS_MAQUET_ANNEE  
+    from PARCOURS_MAQUETTE_ANNEE pma  
+    join JURY j on pma.ID_NIVEAU_FORMATION_PARCOURS=j.ID_NIVEAU_FORMATION_PARCOURS and pma.ID_ANNEES_UNIVERS=j.ID_ANNEES_UNIVERS  
+    join UTILISATEURS_JURY uj on j.ID_JURY=uj.ID_JURY  
+    where uj.ROLE='PRESIDENT' and j.ID_ANNEES_UNIVERS=:id_annee and j.ID_SEMESTRE =:id_sem   
+    and pma.ID_MAQUETTE = :maquette and pma.ID_NIVEAU_FORMATION_PARCOURS = :parcours  
+  ) pdt_j on pma.ID_PARCOURS_MAQUET_ANNEE=pdt_j.ID_PARCOURS_MAQUET_ANNEE  
+WHERE         
+    fus.ID_SEMESTRE = :id_sem AND pma.ID_ANNEES_UNIVERS = :id_annee AND nfp.ID_NIVEAU_FORMATION_PARCOURS = :parcours AND ufu.ID_UTILISATEUR = :user_id AND m.ID_MAQUETTE = :maquette AND cd.ID_SESSION = :id_sess       
+ORDER BY  
+    fus.CODIFICATION]]></SQLQuery>
+  <ViewAttribute
+    Name="IdFiliereUeSemstre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_FILIERE_UE_SEMSTRE"
+    Expression="ID_FILIERE_UE_SEMSTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Codification"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODIFICATION"
+    Expression="CODIFICATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SEMESTRE"
+    Expression="ID_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdCalendrierDeliberation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_CALENDRIER_DELIBERATION"
+    Expression="ID_CALENDRIER_DELIBERATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdCohorte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_COHORTE"
+    Expression="ID_COHORTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdUtilisateur"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_UTILISATEUR"
+    Expression="ID_UTILISATEUR"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdParcoursMaquetAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PARCOURS_MAQUET_ANNEE"
+    Expression="ID_PARCOURS_MAQUET_ANNEE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"
+    LOVName="LOV_IdNiveauFormationParcours">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibNivForm"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_NIV_FORM"
+    Expression="LIB_NIV_FORM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_ANNEE"
+    Expression="LIB_ANNEE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Utiaccess"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="UTIACCESS"
+    Expression="UTIACCESS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="PdtJury"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="PDT_JURY"
+    Expression="PDT_JURY"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Libelle"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE"
+    Expression="LIBELLE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdFiliereUeSemstre"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="EcEvalNewROVO"
+    ViewLink="model.viewlink.UeEvalNewToEcEvalNewVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="sendEmailPageDef"
+                Package="dap.sendEmail">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables">
+      <variable Type="boolean" Name="genererJetonEtEnvoyerEmail_return" IsQueriable="false" IsUpdateable="0"
+                DefaultValue="${bindings.genererJetonEtEnvoyerEmail.result}"/>
+      <variable Type="java.lang.String" Name="genererJetonEtEnvoyerEmail_username" IsQueriable="false"/>
+    </variableIterator>
+    <iterator id="EtudiantsToMailIterator" Binds="EtudiantsToMail" DataControl="gestdapAppDataControl" RangeSize="25"/>
+  </executables>
+  <bindings>
+    <methodAction id="sendEmail" RequiresUpdateModel="true" Action="invokeMethod" MethodName="sendEmail"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.sendEmail.dataControl.dataProvider">
+      <NamedData NDName="to" NDValue="" NDType="java.lang.String"/>
+      <NamedData NDName="subject" NDValue="" NDType="java.lang.String"/>
+      <NamedData NDName="body" NDValue="" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="genererJetonEtEnvoyerEmail" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="genererJetonEtEnvoyerEmail" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.genererJetonEtEnvoyerEmail.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.genererJetonEtEnvoyerEmail_genererJetonEtEnvoyerEmail_dataControl_dataProvider_genererJetonEtEnvoyerEmail_result">
+      <NamedData NDName="username" NDType="java.lang.String" NDValue="${bindings.genererJetonEtEnvoyerEmail_username}"/>
+    </methodAction>
+    <attributeValues IterBinding="variables" id="username">
+      <AttrNames>
+        <Item Value="genererJetonEtEnvoyerEmail_username"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

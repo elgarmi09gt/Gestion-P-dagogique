@@ -1,0 +1,315 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <af:panelGroupLayout id="pgl2" layout="scroll">
+    <af:panelGroupLayout id="pgl6" layout="horizontal">
+      <af:panelGroupLayout id="pgl1" layout="vertical">
+        <af:outputFormatted value="Département" id="of1" inlineStyle="font-size:medium; font-weight:bolder; "/>
+        <af:selectOneChoice value="#{bindings.ScolDeptIntegrationFr.inputValue}"
+                            required="#{bindings.ScolDeptIntegrationFr.hints.mandatory}"
+                            shortDesc="#{bindings.ScolDeptIntegrationFr.hints.tooltip}"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:500px"
+                            id="soc1" autoSubmit="true">
+          <f:selectItems value="#{bindings.ScolDeptIntegrationFr.items}" id="si1"/>
+          <f:validator binding="#{bindings.ScolDeptIntegrationFr.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+      <af:spacer width="20" height="20" id="s1"/>
+      <af:panelGroupLayout id="pgl7" layout="vertical">
+        <af:outputFormatted value="FORMATION" id="of3" inlineStyle="font-size:medium; font-weight:bolder; "/>
+        <af:selectOneChoice value="#{bindings.ScolFormationIntegration.inputValue}"
+                            required="#{bindings.ScolFormationIntegration.hints.mandatory}"
+                            shortDesc="#{bindings.ScolFormationIntegration.hints.tooltip}" id="soc2"
+                            labelStyle="font-size:medium; font-weight:bolder; "
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:500px"
+                            autoSubmit="true">
+          <f:selectItems value="#{bindings.ScolFormationIntegration.items}" id="si2"/>
+          <f:validator binding="#{bindings.ScolFormationIntegration.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+      <!--af:button text="button 1" id="b5" actionListener="#{IntegrationFormationBean.onTestType}"/-->
+      <af:outputFormatted value="#{bindings.CodeFormation.inputValue}" id="of11"
+                          visible="#{securityContext.userInRole['Admin']}">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.CodeFormation.format}"/>
+      </af:outputFormatted>
+    </af:panelGroupLayout>
+    <af:panelTabbed position="above" id="pt1" styleClass="AFStretchWidth" inlineStyle="margin-top:10px">
+      <af:showDetailItem id="tab1" text="Formations intégrées" icon="/images/valider.png" disclosed="true"
+                         visible="false">
+        <af:panelGroupLayout id="pgl5" binding="#{IntegrationFormationBean.panIntegratedNivFr}" layout="scroll">
+          <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                              binding="#{IntegrationFormationBean.panColIntegNivFr}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.ScolNivFormIntegrated.collectionModel}" var="row"
+                      rows="#{bindings.ScolNivFormIntegrated.rangeSize}"
+                      emptyText="#{bindings.ScolNivFormIntegrated.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.ScolNivFormIntegrated.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ScolNivFormIntegrated.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.ScolNivFormIntegrated.rangeSize}"
+                      filterModel="#{bindings.ScolNivFormIntegratedQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ScolNivFormIntegratedQuery.processQuery}" varStatus="vs" id="t1"
+                      scrollPolicy="page" columnStretching="column:c1" partialTriggers=":::soc1"
+                      binding="#{IntegrationFormationBean.tabIntegNivFr}">
+              <af:column sortProperty="#{bindings.ScolNivFormIntegrated.hints.LibelleLong.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.LIBELLE}" id="c1">
+                <af:outputText value="#{row.LibelleLong}"
+                               shortDesc="#{bindings.ScolNivFormIntegrated.hints.LibelleLong.tooltip}" id="ot1"/>
+                <f:facet name="filter">
+                  <af:inputText label="Label 1" id="it1"/>
+                </f:facet>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormIntegrated.hints.LibelleCourt.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.ABREVIATION}" id="c2" width="350">
+                <af:outputText value="#{row.LibelleCourt}"
+                               shortDesc="#{bindings.ScolNivFormIntegrated.hints.LibelleCourt.tooltip}" id="ot2"/>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle1.RESPONSABLE}" id="c8" width="200">
+                <af:outputText value="#{row.Responsable}"
+                               shortDesc="#{bindings.ScolNivFormIntegrated.hints.Responsable.tooltip}" id="ot5"/>
+              </af:column>
+              <af:column id="c5">
+                <af:button id="b2" icon="/images/edit_icon.png" visible="false"/>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelGroupLayout>
+      </af:showDetailItem>
+      <af:showDetailItem id="tab2" text="Formations non intégrées" icon="/images/sync_64px.png" visible="false">
+        <af:panelGroupLayout id="pgl3" layout="scroll" halign="center"
+                             binding="#{IntegrationFormationBean.panGrpNotIntegNivFr}">
+          <af:button text="Intégrer" id="b3"
+                     inlineStyle="border-radius:20px 20px 20px 20px / 20px 20px 20px 20px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large; color:White; font-family:Verdana;"
+                     actionListener="#{IntegrationFormationBean.OnIntegratedNiveauAction}"/>
+          <af:iterator id="i3" value="#{IntegrationFormationBean.initTopForm()}"/>
+          <af:iterator id="i1" value="#{IntegrationFormationBean.initForm()}"/>
+          <af:panelCollection id="pc2" styleClass="AFStretchWidth"
+                              binding="#{IntegrationFormationBean.panColNotIntegNivFr}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.ScolNivFormNotIntegrated.collectionModel}" var="row"
+                      rows="#{bindings.ScolNivFormNotIntegrated.rangeSize}"
+                      emptyText="#{bindings.ScolNivFormNotIntegrated.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.ScolNivFormNotIntegrated.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ScolNivFormNotIntegrated.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.ScolNivFormNotIntegrated.rangeSize}"
+                      filterModel="#{bindings.ScolNivFormNotIntegratedQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ScolNivFormNotIntegratedQuery.processQuery}" varStatus="vs" id="t2"
+                      scrollPolicy="page" columnStretching="column:c3" partialTriggers=":::soc1"
+                      binding="#{IntegrationFormationBean.tabNotIntegNivFr}">
+              <af:column id="c9" align="center">
+                <af:selectBooleanCheckbox value="#{row.bindings.isNivSelected.inputValue}"
+                                          label="#{row.bindings.isNivSelected.label}"
+                                          shortDesc="#{bindings.ScolNivFormNotIntegrated.hints.isNivSelected.tooltip}"
+                                          id="sbc1" autoSubmit="true"/>
+                <f:facet name="header">
+                  <af:selectBooleanCheckbox id="sbc2"
+                                            autoSubmit="true"/>
+                </f:facet>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormNotIntegrated.hints.LibelleLong.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.LIBELLE}" id="c3" noWrap="false">
+                <af:outputText value="#{row.LibelleLong}"
+                               shortDesc="#{bindings.ScolNivFormNotIntegrated.hints.LibelleLong.tooltip}" id="ot3"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormNotIntegrated.hints.LibelleCourt.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.ABREVIATION}" id="c4" width="350">
+                <af:outputText value="#{row.LibelleCourt}"
+                               shortDesc="#{bindings.ScolNivFormNotIntegrated.hints.LibelleCourt.tooltip}" id="ot4"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormNotIntegrated.hints.Cohorte.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.COHORTE}" id="c6" width="150">
+                <af:outputText value="#{row.Cohorte}"
+                               shortDesc="#{bindings.ScolNivFormNotIntegrated.hints.Cohorte.tooltip}" id="ot6">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolNivFormNotIntegrated.hints.Cohorte.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormNotIntegrated.hints.NombreEtudiant.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.EFFECTIF}" id="c7">
+                <af:outputText value="#{row.NombreEtudiant}"
+                               shortDesc="#{bindings.ScolNivFormNotIntegrated.hints.NombreEtudiant.tooltip}" id="ot7">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolNivFormNotIntegrated.hints.NombreEtudiant.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{bindings.ScolNivFormNotIntegrated.hints.Responsable.label}" id="c10" width="150">
+                <af:outputText value="#{row.Responsable}"
+                               shortDesc="#{bindings.ScolNivFormNotIntegrated.hints.Responsable.tooltip}" id="ot8"/>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+          <af:button text="Intégrer" id="b1"
+                     inlineStyle="border-radius:20px 20px 20px 20px / 20px 20px 20px 20px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large; color:White; font-family:Verdana;"
+                     actionListener="#{IntegrationFormationBean.OnIntegratedNiveauAction}"/>
+        </af:panelGroupLayout>
+      </af:showDetailItem>
+      <af:showDetailItem text="#{viewcontrollerBundle1.PARCOURS_INTEGRE}" id="sdi2">
+        <af:panelGroupLayout id="pgl9" layout="scroll" binding="#{IntegrationFormationBean.panGrpPrcrsIntegrated}">
+          <af:panelCollection id="pc4" styleClass="AFStretchWidth"
+                              binding="#{IntegrationFormationBean.panColPrcrsIntegrated}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.ScolNivFormPrcrsIntegrated.collectionModel}" var="row"
+                      rows="#{bindings.ScolNivFormPrcrsIntegrated.rangeSize}"
+                      emptyText="#{bindings.ScolNivFormPrcrsIntegrated.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.ScolNivFormPrcrsIntegrated.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ScolNivFormPrcrsIntegrated.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.ScolNivFormPrcrsIntegrated.rangeSize}"
+                      filterModel="#{bindings.ScolNivFormPrcrsIntegratedQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ScolNivFormPrcrsIntegratedQuery.processQuery}" varStatus="vs" id="t4"
+                      binding="#{IntegrationFormationBean.tabPrcrsIntegrated}" partialTriggers=":::soc2"
+                      scrollPolicy="page" columnStretching="column:c15">
+              <af:column sortProperty="#{bindings.ScolNivFormPrcrsIntegrated.hints.LibelleLong.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.LIBELLE}"
+                         id="c15">
+                <af:outputText value="#{row.LibelleLong}"
+                               shortDesc="#{bindings.ScolNivFormPrcrsIntegrated.hints.LibelleLong.tooltip}" id="ot9"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormPrcrsIntegrated.hints.Responsable.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.RESPONSABLE}"
+                         id="c17">
+                <af:outputText value="#{row.Responsable}"
+                               shortDesc="#{bindings.ScolNivFormPrcrsIntegrated.hints.Responsable.tooltip}" id="ot11"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormPrcrsIntegrated.hints.Libelle.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.COHORTE}"
+                         id="c18">
+                <af:outputText value="#{row.Libelle}"
+                               shortDesc="#{bindings.ScolNivFormPrcrsIntegrated.hints.Libelle.tooltip}" id="ot12"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormPrcrsIntegrated.hints.LibelleOption.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.OPTION}" id="c19" width="250">
+                <af:outputText value="#{row.LibelleOption}"
+                               shortDesc="#{bindings.ScolNivFormPrcrsIntegrated.hints.LibelleOption.tooltip}"
+                               id="ot13"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormPrcrsIntegrated.hints.LibelleSpecialite.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.SPECIALITE}" id="c20">
+                <af:outputText value="#{row.LibelleSpecialite}"
+                               shortDesc="#{bindings.ScolNivFormPrcrsIntegrated.hints.LibelleSpecialite.tooltip}"
+                               id="ot14"/>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelGroupLayout>
+      </af:showDetailItem>
+      <af:showDetailItem text="#{viewcontrollerBundle1.PARCOURS_NON_INTEGRE}" id="sdi1">
+        <af:panelGroupLayout id="pgl8" layout="vertical" halign="center"
+                             binding="#{IntegrationFormationBean.panGrpPrcrsNotIntegrated}">
+          <af:button text="Integrer" id="b4"
+                     inlineStyle="border-radius:10px ; background:#2897e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large; color:White; font-family:Verdana;"
+                     actionListener="#{IntegrationFormationBean.OnIntegratedPrcrs}">
+            <!--af:iterator id="i5" value="#{IntegrationFormationBean.initTopPrcrsForm()}"/>
+          <af:iterator id="i4" value="#{IntegrationFormationBean.initPrcrsForm()}"/-->
+          </af:button>
+          <af:panelCollection id="pc3" styleClass="AFStretchWidth"
+                              binding="#{IntegrationFormationBean.panColPrcrsNotIntegrated}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.ScolNivFormPrcrsNotIntegrated.collectionModel}" var="row"
+                      rows="#{bindings.ScolNivFormPrcrsNotIntegrated.rangeSize}"
+                      emptyText="#{bindings.ScolNivFormPrcrsNotIntegrated.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.ScolNivFormPrcrsNotIntegrated.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ScolNivFormPrcrsNotIntegrated.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.ScolNivFormPrcrsNotIntegrated.rangeSize}"
+                      filterModel="#{bindings.ScolNivFormPrcrsNotIntegratedQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ScolNivFormPrcrsNotIntegratedQuery.processQuery}" varStatus="vs" id="t3"
+                      scrollPolicy="page" columnStretching="column:c12"
+                      binding="#{IntegrationFormationBean.tabPrcrsNotIntegrated}">
+              <af:column id="c16" align="center" width="100">
+                <af:selectBooleanCheckbox value="#{row.bindings.isChecked.inputValue}"
+                                          label="#{row.bindings.isChecked.label}"
+                                          shortDesc="#{bindings.ScolNivFormPrcrsNotIntegrated.hints.isChecked.tooltip}"
+                                          id="sbc5" autoSubmit="true"/>
+                <f:facet name="header">
+                  <af:selectBooleanCheckbox id="sbc6"
+                                            autoSubmit="true"/>
+                </f:facet>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormPrcrsNotIntegrated.hints.LibParcours.name}"
+                         filterable="true" sortable="true" headerText="#{viewcontrollerBundle1.PARCOURS}" id="c12"
+                         noWrap="false" width="102">
+                <af:outputFormatted value="#{row.bindings.LibParcours.inputValue}" id="of4"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormPrcrsNotIntegrated.hints.NombreEtudiant.name}"
+                         filterable="true" sortable="true" headerText="#{viewcontrollerBundle1.NOMBRE_ETUDIANT}"
+                         id="c13" width="100">
+                <af:outputFormatted value="#{row.bindings.NombreEtudiant.inputValue}" id="of5">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolNivFormPrcrsNotIntegrated.hints.NombreEtudiant.format}"/>
+                </af:outputFormatted>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolNivFormPrcrsNotIntegrated.hints.Responsable.name}"
+                         filterable="true" sortable="true" headerText="#{viewcontrollerBundle1.RESPONSABLE}" id="c14"
+                         width="250">
+                <af:outputFormatted value="#{row.bindings.Responsable.inputValue}" id="of6"/>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelGroupLayout>
+      </af:showDetailItem>
+    </af:panelTabbed>
+  </af:panelGroupLayout>
+ 
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+              binding="#{IntegrationFormationBean.popImportFailed}">
+      <af:dialog id="d2" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl4" layout="vertical" halign="center">
+          <af:icon name="info" id="i2"/>
+          <af:outputFormatted value="Erreur : #{sessionScope.msg}" id="of2"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+  </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+              binding="#{IntegrationFormationBean.popDfSection}">
+      <af:dialog id="d3" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl10" layout="vertical" halign="center">
+          <af:icon name="info" id="i6"/>
+          <af:outputFormatted value="Ce parcours Existe dans plusieurs département : Veuillez contacter l'administrateur !" id="of7"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p3"
+            binding="#{IntegrationFormationBean.popNoPrcrsSelected}">
+    <af:dialog id="d1" title="Info">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl11" layout="vertical" halign="center">
+          <af:icon name="info" id="i4"/>
+          <af:outputFormatted value="Veuillez sélectionner un parcours !" id="of8"/>
+        </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p4"
+            binding="#{IntegrationFormationBean.popNoPrcrsNotInt}">
+    <af:dialog id="d4" title="Formations non intégrées !!!" type="cancel" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl12" layout="vertical" halign="center">
+      <af:outputFormatted value="Le responsble de formation n'est pas renseigner !" id="of9"/>
+      <af:outputFormatted value="L'assesseur peut se rapprocher du DAP pour renseigner ce dernier dans le système !" id="of10"/>
+        <!--af:outputFormatted value="Veuillez paramétrer les responsables des parcours ci-dessous" id="of9"/>
+        <af:table var="row" rowBandingInterval="0" id="t5" value="#{sessionScope.prcrs_not_int}"
+                  columnStretching="last">
+          <af:column sortable="false" headerText="Niveaux" id="c11">
+            <af:outputText value="#{row.getLibelle()}" id="ot10"/>
+          </af:column>
+        </af:table-->
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

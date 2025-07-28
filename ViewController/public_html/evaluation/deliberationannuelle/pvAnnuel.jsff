@@ -1,0 +1,617 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+    <af:panelGroupLayout id="pgl2" layout="scroll">
+        <!--af:iterator id="i4" value="#{DeliberationAnnuelelBean.isOperationsAn()}"/-->
+        <af:panelGroupLayout id="pgl13" layout="horizontal" styleClass="AFStretchWidth"
+                             inlineStyle="border: solid 2px #2897e8;">
+            <af:panelGroupLayout id="pgl3" layout="vertical" styleClass="AFStretchWidth" halign="center">
+                <af:panelGroupLayout id="pgl30" layout="vertical" halign="start">
+                    <af:outputFormatted value="#{bindings.LibParcours.inputValue}" id="of8"
+                                        inlineStyle="font-size:large; font-weight:bolder; line-height:30px;"/>
+                </af:panelGroupLayout>
+                <af:outputFormatted value="PV Annuelle (#{sessionScope.id_session == 1 ? 'Première ' : 'Deuxième '} Session)"
+                                    id="of1" inlineStyle="font-size:large; font-weight:bolder; line-height:50px;"
+                                    styleUsage="pageStamp"/>
+                <af:panelGroupLayout id="pgl6" layout="vertical" inlineStyle="line-height:20px;"
+                                     styleClass="AFStretchWidth" binding="#{DeliberationAnnuelelBean.resAnPanGrp}">
+                    <af:panelGroupLayout id="pgl7" layout="horizontal" halign="center"
+                                         binding="#{DeliberationAnnuelelBean.resanPangrp2}">
+                        <af:button id="b1"
+                                   inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                                   useWindow="false" actionListener="#{DeliberationAnnuelelBean.DeliberationAnnuelle}"
+                                   binding="#{DeliberationAnnuelelBean.btnDeliberer}" shortDesc="Déliberer"
+                                   text="Déliberer" icon="/images/delib-24.png"
+                                   disabled="#{pageFlowScope.iscloseAn != 0}" visible="false"
+                                   disabledIcon="/images/disable-24.png"/>
+                        <!--icon="/images/Finance-Pos-Terminal-icon.png"-->
+                        <af:button id="b2"
+                                   inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                                   binding="#{DeliberationAnnuelelBean.btnPvSess1}" shortDesc="Pv Session 1"
+                                   text="Exporter Pv" icon="/images/excel-24.png"
+                                   disabled="#{pageFlowScope.isdelibeAn == 0}" disabledIcon="/images/disable-24.png"
+                                   visible="#{sessionScope.id_session == 1 ? true : false}">
+                            <!--icon="/images/Microsoft-Excel-2013-icon-small.png"-->
+                            <af:exportCollectionActionListener type="excelHTML" exportedId="pc1:t1"
+                                                               filename="Pv_Annuel_Première_Session_#{bindings.LibParcours.inputValue}.xls"
+                                                               title="Pv Session 1"/>
+                        </af:button>
+                        <af:button id="b6"
+                                   inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                                   binding="#{DeliberationAnnuelelBean.btnPvSess2}" shortDesc="Pv Session 2"
+                                   text="Exporter Pv" icon="/images/excel-24.png"
+                                   disabled="#{pageFlowScope.isdelibeAn == 0}" disabledIcon="/images/disable-24.png"
+                                   visible="#{sessionScope.id_session == 1 ? false : true}">
+                            <!--icon="/images/Microsoft-Excel-2013-icon-small.png"-->
+                            <af:exportCollectionActionListener type="excelHTML" exportedId="pc2:t2"
+                                                               filename="Pv_Annuel_Deuxième_Session_#{bindings.LibParcours.inputValue}.xls"
+                                                               title="Pv Session 2"/>
+                        </af:button>
+                        <af:button id="b8"
+                                   text="Clôturer Pour Extrants"
+                                   inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                                   disabled="#{pageFlowScope.isOpenDc == 0 ? (pageFlowScope.iscloseAn == 0 ? (securityContext.userInRole['Chef de scolarite, Admin'] ? false : true) : true) : true}"
+                                   disabledIcon="/images/disable-24.png"
+                                   visible="#{securityContext.userInRole['Chef de scolarite, Admin']}"
+                                   icon="/images/passed-24.png">
+                            <af:showPopupBehavior popupId="p10"/>
+                        </af:button>
+                        <af:button id="b3"
+                                   inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                                   shortDesc="Clôturer" text="Autoriser/Clôturer" icon="/images/lock-24.png"
+                                   disabledIcon="/images/disable-24.png"
+                                   disabled="#{pageFlowScope.isdelibeAn == 0 or pageFlowScope.iscloseAn != 0 or !(securityContext.userInRole['Chef de scolarite'])}">
+                            <!---->
+                            <af:showPopupBehavior popupId="p1"/>
+                        </af:button>
+                        <af:button text="Cloture Adm" id="b7"
+                                   visible='#{securityContext.userInRole["Admin"] ? true : false}'>
+                            <af:showPopupBehavior popupId="p1"/>
+                        </af:button>
+                        <!--icon="/images/Close-icon-small.png"-->
+                        <af:button id="b4"
+                                   inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                                   shortDesc="Réouvrir" text="Réouvrir" icon="/images/open-24.png" disabled="true"
+                                   visible="false" disabledIcon="/images/disable-24.png">
+                            <af:showPopupBehavior popupId="p1"/>
+                        </af:button>
+                    </af:panelGroupLayout>
+                </af:panelGroupLayout>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl4" layout="vertical" halign="center" styleClass="AFStretchWidth"
+                                 visible="false">
+                <af:outputFormatted value="Recherche" id="of2"
+                                    inlineStyle="font-size:large; font-weight:bolder; line-height:50px;"/>
+                <af:panelGroupLayout id="pgl9" halign="center" valign="middle" layout="horizontal"
+                                     inlineStyle="font-size:15px;" styleClass="AFStretchWidth">
+                    <af:outputFormatted value="Filtrer Par" id="of3" inlineStyle="font-weight:bold;font-size:large;"/>
+                    <af:selectOneChoice required="#{bindings.FiltreAnuelleROVO1.hints.mandatory}" id="soc1"
+                                        contentStyle="width:300px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                        inlineStyle="margin:10px">
+                        <f:selectItems value="#{bindings.FiltreAnuelleROVO1.items}" id="si1"/>
+                        <f:validator binding="#{bindings.FiltreAnuelleROVO1.validator}"/>
+                    </af:selectOneChoice>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl10" layout="horizontal" styleClass="AFStretchWidth">
+                    <af:selectOneChoice required="#{bindings.FiltreModeDelibAn1.hints.mandatory}" id="soc2"
+                                        contentStyle="width:300px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                        <f:selectItems value="#{bindings.FiltreModeDelibAn1.items}" id="si2"/>
+                        <f:validator binding="#{bindings.FiltreModeDelibAn1.validator}"/>
+                    </af:selectOneChoice>
+                    <af:inputText id="it1"
+                                  contentStyle="width:100px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                  autoComplete="off" binding="#{DeliberationAnnuelelBean.first}"
+                                  requiredMessageDetail="Entrer une valeur de filtre"/>
+                    <af:outputFormatted value="Et" id="of4" inlineStyle="font-weight:bold;font-size:large;"/>
+                    <af:inputText id="it2"
+                                  contentStyle="width:100px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                  autoComplete="off" binding="#{DeliberationAnnuelelBean.second}"
+                                  requiredMessageDetail="Entrer une valeur de filtre"/>
+                </af:panelGroupLayout>
+                <af:button id="b5"
+                           inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin :5px"
+                           iconPosition="leading" text="Rechercher" icon="/images/icons8-search-24.png"/>
+                <!--icon="/images/search.png"-->
+            </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl1" layout="scroll" inlineStyle="border: solid 2px #2897e8;"
+                             binding="#{DeliberationAnnuelelBean.pvAnPanGrp}"
+                             visible="#{pageFlowScope.isdelibeAn != 0}">
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{DeliberationAnnuelelBean.pvAnPancol}"
+                                visible="#{sessionScope.id_session eq 1}">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="statusbar"/>
+                <af:table value="#{bindings.PvAnnuel.collectionModel}" var="row" rows="#{bindings.PvAnnuel.rangeSize}"
+                          emptyText="#{bindings.PvAnnuel.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0" selectedRowKeys="#{bindings.PvAnnuel.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.PvAnnuel.collectionModel.makeCurrent}" rowSelection="single"
+                          fetchSize="#{bindings.PvAnnuel.rangeSize}"
+                          filterModel="#{bindings.PvAnnuelQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.PvAnnuelQuery.processQuery}" varStatus="vs" id="t1"
+                          scrollPolicy="page" binding="#{DeliberationAnnuelelBean.pvAnTab}" columnStretching="last">
+                    <af:column sortProperty="#{bindings.PvAnnuel.hints.Numero.name}" filterable="true" sortable="true"
+                               headerText="#{viewcontrollerBundle.NUMERO}" id="c1" width="150">
+                        <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of9"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuel.hints.Nom.name}" filterable="true" sortable="true"
+                               headerText="#{viewcontrollerBundle.NOM}" id="c2" width="150">
+                        <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of10"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuel.hints.Prenoms.name}" filterable="true" sortable="true"
+                               headerText="#{viewcontrollerBundle.PRENOMS}" id="c3" width="250">
+                        <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of11"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuel.hints.Moyenne.name}" filterable="true" sortable="true"
+                               headerText="#{viewcontrollerBundle.MOYENNE}" id="c4">
+                        <af:outputFormatted value="#{row.bindings.Moyenne.inputValue}" id="of12">
+                            <af:convertNumber groupingUsed="false" pattern="#{bindings.PvAnnuel.hints.Moyenne.format}"/>
+                        </af:outputFormatted>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuel.hints.Credit.name}" filterable="true" sortable="true"
+                               headerText="#{viewcontrollerBundle.CREDIT}" id="c5">
+                        <af:outputFormatted value="#{row.bindings.Credit.inputValue}" id="of5">
+                            <af:convertNumber groupingUsed="false" pattern="#{bindings.PvAnnuel.hints.Credit.format}"/>
+                        </af:outputFormatted>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuel.hints.Resultat.name}" filterable="true" sortable="true"
+                               headerText="#{viewcontrollerBundle.RESULTAT}" id="c6" width="250">
+                        <af:outputFormatted value="#{row.bindings.Resultat.inputValue}" id="of6"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuel.hints.SessionValid.name}" filterable="true"
+                               sortable="true" headerText="#{viewcontrollerBundle.SESSION_VALIDATION}" id="c7"
+                               width="150">
+                        <af:outputFormatted value="#{row.bindings.SessionValid.inputValue}" id="of7"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuel.hints.Mention.name}" filterable="true" sortable="true"
+                               headerText="#{viewcontrollerBundle.MENTION}" id="c8">
+                        <af:outputFormatted value="#{row.bindings.Mention.inputValue}" id="of13"/>
+                    </af:column>
+                </af:table>
+            </af:panelCollection>
+            <af:panelCollection id="pc2" styleClass="AFStretchWidth" visible="#{sessionScope.id_session ne 1}">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="statusbar"/>
+                <af:table value="#{bindings.PvAnnuelSess2.collectionModel}" var="row"
+                          rows="#{bindings.PvAnnuelSess2.rangeSize}"
+                          emptyText="#{bindings.PvAnnuelSess2.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0" selectedRowKeys="#{bindings.PvAnnuelSess2.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.PvAnnuelSess2.collectionModel.makeCurrent}"
+                          rowSelection="single" fetchSize="#{bindings.PvAnnuelSess2.rangeSize}"
+                          filterModel="#{bindings.PvAnnuelSess2Query.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.PvAnnuelSess2Query.processQuery}" varStatus="vs" id="t2"
+                          columnStretching="last" scrollPolicy="page">
+                    <af:column sortProperty="#{bindings.PvAnnuelSess2.hints.Numero.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.PvAnnuelSess2.hints.Numero.label}" id="c9"
+                               width="150">
+                        <af:outputText value="#{row.Numero}" shortDesc="#{bindings.PvAnnuelSess2.hints.Numero.tooltip}"
+                                       id="ot1"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuelSess2.hints.Nom.name}" filterable="true" sortable="true"
+                               headerText="#{bindings.PvAnnuelSess2.hints.Nom.label}" id="c10" width="150">
+                        <af:outputText value="#{row.Nom}" shortDesc="#{bindings.PvAnnuelSess2.hints.Nom.tooltip}"
+                                       id="ot2"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuelSess2.hints.Prenoms.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.PvAnnuelSess2.hints.Prenoms.label}" id="c11"
+                               width="250">
+                        <af:outputText value="#{row.Prenoms}"
+                                       shortDesc="#{bindings.PvAnnuelSess2.hints.Prenoms.tooltip}" id="ot3"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuelSess2.hints.Moyenne.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.PvAnnuelSess2.hints.Moyenne.label}" id="c12">
+                        <af:outputText value="#{row.Moyenne}"
+                                       shortDesc="#{bindings.PvAnnuelSess2.hints.Moyenne.tooltip}" id="ot4">
+                            <af:convertNumber groupingUsed="false"
+                                              pattern="#{bindings.PvAnnuelSess2.hints.Moyenne.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuelSess2.hints.Credit.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.PvAnnuelSess2.hints.Credit.label}" id="c13">
+                        <af:outputText value="#{row.Credit}" shortDesc="#{bindings.PvAnnuelSess2.hints.Credit.tooltip}"
+                                       id="ot5">
+                            <af:convertNumber groupingUsed="false"
+                                              pattern="#{bindings.PvAnnuelSess2.hints.Credit.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuelSess2.hints.Resultat.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.PvAnnuelSess2.hints.Resultat.label}" id="c14"
+                               width="250">
+                        <af:outputText value="#{row.Resultat}"
+                                       shortDesc="#{bindings.PvAnnuelSess2.hints.Resultat.tooltip}" id="ot6"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuelSess2.hints.SessionValid.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.PvAnnuelSess2.hints.SessionValid.label}" id="c15"
+                               width="150">
+                        <af:outputText value="#{row.SessionValid}"
+                                       shortDesc="#{bindings.PvAnnuelSess2.hints.SessionValid.tooltip}" id="ot7"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PvAnnuelSess2.hints.Mention.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.PvAnnuelSess2.hints.Mention.label}" id="c16">
+                        <af:outputText value="#{row.Mention}"
+                                       shortDesc="#{bindings.PvAnnuelSess2.hints.Mention.tooltip}" id="ot8"/>
+                    </af:column>
+                </af:table>
+            </af:panelCollection>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl14" visible="#{pageFlowScope.isdelibeAn eq 0}" layout="vertical" halign="center">
+            <af:outputFormatted value="Rassurez-vous que les présidents de jury ont clôturé les deux semestres de la #{sessionScope.id_session == 1 ? 'Première ' : 'Deuxième '} Session !!!"
+                                id="of22" inlineStyle="font-size:large; font-weight:bolder;"/>
+        </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+              binding="#{DeliberationAnnuelelBean.popConfirmClose}">
+        <af:dialog id="d2" title="Confirmation clôture" type="yesNo" affirmativeTextAndAccessKey="OUI"
+                   noTextAndAccessKey="ANNULER" dialogListener="#{DeliberationAnnuelelBean.onConfirmClose}">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl5" layout="vertical" halign="center">
+                <af:icon name="info" id="i2"/>
+                <af:outputFormatted value="Voulez-vous clôturer la session ?" id="of14"
+                                    inlineStyle="font-size:large; color:Blue;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{DeliberationAnnuelelBean.popInfClose}">
+        <af:dialog id="d3" title="Attention" type="yesNo" affirmativeTextAndAccessKey="CONTINUER"
+                   noTextAndAccessKey="ANNULER" dialogListener="#{DeliberationAnnuelelBean.onClosed}">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl8" layout="vertical" halign="center" inlineStyle="line-height:30px;">
+                <af:icon name="info" id="i1"/>
+                <af:outputFormatted value="Assurez-vous d'avoir fini définitivement la délibération de la #{sessionScope.id_session == 1 ? 'première ' : 'deuxième '} session !!!"
+                                    id="of17" inlineStyle="font-size:large;"/>
+                <af:outputFormatted value="Si vous continuez, les étudiants seront autorisés a s'inscrire pour l'année suivante"
+                                    id="of18" inlineStyle="font-size:large;"/>
+                <af:outputFormatted value="NB : Aucune modification ne sera autorisée sur ces etudiants pour la #{sessionScope.id_session == 1 ? 'première ' : 'deuxième '} session"
+                                    id="of19" inlineStyle="color:Red; font-size:large;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3"
+              binding="#{DeliberationAnnuelelBean.popAnDelbSuccess}">
+        <af:dialog id="d4" title="Informations !!!" type="ok" inlineStyle="text-align:center">
+            <af:outputFormatted value="Année délibérée avec success !" id="of15"
+                                inlineStyle="font-size:large; color:Green;"/>
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popInf" binding="#{DeliberationAnnuelelBean.popInf}">
+        <af:dialog id="d1" title="Informations !!!" type="ok" inlineStyle="text-align:center">
+            <af:outputFormatted value="Avant de pouvoir délibérer l'année, Assurez-vous que les deux semestres sont clôturés"
+                                id="of16" inlineStyle="font-size:large;color:red"/>
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p4" contentDelivery="lazyUncached"
+              binding="#{DeliberationAnnuelelBean.popNivSup}">
+        <af:dialog id="d5" type="okCancel" affirmativeTextAndAccessKey="Enregistrer" cancelTextAndAccessKey="Annuler"
+                   dialogListener="#{DeliberationAnnuelelBean.onConfirmaurization}"
+                   title="#{viewcontrollerBundle.AUTORISATIONS_DES_ETUDIANTS}">
+            <f:facet name="buttonBar"/>
+            <af:selectOneChoice value="#{bindings.NiveauxSectionsSup.inputValue}"
+                                label="#{viewcontrollerBundle.NIVEAU_SUPERIEUR}"
+                                required="#{bindings.NiveauxSectionsSup.hints.mandatory}"
+                                shortDesc="#{bindings.NiveauxSectionsSup.hints.tooltip}" id="soc3"
+                                valueChangeListener="#{DeliberationAnnuelelBean.onNivSupChanged}"
+                                contentStyle="width:300px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                labelStyle="font-size:large">
+                <f:selectItems value="#{bindings.NiveauxSectionsSup.items}" id="si3"/>
+                <f:validator binding="#{bindings.NiveauxSectionsSup.validator}"/>
+            </af:selectOneChoice>
+            <af:table value="#{bindings.ListAutorisationSess11.collectionModel}" var="row"
+                      rows="#{bindings.ListAutorisationSess11.rangeSize}"
+                      emptyText="#{bindings.ListAutorisationSess11.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.ListAutorisationSess11.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ListAutorisationSess11.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.ListAutorisationSess11.rangeSize}"
+                      filterModel="#{bindings.ListAutorisationSess1Query.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ListAutorisationSess1Query.processQuery}" varStatus="vs" id="t5">
+                <af:column sortProperty="#{bindings.ListAutorisationSess11.hints.IsSelected.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.ListAutorisationSess11.hints.IsSelected.label}"
+                           id="c35">
+                    <af:outputText value="#{row.IsSelected}"
+                                   shortDesc="#{bindings.ListAutorisationSess11.hints.IsSelected.tooltip}" id="ot9"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.ListAutorisationSess11.hints.Numero.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.ListAutorisationSess11.hints.Numero.label}" id="c36">
+                    <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of39"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.ListAutorisationSess11.hints.Prenoms.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.ListAutorisationSess11.hints.Prenoms.label}" id="c37">
+                    <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of40"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.ListAutorisationSess11.hints.Nom.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.ListAutorisationSess11.hints.Nom.label}" id="c38">
+                    <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of41"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.ListAutorisationSess11.hints.Moyenne.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.ListAutorisationSess11.hints.Moyenne.label}" id="c39">
+                    <af:outputFormatted value="#{row.bindings.Moyenne.inputValue}" id="of42">
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.ListAutorisationSess11.hints.Moyenne.format}"/>
+                    </af:outputFormatted>
+                </af:column>
+                <af:column sortProperty="#{bindings.ListAutorisationSess11.hints.Credit.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.ListAutorisationSess11.hints.Credit.label}" id="c40">
+                    <af:outputFormatted value="#{row.bindings.Credit.inputValue}" id="of43">
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.ListAutorisationSess11.hints.Credit.format}"/>
+                    </af:outputFormatted>
+                </af:column>
+                <af:column sortProperty="#{bindings.ListAutorisationSess11.hints.Resultat.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.ListAutorisationSess11.hints.Resultat.label}"
+                           id="c41">
+                    <af:outputFormatted value="#{row.bindings.Resultat.inputValue}" id="of44"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.ListAutorisationSess11.hints.Mention.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.ListAutorisationSess11.hints.Mention.label}" id="c42">
+                    <af:outputFormatted value="#{row.bindings.Mention.inputValue}" id="of45"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.ListAutorisationSess11.hints.SessionValid.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.ListAutorisationSess11.hints.SessionValid.label}"
+                           id="c43">
+                    <af:outputFormatted value="#{row.bindings.SessionValid.inputValue}" id="of46"/>
+                </af:column>
+            </af:table>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p5" binding="#{DeliberationAnnuelelBean.popSuccess}">
+        <af:dialog id="d6" type="cancel" cancelTextAndAccessKey="Fermer" title="Information">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl11" layout="vertical" halign="center">
+                <af:icon name="info" id="i3"/>
+                <af:outputFormatted value="SESSION CLÔTUREE ET AUTORISATION BIEN EFFECTUEE" id="of20"
+                                    inlineStyle="color:#2898e8; font-weight:bold;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p6" binding="#{DeliberationAnnuelelBean.popend}">
+        <af:dialog id="d7" title="Confirmer" type="yesNo" affirmativeTextAndAccessKey="OUI" noTextAndAccessKey="ANNULER"
+                   dialogListener="#{DeliberationAnnuelelBean.onConfirmeNivSup}">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl12" layout="vertical" halign="center">
+                <af:outputFormatted value="Voulez-vous réellement autoriser les étudiants à s'inscrire à ce niveau"
+                                    id="of21" inlineStyle="font-size:large; color:Blue;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p7" binding="#{DeliberationAnnuelelBean.popNivSupOpt}"
+              contentDelivery="lazyUncached">
+        <af:dialog id="d8" title="#{viewcontrollerBundle.AUTORISATIONS_DES_ETUDIANTS}"
+                   affirmativeTextAndAccessKey="Enregistrer" cancelTextAndAccessKey="Fermer"
+                   dialogListener="#{DeliberationAnnuelelBean.OnAutorisedOptAction}">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl15" layout="scroll" halign="center" inlineStyle="line-height:30px;">
+                <af:panelGroupLayout id="pgl16" layout="horizontal" inlineStyle="margin-bottom : 10px">
+                    <af:outputFormatted value="Niveaux Supérieurs" id="of47" styleUsage="instruction"
+                                        inlineStyle="font-size:large; font-weight:bold;"/>
+                    <af:selectOneChoice value="#{bindings.NiveauxSuperieursOptions.inputValue}"
+                                        required="#{bindings.NiveauxSuperieursOptions.hints.mandatory}"
+                                        shortDesc="#{bindings.NiveauxSuperieursOptions.hints.tooltip}" id="soc4"
+                                        valueChangeListener="#{DeliberationAnnuelelBean.onNivSupOptChanged}"
+                                        contentStyle="width:300px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                        autoSubmit="true">
+                        <f:selectItems value="#{bindings.NiveauxSuperieursOptions.items}" id="si4"/>
+                        <f:validator binding="#{bindings.NiveauxSuperieursOptions.validator}"/>
+                    </af:selectOneChoice>
+                </af:panelGroupLayout>
+                <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+                    <f:facet name="menus"/>
+                    <f:facet name="toolbar"/>
+                    <f:facet name="statusbar"/>
+                    <af:table value="#{bindings.ListAutorisationSess1.collectionModel}" var="row"
+                              rows="#{bindings.ListAutorisationSess1.rangeSize}"
+                              emptyText="#{bindings.ListAutorisationSess1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.ListAutorisationSess1.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.ListAutorisationSess1.collectionModel.makeCurrent}"
+                              rowSelection="single" fetchSize="#{bindings.ListAutorisationSess1.rangeSize}"
+                              filterModel="#{bindings.ListAutorisationSess1Query.queryDescriptor}" filterVisible="true"
+                              queryListener="#{bindings.ListAutorisationSess1Query.processQuery}" varStatus="vs" id="t3"
+                              columnStretching="column:c18" scrollPolicy="page">
+                        <af:column sortProperty="#{bindings.ListAutorisationSess1.hints.IsSelected.name}"
+                                   filterable="true" sortable="true" id="c25" align="center" width="50">
+                            <af:selectBooleanCheckbox value="#{row.bindings.IsSelected.inputValue}"
+                                                      label="#{row.bindings.IsSelected.label}"
+                                                      shortDesc="#{bindings.ListAutorisationSess1.hints.IsSelected.tooltip}"
+                                                      id="sbc1" autoSubmit="true"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess1.hints.Numero.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess1.hints.Numero.label}"
+                                   id="c17" width="125">
+                            <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of23"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess1.hints.Prenoms.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess1.hints.Prenoms.label}"
+                                   id="c18" width="250">
+                            <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of24"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess1.hints.Nom.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess1.hints.Nom.label}"
+                                   id="c19" width="125">
+                            <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of25"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess1.hints.Moyenne.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess1.hints.Moyenne.label}"
+                                   id="c20">
+                            <af:outputFormatted value="#{row.bindings.Moyenne.inputValue}" id="of26">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.ListAutorisationSess1.hints.Moyenne.format}"/>
+                            </af:outputFormatted>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess1.hints.Credit.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess1.hints.Credit.label}"
+                                   id="c21">
+                            <af:outputFormatted value="#{row.bindings.Credit.inputValue}" id="of27">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.ListAutorisationSess1.hints.Credit.format}"/>
+                            </af:outputFormatted>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess1.hints.Resultat.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ListAutorisationSess1.hints.Resultat.label}" id="c22"
+                                   width="250">
+                            <af:outputFormatted value="#{row.bindings.Resultat.inputValue}" id="of28"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess1.hints.Mention.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess1.hints.Mention.label}"
+                                   id="c23">
+                            <af:outputFormatted value="#{row.bindings.Mention.inputValue}" id="of29"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess1.hints.SessionValid.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ListAutorisationSess1.hints.SessionValid.label}" id="c24">
+                            <af:outputFormatted value="#{row.bindings.SessionValid.inputValue}" id="of30"/>
+                        </af:column>
+                    </af:table>
+                </af:panelCollection>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p8"
+              binding="#{DeliberationAnnuelelBean.popNivSupOptSess2}" contentDelivery="lazyUncached">
+        <af:dialog id="d9" affirmativeTextAndAccessKey="Enregistrer" cancelTextAndAccessKey="Fermer"
+                   title="#{viewcontrollerBundle.AUTORISATIONS_DES_ETUDIANTS}"
+                   dialogListener="#{DeliberationAnnuelelBean.OnAutorisedOptAction}">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl18" layout="scroll" halign="center" inlineStyle="line-height:30px;">
+                <af:panelGroupLayout id="pgl17" layout="horizontal">
+                    <af:outputFormatted value="Niveaux Supérieurs" id="of48"
+                                        inlineStyle="font-size:large; font-weight:bold;" styleUsage="instruction"/>
+                    <af:selectOneChoice value="#{bindings.NiveauxSuperieursOptions.inputValue}"
+                                        required="#{bindings.NiveauxSuperieursOptions.hints.mandatory}"
+                                        shortDesc="#{bindings.NiveauxSuperieursOptions.hints.tooltip}" id="soc5"
+                                        valueChangeListener="#{DeliberationAnnuelelBean.onNivSupOptChanged}"
+                                        contentStyle="width:300px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                        autoSubmit="true">
+                        <f:selectItems value="#{bindings.NiveauxSuperieursOptions.items}" id="si5"/>
+                        <f:validator binding="#{bindings.NiveauxSuperieursOptions.validator}"/>
+                    </af:selectOneChoice>
+                </af:panelGroupLayout>
+                <af:panelCollection id="pc4" styleClass="AFStretchWidth">
+                    <f:facet name="menus"/>
+                    <f:facet name="toolbar"/>
+                    <f:facet name="statusbar"/>
+                    <af:table value="#{bindings.ListAutorisationSess2.collectionModel}" var="row"
+                              rows="#{bindings.ListAutorisationSess2.rangeSize}"
+                              emptyText="#{bindings.ListAutorisationSess2.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.ListAutorisationSess2.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.ListAutorisationSess2.collectionModel.makeCurrent}"
+                              rowSelection="single" fetchSize="#{bindings.ListAutorisationSess2.rangeSize}"
+                              filterModel="#{bindings.ListAutorisationSess2Query.queryDescriptor}" filterVisible="true"
+                              queryListener="#{bindings.ListAutorisationSess2Query.processQuery}" varStatus="vs" id="t4"
+                              columnStretching="column:c27" scrollPolicy="page">
+                        <af:column sortProperty="#{bindings.ListAutorisationSess2.hints.IsSelected.name}"
+                                   filterable="true" sortable="true" id="c34" align="center" width="50">
+                            <af:selectBooleanCheckbox value="#{row.bindings.IsSelected1.inputValue}"
+                                                      label="#{row.bindings.IsSelected1.label}"
+                                                      shortDesc="#{bindings.ListAutorisationSess2.hints.IsSelected.tooltip}"
+                                                      id="sbc2"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess2.hints.Numero.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess2.hints.Numero.label}"
+                                   id="c26" width="125">
+                            <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of31"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess2.hints.Prenoms.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess2.hints.Prenoms.label}"
+                                   id="c27" width="250">
+                            <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of32"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess2.hints.Nom.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess2.hints.Nom.label}"
+                                   id="c28" width="125">
+                            <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of33"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess2.hints.Moyenne.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess2.hints.Moyenne.label}"
+                                   id="c29">
+                            <af:outputFormatted value="#{row.bindings.Moyenne.inputValue}" id="of34">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.ListAutorisationSess2.hints.Moyenne.format}"/>
+                            </af:outputFormatted>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess2.hints.Credit.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess2.hints.Credit.label}"
+                                   id="c30">
+                            <af:outputFormatted value="#{row.bindings.Credit.inputValue}" id="of35">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.ListAutorisationSess2.hints.Credit.format}"/>
+                            </af:outputFormatted>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess2.hints.Resultat.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ListAutorisationSess2.hints.Resultat.label}" id="c31"
+                                   width="250">
+                            <af:outputFormatted value="#{row.bindings.Resultat.inputValue}" id="of36"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess2.hints.Mention.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListAutorisationSess2.hints.Mention.label}"
+                                   id="c32">
+                            <af:outputFormatted value="#{row.bindings.Mention.inputValue}" id="of37"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListAutorisationSess2.hints.SessionValid.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ListAutorisationSess2.hints.SessionValid.label}" id="c33">
+                            <af:outputFormatted value="#{row.bindings.SessionValid.inputValue}" id="of38"/>
+                        </af:column>
+                    </af:table>
+                </af:panelCollection>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p9"
+              binding="#{DeliberationAnnuelelBean.popNivSupSess2}">
+        <af:dialog id="d10" title="#{viewcontrollerBundle.AUTORISATIONS_DES_ETUDIANTS}">
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p10"
+              binding="#{DeliberationAnnuelelBean.popConfirmClosedDoc}">
+        <af:dialog id="d11" dialogListener="#{DeliberationAnnuelelBean.onOpenEtatAction}" title="Info"
+                   cancelTextAndAccessKey="NON" affirmativeTextAndAccessKey="OUI" type="yesNo">
+            <af:panelGroupLayout id="pgl19" layout="vertical" halign="center">
+                <af:icon name="info" id="i4"/>
+                <af:outputFormatted value="Confirmez-vous la clôture de la session pour l’édition des documents ?" id="of49"
+                                    inlineStyle="font-size:large; color:Blue;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p11"
+              binding="#{DeliberationAnnuelelBean.popinfCloseDoc}" contentDelivery="lazyUncached">
+        <af:dialog id="d12" dialogListener="#{DeliberationAnnuelelBean.onConfirmCloseDoc}" type="yesNo"
+                   affirmativeTextAndAccessKey="CONTINUER" noTextAndAccessKey="ANNULER" title="Attention !">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl20" layout="scroll" halign="center">
+                <af:icon name="info" id="i5"/>
+                <af:outputFormatted value="Aucune modification ne sera autorisée pour la #{sessionScope.id_session == 1 ? 'première ' : 'deuxième '} session"
+                                    id="of50" inlineStyle="color:Red; font-size:large;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p12"
+              binding="#{DeliberationAnnuelelBean.popCloseDocOk}">
+        <af:dialog id="d13" type="cancel" cancelTextAndAccessKey="FERMER" title="Information">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl21" layout="vertical" halign="center">
+                <af:icon name="info" id="i6"/>
+                <af:outputFormatted value="Clôture réussie ! Vous pouvez maintenant accéder à l’édition des documents." id="of51"
+                                    inlineStyle="font-size:large; color:Green;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p13"
+              binding="#{DeliberationAnnuelelBean.popCloseDocErr}">
+        <af:dialog id="d14" type="cancel" title="Information" cancelTextAndAccessKey="FERMER">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl22" halign="center" layout="vertical">
+                <af:icon name="warning" id="i7"/>
+                <af:outputFormatted value="Une erreur s’est produite pendant la clôture. Merci de bien vouloir réessayer." id="of52"
+                                    inlineStyle="font-size:large; color:Orange;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+</ui:composition>

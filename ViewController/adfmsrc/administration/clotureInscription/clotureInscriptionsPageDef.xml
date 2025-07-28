@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="clotureInscriptionsPageDef"
+                Package="administration.clotureInscription">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="DepartementsStructure" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="DepartementsStructureIterator"/>
+    <iterator Binds="AnneeUniverROVO" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="AnneeUniverROVOIterator"/>
+    <iterator Binds="InscriptionClose" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="InscriptionCloseIterator"/>
+    <searchRegion Binds="InscriptionCloseIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="InscriptionCloseQuery"/>
+    <iterator Binds="InscriptionACloturer" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="InscriptionACloturerIterator"/>
+    <searchRegion Binds="InscriptionACloturerIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="InscriptionACloturerQuery"/>
+  </executables>
+  <bindings>
+    <list IterBinding="DepartementsStructureIterator" ListOperMode="navigation" ListIter="DepartementsStructureIterator"
+          id="DepartementsStructure" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="AnneeUniverROVOIterator" ListOperMode="navigation" ListIter="AnneeUniverROVOIterator"
+          id="AnneeUniverROVO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <methodAction id="CloturerInscription" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CloturerInscription" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.CloturerInscription.dataControl.dataProvider">
+      <NamedData NDName="p_an" NDType="java.lang.Long"/>
+      <NamedData NDName="p_niv" NDType="java.lang.Long"/>
+      <NamedData NDName="p_type" NDType="java.lang.Integer"/>
+      <NamedData NDName="p_uti" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="InscriptionCloseIterator" id="getInscriptionClosed"
+            InstanceName="gestdapAppDataControl.InscriptionClose" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="p_an" NDType="java.lang.Long"/>
+      <NamedData NDName="p_hs" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="DepartementsStructureIterator" id="IdHistoriquesStructure">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneeUniverROVOIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="InscriptionCloseIterator" id="InscriptionClose">
+      <nodeDefinition DefName="model.readOnlyView.InscriptionCloseROVO" Name="InscriptionClose0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="Annees"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="InscriptionACloturerIterator" id="InscriptionACloturer">
+      <nodeDefinition DefName="model.readOnlyView.InscriptionACloturerROVO" Name="InscriptionACloturer0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="isSelected" Binds="isSelected"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="InscriptionACloturerIterator" id="isSelected" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="isSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <action IterBinding="InscriptionACloturerIterator" id="getInsACloturer"
+            InstanceName="gestdapAppDataControl.InscriptionACloturer" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="p_an" NDType="java.lang.Long"/>
+      <NamedData NDName="p_hs" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

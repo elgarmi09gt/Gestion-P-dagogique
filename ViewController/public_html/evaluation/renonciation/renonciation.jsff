@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+    <af:panelGroupLayout id="pgl4" layout="scroll" visible="#{sessionScope.id_session eq 1}">
+        <af:panelGroupLayout id="pgl1" layout="horizontal" styleClass="AFStretchWidth"
+                             inlineStyle="border: solid 2px #2898e8; margin-top : 20px;height:80px">
+            <af:panelGroupLayout id="pgl2" layout="vertical" inlineStyle="line-height:0px;" styleClass="AFStretchWidth"
+                                 halign="center">
+                <af:outputFormatted value="Unité d'enseignement" id="of2" styleUsage="instruction"
+                                    inlineStyle="font-size:medium;"/>
+                <af:selectOneChoice value="#{bindings.FiliereUeRenonciation.inputValue}"
+                                    required="#{bindings.FiliereUeRenonciation.hints.mandatory}"
+                                    shortDesc="#{bindings.FiliereUeRenonciation.hints.tooltip}" id="soc1" autoSubmit="true"
+                                    inlineStyle="margin-top:5px;"
+                                    contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                                    valueChangeListener="#{DeliberatioUeBean.onChanged}">
+                    <f:selectItems value="#{bindings.FiliereUeRenonciation.items}" id="si1"/>
+                    <f:validator binding="#{bindings.FiliereUeRenonciation.validator}"/>
+                </af:selectOneChoice>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl3" halign="center" layout="vertical" inlineStyle="line-height:1px;"
+                                 styleClass="AFStretchWidth">
+                <af:outputFormatted value="Eléments constitutifs" id="of3" styleUsage="instruction"
+                                    inlineStyle="font-size:medium;"/>
+                <af:selectOneChoice value="#{bindings.FiliereEcRenonciationNote.inputValue}"
+                                    required="#{bindings.FiliereEcRenonciationNote.hints.mandatory}"
+                                    shortDesc="#{bindings.FiliereEcRenonciationNote.hints.tooltip}" id="soc2" partialTriggers="soc1"
+                                    autoSubmit="true" inlineStyle="text-align:center;margin-top:5px;"
+                                    contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                                    valueChangeListener="#{renonciationBean.onEcChanged}">
+                    <f:selectItems value="#{bindings.FiliereEcRenonciationNote.items}" id="si2"/>
+                    <f:validator binding="#{bindings.FiliereEcRenonciationNote.validator}"/>
+                </af:selectOneChoice>
+            </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl5" layout="horizontal" halign="center" valign="middle"
+                                 inlineStyle="margin-top:5px; line-height:20px;">
+                <af:button id="b1" inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px;"
+                           shortDesc="Enregistrer" text="Enregistrer" icon="/images/save-24.png"
+                           actionListener="#{renonciationBean.OnSaveRenonceAction}"/>
+            </af:panelGroupLayout>    
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{renonciationBean.panCol}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.EtudiantsRenonciationNote1.collectionModel}" var="row"
+                      rows="#{bindings.EtudiantsRenonciationNote1.rangeSize}"
+                      emptyText="#{bindings.EtudiantsRenonciationNote1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.EtudiantsRenonciationNote1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.EtudiantsRenonciationNote1.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.EtudiantsRenonciationNote1.rangeSize}"
+                      filterModel="#{bindings.EtudiantsRenonciationNoteQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.EtudiantsRenonciationNoteQuery.processQuery}" varStatus="vs" id="t1"
+                      scrollPolicy="page" binding="#{renonciationBean.etdTable}">
+                <af:column id="c6" align="center">
+                    <af:selectBooleanCheckbox value="#{row.bindings.isEtdSelcted.inputValue}"
+                                              label="#{row.bindings.isEtdSelcted.label}"
+                                              shortDesc="#{bindings.EtudiantsRenonciationNote1.hints.isEtdSelcted.tooltip}"
+                                              id="sbc1"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.EtudiantsRenonciationNote1.hints.Numero.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.NUMERO}" id="c1" width="150">
+                    <af:outputText value="#{row.Numero}"
+                                   shortDesc="#{bindings.EtudiantsRenonciationNote1.hints.Numero.tooltip}" id="ot1"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.EtudiantsRenonciationNote1.hints.Prenoms.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.PRENOMS}" id="c2" width="200"
+                           noWrap="false">
+                    <af:outputText value="#{row.Prenoms}"
+                                   shortDesc="#{bindings.EtudiantsRenonciationNote1.hints.Prenoms.tooltip}" id="ot2"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.EtudiantsRenonciationNote1.hints.Nom.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.NOM}" id="c3" width="150" noWrap="false">
+                    <af:outputText value="#{row.Nom}"
+                                   shortDesc="#{bindings.EtudiantsRenonciationNote1.hints.Nom.tooltip}" id="ot3"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.EtudiantsRenonciationNote1.hints.DateNaissance.name}"
+                           filterable="true" sortable="true" headerText="#{viewcontrollerBundle.DATE_NAISSANCE}" id="c4"
+                           width="150">
+                    <f:facet name="filter">
+                        <af:inputDate value="#{bindings.EtudiantsRenonciationNoteQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                                      id="id1">
+                            <af:convertDateTime pattern="#{bindings.EtudiantsRenonciationNote1.hints.DateNaissance.format}"/>
+                        </af:inputDate>
+                    </f:facet>
+                    <af:outputText value="#{row.DateNaissance}"
+                                   shortDesc="#{bindings.EtudiantsRenonciationNote1.hints.DateNaissance.tooltip}"
+                                   id="ot4">
+                        <af:convertDateTime pattern="#{bindings.EtudiantsRenonciationNote1.hints.DateNaissance.format}"/>
+                    </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.EtudiantsRenonciationNote1.hints.LieuNaissance.name}"
+                           filterable="true" sortable="true" headerText="#{viewcontrollerBundle.LIEU_DE_NAISSANCE}"
+                           id="c5" width="250" noWrap="false">
+                    <af:outputText value="#{row.LieuNaissance}"
+                                   shortDesc="#{bindings.EtudiantsRenonciationNote1.hints.LieuNaissance.tooltip}"
+                                   id="ot5"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.EtudiantsRenonciationNote1.hints.Noteec.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.NOTE}" id="c8">
+                    <af:outputText value="#{row.Noteec}"
+                                   shortDesc="#{bindings.EtudiantsRenonciationNote1.hints.Noteec.tooltip}" id="ot8">
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.EtudiantsRenonciationNote1.hints.Noteec.format}"/>
+                    </af:outputText>
+                </af:column>
+                <af:column id="c7" headerText="Date Renonciation" width="150">
+                    <af:inputDate value="#{row.bindings.DateRenonciation.inputValue}"
+                                  required="#{bindings.EtudiantsRenonciationNote1.hints.DateRenonciation.mandatory}"
+                                  columns="#{bindings.EtudiantsRenonciationNote1.hints.DateRenonciation.displayWidth}"
+                                  shortDesc="#{bindings.EtudiantsRenonciationNote1.hints.DateRenonciation.tooltip}"
+                                  id="id2">
+                        <f:validator binding="#{row.bindings.DateRenonciation.validator}"/>
+                        <af:convertDateTime pattern="#{bindings.EtudiantsRenonciationNote1.hints.DateRenonciation.format}"/>
+                    </af:inputDate>
+                </af:column>
+                <af:column id="c9"/>
+                <af:column id="c10"/>
+                <af:column id="c11"/>
+            </af:table>
+        </af:panelCollection>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{renonciationBean.popNostudentSelected}">
+        <af:dialog id="d1" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl6" layout="vertical" valign="middle" halign="center">
+                <af:icon name="info" id="i1"/>
+                <af:outputFormatted value="Veuillez choisir un ou plusieurs étudiants !!!" id="of1"
+                                    styleUsage="instruction" inlineStyle="font-size:large; color : #2898e8"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{renonciationBean.popWithNoDate}">
+        <af:dialog id="d2" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl7" layout="vertical" valign="middle" halign="center">
+                <af:icon name="info" id="i2"/>
+                <af:outputFormatted value="Veuillez spécifier une date pour chaque renonciation !!!" id="of4"
+                                    styleUsage="instruction" inlineStyle="font-size:large; color : #2898e8"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:outputFormatted value="La renonciation ne peut se faire qu'à la 1ére session" id="of5"
+                        visible="#{sessionScope.id_session ne 1}" inlineStyle="font-size:x-large;"/>
+</ui:composition>

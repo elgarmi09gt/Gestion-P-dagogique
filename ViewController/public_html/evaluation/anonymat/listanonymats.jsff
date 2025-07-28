@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelTabbed position="above" id="pt1" dimensionsFrom="disclosedChild">
+      <af:showDetailItem id="tab1" text="#{viewcontrollerBundle.REGLES_ANONYMATS}">
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="statusbar"/>
+          <af:table value="#{bindings.ReglesAnonymatVO.collectionModel}" var="row"
+                    rows="#{bindings.ReglesAnonymatVO.rangeSize}"
+                    emptyText="#{bindings.ReglesAnonymatVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.ReglesAnonymatVO.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.ReglesAnonymatVO.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.ReglesAnonymatVO.rangeSize}"
+                    filterModel="#{bindings.ReglesAnonymatVOQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.ReglesAnonymatVOQuery.processQuery}" varStatus="vs" id="t1"
+                    columnStretching="column:c1" scrollPolicy="page">
+            <af:column sortProperty="#{bindings.ReglesAnonymatVO.hints.LibelleLong.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle.LIBELLE}" id="c1">
+              <af:outputFormatted value="#{row.bindings.LibelleLong.inputValue}" id="of1"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:showDetailItem>
+      <af:showDetailItem id="tab2" text="#{viewcontrollerBundle.PARAMETRAGES}">
+        <af:panelGroupLayout id="pgl7" layout="scroll" valign="middle" halign="center">
+          <af:panelGroupLayout id="pgl9" layout="horizontal">
+            <af:panelGroupLayout id="pgl2" layout="scroll" halign="center" valign="middle"
+                                 inlineStyle="line-height:20px;">
+              <af:panelGroupLayout id="pgl4" inlineStyle="line-height:normal;">
+                <af:panelGroupLayout id="pgl3" layout="vertical">
+                  <af:outputFormatted value="Département" id="of4" inlineStyle="font-size:large;margin-left:10px"/>
+                  <af:selectOneChoice value="#{bindings.HistoriqueStructureByUserName.inputValue}"
+                                      required="#{bindings.HistoriqueStructureByUserName.hints.mandatory}"
+                                      shortDesc="#{bindings.HistoriqueStructureByUserName.hints.tooltip}" id="soc1"
+                                      contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                                      autoSubmit="true">
+                    <f:selectItems value="#{bindings.HistoriqueStructureByUserName.items}" id="si1"/>
+                    <f:validator binding="#{bindings.HistoriqueStructureByUserName.validator}"/>
+                  </af:selectOneChoice>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl5" layout="vertical">
+                  <af:outputFormatted value="Parcours" id="of2" inlineStyle="font-size:large;margin-left:10px"/>
+                  <af:selectOneChoice value="#{bindings.ParcoursRespFrImpMaqEtd.inputValue}"
+                                      required="#{bindings.ParcoursRespFrImpMaqEtd.hints.mandatory}"
+                                      shortDesc="#{bindings.ParcoursRespFrImpMaqEtd.hints.tooltip}" id="soc2"
+                                      contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                                      autoSubmit="true" partialTriggers="soc1">
+                    <f:selectItems value="#{bindings.ParcoursRespFrImpMaqEtd.items}" id="si2"/>
+                    <f:validator binding="#{bindings.ParcoursRespFrImpMaqEtd.validator}"/>
+                  </af:selectOneChoice>
+                </af:panelGroupLayout>
+              </af:panelGroupLayout>
+              <af:panelGroupLayout id="pgl11" layout="horizontal">
+                <af:panelGroupLayout id="pgl6" layout="vertical"
+                                     visible="#{bindings.MaquetteParcoursAnneeIterator.estimatedRowCount gt 1}">
+                  <af:outputFormatted value="Maquettes" id="of3" inlineStyle="font-size:large;margin-left:10px"/>
+                  <af:selectOneChoice value="#{bindings.MaquetteParcoursAnnee.inputValue}"
+                                      required="#{bindings.MaquetteParcoursAnnee.hints.mandatory}"
+                                      shortDesc="#{bindings.MaquetteParcoursAnnee.hints.tooltip}" id="soc3"
+                                      contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                                      autoSubmit="true" partialTriggers="soc2 soc1">
+                    <f:selectItems value="#{bindings.MaquetteParcoursAnnee.items}" id="si3"/>
+                    <f:validator binding="#{bindings.MaquetteParcoursAnnee.validator}"/>
+                  </af:selectOneChoice>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl10" layout="vertical">
+                  <af:outputFormatted value="Semestre" id="of6" inlineStyle="font-size:large;margin-left:10px"/>
+                  <af:selectOneChoice value="#{bindings.SemestresParcous.inputValue}"
+                                      required="#{bindings.SemestresParcous.hints.mandatory}"
+                                      shortDesc="#{bindings.SemestresParcous.hints.tooltip}" id="soc5"
+                                      contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                                      autoSubmit="true" partialTriggers="soc3 soc2 soc1">
+                    <f:selectItems value="#{bindings.SemestresParcous.items}" id="si5"/>
+                    <f:validator binding="#{bindings.SemestresParcous.validator}"/>
+                  </af:selectOneChoice>
+                </af:panelGroupLayout>
+              </af:panelGroupLayout>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl8" layout="vertical">
+              <af:outputFormatted value="Régle Anonymat" id="of5" inlineStyle="font-size:large;margin-left:10px"/>
+              <af:selectOneChoice value="#{bindings.ReglesAnonymatVO1.inputValue}"
+                                  required="#{bindings.ReglesAnonymatVO1.hints.mandatory}"
+                                  shortDesc="#{bindings.ReglesAnonymatVO1.hints.tooltip}" id="soc4"
+                                  contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                                  autoSubmit="true">
+                <f:selectItems value="#{bindings.ReglesAnonymatVO1.items}" id="si4"/>
+                <f:validator binding="#{bindings.ReglesAnonymatVO1.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+          <af:button text="Enregistrer" id="b1"
+                     inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                     actionListener="#{AnonymatBean.OnParamAnoRuleListener}"/>
+        </af:panelGroupLayout>
+      </af:showDetailItem>
+      <af:showDetailItem id="tab3" text="#{viewcontrollerBundle.NUMEROTAION___AFFECTATION}"/>
+    </af:panelTabbed>
+  </af:panelGroupLayout>
+</ui:composition>

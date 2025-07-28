@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="dashPageDef"
+                Package="administration.dashbord">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="DepartementsStructure" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="DepartementsStructureIterator"/>
+    <iterator Binds="StatistiquesDepartement" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="StatistiquesDepartementIterator"/>
+    <searchRegion Binds="StatistiquesDepartementIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="StatistiquesDepartementQuery"/>
+    <iterator Binds="StatistiquesNiveauxFormation" RangeSize="8" DataControl="evaluationAppDataControl"
+              id="StatistiquesNiveauxFormationIterator"/>
+    <searchRegion Binds="StatistiquesNiveauxFormationIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="StatistiquesNiveauxFormationQuery"/>
+  </executables>
+  <bindings>
+    <list IterBinding="DepartementsStructureIterator" ListOperMode="navigation" ListIter="DepartementsStructureIterator"
+          id="DepartementsStructure" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="StatistiquesDepartementIterator" id="StatistiquesDepartement">
+      <nodeDefinition DefName="model.readOnlyView.StatistiquesDepartementROVO" Name="StatistiquesDepartement0">
+        <AttrNames>
+          <Item Value="Sessions"/>
+          <Item Value="ObtientLeDiplôme"/>
+          <Item Value="PasseEnClasseSuperieure"/>
+          <Item Value="AnneeValidee"/>
+          <Item Value="AutoriseAPasser"/>
+          <Item Value="Redouble"/>
+          <Item Value="AnneeNonValidee"/>
+          <Item Value="Exclu"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="StatistiquesNiveauxFormationIterator" id="StatistiquesNiveauxFormation">
+      <nodeDefinition DefName="model.readOnlyView.StatistiquesNiveauxFormationROVO"
+                      Name="StatistiquesNiveauxFormation0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="Sessions"/>
+          <Item Value="Redouble"/>
+          <Item Value="PasseEnClasseSuperieure"/>
+          <Item Value="AutoriseAPasser"/>
+          <Item Value="AnneeValidee"/>
+          <Item Value="AnneeNonValidee"/>
+          <Item Value="ObtientLeDiplôme"/>
+          <Item Value="PasDeResultat"/>
+          <Item Value="Exclu"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="StatistiquesNiveauxFormationIterator" StaticList="false" Uses="LOV_Sessions" id="Sessions1"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <listOfValues IterBinding="StatistiquesNiveauxFormationIterator" StaticList="false" Uses="LOV_Sessions"
+                  id="Sessions"/>
+  </bindings>
+</pageDefinition>

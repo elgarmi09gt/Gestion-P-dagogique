@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="list_structure_list_structure_ExecuteWithParamsPageDef" Package="dap.structures"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="AdminByEtablissement" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="AdminByEtablissementIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="AdminByEtablissementIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="str_id" NDValue="#{sessionScope.id_str}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

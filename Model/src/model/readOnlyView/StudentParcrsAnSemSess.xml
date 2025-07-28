@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="StudentParcrsAnSemSess"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.StudentParcrsAnSemSessRowImpl"
+  ComponentClass="model.readOnlyView.StudentParcrsAnSemSessImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.StudentParcrsAnSemSess_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_nfp"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="id_an"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="id_sem"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="id_sess"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT   distinct                                            
+    e.ID_ETUDIANT,e.numero , p.NOM, p.PRENOMS              
+FROM etudiants e     
+JOIN PERSONNES p on p.ID_PERSONNE = e.ID_PERSONNE  
+JOIN inscriptions_admin ia on e.id_etudiant = ia.id_etudiant     
+JOIN inscriptions_pedagogiques ip on ia.id_inscription_admin = ip.id_inscription_admin                            
+JOIN inscription_ped_semestre ips on ip.id_inscription_pedagogique = ips.id_inscription_pedagogique                         
+JOIN INSCRIPTION_PED_SEM_UE ipsu on ips.ID_INSCRIPTION_PED_SEMESTRE = ipsu.ID_INSCRIPTION_PED_SEMESTRE      
+JOIN NOTES_MODE_ENSEIGNEMENT nme on ipsu.ID_INSCRIPTION_PED_SEM_UE = nme.ID_INSCRIPTION_PED_SEM_UE      
+JOIN PARCOURS_MAQUETTE_ANNEE pma on pma.ID_PARCOURS_MAQUET_ANNEE = ip.ID_PARCOURS_MAQUET_ANNEE                         
+JOIN NIVEAUX_FORMATION_PARCOURS nfp on nfp.ID_NIVEAU_FORMATION_PARCOURS = pma.ID_NIVEAU_FORMATION_PARCOURS                         
+JOIN NIVEAU_FORMATION_COHORTES nfc on nfc.ID_NIVEAU_FORMATION_COHORTE = nfp.ID_NIVEAU_FORMATION_COHORTE      
+JOIN CALENDRIER_DELIBERATION cd on cd.ID_ANNEES_UNIVERS=ia.ID_ANNEES_UNIVERS      
+AND cd.ID_CALENDRIER_DELIBERATION = nme.ID_CALENDRIER_DELIBERATION      
+AND cd.ID_SEMESTRE = ips.ID_SEMESTRE AND cd.ID_NIVEAU_FORMATION_COHORTE=nfc.ID_NIVEAU_FORMATION_COHORTE      
+JOIN NIVEAUX_FORMATIONS nf on nf.ID_NIVEAU_FORMATION = nfc.ID_NIVEAU_FORMATION      
+JOIN FORMATIONS f on f.ID_FORMATION = nf.ID_FORMATION      
+JOIN TYPE_FORMATION tf on tf.ID_TYPE_FORMATION = f.ID_TYPE_FORMATION      
+WHERE nfp.ID_NIVEAU_FORMATION_PARCOURS=:id_nfp       
+AND ia.ID_ANNEES_UNIVERS=:id_an      
+AND ips.ID_SEMESTRE=:id_sem      
+AND cd.ID_SESSION=:id_sess  
+ORDER By p.NOM, p.PRENOMS]]></SQLQuery>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenoms"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMS"
+    Expression="PRENOMS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdEtudiant"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

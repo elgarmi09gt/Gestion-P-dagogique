@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="DelibAnPvROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.DelibAnPvROVORowImpl"
+  ComponentClass="model.readOnlyView.DelibAnPvROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.DelibAnPvROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="parcours_maq"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[Select ra.ID_RESULTAT_ANNUEL,etd.NUMERO,pers.PRENOMS, pers.NOM, ra.NOTE MOYENNE, ra.CREDIT, rv.LIBELLE_LONG RESULTAT, Decode(ra.ID_TYPE_MENTION,81,'', tm.LIBELLE_LONG) MENTION, sess.LIBELLE_LONG SESSION_VALID          
+FROM RESULTATS_ANNUELS ra 
+JOIN INSCRIPTIONS_PEDAGOGIQUES ip on ra.ID_INSCRIPTION_PEDAGOGIQUE=ip.ID_INSCRIPTION_PEDAGOGIQUE          
+JOIN INSCRIPTIONS_ADMIN ia on ip.ID_INSCRIPTION_ADMIN=ia.ID_INSCRIPTION_ADMIN          
+JOIN ETUDIANTS etd on ia.ID_ETUDIANT=etd.ID_ETUDIANT          
+JOIN PERSONNES pers on etd.ID_PERSONNE=pers.ID_PERSONNE          
+JOIN PARCOURS_MAQUETTE_ANNEE pma on ip.ID_PARCOURS_MAQUET_ANNEE=pma.ID_PARCOURS_MAQUET_ANNEE          
+AND ia.ID_ANNEES_UNIVERS=pma.ID_ANNEES_UNIVERS          
+JOIN TYPE_MENTION tm ON ra.ID_TYPE_MENTION=tm.ID_TYPE_MENTION          
+JOIN RESULTAT_EVALUATIONS rv ON ra.RESULTAT=rv.ID_RESULTAT        
+LEFT JOIN SESSIONS sess ON ra.SESSION_VALIDATION=sess.ID_SESSION        
+WHERE pma.ID_PARCOURS_MAQUET_ANNEE=:parcours_maq  
+ORDER BY ra.CREDIT DESC, ra.NOTE DESC, pers.NOM ASC,pers.PRENOMS ASC]]></SQLQuery>
+  <ViewAttribute
+    Name="IdResultatAnnuel"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_RESULTAT_ANNUEL"
+    Expression="ID_RESULTAT_ANNUEL"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenoms"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMS"
+    Expression="PRENOMS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Moyenne"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="MOYENNE"
+    Expression="MOYENNE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Credit"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="CREDIT"
+    Expression="CREDIT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Resultat"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="RESULTAT"
+    Expression="RESULTAT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Mention"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="MENTION"
+    Expression="MENTION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SessionValid"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SESSION_VALID"
+    Expression="SESSION_VALID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdResultatAnnuel"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

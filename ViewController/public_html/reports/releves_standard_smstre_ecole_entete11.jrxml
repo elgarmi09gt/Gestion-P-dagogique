@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="releves" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5b400164-b1f5-4df6-b4d8-6a4faf3cd101">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="parcours" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="annee_univers" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_hs" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\Niang\\works\\GestionPedagogiqueProd\\GestionPedagogique\\ViewController\\public_html\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_semestre" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select fus.CODIFICATION, ue.libelle_long,ips.ID_INSCRIPTION_PED_SEMESTRE,DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, s.EMAIL,inst.EMAIL) Email,
+DECODE(inst.ID_HISTORIQUES_STRUCTURE, NULL, s.TELEPHONE,inst.TELEPHONE) Telephone
+--,rs.NOTE
+--,rfu.ID_INSCRIPTION_PED_SEM_UE
+FROM   INSCRIPTION_PED_SEM_UE ipsu
+JOIN FILIERE_UE_SEMSTRE fus ON ipsu.ID_FILIERE_UE_SEMSTRE = fus.ID_FILIERE_UE_SEMSTRE
+JOIN  UE ON UE.ID_UE = fus.ID_UE
+--JOIN  RESULTATS_FIL_UE_SEMESTRE rfu ON rfu.ID_INSCRIPTION_PED_SEM_UE = ipsu.ID_INSCRIPTION_PED_SEM_UE
+JOIN  INSCRIPTION_PED_SEMESTRE ips ON ips.ID_INSCRIPTION_PED_SEMESTRE = ipsu.ID_INSCRIPTION_PED_SEMESTRE
+--JOIN  RESULTATS_SEMESTRE rs on rs.ID_INSCRIPTION_PED_SEMESTRE = ips.ID_INSCRIPTION_PED_SEMESTRE
+JOIN  SEMESTRES sm ON ips.ID_SEMESTRE = sm.ID_SEMESTRE AND fus.ID_SEMESTRE = sm.ID_SEMESTRE
+--JOIN  SESSIONS ss ON rs.ID_SESSION = ss.ID_SESSION
+JOIN  INSCRIPTIONS_PEDAGOGIQUES ip ON ip.ID_INSCRIPTION_PEDAGOGIQUE=ips.ID_INSCRIPTION_PEDAGOGIQUE
+JOIN  INSCRIPTIONS_ADMIN ia ON ia.ID_INSCRIPTION_ADMIN=ip.ID_INSCRIPTION_ADMIN
+JOIN  ANNEES_UNIVERS an on ia.ID_ANNEES_UNIVERS = an.ID_ANNEES_UNIVERS
+JOIN  TYPE_FORMATION tf ON tf.ID_TYPE_FORMATION = ia.ID_TYPE_FORMATION
+JOIN  ETUDIANTS etu ON etu.ID_ETUDIANT=ia.ID_ETUDIANT
+JOIN  PERSONNES pers ON pers.ID_PERSONNE=etu.ID_PERSONNE
+JOIN  CIVILITES cv on pers.ID_CIVILITE = cv.ID_CIVILITE
+JOIN  MAQUETTES m ON fus.ID_MAQUETTE = m.ID_MAQUETTE
+JOIN  PARCOURS_MAQUETTE_ANNEE pma ON pma.ID_PARCOURS_MAQUET_ANNEE=ip.ID_PARCOURS_MAQUET_ANNEE AND m.ID_MAQUETTE=pma.ID_MAQUETTE
+JOIN  NIVEAUX_FORMATION_PARCOURS nfp ON nfp.ID_NIVEAU_FORMATION_PARCOURS=pma.ID_NIVEAU_FORMATION_PARCOURS
+JOIN  (
+        SELECT nfc.ID_NIVEAU_FORMATION_COHORTE, ct.LIBELLE cohorte, nfc.ID_NIVEAU_FORMATION
+        FROM NIVEAU_FORMATION_COHORTES nfc JOIN COHORTES ct ON nfc.ID_COHORTE = ct.ID_COHORTE
+      ) crt On crt.ID_NIVEAU_FORMATION_COHORTE=nfp.ID_NIVEAU_FORMATION_COHORTE
+JOIN  NIVEAUX_FORMATIONS nf on crt.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION
+JOIN  FORMATIONS f on nf.ID_FORMATION = f.ID_FORMATION
+JOIN  MENTIONS mt ON f.ID_MENTION = mt.ID_MENTION
+JOIN DOMAINES dm ON mt.ID_DOMAINE = dm.ID_DOMAINE
+JOIN  HISTORIQUES_STRUCTURES hs on f.ID_HISTORIQUES_STRUCTURE = hs.ID_HISTORIQUES_STRUCTURE
+JOIN  STRUCTURES s on hs.ID_STRUCTURES = s.ID_STRUCTURE
+LEFT JOIN  (
+            Select distinct pers.PRENOMS || ' '||pers.NOM signataire,sg.ID_SIGNATAIRE
+            from PERSONNES pers, SIGNATAIRE sg
+            WHERE pers.ID_PERSONNE=sg.ID_PERSONNE
+            ) sign on sign.ID_SIGNATAIRE = s.ID_SIGNATAIRE
+LEFT JOIN (
+          SELECT sp.LIBELLE_LONG specialite, fsp.ID_FORMATION_SPECIALITE
+          FROM FORMATIONS_SPECIALITES fsp JOIN SPECIALITES sp on fsp.ID_SPECIALITE = sp.ID_SPECIALITE
+          ) sp ON sp.ID_FORMATION_SPECIALITE = nfp.ID_FORMATION_SPECIALITE
+LEFT JOIN (
+          SELECT op.LIBELLE_LONG Options, fop.ID_FORMATION_OPTION
+          FROM FORMATIONS_OPTIONS fop JOIN OPTIONS op on fop.ID_OPTION = op.ID_OPTION
+          ) op ON op.ID_FORMATION_OPTION = nfp.ID_FORMATION_OPTION
+LEFT JOIN (
+          SELECT hst.ID_HISTORIQUES_STRUCTURE,ins.LIBELLE_LONG institut, ins.EMAIL, ins.TELEPHONE, ins.FAX
+          FROM HISTORIQUES_STRUCTURES hst JOIN INSTITUTS ins on hst.ID_HISTORIQUES_STRUCTURE = ins.STRUCTURE_PARENT
+          ) inst ON inst.ID_HISTORIQUES_STRUCTURE = hs.ID_HISTORIQUES_STRUCTURE
+WHERE nfp.ID_NIVEAU_FORMATION_PARCOURS=$P{parcours}
+AND ia.ID_ANNEES_UNIVERS=$P{annee_univers}
+AND hs.ID_HISTORIQUES_STRUCTURE=$P{id_hs}
+--AND rs.RESULTAT = 2
+AND ips.id_semestre=$P{id_semestre}
+ORDER BY pers.nom,pers.prenoms,fus.ID_FILIERE_UE_SEMSTRE,fus.CODIFICATION]]>
+	</queryString>
+	<field name="CODIFICATION" class="java.lang.String"/>
+	<field name="LIBELLE_LONG" class="java.lang.String"/>
+	<field name="ID_INSCRIPTION_PED_SEMESTRE" class="java.math.BigDecimal"/>
+	<field name="EMAIL" class="java.lang.String"/>
+	<field name="TELEPHONE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="114" splitType="Stretch">
+			<image vAlign="Top">
+				<reportElement x="0" y="0" width="109" height="92" uuid="398adf38-b0f2-43ae-9646-00d74207c878"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR} + "ucad.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="108" y="0" width="385" height="14" uuid="37880272-335e-4f7e-b5c6-9c512361f549"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[UNIVERSITE CHEIKH ANTA DIOP DE DAKAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="177" y="17" width="29" height="16" uuid="673b4bd3-5445-468d-910b-93b9059cf3d6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tél :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="345" y="15" width="40" height="16" uuid="5752c147-5371-4fdd-aaa6-0e49d2275777"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Email :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="108" y="60" width="386" height="18" uuid="c0f4d32f-ee42-40bc-8af6-8a2e1b0f6aec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[DAKAR-SENEGAL]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement mode="Opaque" x="159" y="80" width="200" height="22" backcolor="#C8C8C8" uuid="b20a8255-b4ac-43d5-9317-0f5a2b0f92ab"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="163" y="81" width="195" height="22" backcolor="#FFFFFF" uuid="7b522d6a-2e63-4105-9256-88ad6c7acc81"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELEVE DE NOTES SEMESTRE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="206" y="17" width="100" height="16" uuid="8434e302-1afc-4bcd-969f-ae8e709f77c9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TELEPHONE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="385" y="15" width="113" height="16" uuid="1aa3223c-7ecd-4917-8b04-b7f541484609"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EMAIL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="26">
+			<textField>
+				<reportElement x="77" y="1" width="100" height="20" uuid="bfc725b9-498a-49a1-bac3-d9c60697ece0"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CODIFICATION}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="76" height="20" uuid="1c24950e-8956-4a4a-86d3-defe01f9b915"/>
+				<text><![CDATA[CODIFICATION]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="1" width="195" height="20" uuid="21046c7e-ef33-40f2-9248-bc11424bbff5"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LIBELLE_LONG}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="183" y="1" width="75" height="20" uuid="4f8f59bc-7b52-40d8-bccd-0899bb23ce11"/>
+				<text><![CDATA[LIBELLE_LONG]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="455" y="1" width="68" height="20" uuid="e626cc42-cf99-4c63-838d-3a1e184542b5"/>
+				<textFieldExpression><![CDATA[$F{ID_INSCRIPTION_PED_SEMESTRE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

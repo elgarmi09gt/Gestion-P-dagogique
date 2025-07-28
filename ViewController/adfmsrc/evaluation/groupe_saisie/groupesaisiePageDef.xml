@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="groupesaisiePageDef"
+                Package="evaluation.groupe_saisie">
+  <parameters/>
+  <executables>
+    <iterator Binds="GroupeSaisie" RangeSize="5" DataControl="evaluationAppDataControl" id="GroupeSaisieIterator"/>
+    <iterator Binds="GroupeSaisieEtudiant" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="GroupeSaisieEtudiantIterator"/>
+    <iterator Binds="DelibSemEtudiant" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="DelibSemEtudiantIterator"/>
+    <iterator Binds="EtudiantGroupeSaisieEtudiant" RangeSize="15" DataControl="evaluationAppDataControl"
+              id="EtudiantGroupeSaisieEtudiantIterator"/>
+    <searchRegion Binds="EtudiantGroupeSaisieEtudiantIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="EtudiantGroupeSaisieEtudiantQuery"/>
+    <iterator Binds="GroupeSaisieEtudiantROVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="GroupeSaisieEtudiantROVOIterator"/>
+    <searchRegion Binds="GroupeSaisieEtudiantROVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="GroupeSaisieEtudiantROVOQuery"/>
+    <iterator Binds="GroupeSaisieParcours" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="GroupeSaisieParcoursIterator"/>
+    <searchRegion Binds="GroupeSaisieParcoursIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="GroupeSaisieParcoursQuery"/>
+    <iterator Binds="GroupeSaisieEtudiantROVO1" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="GroupeSaisieEtudiantROVO1Iterator"/>
+    <searchRegion Binds="GroupeSaisieEtudiantROVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="GroupeSaisieEtudiantROVO1Query"/>
+  </executables>
+  <bindings>
+    <action IterBinding="GroupeSaisieIterator" id="CreateGroupeSaisie" InstanceName="evaluationAppDataControl.GroupeSaisie"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <list IterBinding="GroupeSaisieIterator" StaticList="false" Uses="LOV_IdNiveauFormationParcours"
+          id="IdNiveauFormationParcours" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="GroupeSaisieIterator" StaticList="false" Uses="LOV_IdCohorte" id="IdCohorte"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="GroupeSaisieIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeSaisieIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeSaisieIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="GroupeSaisieEtudiantIterator" id="CreateGroupeSaisieEtudiant"
+            InstanceName="evaluationAppDataControl.GroupeSaisieEtudiant" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdEtudiant" NDType="java.lang.String"/>
+      <NamedData NDName="IdGroupeSaisie" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+    </action>
+    <methodAction id="addSelectedToGroupe" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="addSelectedToGroupe" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.addSelectedToGroupe.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.addSelectedToGroupe_addSelectedToGroupe_dataControl_dataProvider_addSelectedToGroupe_result"/>
+    <action IterBinding="EtudiantGroupeSaisieEtudiantIterator" id="GetEtudiant" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="parcours" NDValue="#{sessionScope.id_niv_form_parcours}" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDValue="#{sessionScope.id_smstre}" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDValue="#{sessionScope.id_session}" NDType="java.lang.Integer"/>
+    </action>
+    <tree IterBinding="EtudiantGroupeSaisieEtudiantIterator" id="EtudiantGroupeSaisieEtudiant">
+      <nodeDefinition DefName="model.readOnlyView.EtudiantGroupeSaisieEtudiant" Name="EtudiantGroupeSaisieEtudiant0">
+        <AttrNames>
+          <Item Value="SelectedStudent"/>
+          <Item Value="Numero"/>
+          <Item Value="PrenomNom"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="EtudiantGroupeSaisieEtudiantIterator" id="SelectedStudent" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="SelectedStudent"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="GroupeSaisieEtudiantROVOIterator" id="GroupeSaisieEtudiantROVO">
+      <nodeDefinition DefName="model.readOnlyView.GroupeSaisieEtudiantROVO" Name="GroupeSaisieEtudiantROVO0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="Prenomnom"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="GroupeSaisieEtudiantIterator" id="GroupeSaisieEtudiant">
+      <nodeDefinition DefName="model.updatableview.GroupeSaisieEtudiantVO" Name="GroupeSaisieEtudiant0">
+        <AttrNames>
+          <Item Value="IdGroupeSaisieEtudiant"/>
+          <Item Value="IdEtudiant"/>
+          <Item Value="IdGroupeSaisie"/>
+          <Item Value="UtiCree"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="GroupeSaisieParcoursIterator" id="GroupeSaisieParcours">
+      <nodeDefinition DefName="model.readOnlyView.GroupeSaisieParcoursROVO" Name="GroupeSaisieParcours0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="Niveauformationparcours"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <!--action IterBinding="GroupeSaisieEtudiantROVOIterator" id="GetGRoupeSaisieEtudiant" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="parcours" NDValue="#{sessionScope.id_niv_form_parcours}" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDValue="#{sessionScope.id_smstre}" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDValue="#{sessionScope.id_session}" NDType="java.lang.Integer"/>
+    </action-->
+    <!--action IterBinding="GroupeSaisieParcoursIterator" id="GetGroupeSaisie"
+            InstanceName="evaluationAppDataControl.GroupeSaisieParcours" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+    </action-->
+    <!--action IterBinding="GroupeSaisieEtudiantROVOIterator" id="GetGroupSaisieEtudiant"
+            InstanceName="evaluationAppDataControl.GroupeSaisieEtudiantROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+    </action-->
+    <tree IterBinding="GroupeSaisieEtudiantROVO1Iterator" id="GroupeSaisieEtudiantROVO1">
+      <nodeDefinition DefName="model.readOnlyView.GroupeSaisieEtudiantROVO" Name="GroupeSaisieEtudiantROVO10">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="Prenomnom"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="GroupeSaisieEtudiantROVO1Iterator" id="LibelleLong1">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="GroupeSaisieParcoursIterator" id="GetGroupeSaisie"
+            InstanceName="evaluationAppDataControl.GroupeSaisieParcours" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+    </action>
+    <attributeValues IterBinding="GroupeSaisieIterator" id="IdAnneeUnivers">
+      <AttrNames>
+        <Item Value="IdAnneeUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeSaisieIterator" id="IdNiveauFormationParcours1">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

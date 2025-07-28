@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+        <af:panelGroupLayout id="pgl1" layout="vertical">
+                <af:selectOneChoice value="#{bindings.NivFormAutoriseRO.inputValue}" label="Niveau Formation"
+                                    required="#{bindings.NivFormAutoriseRO.hints.mandatory}"
+                                    shortDesc="#{bindings.NivFormAutoriseRO.hints.tooltip}" id="soc1"
+                                    contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                    inlineStyle="margin-top:10px;margin-left:5px;" labelStyle="font-size:large;"
+                                    autoSubmit="true">
+                        <f:selectItems value="#{bindings.NivFormAutoriseRO.items}" id="si1"/>
+                        <f:validator binding="#{bindings.NivFormAutoriseRO.validator}"/>
+                </af:selectOneChoice>
+                <af:button text="Rechercher un Etudiant" id="b1"
+                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;"
+                           partialSubmit="false" disabled="true"/>
+                <af:panelFormLayout id="pfl1" rows="3"
+                                    inlineStyle="border:solid  2px #2897e8;width:800px;margin-top:20px;margin-left:10px;">
+                        <f:facet name="footer"/>
+                        <af:inputText id="it13" autoSubmit="true" label="Numéro Etudiant"
+                                      value="#{DerogationBean.numero_etud}">
+                                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                                <af:serverListener type="filterShuttle" method="#{DerogationBean.onChangeNumeroEtud}"/>
+                        </af:inputText>
+                        <af:inputText id="it21" autoSubmit="true" label="Numéro d'identification Nationale"
+                                      contentStyle="margin-bottom:5px;" value="#{DerogationBean.numero_cin}"
+                                      disabled="#{sessionScope.etudDerNotNull == '1' ? true : false}"
+                                      partialTriggers="it13">
+                                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                                <af:serverListener type="filterShuttle" method="#{DerogationBean.onChangeNumeroCin}"/>
+                        </af:inputText>
+                        <af:inputText id="it2" autoSubmit="true" converter="javax.faces.Integer" label="Numéro Table"
+                                      value="#{DerogationBean.numero_table}"
+                                      disabled="#{sessionScope.cinDerNotNull == '1' or sessionScope.etudDerNotNull == '1' ? true : false}"
+                                      partialTriggers="it13 it21">
+                                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                                <af:serverListener type="filterShuttle" method="#{DerogationBean.onChangeNumeroTable}"/>
+                        </af:inputText>
+                        <af:inputText id="it29" label="Prénom" value="#{DerogationBean.prenom}"
+                                      disabled="#{sessionScope.tableDerNotNull == '1' or sessionScope.etudDerNotNull == '1'  or sessionScope.cinDerNotNull == '1' ? true : false}"
+                                      partialTriggers="it13 it21 it2 b2"/>
+                        <af:inputText id="it30" label="Nom" value="#{DerogationBean.nom}"
+                                      disabled="#{sessionScope.tableDerNotNull == '1' or sessionScope.etudDerNotNull == '1'  or sessionScope.cinDerNotNull == '1' ? true : false}"
+                                      partialTriggers="it13 it21 it2 b2"/>
+                        <af:inputDate id="it31" label="Date Naissance" value="#{DerogationBean.date_naiss}"
+                                      disabled="#{sessionScope.tableDerNotNull == '1' or sessionScope.etudDerNotNull == '1'  or sessionScope.cinDerNotNull == '1' ? true : false}"
+                                      partialTriggers="it13 it21 it2 b2"/>
+                        <af:resource type="javascript">
+    function catchKeyStroke(event) {
+        component = event.getSource();
+        //if(component.getSubmittedValue().length == 0 || component.getSubmittedValue().length > 1)
+        //{
+            AdfCustomEvent.queue(component, "filterShuttle", 
+            {
+                filterKey : component.getSubmittedValue()
+            },true);
+            event.cancel();
+        //}
+    }
+  </af:resource>
+                </af:panelFormLayout>
+                <af:button text="Ajouter" id="b2" icon="/images/new_icon.png"
+                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;"
+                           action="#{DerogationBean.onAutoriserDerogation}"/>
+                <af:button text="Liste des étudiants autorisés par dérogation pour la formation : #{bindings.Libform}"
+                           id="b3"
+                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:30px;"
+                           partialSubmit="false" disabled="true"/>
+                <af:table value="#{bindings.ListePersAutDerogationRO.collectionModel}" var="row"
+                          rows="#{bindings.ListePersAutDerogationRO.rangeSize}"
+                          emptyText="#{bindings.ListePersAutDerogationRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0"
+                          selectedRowKeys="#{bindings.ListePersAutDerogationRO.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.ListePersAutDerogationRO.collectionModel.makeCurrent}"
+                          rowSelection="single" fetchSize="#{bindings.ListePersAutDerogationRO.rangeSize}"
+                          filterModel="#{bindings.ListePersAutDerogationROQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.ListePersAutDerogationROQuery.processQuery}" varStatus="vs" id="t1">
+                        <af:column sortProperty="#{bindings.ListePersAutDerogationRO.hints.Numero.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ListePersAutDerogationRO.hints.Numero.label}" id="c1"
+                                   width="150">
+                                <af:outputText value="#{row.Numero}"
+                                               shortDesc="#{bindings.ListePersAutDerogationRO.hints.Numero.tooltip}"
+                                               id="ot1"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListePersAutDerogationRO.hints.Nom.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ListePersAutDerogationRO.hints.Nom.label}"
+                                   id="c2" width="200">
+                                <af:outputText value="#{row.Nom}"
+                                               shortDesc="#{bindings.ListePersAutDerogationRO.hints.Nom.tooltip}"
+                                               id="ot2"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListePersAutDerogationRO.hints.Prenoms.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ListePersAutDerogationRO.hints.Prenoms.label}" id="c3"
+                                   width="400">
+                                <af:outputText value="#{row.Prenoms}"
+                                               shortDesc="#{bindings.ListePersAutDerogationRO.hints.Prenoms.tooltip}"
+                                               id="ot3"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListePersAutDerogationRO.hints.DateNaissance.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ListePersAutDerogationRO.hints.DateNaissance.label}" id="c4">
+                                <f:facet name="filter">
+                                        <af:inputDate value="#{bindings.ListePersAutDerogationROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                                                      id="id1">
+                                                <af:convertDateTime pattern="#{bindings.ListePersAutDerogationRO.hints.DateNaissance.format}"/>
+                                        </af:inputDate>
+                                </f:facet>
+                                <af:outputText value="#{row.DateNaissance}"
+                                               shortDesc="#{bindings.ListePersAutDerogationRO.hints.DateNaissance.tooltip}"
+                                               id="ot4">
+                                        <af:convertDateTime pattern="#{bindings.ListePersAutDerogationRO.hints.DateNaissance.format}"/>
+                                </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListePersAutDerogationRO.hints.LieuNaissance.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ListePersAutDerogationRO.hints.LieuNaissance.label}" id="c5"
+                                   width="300">
+                                <af:outputText value="#{row.LieuNaissance}"
+                                               shortDesc="#{bindings.ListePersAutDerogationRO.hints.LieuNaissance.tooltip}"
+                                               id="ot5"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ListePersAutDerogationRO.hints.Nationalite.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ListePersAutDerogationRO.hints.Nationalite.label}" id="c6"
+                                   width="200">
+                                <af:outputText value="#{row.Nationalite}"
+                                               shortDesc="#{bindings.ListePersAutDerogationRO.hints.Nationalite.tooltip}"
+                                               id="ot6"/>
+                        </af:column>
+                </af:table>
+        </af:panelGroupLayout>
+</ui:composition>

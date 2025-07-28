@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listDetailZonePageDef"
+                Package="parametrage.pays">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ZoneGeographiques" RangeSize="15" DataControl="parametrageAppDataControl"
+              id="ZoneGeographiquesIterator"/>
+    <searchRegion Binds="ZoneGeographiquesIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ZoneGeographiquesQuery"/>
+    <iterator Binds="PaysVO1" RangeSize="15" DataControl="parametrageAppDataControl" id="PaysVO1Iterator"/>
+    <searchRegion Binds="PaysVO1Iterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="PaysVO1Query"/>
+    <iterator Binds="RegionsVO1" RangeSize="15" DataControl="parametrageAppDataControl" id="RegionsVO1Iterator"/>
+    <searchRegion Binds="RegionsVO1Iterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="RegionsVO1Query"/>
+    <iterator Binds="VillesVO1" RangeSize="15" DataControl="parametrageAppDataControl" id="VillesVO1Iterator"/>
+    <searchRegion Binds="VillesVO1Iterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="VillesVO1Query"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ZoneGeographiquesIterator" id="ZoneGeographiques">
+      <nodeDefinition DefName="model.updatableview.ZoneGeographiquesVO" Name="ZoneGeographiques0">
+        <AttrNames>
+          <Item Value="IdZoneGeographiques"/>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+          <Item Value="DateModification"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="ZoneGeographiquesIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ZoneGeographiquesIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ZoneGeographiquesIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ZoneGeographiquesIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaysVO1Iterator" id="Libelle">
+      <AttrNames>
+        <Item Value="Libelle"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaysVO1Iterator" id="CodeIso">
+      <AttrNames>
+        <Item Value="CodeIso"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaysVO1Iterator" id="Nationalite">
+      <AttrNames>
+        <Item Value="Nationalite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaysVO1Iterator" id="IdZoneGeographiques">
+      <AttrNames>
+        <Item Value="IdZoneGeographiques"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaysVO1Iterator" id="UtiCree1">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaysVO1Iterator" id="UtiModifie1">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="Rollback" DataControl="parametrageAppDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <action IterBinding="ZoneGeographiquesIterator" id="CreateInsertZone"
+            InstanceName="parametrageAppDataControl.ZoneGeographiques" DataControl="parametrageAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="ZoneGeographiquesIterator" id="DeleteZone"
+            InstanceName="parametrageAppDataControl.ZoneGeographiques" DataControl="parametrageAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="PaysVO1Iterator" id="CreateInsertPays" InstanceName="parametrageAppDataControl.PaysVO1"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="PaysVO1Iterator" id="DeletePays" InstanceName="parametrageAppDataControl.PaysVO1"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="RegionsVO1Iterator" id="RegionsVO1">
+      <nodeDefinition DefName="model.updatableview.RegionsVO" Name="RegionsVO10">
+        <AttrNames>
+          <Item Value="Libelle"/>
+          <Item Value="IdPays"/>
+          <Item Value="Code"/>
+          <Item Value="DateCreation"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+          <Item Value="DateModification"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="RegionsVO1Iterator" id="Libelle1">
+      <AttrNames>
+        <Item Value="Libelle"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="RegionsVO1Iterator" id="IdPays">
+      <AttrNames>
+        <Item Value="IdPays"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="RegionsVO1Iterator" id="Code">
+      <AttrNames>
+        <Item Value="Code"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="RegionsVO1Iterator" id="UtiCree2">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="RegionsVO1Iterator" id="UtiModifie2">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="RegionsVO1Iterator" id="CreateInsertRegion" InstanceName="parametrageAppDataControl.RegionsVO1"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="RegionsVO1Iterator" id="DeleteRegion" InstanceName="parametrageAppDataControl.RegionsVO1"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="VillesVO1Iterator" id="Libelle2">
+      <AttrNames>
+        <Item Value="Libelle"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="VillesVO1Iterator" id="Code1">
+      <AttrNames>
+        <Item Value="Code"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="VillesVO1Iterator" id="IdRegion">
+      <AttrNames>
+        <Item Value="IdRegion"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="VillesVO1Iterator" id="UtiCree3">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="VillesVO1Iterator" id="CreateInsertVille" InstanceName="parametrageAppDataControl.VillesVO1"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="VillesVO1Iterator" id="DeleteVille" InstanceName="parametrageAppDataControl.VillesVO1"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="VillesVO1Iterator" id="VillesVO1">
+      <nodeDefinition DefName="model.updatableview.VillesVO" Name="VillesVO10">
+        <AttrNames>
+          <Item Value="Libelle"/>
+          <Item Value="Code"/>
+          <Item Value="IdRegion"/>
+          <Item Value="DateCreation"/>
+          <Item Value="DateModification"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="PaysVO1Iterator" id="PaysVO11">
+      <nodeDefinition DefName="model.updatableview.PaysVO" Name="PaysVO110">
+        <AttrNames>
+          <Item Value="Libelle"/>
+          <Item Value="Nationalite"/>
+          <Item Value="IdZoneGeographiques"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="PaysVO1Iterator" StaticList="false" Uses="LOV_IdZoneGeographiques" id="IdZoneGeographiques1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="ZoneGeographiquesIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ZoneGeographiquesIterator" id="DateModification">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="RegionsVO1Iterator" StaticList="false" Uses="LOV_IdPays" id="IdPays1" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="RegionsVO1Iterator" id="DateCreation1">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="VillesVO1Iterator" StaticList="false" Uses="LOV_IdRegion" id="IdRegion1" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="VillesVO1Iterator" id="DateCreation2">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

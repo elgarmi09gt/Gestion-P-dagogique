@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listgradesPageDef"
+                Package="inscription.grades">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Grades" RangeSize="25" DataControl="inscriptionAppDataControl" id="GradesIterator"/>
+    <searchRegion Binds="GradesIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="GradesQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="GradesIterator" id="Grades">
+      <nodeDefinition DefName="model.updatableview.GradesVO" Name="Grades0">
+        <AttrNames>
+          <Item Value="IdTypePersonnel"/>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="GradesIterator" StaticList="false" Uses="LOV_IdTypePersonnel" id="IdTypePersonnel"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="GradesIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GradesIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GradesIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="GradesIterator" id="CreateInsert" InstanceName="inscriptionAppDataControl.Grades"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="GradesIterator" id="Delete" InstanceName="inscriptionAppDataControl.Grades"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+  </bindings>
+</pageDefinition>

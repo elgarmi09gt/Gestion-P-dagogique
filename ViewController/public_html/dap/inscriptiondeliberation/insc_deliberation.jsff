@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelGroupLayout id="pgl2" layout="vertical" inlineStyle="margin:0 15px">
+      <af:outputFormatted value="Parcours" id="of1" inlineStyle="font-size:large; font-weight:bolder; "/>
+      <af:selectOneChoice value="#{bindings.ParcoursUser.inputValue}"
+                          required="#{bindings.ParcoursUser.hints.mandatory}"
+                          shortDesc="#{bindings.ParcoursUser.hints.tooltip}" id="soc1"
+                          contentStyle="font-size:large; border-radius: 8px;" autoSubmit="true">
+        <f:selectItems value="#{bindings.ParcoursUser.items}" id="si1"/>
+        <f:validator binding="#{bindings.ParcoursUser.validator}"/>
+      </af:selectOneChoice>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl3" layout="vertical" inlineStyle="margin:10px 15px">
+    <af:outputFormatted value="Unité d'Enseignement" id="of2" inlineStyle="font-size:large; font-weight:bolder; "/>
+      <af:selectOneChoice value="#{bindings.FilUeInscDelib.inputValue}"
+                          required="#{bindings.FilUeInscDelib.hints.mandatory}"
+                          shortDesc="#{bindings.FilUeInscDelib.hints.tooltip}" id="soc2"
+                          contentStyle="font-size:large; border-radius: 8px;" autoSubmit="true" partialTriggers="soc1">
+        <f:selectItems value="#{bindings.FilUeInscDelib.items}" id="si2"/>
+        <f:validator binding="#{bindings.FilUeInscDelib.validator}"/>
+      </af:selectOneChoice>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl4" layout="vertical" halign="center" valign="middle" inlineStyle="margin : 5px 15px">
+      <af:button actionListener="#{bindings.Commit.execute}" text="Enregistrer" disabled="#{!bindings.Commit.enabled}"
+                 id="b1"
+                 inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px;"
+                 icon="/images/save-24.png"/>
+    </af:panelGroupLayout>
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth" inlineStyle="margin:0 15px">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="statusbar"/>
+      <af:table value="#{bindings.StudentInscDelibUe.collectionModel}" var="row"
+                rows="#{bindings.StudentInscDelibUe.rangeSize}"
+                emptyText="#{bindings.StudentInscDelibUe.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.StudentInscDelibUe.collectionModel.selectedRow}"
+                selectionListener="#{bindings.StudentInscDelibUe.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.StudentInscDelibUe.rangeSize}"
+                filterModel="#{bindings.StudentInscDelibUeQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.StudentInscDelibUeQuery.processQuery}" varStatus="vs" id="t1"
+                partialTriggers="::soc2" scrollPolicy="page" columnStretching="last">
+        <af:column sortProperty="#{bindings.StudentInscDelibUe.hints.is_dlble.name}" filterable="true" sortable="true"
+                   id="c1" align="center" width="50">
+          <af:selectBooleanCheckbox value="#{row.bindings.is_dlble.inputValue}" label="#{row.bindings.is_dlble.label}"
+                                    shortDesc="#{bindings.StudentInscDelibUe.hints.is_dlble.tooltip}" id="sbc1"
+                                    autoSubmit="true"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.StudentInscDelibUe.hints.Numero.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.NUMERO}" id="c2">
+          <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of3"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.StudentInscDelibUe.hints.Prenoms.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.PRENOMS}" id="c3" width="200">
+          <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of4"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.StudentInscDelibUe.hints.Nom.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.NOM}" id="c4" width="150">
+          <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of5"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.StudentInscDelibUe.hints.DateNaissance.name}" filterable="true"
+                   sortable="true" headerText="#{viewcontrollerBundle.DATE_NAISSANCE}" id="c5">
+          <f:facet name="filter">
+            <af:inputDate value="#{bindings.StudentInscDelibUeQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                          id="id1">
+              <af:convertDateTime pattern="#{bindings.StudentInscDelibUe.hints.DateNaissance.format}"/>
+            </af:inputDate>
+          </f:facet>
+          <af:outputFormatted value="#{row.bindings.DateNaissance.inputValue}" id="of6">
+            <af:convertDateTime pattern="#{bindings.StudentInscDelibUe.hints.DateNaissance.format}"/>
+          </af:outputFormatted>
+        </af:column>
+        <af:column sortProperty="#{bindings.StudentInscDelibUe.hints.LieuNaissance.name}" filterable="true"
+                   sortable="true" headerText="#{viewcontrollerBundle.LIEU_DE_NAISSANCE}" id="c6">
+          <af:outputFormatted value="#{row.bindings.LieuNaissance.inputValue}" id="of7"/>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+    <af:panelGroupLayout id="pgl5" layout="vertical" halign="center" valign="middle" inlineStyle="margin : 5px 15px">
+      <af:button actionListener="#{bindings.Commit.execute}" text="Enregistrer" disabled="#{!bindings.Commit.enabled}"
+                 id="b2"
+                 inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px;"
+                 icon="/images/save-24.png"/>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</ui:composition>

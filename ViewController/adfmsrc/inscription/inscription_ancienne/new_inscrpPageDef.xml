@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="new_inscrpPageDef"
+                Package="inscription.inscription_ancienne">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="InscriptionAncienne" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="InscriptionAncienneIterator"/>
+    <iterator Binds="NivFormAncInsRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="NivFormAncInsROIterator"/>
+    <iterator Binds="ListeInscAncRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="ListeInscAncROIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="IdEtudiantAncien">
+      <AttrNames>
+        <Item Value="IdEtudiantAncien"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="InscriptionAncienneIterator" StaticList="false" Uses="LOV_Valide" id="Valide"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="IdNumeroDiplome">
+      <AttrNames>
+        <Item Value="IdNumeroDiplome"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="DateDeliberation">
+      <AttrNames>
+        <Item Value="DateDeliberation"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="InscriptionAncienneIterator" StaticList="false" Uses="LOV_IdOption" id="IdOption"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionAncienneIterator" StaticList="false" Uses="LOV_IdSession" id="IdSession"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="DateDelivrance">
+      <AttrNames>
+        <Item Value="DateDelivrance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="NumIdentite">
+      <AttrNames>
+        <Item Value="NumIdentite"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="InscriptionAncienneIterator" StaticList="false" Uses="LOV_IdTypeResultat" id="IdTypeResultat"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="InscriptionAncienneIterator" StaticList="false" Uses="LOV_IdTypeMention" id="IdTypeMention"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="IdHistoriqueStructure">
+      <AttrNames>
+        <Item Value="IdHistoriqueStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormAncInsROIterator" id="IdNiveauFormationParcours1">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormAncInsROIterator" id="IdHistoriquesStructure">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormAncInsROIterator" id="IdUtilisateur">
+      <AttrNames>
+        <Item Value="IdUtilisateur"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormAncInsROIterator" id="IdAnneesUnivers1">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="ListeInscAncROIterator" id="ExecuteWithParams"
+            InstanceName="inscriptionAppDataControl.ListeInscAncRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_struct" NDType="java.lang.Long"/>
+      <NamedData NDName="id_parc" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

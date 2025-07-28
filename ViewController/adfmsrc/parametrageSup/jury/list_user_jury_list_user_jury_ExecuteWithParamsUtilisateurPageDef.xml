@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="list_user_jury_list_user_jury_ExecuteWithParamsUtilisateurPageDef" Package="parametrageSup.jury"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UtilisateurStructure" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="UtilisateurStructureIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="UtilisateurStructureIterator" id="ExecuteWithParams"
+            InstanceName="evaluationAppDataControl.UtilisateurStructure" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="s_id" NDValue="#{sessionScope.id_hs}" NDType="java.lang.Integer"/>
+    </action>
+  </bindings>
+</pageDefinition>

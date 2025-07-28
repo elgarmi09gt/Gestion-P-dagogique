@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelSplitter id="ps1" splitterPosition="1100" dimensionsFrom="children" firstBorder="all" secondBorder="all"
+                    disabled="true">
+    <f:facet name="first">
+      <af:panelGroupLayout id="pgl2" layout="vertical">
+        <af:button text="Liste Inscription Pédagogique" id="b1"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:20px;"/>
+        <af:table value="#{bindings.InscPedExcluRO.collectionModel}" var="row"
+                  rows="#{bindings.InscPedExcluRO.rangeSize}"
+                  emptyText="#{bindings.InscPedExcluRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.InscPedExcluRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.InscPedExcluRO.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.InscPedExcluRO.rangeSize}"
+                  filterModel="#{bindings.InscPedExcluROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.InscPedExcluROQuery.processQuery}" varStatus="vs" id="t1"
+                  scrollPolicy="page">
+          <af:column sortProperty="#{bindings.InscPedExcluRO.hints.LibNivForm.name}" filterable="true" sortable="true"
+                     headerText="Niveau Formation" id="c1" width="500">
+            <af:outputText value="#{row.LibNivForm}" shortDesc="#{bindings.InscPedExcluRO.hints.LibNivForm.tooltip}"
+                           id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedExcluRO.hints.IdAnneesUnivers.name}" filterable="true"
+                     sortable="true" headerText="Année Universitaire" id="c2" width="200">
+            <af:selectOneChoice value="#{row.bindings.IdAnneesUnivers.inputValue}"
+                                label="#{row.bindings.IdAnneesUnivers.label}"
+                                required="#{bindings.InscPedExcluRO.hints.IdAnneesUnivers.mandatory}"
+                                shortDesc="#{bindings.InscPedExcluRO.hints.IdAnneesUnivers.tooltip}" readOnly="true"
+                                id="soc2">
+              <f:selectItems value="#{row.bindings.IdAnneesUnivers.items}" id="si2"/>
+              <f:validator binding="#{row.bindings.IdAnneesUnivers.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedExcluRO.hints.EtatInscrEtatInscrId.name}" filterable="true"
+                     sortable="true" headerText="Etat Inscription" id="c3" width="150">
+            <af:selectOneChoice value="#{row.bindings.EtatInscrEtatInscrId.inputValue}"
+                                label="#{row.bindings.EtatInscrEtatInscrId.label}"
+                                required="#{bindings.InscPedExcluRO.hints.EtatInscrEtatInscrId.mandatory}"
+                                shortDesc="#{bindings.InscPedExcluRO.hints.EtatInscrEtatInscrId.tooltip}"
+                                readOnly="true" id="soc3">
+              <f:selectItems value="#{row.bindings.EtatInscrEtatInscrId.items}" id="si3"/>
+              <f:validator binding="#{row.bindings.EtatInscrEtatInscrId.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedExcluRO.hints.IdPaysNationalite.name}" filterable="true"
+                     sortable="true" headerText="Nationalité" id="c4" width="200">
+            <af:selectOneChoice value="#{row.bindings.IdPaysNationalite.inputValue}"
+                                label="#{row.bindings.IdPaysNationalite.label}"
+                                required="#{bindings.InscPedExcluRO.hints.IdPaysNationalite.mandatory}"
+                                shortDesc="#{bindings.InscPedExcluRO.hints.IdPaysNationalite.tooltip}" readOnly="true"
+                                id="soc4">
+              <f:selectItems value="#{row.bindings.IdPaysNationalite.items}" id="si4"/>
+              <f:validator binding="#{row.bindings.IdPaysNationalite.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </f:facet>
+    <f:facet name="second">
+      <af:panelGroupLayout id="pgl1" layout="vertical">
+        <af:button text="Exclusion" id="b2"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:20px;"/>
+        <af:selectOneChoice value="#{bindings.ExcluLOV.inputValue}"
+                            required="#{bindings.ExcluLOV.hints.mandatory}"
+                            shortDesc="#{bindings.ExcluLOV.hints.tooltip}" id="soc1"
+                            contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;"
+                            inlineStyle="margin-left:100px;">
+          <f:selectItems value="#{bindings.ExcluLOV.items}" id="si1"/>
+          <f:validator binding="#{bindings.ExcluLOV.validator}"/>
+        </af:selectOneChoice>
+                <af:button text="Valider" id="b3"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                   icon="/images/commit.png" action="#{DetailExcluBean.onValiderExclusion}"/>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:panelSplitter>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+            binding="#{DetailExcluBean.pop}">
+    <af:dialog id="d1" title="Formulaire de confirmation" dialogListener="#{DetailExcluBean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous exclure l'étudiant : #{sessionScope.prenom_etud}   #{sessionScope.nom_etud}" id="ot5"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{DetailExcluBean.onDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+    <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" contentDelivery="lazyUncached"
+            binding="#{DetailExcluBean.pop_annuler}">
+    <af:dialog id="d2" title="Formulaire de confirmation" dialogListener="#{DetailExcluBean.onDialogAnnuler}">
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{DetailExcluBean.onDialogCanAnnuler}"/>
+      <af:outputText value="Voulez-vous annuler l'exclusion de l'étudiant : #{sessionScope.prenom_etud}   #{sessionScope.nom_etud}" id="ot2"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>
+

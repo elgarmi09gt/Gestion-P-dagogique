@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="user_frPageDef"
+                Package="parametrageSup">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="FormationByStructure" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="FormationByStructureIterator"/>
+    <searchRegion Binds="FormationByStructureIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormationByStructureQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="FormationByStructureIterator" id="FormationByStructure">
+      <nodeDefinition DefName="model.readOnlyView.FormationByStructure" Name="FormationByStructure0">
+        <AttrNames>
+          <Item Value="isSelectedStructure"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="FormationByStructureIterator" id="isSelectedStructure" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isSelectedStructure"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+  </bindings>
+</pageDefinition>

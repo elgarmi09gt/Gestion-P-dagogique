@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+  <af:panelStretchLayout id="psl1" startWidth="260px" topHeight="123px" dimensionsFrom="parent">
+    <f:facet name="start">
+    <af:panelGroupLayout id="pt_pgl5" layout="vertical"
+                                 inlineStyle="background-color:#2897e8; text-align:left">
+                <af:panelGroupLayout id="pt_pgl4" layout="scroll"
+                                     inlineStyle="margin-left:2px; font-size:16px; text-indent:15px; margin-top:20px; line-height:150%;"
+                                     halign="left" binding="#{ConnectionEvalBean.menuPan}" styleClass="AFStretchWidth"
+                                     valign="middle">
+                    
+                
+      <!--af:listView value="#{bindings.ModuleUsers.treeModel}" var="item"
+                   emptyText="#{bindings.ModuleUsers.viewable ? 'No data to display.' : 'Access Denied.'}" id="lv1"
+                   fetchSize="25" visible="#{sessionScope.id_cal =='0' ? false : true }"
+                   binding="#{ConnectionEvalBean.menuLView}">
+        <af:listItem id="li1">
+          <af:panelGroupLayout layout="horizontal" id="pgl1"
+                               inlineStyle="text-indent:35px; font-family:Verdana; font-size:14px; font-style:normal; font-weight:300;"
+                               styleClass="AFStretchWidth">
+            <f:facet name="separator">
+              <af:spacer width="10" id="s1"/>
+            </f:facet>
+                <af:link text="#{item.bindings.LibelleLong.inputValue}" id="l1" inlineStyle="font-size:large;"
+                     partialSubmit="true">
+              <af:setPropertyListener from="#{item.bindings.UrlAction.inputValue}" to="#{sessionScope.TfID}"
+                                      type="action"/>
+            </af:link>
+              </af:panelGroupLayout>
+        </af:listItem>
+        <f:facet name="groupHeaderStamp">
+          <af:listItem id="li2"
+                       inlineStyle="font-family:Verdana; font-size:14px; height:60px; background:#2897e8; color:White; font-weight:bold; border:none;">
+            <af:panelGroupLayout layout="horizontal" id="pgl2" halign="left" valign="middle"
+                                 inlineStyle="text-align:left;">
+              <f:facet name="separator">
+                <af:spacer width="10" id="s2"/>
+              </f:facet>
+                  <af:image source="#{item.bindings.CheminImage.inputValue}" id="i1"
+                            inlineStyle="height:48px; width:40px"/>
+                  <af:outputFormatted value="#{item.bindings.LibelleLong.inputValue}" id="of2"
+                                  inlineStyle="text-align:center; overflow-wrap:break-word;"/>
+            </af:panelGroupLayout>
+            
+          </af:listItem>
+        </f:facet>
+      </af:listView-->
+          <!--af:listView value="#{bindings.FonctionnalitesUsers.collectionModel}" var="item"
+                       emptyText="#{bindings.FonctionnalitesUsers.viewable ? 'No data to display.' : 'Access Denied.'}"
+                       fetchSize="#{bindings.FonctionnalitesUsers.rangeSize}" id="lv2"
+                       visible="#{sessionScope.id_cal =='0' ? false : true }">
+            <af:listItem id="li3">
+              <af:panelGroupLayout layout="horizontal" id="pgl5">
+                <f:facet name="separator">
+                  <af:spacer width="10" id="s5"/>
+                </f:facet>
+                <af:link id="of3" text="#{item.bindings.LibelleLong.inputValue}">
+                  <af:setPropertyListener from="#{item.bindings.UrlAction.inputValue}" to="#{sessionScope.TfID}" type="action"/>
+                </af:link>
+              </af:panelGroupLayout>
+            </af:listItem>
+          </af:listView-->
+          <af:table value="#{bindings.FonctionnalitesUsers1.collectionModel}" var="row"
+                    rows="#{bindings.FonctionnalitesUsers1.rangeSize}"
+                    emptyText="#{bindings.FonctionnalitesUsers1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" visible="#{sessionScope.is_parm_enter ? true : false }"
+                    selectedRowKeys="#{bindings.FonctionnalitesUsers1.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.FonctionnalitesUsers1.collectionModel.makeCurrent}"
+                    rowSelection="single" fetchSize="#{bindings.FonctionnalitesUsers1.rangeSize}" id="t1" columnStretching="last"
+                    inlineStyle="text-indent:25px; font-family:Verdana; font-size:14px; font-style:normal; font-weight:300; overflow-wrap:break-word; line-height:35px;"
+                               styleClass="AFStretchWidth" binding="#{ConnectionEvalBean.menuTable}">
+            <af:column id="c1">
+              <af:link shortDesc="#{bindings.FonctionnalitesUsers1.hints.LibelleLong.tooltip}" id="l1"
+                       text="#{row.LibelleLong}" partialSubmit="true"
+                       inlineStyle="font-size:medium; overflow-wrap:break-word;">
+                <af:setPropertyListener from="#{row.UrlAction}" to="#{sessionScope.TfID}" type="action"/>
+              </af:link>
+            </af:column>
+          </af:table>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </f:facet>
+    <f:facet name="end">
+      <af:resource type="javascript">
+      function onDialogNew(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+      <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:resource type="javascript">
+      function OnDialogCancel(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "HandlerEvenDialogCancel", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+    </f:facet>
+    <f:facet name="top">
+      <af:panelStretchLayout id="psl2" inlineStyle="background-color:#2897e8;" startWidth="115px" topHeight="0px"
+                             bottomHeight="0px" dimensionsFrom="children" styleClass="AFStretchWidth" endWidth="130px">
+        <f:facet name="start">
+          <af:panelGroupLayout id="pgl4" styleClass="AFStretchWidth">
+            <af:image source="/images/LogoUcadNoir.png" id="pt_i1"
+                      inlineStyle="height:100px; text-align:center; width:113px;"/>
+          </af:panelGroupLayout>
+        </f:facet>
+        <f:facet name="end">
+          <af:panelGroupLayout id="pgl3"
+                               inlineStyle="background-color:#2897e8;"
+                               styleClass="AFStretchWidth" layout="vertical">
+            <af:spacer width="10" height="25" id="s4"/>
+            <af:link id="b1" icon="/images/Apps-logout-icon-small.png" action="#{LoginBean.Logout}" immediate="true"
+                     accessKey="L" shortDesc="Deconnexion" text="Deconnexion"
+                     inlineStyle="font-style:italic;color:white;margin-top:10px">
+              <!--af:matchMediaBehavior matchedPropertyValue="/images/shutdown_48px.png" mediaQuery="screen and (max-width:1200px)"
+                                   propertyName="icon"/-->
+            </af:link>
+          </af:panelGroupLayout>
+        </f:facet>
+        <f:facet name="center">
+          <af:panelStretchLayout id="psl3" bottomHeight="0px" topHeight="0px" startWidth="145px"
+                                 dimensionsFrom="children" endWidth="500px">
+            <f:facet name="start">
+              <af:panelGroupLayout id="pt_pgl2" styleClass="AFStretchWidth" layout="vertical">
+                <af:spacer width="2" height="30" id="s3"/>
+                <af:outputFormatted value="GAP'S EDU" id="pt_of1"
+                                    inlineStyle="font-size:x-large; color:White; text-align:center; text-shadow:2px 2px     red; margin-left:10px;"/>
+              </af:panelGroupLayout>
+            </f:facet>
+            <f:facet name="end">
+              <af:panelGroupLayout id="pgl1" layout="vertical" halign="end" binding="#{ConnectionEvalBean.userPangrp}">
+                <af:spacer width="10" height="30" id="s1"/>
+                <af:outputFormatted value="#{sessionScope.user}(#{sessionScope.module})" id="of2"
+                                    inlineStyle="font-size:large; color:White; text-align:center; text-shadow:2px 2px     black;margin:5px"/>
+              </af:panelGroupLayout>
+            </f:facet>
+            <f:facet name="center"/>
+          </af:panelStretchLayout>
+        </f:facet>
+        <f:facet name="top"/>
+      </af:panelStretchLayout>
+    </f:facet>
+    <f:facet name="bottom">
+        <af:panelGroupLayout id="pt_pgl3" layout="vertical" valign="middle" halign="center"
+                             inlineStyle="background-color:#309ade; color:White; font-size:large; text-align:center;"
+                             styleClass="AFStretchWidth">
+        <af:panelGroupLayout id="pgl2" layout="horizontal" halign="center" valign="middle"
+                             inlineStyle="text-align:center;height : 50px">
+          <af:outputFormatted value="&amp;copy; Copyright " id="pt_of2"/>
+          <af:spacer width="5" height="10" id="s2"/>
+          <af:link text="DISI" id="l3" targetFrame="_blank" destination="https://disi.ucad.sn/"
+                   inlineStyle="color:Blue; font-size:large;"/>
+          <af:spacer width="5" height="10" id="s5"/>
+          <af:outputFormatted value="/" id="of1"/>
+          <af:spacer width="5" height="10" id="s6"/>
+          <af:link text="UCAD" id="l2" targetFrame="_blank" destination="https://www.ucad.sn/"
+                   inlineStyle="color:Blue; font-size:large;"/>
+          <af:outputFormatted value=". Tous droits réservés" id="pt_of3"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </f:facet>
+    <f:facet name="center">
+      <af:region value="#{bindings.dynamictf1.regionModel}" id="r1" 
+                 inlineStyle="margin:30px;" partialTriggers="::t1:l1"/><!-- partialTriggers="::lv1:l1" -->
+    </f:facet>    
+  </af:panelStretchLayout>
+</ui:composition>

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  
+    <af:panelFormLayout id="pfl2" rows="2"
+                      inlineStyle="border:solid  2px #2897e8;width:700px;margin-top:20px;margin-left:10px;">
+    <af:inputText value="#{bindings.Numero.inputValue}" label="Numéro"
+                  required="#{bindings.Numero.hints.mandatory}" columns="#{bindings.Numero.hints.displayWidth}"
+                  maximumLength="#{bindings.Numero.hints.precision}" shortDesc="#{bindings.Numero.hints.tooltip}"
+                  id="it1" readOnly="true">
+      <f:validator binding="#{bindings.Numero.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                  required="#{bindings.Nom.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Nom.hints.displayWidth}" maximumLength="#{bindings.Nom.hints.precision}"
+                  shortDesc="#{bindings.Nom.hints.tooltip}" id="it2">
+      <f:validator binding="#{bindings.Nom.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Prenoms.inputValue}" label="#{bindings.Prenoms.hints.label}"
+                  required="#{bindings.Prenoms.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Prenoms.hints.displayWidth}" maximumLength="#{bindings.Prenoms.hints.precision}"
+                  shortDesc="#{bindings.Prenoms.hints.tooltip}" id="it3">
+      <f:validator binding="#{bindings.Prenoms.validator}"/>
+    </af:inputText>
+    <af:inputDate value="#{bindings.DateNaissance.inputValue}" readOnly="true"
+                  label="Date Naissance" required="#{bindings.DateNaissance.hints.mandatory}"
+                  columns="#{bindings.DateNaissance.hints.displayWidth}"
+                  shortDesc="#{bindings.DateNaissance.hints.tooltip}" id="id1">
+      <f:validator binding="#{bindings.DateNaissance.validator}"/>
+      <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+    </af:inputDate>
+  </af:panelFormLayout>
+  <af:button text="Editer Certificat d'Inscription" id="b1"
+             inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:20px;margin-top:30px;"
+             disabled="#{sessionScope.is_down_certificat_insc == '1' ? true : false}">
+    <af:fileDownloadActionListener contentType="application/pdf" filename="certificat.pdf"
+                                   method="#{CertificatBean.onEditerCertificat}"/>
+  </af:button>
+</ui:composition>

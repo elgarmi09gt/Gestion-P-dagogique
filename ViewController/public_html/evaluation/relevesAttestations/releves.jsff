@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="vertical">
+    <af:button text="Imprimer Relevés" id="b1" actionListener="#{PrintRelevesBean.OnPrintReleveClick}"/>
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="statusbar"/>
+      <af:table value="#{bindings.EtudiantReleves.collectionModel}" var="row"
+                rows="#{bindings.EtudiantReleves.rangeSize}"
+                emptyText="#{bindings.EtudiantReleves.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.EtudiantReleves.collectionModel.selectedRow}"
+                selectionListener="#{bindings.EtudiantReleves.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.EtudiantReleves.rangeSize}"
+                filterModel="#{bindings.EtudiantRelevesQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.EtudiantRelevesQuery.processQuery}" varStatus="vs" id="t1"
+                columnStretching="last">
+        <af:column sortProperty="#{bindings.EtudiantReleves.hints.Numero.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.EtudiantReleves.hints.Numero.label}" id="c1">
+          <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.EtudiantReleves.hints.Prenoms.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.EtudiantReleves.hints.Prenoms.label}" id="c2" width="400">
+          <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of2"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.EtudiantReleves.hints.Nom.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.EtudiantReleves.hints.Nom.label}" id="c3">
+          <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of3"/>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+  </af:panelGroupLayout>
+</ui:composition>

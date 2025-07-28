@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">               
+                  <af:panelFormLayout id="pfl4" rows="2"
+                      inlineStyle="border:solid  2px #2897e8;width:700px;margin-top:20px;margin-left:10px;">
+    <af:inputText value="#{bindings.Numero.inputValue}" label="#{bindings.Numero.hints.label}"
+                  required="#{bindings.Numero.hints.mandatory}" columns="#{bindings.Numero.hints.displayWidth}"
+                  maximumLength="#{bindings.Numero.hints.precision}" shortDesc="#{bindings.Numero.hints.tooltip}"
+                  id="it19" readOnly="true">
+      <f:validator binding="#{bindings.Numero.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                  required="#{bindings.Nom.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Nom.hints.displayWidth}" maximumLength="#{bindings.Nom.hints.precision}"
+                  shortDesc="#{bindings.Nom.hints.tooltip}" id="it20">
+      <f:validator binding="#{bindings.Nom.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Prenoms.inputValue}" label="#{bindings.Prenoms.hints.label}"
+                  required="#{bindings.Prenoms.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Prenoms.hints.displayWidth}" maximumLength="#{bindings.Prenoms.hints.precision}"
+                  shortDesc="#{bindings.Prenoms.hints.tooltip}" id="it21">
+      <f:validator binding="#{bindings.Prenoms.validator}"/>
+    </af:inputText>
+    <af:inputDate value="#{bindings.DateNaissance.inputValue}" readOnly="true"
+                  label="#{bindings.DateNaissance.hints.label}" required="#{bindings.DateNaissance.hints.mandatory}"
+                  columns="#{bindings.DateNaissance.hints.displayWidth}"
+                  shortDesc="#{bindings.DateNaissance.hints.tooltip}" id="id2">
+      <f:validator binding="#{bindings.DateNaissance.validator}"/>
+      <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+    </af:inputDate>
+  </af:panelFormLayout>
+  <af:button text="Le Responsable de l'étudiant" id="b2" partialSubmit="false" disabled="true"
+             inlineStyle="font-size:small; border-radius:0px 0px 0px 0px / 0px 0px 0px 0px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:30px;"/>
+  <af:panelLabelAndMessage label="Le responsable de l'étudiant n'est pas pas renseigné" id="plam1"
+                           inlineStyle="background-color:Red;margin-left:10px;margin-top:20px;margin-bottom:20px;margin-left:400px;"
+                           visible="#{sessionScope.resp_non_renseigner == '1' ? true : false}" />
+  <af:panelFormLayout id="pfl3" rows="4"
+                              inlineStyle="border:solid  2px #2897e8;margin-top:20px;margin-left:10px;width:1200px;">
+            <af:inputText value="#{bindings.Prenoms2.inputValue}" label="#{bindings.Prenoms2.hints.label}"
+                          required="#{bindings.Prenoms2.hints.mandatory}"
+                          columns="#{bindings.Prenoms2.hints.displayWidth}"
+                          maximumLength="#{bindings.Prenoms2.hints.precision}"
+                          shortDesc="#{bindings.Prenoms2.hints.tooltip}" id="it8" contentStyle="margin-top:10px;"
+                          showRequired="true" disabled="true">
+              <f:validator binding="#{bindings.Prenoms2.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.Nom2.inputValue}" label="#{bindings.Nom2.hints.label}"
+                          required="#{bindings.Nom2.hints.mandatory}" columns="#{bindings.Nom2.hints.displayWidth}"
+                          maximumLength="#{bindings.Nom2.hints.precision}" shortDesc="#{bindings.Nom2.hints.tooltip}"
+                          id="it5" showRequired="true" disabled="true">
+              <f:validator binding="#{bindings.Nom2.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.Adresse.inputValue}" label="#{bindings.Adresse.hints.label}"
+                          required="#{bindings.Adresse.hints.mandatory}"
+                          columns="#{bindings.Adresse.hints.displayWidth}"
+                          maximumLength="#{bindings.Adresse.hints.precision}"
+                          shortDesc="#{bindings.Adresse.hints.tooltip}" id="it12" contentStyle="width:200px;"
+                          showRequired="true" disabled="true">
+              <f:validator binding="#{bindings.Adresse.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.Portable.inputValue}" label="#{bindings.Portable.hints.label}"
+                          required="#{bindings.Portable.hints.mandatory}"
+                          columns="#{bindings.Portable.hints.displayWidth}"
+                          maximumLength="#{bindings.Portable.hints.precision}"
+                          shortDesc="#{bindings.Portable.hints.tooltip}" id="it16" contentStyle="margin-bottom:10px;"
+                          showRequired="true" disabled="true">
+              <af:validateRegExp pattern="7[05-8]{1}[0-9]{3}[0-9]{2}[0-9]{2}" messageDetailNoMatch="Numéro Téléphone non valide" hint="Numéro Téléphone sans l'indicatif (+221)"/>           
+            </af:inputText>
+            <af:inputText value="#{bindings.Bp1.inputValue}" label="Boîte Postale"
+                          required="#{bindings.Bp1.hints.mandatory}" columns="#{bindings.Bp1.hints.displayWidth}"
+                          maximumLength="#{bindings.Bp1.hints.precision}" shortDesc="#{bindings.Bp1.hints.tooltip}"
+                          id="it14" contentStyle="margin-top:10px;" disabled="true">
+              <f:validator binding="#{bindings.Bp1.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.EMail1.inputValue}" label="Email"
+                          required="#{bindings.EMail1.hints.mandatory}" columns="#{bindings.EMail1.hints.displayWidth}"
+                          maximumLength="#{bindings.EMail1.hints.precision}" shortDesc="#{bindings.EMail1.hints.tooltip}"
+                          id="it17" contentStyle="width:200px;" disabled="true">
+              <af:validateRegExp pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" messageDetailNoMatch="Email non valide"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.Telephone.inputValue}" label="#{bindings.Telephone.hints.label}"
+                          required="#{bindings.Telephone.hints.mandatory}"
+                          columns="#{bindings.Telephone.hints.displayWidth}"
+                          maximumLength="#{bindings.Telephone.hints.precision}"
+                          shortDesc="#{bindings.Telephone.hints.tooltip}" id="it15" contentStyle="margin-bottom:10px;"
+                          disabled="true">
+              <f:validator binding="#{bindings.Telephone.validator}"/>
+            </af:inputText>
+            <af:selectOneRadio value="#{bindings.Etudiant1.inputValue}" label="Est-il étudiant ?"
+                               required="#{bindings.Etudiant1.hints.mandatory}"
+                               shortDesc="#{bindings.Etudiant1.hints.tooltip}" id="sor1" layout="horizontal"
+                               labelStyle="width:120px;" showRequired="true" immediate="true" disabled="true">
+              <f:selectItems value="#{bindings.Etudiant1.items}" id="si4"/>
+              <f:validator binding="#{bindings.Etudiant1.validator}"/>
+            </af:selectOneRadio>
+            <af:selectOneChoice value="#{bindings.IdSocPro1.inputValue}" label="Profession"
+                                required="#{bindings.IdSocPro1.hints.mandatory}"
+                                shortDesc="#{bindings.IdSocPro1.hints.tooltip}" id="soc4"
+                                contentStyle="margin-top:10px;margin-bottom:10px;" disabled="true">
+              <f:selectItems value="#{bindings.IdSocPro1.items}" id="si5"/>
+              <f:validator binding="#{bindings.IdSocPro1.validator}"/>
+            </af:selectOneChoice>
+            <af:selectOneChoice value="#{bindings.Lienparente1.inputValue}" label="Lien Parenté"
+                                required="#{bindings.Lienparente1.hints.mandatory}"
+                                shortDesc="#{bindings.Lienparente1.hints.tooltip}" id="soc5" showRequired="true"
+                                disabled="true">
+              <f:selectItems value="#{bindings.Lienparente1.items}" id="si6"/>
+              <f:validator binding="#{bindings.Lienparente1.validator}"/>
+            </af:selectOneChoice>
+            <af:inputText value="#{bindings.Fax1.inputValue}" label="#{bindings.Fax1.hints.label}"
+                          required="#{bindings.Fax1.hints.mandatory}" columns="#{bindings.Fax1.hints.displayWidth}"
+                          maximumLength="#{bindings.Fax1.hints.precision}" shortDesc="#{bindings.Fax1.hints.tooltip}"
+                          id="it18" contentStyle="margin-bottom:10px;" disabled="true">
+              <f:validator binding="#{bindings.Fax1.validator}"/>
+            </af:inputText>
+            <af:selectOneRadio value="#{bindings.Contact1.inputValue}" label="A contacter ?"
+                               required="#{bindings.Contact1.hints.mandatory}"
+                               shortDesc="#{bindings.Contact1.hints.tooltip}" id="sor2" layout="horizontal"
+                               showRequired="true" disabled="true">
+              <f:selectItems value="#{bindings.Contact1.items}" id="si7"/>
+              <f:validator binding="#{bindings.Contact1.validator}"/>
+            </af:selectOneRadio>
+          </af:panelFormLayout>
+</ui:composition>

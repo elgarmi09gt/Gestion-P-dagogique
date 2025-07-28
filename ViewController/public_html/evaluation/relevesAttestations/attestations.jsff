@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <af:button text="Imprimer Attestations" id="b1" actionListener="#{PrintAttestationsBean.OnPrintAttestationClicked}"
+               targetFrame="_blank">
+        <!--af:clientListener method="newWindow" type="action"/-->
+    </af:button>
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.EtudiantAttestation.collectionModel}" var="row"
+                  rows="#{bindings.EtudiantAttestation.rangeSize}"
+                  emptyText="#{bindings.EtudiantAttestation.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.EtudiantAttestation.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.EtudiantAttestation.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.EtudiantAttestation.rangeSize}"
+                  filterModel="#{bindings.EtudiantAttestationQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.EtudiantAttestationQuery.processQuery}" varStatus="vs" id="t1"
+                  columnStretching="last">
+            <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Numero.name}" filterable="true"
+                       sortable="true" headerText="#{bindings.EtudiantAttestation.hints.Numero.label}" id="c1">
+                <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Prenoms.name}" filterable="true"
+                       sortable="true" headerText="#{bindings.EtudiantAttestation.hints.Prenoms.label}" id="c2">
+                <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Nom.name}" filterable="true" sortable="true"
+                       headerText="#{bindings.EtudiantAttestation.hints.Nom.label}" id="c3">
+                <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of3"/>
+            </af:column>
+        </af:table>
+    </af:panelCollection>
+</ui:composition>

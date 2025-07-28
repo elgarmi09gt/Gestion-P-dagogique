@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="EtudiantExcluSuspenduROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.EtudiantExcluSuspenduROVORowImpl"
+  ComponentClass="model.readOnlyView.EtudiantExcluSuspenduROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.EtudiantExcluSuspenduROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_exclu"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_suspendu"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_pers"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select nf.libelle_long as lib_niv_form ,au.id_annees_univers , au.libelle_long , ia.id_etudiant , ia.id_grade , ia.id_type_formation ,ip.id_inscription_pedagogique , ip.id_parcours_maquet_annee ,ei.libelle , ei.type_inscription,e.id_personne  from inscriptions_admin ia    
+join inscriptions_pedagogiques ip on ip.id_inscription_admin = ia.id_inscription_admin    
+join etats_inscription ei on ei.id_etats_inscription = ip.etat_inscr_etat_inscr_id    
+join annees_univers au on au.id_annees_univers = ia.id_annees_univers    
+join etudiants e on ia.id_etudiant = e.id_etudiant   
+join parcours_maquette_annee pma   on pma.id_parcours_maquet_annee = ip.id_parcours_maquet_annee                             
+JOIN niveaux_formation_parcours nfp on nfp.id_niveau_formation_parcours = pma.id_niveau_formation_parcours                                  
+JOIN niveau_formation_cohortes nfc on nfc.id_niveau_formation_cohorte = nfp.id_niveau_formation_cohorte                                  
+JOIN niveaux_formations nf on nfc.id_niveau_formation = nf.id_niveau_formation  
+  
+where e.id_personne=:id_pers      
+and (ip.etat_inscr_etat_inscr_id=:id_exclu or ip.etat_inscr_etat_inscr_id=:id_suspendu)]]></SQLQuery>
+  <ViewAttribute
+    Name="LibNivForm"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_NIV_FORM"
+    Expression="LIB_NIV_FORM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdGrade"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_GRADE"
+    Expression="ID_GRADE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdTypeFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_TYPE_FORMATION"
+    Expression="ID_TYPE_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionPedagogique"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PEDAGOGIQUE"
+    Expression="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdParcoursMaquetAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PARCOURS_MAQUET_ANNEE"
+    Expression="ID_PARCOURS_MAQUET_ANNEE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Libelle"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="75"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE"
+    Expression="LIBELLE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TypeInscription"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="TYPE_INSCRIPTION"
+    Expression="TYPE_INSCRIPTION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdPersonne"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PERSONNE"
+    Expression="ID_PERSONNE"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

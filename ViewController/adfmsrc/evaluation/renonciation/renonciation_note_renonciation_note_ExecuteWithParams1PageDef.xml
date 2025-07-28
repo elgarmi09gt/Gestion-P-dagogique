@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="renonciation_note_renonciation_note_ExecuteWithParams1PageDef" Package="evaluation.renonciation"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="FiliereUeRenonciation" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="FiliereUeRenonciationIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="FiliereUeRenonciationIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="pma_id" NDValue="#{sessionScope.prcrs_maq_an}" NDType="java.lang.Long"/>
+      <NamedData NDName="id_cal" NDValue="#{sessionScope.id_calendrier}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

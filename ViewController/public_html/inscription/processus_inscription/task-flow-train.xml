@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="task-flow-train">
+    <default-activity>ExecuteWithParams</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__3">
+      <managed-bean-name>Inscriptionbean</managed-bean-name>
+      <managed-bean-class>processus_inscription.InscriptionBean</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__4">
+      <managed-bean-name>beanInsPed</managed-bean-name>
+      <managed-bean-class>processus_inscription.BeanInsPed</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <save-point-restore-finalizer>#{data.view_detail_RechercheROPageDef}</save-point-restore-finalizer>
+    <method-call id="ExecuteWithParams">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="detail_RechercheRO">
+      <page>/inscription/processus_inscription/detail_RechercheRO.jsff</page>
+      <train-stop>
+        <display-name>Resultat de la recherche</display-name>
+      </train-stop>
+    </view>
+    <view id="detail_Personne">
+      <page>/inscription/processus_inscription/detail_Personne.jsff</page>
+      <train-stop>
+        <display-name>Détail modifiable</display-name>
+      </train-stop>
+    </view>
+    <view id="listeInsPed">
+      <page>/inscription/processus_inscription/listeInsPed.jsff</page>
+      <train-stop>
+        <display-name>Liste Insc. Pédagogiques</display-name>
+      </train-stop>
+    </view>
+    <view id="detail_InsPed">
+      <page>/inscription/processus_inscription/detail_InsPed.jsff</page>
+      <train-stop>
+        <display-name>Inscription Pédagogique</display-name>
+      </train-stop>
+    </view>
+    <view id="insPedSem">
+      <page>/inscription/processus_inscription/insPedSem.jsff</page>
+      <train-stop>
+        <display-name>Inscription Péd Semestre</display-name>
+      </train-stop>
+    </view>
+    <view id="insPedSemUe">
+      <page>/inscription/processus_inscription/insPedSemUe.jsff</page>
+      <train-stop>
+        <display-name>Inscription Ue</display-name>
+      </train-stop>
+    </view>
+    <view id="resume">
+      <page>/inscription/processus_inscription/resume.jsff</page>
+      <train-stop>
+        <display-name>Resumé</display-name>
+      </train-stop>
+    </view>
+    <train/>
+    <control-flow-rule id="__1">
+      <from-activity-id>ExecuteWithParams</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>detail_RechercheRO</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

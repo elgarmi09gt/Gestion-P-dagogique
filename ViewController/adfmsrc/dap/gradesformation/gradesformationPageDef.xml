@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="gradesformationPageDef"
+                Package="dap.gradesformation">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="GradesFormation" RangeSize="15" DataControl="gestdapAppDataControl" id="GradesFormationIterator"/>
+    <searchRegion Binds="GradesFormationIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="GradesFormationQuery"/>
+    <iterator Binds="IsFormationGradeExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsFormationGradeExistIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="GradesFormationIterator" id="GradesFormation">
+      <nodeDefinition DefName="model.updatableview.GradesFormationVO" Name="GradesFormation0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="GradesFormationIterator" id="IdGradesFormation">
+      <AttrNames>
+        <Item Value="IdGradesFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GradesFormationIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GradesFormationIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GradesFormationIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GradesFormationIterator" id="DateModification">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GradesFormationIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GradesFormationIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="GradesFormationIterator" id="CreateInsert" InstanceName="gestdapAppDataControl.GradesFormation"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Commit" DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="GradesFormationIterator" id="Delete" InstanceName="gestdapAppDataControl.GradesFormation"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="IsFormationGradeExistIterator" id="IsFormationGradeExist"
+            InstanceName="gestdapAppDataControl.IsFormationGradeExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="gf_id" NDType="java.lang.Integer"/>
+    </action>
+  </bindings>
+</pageDefinition>

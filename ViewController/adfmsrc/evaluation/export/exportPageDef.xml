@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="exportPageDef"
+                Package="evaluation.export">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UeEvalRO" RangeSize="25" DataControl="evaluationAppDataControl" id="UeEvalROIterator"/>
+    <iterator Binds="EcEvalRO" RangeSize="25" DataControl="evaluationAppDataControl" id="EcEvalROIterator"/>
+    <iterator Binds="EcEvalTypeCtrlRO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="EcEvalTypeCtrlROIterator"/>
+    <iterator Binds="EcEvalTypeCtrlModeCtrlRO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="EcEvalTypeCtrlModeCtrlROIterator"/>
+    <iterator Binds="EtudiantSaisieNoteInter1" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="EtudiantSaisieNoteInter1Iterator"/>
+    <searchRegion Binds="EtudiantSaisieNoteInter1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtudiantSaisieNoteInter1Query"/>
+    <iterator Binds="GroupeSaisieNoteROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="GroupeSaisieNoteROVOIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="UeEvalROIterator" StaticList="false" Uses="LOV_IdNiveauFormationParcours"
+          id="IdNiveauFormationParcours" DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <list IterBinding="UeEvalROIterator" ListOperMode="navigation" ListIter="UeEvalROIterator" id="UeEvalRO"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="EcEvalROIterator" ListOperMode="navigation" ListIter="EcEvalROIterator" id="EcEvalRO"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="EcEvalTypeCtrlROIterator" id="IdTypeControle">
+      <AttrNames>
+        <Item Value="IdTypeControle"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcEvalTypeCtrlModeCtrlROIterator" id="IdModeControleEc2">
+      <AttrNames>
+        <Item Value="IdModeControleEc"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="EcEvalTypeCtrlROIterator" ListOperMode="navigation" ListIter="EcEvalTypeCtrlROIterator"
+          id="EcEvalTypeCtrlRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibTypeCtrl"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="EcEvalTypeCtrlModeCtrlROIterator" ListOperMode="navigation"
+          ListIter="EcEvalTypeCtrlModeCtrlROIterator" id="EcEvalTypeCtrlModeCtrlRO" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibModeCtrl"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="EtudiantSaisieNoteInter1Iterator" id="EtudiantSaisieNoteInter1">
+      <nodeDefinition DefName="model.readOnlyView.EtudiantSaisieNoteInter" Name="EtudiantSaisieNoteInter10">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Prenom"/>
+          <Item Value="Nom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Note"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="NoteModeEnsInterVO"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="model.updatableview.NoteModeEnsInterVO">
+        <AttrNames>
+          <Item Value="Note"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="EcEvalROIterator" id="IdFiliereUeSemstreEc">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstreEc"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="EtudiantSaisieNoteInter1Iterator" id="getEtuSaisieNoteInter"
+            InstanceName="evaluationAppDataControl.EtudiantSaisieNoteInter1" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="mde_cntrl_id" NDType="java.lang.Long"/>
+      <NamedData NDName="cal_id" NDType="java.lang.Long"/>
+      <NamedData NDName="tcntrl_id" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="GroupeSaisieNoteROVOIterator" id="GetGroupeSaisieNote"
+            InstanceName="evaluationAppDataControl.GroupeSaisieNoteROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="p_id" NDType="java.lang.Long"/>
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="isClosedSaisieNotesInter" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isClosedSaisieNotesInter" IsViewObjectMethod="false"
+                  DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isClosedSaisieNotesInter.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isClosedSaisieNotesInter_isClosedSaisieNotesInter_dataControl_dataProvider_isClosedSaisieNotesInter_result">
+      <NamedData NDName="fil_sem_ec" NDType="java.lang.Long"/>
+      <NamedData NDName="type_control" NDType="java.lang.Long"/>
+      <NamedData NDName="mode_control" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isGenereAnonymat" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isGenereAnonymat"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isGenereAnonymat.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isGenereAnonymat_isGenereAnonymat_dataControl_dataProvider_isGenereAnonymat_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="anne" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="sessions" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="UeEvalROIterator" id="CodificationUE">
+      <AttrNames>
+        <Item Value="Codification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcEvalROIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcEvalTypeCtrlROIterator" id="LibelleCourtCtrl">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcEvalTypeCtrlModeCtrlROIterator" id="LibModeCtrl">
+      <AttrNames>
+        <Item Value="LibModeCtrl"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isEcAccessAllowed" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isEcAccessAllowed"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isEcAccessAllowed.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isEcAccessAllowed_isEcAccessAllowed_dataControl_dataProvider_isEcAccessAllowed_result">
+      <NamedData NDName="filiere_ec_id" NDType="java.lang.Long"/>
+      <NamedData NDName="prcrs_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="UeEvalROIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UeEvalROIterator" id="LibAnnee">
+      <AttrNames>
+        <Item Value="LibAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UeEvalROIterator" id="LibNivForm">
+      <AttrNames>
+        <Item Value="LibNivForm"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

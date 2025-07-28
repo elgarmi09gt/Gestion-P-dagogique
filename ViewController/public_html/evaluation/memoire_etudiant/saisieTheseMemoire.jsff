@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl3" layout="vertical">
+    <af:panelGroupLayout id="pgl1" layout="horizontal" styleClass="AFStretchWidth">
+      <af:panelGroupLayout id="pgl12" layout="vertical">
+        <af:outputFormatted value="Département" id="of1" inlineStyle="font-size:medium; font-weight:bolder; "/>
+        <af:selectOneChoice value="#{bindings.DepartementsEtabROVO.inputValue}"
+                            required="#{bindings.DepartementsEtabROVO.hints.mandatory}"
+                            shortDesc="#{bindings.DepartementsEtabROVO.hints.tooltip}" id="soc5"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:500px"
+                            autoSubmit="true">
+          <f:selectItems value="#{bindings.DepartementsEtabROVO.items}" id="si5"/>
+          <f:validator binding="#{bindings.DepartementsEtabROVO.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl13" layout="vertical">
+        <af:outputFormatted value="Parcours" id="of9" inlineStyle="font-size:medium; font-weight:bolder; "/>
+        <af:selectOneChoice value="#{bindings.ParcoursSaisieMemoire.inputValue}"
+                            required="#{bindings.ParcoursSaisieMemoire.hints.mandatory}"
+                            shortDesc="#{bindings.ParcoursSaisieMemoire.hints.tooltip}" id="soc6"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:500px"
+                            autoSubmit="true" partialTriggers="soc5">
+          <f:selectItems value="#{bindings.ParcoursSaisieMemoire.items}" id="si6"/>
+          <f:validator binding="#{bindings.ParcoursSaisieMemoire.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl2" layout="scroll" binding="#{SaisieMemoireEtudiant.etdPanGrp}">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{SaisieMemoireEtudiant.etdPanCol}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t1">
+            <af:button id="b1" icon="/images/new_icon.png" actionListener="#{SaisieMemoireEtudiant.OnNewMemoireAction}"/>
+            <af:button id="b3" icon="/images/edit_icon.png"
+                       actionListener="#{SaisieMemoireEtudiant.OnEditMemoireAction}"/>
+          </af:toolbar>
+        </f:facet>
+        <af:table value="#{bindings.MemoireEtudiants.collectionModel}" var="row"
+                  rows="#{bindings.MemoireEtudiants.rangeSize}"
+                  emptyText="#{bindings.MemoireEtudiants.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.MemoireEtudiants.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.MemoireEtudiants.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.MemoireEtudiants.rangeSize}"
+                  filterModel="#{bindings.MemoireEtudiantsQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.MemoireEtudiantsQuery.processQuery}" varStatus="vs" id="t2"
+                  columnStretching="column:c2" binding="#{SaisieMemoireEtudiant.etdTable}">
+          <af:column sortProperty="#{bindings.MemoireEtudiants.hints.IdEtudiant.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.PRENOM_NOM}" id="c1" width="250">
+            <af:selectOneChoice value="#{row.bindings.IdEtudiant.inputValue}" label="#{row.bindings.IdEtudiant.label}"
+                                required="#{bindings.MemoireEtudiants.hints.IdEtudiant.mandatory}"
+                                shortDesc="#{bindings.MemoireEtudiants.hints.IdEtudiant.tooltip}" readOnly="true"
+                                id="soc1" inlineStyle="font-size:medium;" contentStyle="font-size:medium;">
+              <f:selectItems value="#{row.bindings.IdEtudiant.items}" id="si1"/>
+              <f:validator binding="#{row.bindings.IdEtudiant.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.MemoireEtudiants.hints.LibelleLong.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.MEMOIRE}" id="c2">
+            <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.MemoireEtudiants.hints.LibelleLong.tooltip}"
+                           id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.MemoireEtudiants.hints.DateSoutenance.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.DATE_SOUTENANCE}" id="c3"
+                     width="150">
+            <f:facet name="filter">
+              <af:inputDate value="#{bindings.MemoireEtudiantsQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateSoutenance.value}"
+                            id="id1">
+                <af:convertDateTime pattern="#{bindings.MemoireEtudiants.hints.DateSoutenance.format}"/>
+              </af:inputDate>
+            </f:facet>
+            <af:outputText value="#{row.DateSoutenance}"
+                           shortDesc="#{bindings.MemoireEtudiants.hints.DateSoutenance.tooltip}" id="ot2">
+              <af:convertDateTime pattern="#{bindings.MemoireEtudiants.hints.DateSoutenance.format}"/>
+            </af:outputText>
+          </af:column>
+        </af:table>
+        <f:facet name="statusbar"/>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{SaisieMemoireEtudiant.popupNewMemoire}">
+    <af:dialog id="d1" title="Ajouter Mémoire/Thèse"
+               dialogListener="#{SaisieMemoireEtudiant.OnNewMemoireConfirmAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl4" layout="vertical">
+        <af:panelFormLayout id="pfl1">
+          <af:panelGroupLayout id="pgl6" layout="horizontal">
+            <af:inputText value="#{bindings.p_numero.inputValue}" label=""
+                          required="#{bindings.p_numero.hints.mandatory}"
+                          columns="#{bindings.p_numero.hints.displayWidth}"
+                          maximumLength="#{bindings.p_numero.hints.precision}"
+                          shortDesc="#{bindings.p_numero.hints.tooltip}" id="it1"
+                          contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:200px">
+              <f:validator binding="#{bindings.p_numero.validator}"/>
+            </af:inputText>
+            <af:button actionListener="#{SaisieMemoireEtudiant.onSearchEtudiantListener}" text="Rechercher"
+                       disabled="#{!bindings.ExecuteWithParams.enabled}" id="b2" icon="/images/icons8-search-24.png"
+                       inlineStyle="font-size:small; border-radius:8px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px; width:120px"/>
+          </af:panelGroupLayout>
+        </af:panelFormLayout>
+        <af:panelFormLayout id="pfl2">
+          <af:inputText value="#{bindings.Numero.inputValue}" label="#{bindings.Numero.hints.label}"
+                        required="#{bindings.Numero.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.Numero.hints.displayWidth}"
+                        maximumLength="#{bindings.Numero.hints.precision}" shortDesc="#{bindings.Numero.hints.tooltip}"
+                        id="it2">
+            <f:validator binding="#{bindings.Numero.validator}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.Prenoms.inputValue}" label="#{bindings.Prenoms.hints.label}"
+                        required="#{bindings.Prenoms.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.Prenoms.hints.displayWidth}"
+                        maximumLength="#{bindings.Prenoms.hints.precision}"
+                        shortDesc="#{bindings.Prenoms.hints.tooltip}" id="it3">
+            <f:validator binding="#{bindings.Prenoms.validator}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                        required="#{bindings.Nom.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.Nom.hints.displayWidth}" maximumLength="#{bindings.Nom.hints.precision}"
+                        shortDesc="#{bindings.Nom.hints.tooltip}" id="it4">
+            <f:validator binding="#{bindings.Nom.validator}"/>
+          </af:inputText>
+        </af:panelFormLayout>
+      </af:panelGroupLayout>
+      <af:panelFormLayout id="pfl3">
+        <h:inputTextarea id="it5" value="#{bindings.LibelleLong.inputValue}"
+                  required="#{bindings.LibelleLong.hints.mandatory}"
+                               style="font-size:large; border-radius:8px ; border:solid solid 1px #2898e8 ; font-family:Arial;margin-left : 20px" rows="10"
+                               cols="50">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+              </h:inputTextarea>
+        <!--af:inputDate value="#{bindings.DateSoutenance.inputValue}" label=""
+                      required="#{bindings.DateSoutenance.hints.mandatory}"
+                      columns="#{bindings.DateSoutenance.hints.displayWidth}"
+                      shortDesc="#{bindings.DateSoutenance.hints.tooltip}" id="id2">
+          <f:validator binding="#{bindings.DateSoutenance.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateSoutenance.format}"/>
+        </af:inputDate-->
+        <af:inputDate value="#{bindings.DateSoutenance.inputValue}"
+                            required="#{bindings.DateSoutenance.hints.mandatory}"
+                            columns="#{bindings.DateSoutenance.hints.displayWidth}"
+                            shortDesc="#{bindings.DateSoutenance.hints.tooltip}" id="id4"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:100px">
+                <f:validator binding="#{bindings.DateSoutenance.validator}"/>
+                <af:convertDateTime pattern="#{bindings.DateSoutenance.format}"/>
+              </af:inputDate>
+      </af:panelFormLayout>
+      <af:clientListener method="OnDialogCancel" type="dialog"/>
+        <af:serverListener type="HandlerEvenDialogCancel" method="#{SaisieMemoireEtudiant.OnDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{SaisieMemoireEtudiant.popupNoStudent}">
+    <af:dialog id="d2" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl5" layout="vertical" valign="middle" halign="center">
+        <af:icon name="error" id="i1"/>
+        <af:outputFormatted value="Aucun étudiant n'est inscrit sur ce parcours avec ce numero" id="of2"
+                            inlineStyle="font-size:large;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3"
+              binding="#{SaisieMemoireEtudiant.popupEditMemoire}" contentDelivery="lazyUncached">
+      <af:dialog id="d3" title="Edition Memoire" dialogListener="#{SaisieMemoireEtudiant.OnEditMemoireAction}">
+        <f:facet name="buttonBar"/>
+        <af:panelFormLayout id="pfl4">
+          <af:panelGroupLayout id="pgl11" layout="vertical" inlineStyle="line-height:50px;">
+            <af:outputFormatted value="#{bindings.IdParcoursMaquetAnnee.inputValue}" id="of5" visible="false">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.IdParcoursMaquetAnnee.format}"/>
+            </af:outputFormatted>
+            <af:panelGroupLayout id="pgl8" layout="horizontal" inlineStyle="line-height:30px;">
+              <af:outputFormatted value="Etudiant" id="of6"/>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl9" layout="horizontal">
+              <af:outputFormatted value="#{viewcontrollerBundle.MEMOIRE}" id="of7"/>
+              <h:inputTextarea id="it6" value="#{bindings.LibelleLong.inputValue}"
+                  required="#{bindings.LibelleLong.hints.mandatory}"
+                               style="font-size:large; border-radius:8px ; border:solid solid 1px #2898e8 ; font-family:Arial;margin-left : 20px" rows="10"
+                               cols="50">
+                <f:validator binding="#{bindings.LibelleLong.validator}"/>
+              </h:inputTextarea>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl10" layout="horizontal">
+              <af:outputFormatted value="#{viewcontrollerBundle.DATE_SOUTENANCE}" id="of8"/>
+              <af:inputDate value="#{bindings.DateSoutenance.inputValue}"
+                            required="#{bindings.DateSoutenance.hints.mandatory}"
+                            columns="#{bindings.DateSoutenance.hints.displayWidth}"
+                            shortDesc="#{bindings.DateSoutenance.hints.tooltip}" id="id2"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:100px">
+                <f:validator binding="#{bindings.DateSoutenance.validator}"/>
+                <af:convertDateTime pattern="#{bindings.DateSoutenance.format}"/>
+              </af:inputDate>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+        </af:panelFormLayout>
+      </af:dialog>
+    </af:popup>
+  <af:resource type="javascript">function OnDialogCancel(evt){ var outcome = evt.getOutcome(); if (outcome ==
+                                   AdfDialogEvent.OUTCOME_CANCEL){ //call server 
+                                    var eventSource = evt.getSource(); 
+                                    var immediate = true; AdfCustomEvent.queue(eventSource, "HandlerEvenDialogCancel",
+                                   {},immediate); evt.cancel(); } }</af:resource>
+</ui:composition>

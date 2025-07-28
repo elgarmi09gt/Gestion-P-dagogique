@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="EtudiantExportListROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.EtudiantExportListROVORowImpl"
+  ComponentClass="model.readOnlyView.EtudiantExportListROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.EtudiantExportListROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT  distinct etu.id_etudiant, ipsu.id_inscription_ped_sem_ue,   
+pma.ID_PARCOURS_MAQUET_ANNEE, cd.ID_CALENDRIER_DELIBERATION,  
+fec.ID_FILIERE_UE_SEMSTRE_EC,etu.numero, pers.prenoms, pers.nom,   
+to_char(pers.date_naissance,'dd/mm/rrrr')date_naissance, pers.lieu_naissance  
+FROM personnes pers                     
+JOIN etudiants etu on pers.id_personne = etu.id_personne                     
+JOIN inscriptions_admin ia on etu.id_etudiant = ia.id_etudiant                     
+JOIN inscriptions_pedagogiques ip on ia.id_inscription_admin = ip.id_inscription_admin                     
+JOIN inscription_ped_semestre ips on ip.id_inscription_pedagogique = ips.id_inscription_pedagogique                     
+JOIN inscription_ped_sem_ue ipsu on ips.id_inscription_ped_semestre = ipsu.id_inscription_ped_semestre      
+JOIN FILIERE_UE_SEMSTRE fus on ipsu.ID_FILIERE_UE_SEMSTRE=fus.ID_FILIERE_UE_SEMSTRE and ips.ID_SEMESTRE=fus.ID_SEMESTRE     
+JOIN FILIERE_UE_SEMSTRE_EC fec on fus.ID_FILIERE_UE_SEMSTRE=fec.ID_FILIERE_UE_SEMSTRE     
+JOIN MODE_CONTROLE_EC mec on fec.ID_FILIERE_UE_SEMSTRE_EC=mec.ID_FILIERE_UE_SEMSTRE_EC and ip.ID_PARCOURS_MAQUET_ANNEE=mec.ID_PARCOURS_MAQUETTE_ANNEE     
+JOIN PARCOURS_MAQUETTE_ANNEE pma on mec.ID_PARCOURS_MAQUETTE_ANNEE=pma.ID_PARCOURS_MAQUET_ANNEE and fus.ID_MAQUETTE=pma.ID_MAQUETTE and ia.ID_ANNEES_UNIVERS=pma.ID_ANNEES_UNIVERS     
+JOIN NIVEAUX_FORMATION_PARCOURS nfp on pma.ID_NIVEAU_FORMATION_PARCOURS=nfp.ID_NIVEAU_FORMATION_PARCOURS     
+JOIN CALENDRIER_DELIBERATION cd on nfp.ID_NIVEAU_FORMATION_COHORTE=cd.ID_NIVEAU_FORMATION_COHORTE     
+JOIN NOTES_MODE_ENSEIGNEMENT_INTER nmei on ipsu.ID_INSCRIPTION_PED_SEM_UE=nmei.ID_INSCRIPTION_PED_SEM_UE      
+where  ipsu.IS_DELIBARABLE=1 AND nmei.ID_TYPE_VERROU <> 3      
+--and pma.ID_PARCOURS_MAQUET_ANNEE=412 and fec.ID_FILIERE_UE_SEMSTRE_EC=1151 and cd.ID_CALENDRIER_DELIBERATION=548     
+ORDER BY pers.nom, pers.prenoms]]></SQLQuery>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionPedSemUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PED_SEM_UE"
+    Expression="ID_INSCRIPTION_PED_SEM_UE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdParcoursMaquetAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PARCOURS_MAQUET_ANNEE"
+    Expression="ID_PARCOURS_MAQUET_ANNEE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdCalendrierDeliberation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_CALENDRIER_DELIBERATION"
+    Expression="ID_CALENDRIER_DELIBERATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdFiliereUeSemstreEc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_FILIERE_UE_SEMSTRE_EC"
+    Expression="ID_FILIERE_UE_SEMSTRE_EC"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenoms"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMS"
+    Expression="PRENOMS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="DATE_NAISSANCE"
+    Expression="DATE_NAISSANCE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LieuNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIEU_NAISSANCE"
+    Expression="LIEU_NAISSANCE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdEtudiant"/>
+    <Item Value="IdInscriptionPedSemUe"/>
+    <Item Value="IdParcoursMaquetAnnee"/>
+    <Item Value="IdCalendrierDeliberation"/>
+    <Item Value="IdFiliereUeSemstreEc"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

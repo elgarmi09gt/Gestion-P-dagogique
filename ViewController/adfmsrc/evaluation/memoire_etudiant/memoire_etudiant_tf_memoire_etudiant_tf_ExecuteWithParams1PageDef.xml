@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="memoire_etudiant_tf_memoire_etudiant_tf_ExecuteWithParams1PageDef"
+                Package="evaluation.memoire_etudiant" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="DepartementsEtabROVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DepartementsEtabROVOIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="DepartementsEtabROVOIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="str_id" NDValue="#{sessionScope.id_str}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

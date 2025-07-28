@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelTabbed position="above" id="pt1">
+    <af:showDetailItem id="tab1" text="Inscription" disclosed="true">
+      <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"
+                inlineStyle="margin-top:10px;margin-bottom:20px;"/>
+        <af:panelGroupLayout id="pgl3" layout="horizontal"
+                         inlineStyle="background-color:#2897e8;margin-bottom:10px;margin-left:150px;">
+          <af:panelLabelAndMessage label="Numéro" id="plam1" inlineStyle="margin-left:40px; font-size:large;">
+            <af:outputFormatted value="#{bindings.Numero.inputValue}" id="of1"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="Prénoms" id="plam7" inlineStyle="margin-left:40px; font-size:large;">
+            <af:outputFormatted value="#{bindings.Prenoms.inputValue}" id="of7"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.Nom.hints.label}" id="plam2"
+                                   inlineStyle="margin-left:40px; font-size:large;">
+            <af:outputFormatted value="#{bindings.Nom.inputValue}" id="of2"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="Date Naissance" id="plam3" inlineStyle="margin-left:40px; font-size:large;">
+            <af:outputFormatted value="#{bindings.DateNaissance.inputValue}" id="of3">
+              <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+            </af:outputFormatted>
+          </af:panelLabelAndMessage>
+    </af:panelGroupLayout>
+      <af:button text="Informations personnelles de l'étudiant " id="b3"
+               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;"
+               partialSubmit="false" disabled="true"/>
+      <af:panelSplitter id="ps1" splitterPosition="450"
+                        inlineStyle="width:900px; height:295px;margin-left:10px;margin-top:10px;" firstBorder="all"
+                        secondBorder="all" positionedFromEnd="true" firstLandmark="contentinfo" disabled="true">
+        <f:facet name="first">
+          <af:panelFormLayout id="pfl1" labelAlignment="start">
+            <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                          required="#{bindings.Nom.hints.mandatory}" readOnly="true"
+                          columns="#{bindings.Nom.hints.displayWidth}" maximumLength="#{bindings.Nom.hints.precision}"
+                          shortDesc="#{bindings.Nom.hints.tooltip}" id="it1">
+              <f:validator binding="#{bindings.Nom.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.NomMarital.inputValue}" label="Nom Marital"
+                          required="#{bindings.NomMarital.hints.mandatory}" readOnly="true"
+                          columns="#{bindings.NomMarital.hints.displayWidth}"
+                          maximumLength="#{bindings.NomMarital.hints.precision}"
+                          shortDesc="#{bindings.NomMarital.hints.tooltip}" id="it2">
+              <f:validator binding="#{bindings.NomMarital.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.Prenoms.inputValue}" label="Prénoms"
+                          required="#{bindings.Prenoms.hints.mandatory}" readOnly="true"
+                          columns="#{bindings.Prenoms.hints.displayWidth}"
+                          maximumLength="#{bindings.Prenoms.hints.precision}"
+                          shortDesc="#{bindings.Prenoms.hints.tooltip}" id="it3">
+              <f:validator binding="#{bindings.Prenoms.validator}"/>
+            </af:inputText>
+            <af:inputDate value="#{bindings.DateNaissance.inputValue}" readOnly="true" label="Date Naissance"
+                          required="#{bindings.DateNaissance.hints.mandatory}"
+                          columns="#{bindings.DateNaissance.hints.displayWidth}"
+                          shortDesc="#{bindings.DateNaissance.hints.tooltip}" id="id1">
+              <f:validator binding="#{bindings.DateNaissance.validator}"/>
+              <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+            </af:inputDate>
+            <af:inputText value="#{bindings.LieuNaissance.inputValue}" label="Lieu Naissance"
+                          required="#{bindings.LieuNaissance.hints.mandatory}" readOnly="true"
+                          columns="#{bindings.LieuNaissance.hints.displayWidth}"
+                          maximumLength="#{bindings.LieuNaissance.hints.precision}"
+                          shortDesc="#{bindings.LieuNaissance.hints.tooltip}" id="it4">
+              <f:validator binding="#{bindings.LieuNaissance.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.Adresse.inputValue}" label="#{bindings.Adresse.hints.label}"
+                          required="#{bindings.Adresse.hints.mandatory}" readOnly="true"
+                          columns="#{bindings.Adresse.hints.displayWidth}"
+                          maximumLength="#{bindings.Adresse.hints.precision}"
+                          shortDesc="#{bindings.Adresse.hints.tooltip}" id="it7">
+              <f:validator binding="#{bindings.Adresse.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.PieceIdentification.inputValue}" label="Pièce d'Identification"
+                          required="#{bindings.PieceIdentification.hints.mandatory}" readOnly="true"
+                          columns="#{bindings.PieceIdentification.hints.displayWidth}"
+                          maximumLength="#{bindings.PieceIdentification.hints.precision}"
+                          shortDesc="#{bindings.PieceIdentification.hints.tooltip}" id="it10" labelStyle="width:150px;"
+                          inlineStyle="margin-bottom:20px;">
+              <f:validator binding="#{bindings.PieceIdentification.validator}"/>
+            </af:inputText>
+          </af:panelFormLayout>
+        </f:facet>
+        <f:facet name="second">
+          <af:panelFormLayout id="pfl2">
+            <f:facet name="footer"/>
+            <af:selectOneChoice value="#{bindings.IdPays.inputValue}" label="Pays"
+                                required="#{bindings.IdPays.hints.mandatory}"
+                                shortDesc="#{bindings.IdPays.hints.tooltip}" readOnly="true" id="soc1">
+              <f:selectItems value="#{bindings.IdPays.items}" id="si1"/>
+              <f:validator binding="#{bindings.IdPays.validator}"/>
+            </af:selectOneChoice>
+            <af:inputText value="#{bindings.Telephone.inputValue}" label="Téléphone"
+                          required="#{bindings.Telephone.hints.mandatory}" readOnly="true"
+                          columns="#{bindings.Telephone.hints.displayWidth}"
+                          maximumLength="#{bindings.Telephone.hints.precision}"
+                          shortDesc="#{bindings.Telephone.hints.tooltip}" id="it13">
+              <f:validator binding="#{bindings.Telephone.validator}"/>
+            </af:inputText>
+            <af:selectOneChoice value="#{bindings.IdCivilite.inputValue}" label="Civilite"
+                                required="#{bindings.IdCivilite.hints.mandatory}"
+                                shortDesc="#{bindings.IdCivilite.hints.tooltip}" readOnly="true" id="soc3">
+              <f:selectItems value="#{bindings.IdCivilite.items}" id="si3"/>
+              <f:validator binding="#{bindings.IdCivilite.validator}"/>
+            </af:selectOneChoice>
+            <af:inputText value="#{bindings.EmailPersonnel.inputValue}" label="Email Personnel"
+                          required="#{bindings.EmailPersonnel.hints.mandatory}" readOnly="true"
+                          columns="#{bindings.EmailPersonnel.hints.displayWidth}"
+                          maximumLength="#{bindings.EmailPersonnel.hints.precision}"
+                          shortDesc="#{bindings.EmailPersonnel.hints.tooltip}" id="it6">
+              <f:validator binding="#{bindings.EmailPersonnel.validator}"/>
+            </af:inputText>
+            <af:selectOneChoice value="#{bindings.IdPaysNationalite.inputValue}" label="Pays Nationalité"
+                                required="#{bindings.IdPaysNationalite.hints.mandatory}"
+                                shortDesc="#{bindings.IdPaysNationalite.hints.tooltip}" readOnly="true" id="soc2">
+              <f:selectItems value="#{bindings.IdPaysNationalite.items}" id="si2"/>
+              <f:validator binding="#{bindings.IdPaysNationalite.validator}"/>
+            </af:selectOneChoice>
+            <af:inputText value="#{bindings.Portable.inputValue}" label="#{bindings.Portable.hints.label}"
+                          required="#{bindings.Portable.hints.mandatory}" readOnly="true"
+                          columns="#{bindings.Portable.hints.displayWidth}"
+                          maximumLength="#{bindings.Portable.hints.precision}"
+                          shortDesc="#{bindings.Portable.hints.tooltip}" id="it9">
+              <f:validator binding="#{bindings.Portable.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.EmailInstitutionnel.inputValue}" label="Email Institutionnel"
+                          required="#{bindings.EmailInstitutionnel.hints.mandatory}" readOnly="true"
+                          columns="#{bindings.EmailInstitutionnel.hints.displayWidth}"
+                          maximumLength="#{bindings.EmailInstitutionnel.hints.precision}"
+                          shortDesc="#{bindings.EmailInstitutionnel.hints.tooltip}" id="it11" labelStyle="width:150px;">
+              <f:validator binding="#{bindings.EmailInstitutionnel.validator}"/>
+            </af:inputText>
+          </af:panelFormLayout>
+        </f:facet>
+      </af:panelSplitter>
+      <af:panelGroupLayout id="pgl1">
+        <af:button text="&lt;&lt; Précédent" id="b1"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:20px;"
+                   action="#{Inscriptionbean.autorisePreviousStop}" disabled="true" partialSubmit="false"/>
+        <af:button text="Suivant >>" id="b2"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:20px;"
+                   action="#{Inscriptionbean.navigateNextStop}"/>
+      </af:panelGroupLayout>
+    </af:showDetailItem>
+    <af:showDetailItem id="tab2" text="Consultations">
+      <af:panelTabbed position="above" id="pt2">
+        <af:showDetailItem id="tab3" text="Cursus" disclosed="true">
+          <af:region value="#{bindings.taskflowdetailcursus1.regionModel}" id="r1"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab4" text="Responsable">
+          <!--af:region value="#{bindings.responsableinserttk1.regionModel}" id="r6"
+                     visible="#{sessionScope.insert_resp == '1' ? true : false}"/>
+          <af:region value="#{bindings.responsableetudtk1.regionModel}" id="r5"
+                     visible="#{sessionScope.insert_resp == '0' ? true : false}"/!-->
+          <af:region value="#{bindings.responsableetudtk2.regionModel}" id="r4"/>
+        </af:showDetailItem>
+        <af:showDetailItem text="Historique Insc." id="sdi1">
+          <af:region value="#{bindings.detailhistoriqueinscription1.regionModel}" id="r2"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab5" text="Etudiant TIC">
+          <af:region value="#{bindings.etudianttictk1.regionModel}" id="r6"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab6" text="Etudiant BU">
+          <af:region value="#{bindings.tasketudbu1.regionModel}" id="r5"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab7" text="Etudiant ACP">
+          <af:region value="#{bindings.paiementetudtk1.regionModel}" id="r3"/>
+        </af:showDetailItem>
+      </af:panelTabbed>
+    </af:showDetailItem>
+        <af:showDetailItem text="Certificat d'Inscription" id="sdi2">
+      <af:region value="#{bindings.certificatinscriptiontk1.regionModel}" id="r7"/>
+    </af:showDetailItem>
+  </af:panelTabbed>
+</ui:composition>

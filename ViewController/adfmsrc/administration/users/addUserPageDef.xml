@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="addUserPageDef"
+                Package="administration.users">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UtilisateursROVO" RangeSize="8" DataControl="gestdapAppDataControl"
+              id="UtilisateursROVOIterator"/>
+    <searchRegion Binds="UtilisateursROVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UtilisateursROVOQuery"/>
+    <iterator Binds="Temputilisateurs" RangeSize="8" DataControl="gestdapAppDataControl"
+              id="TemputilisateursIterator"/>
+    <iterator Binds="Personnes" RangeSize="25" DataControl="gestdapAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="isUserExisteROVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isUserExisteROVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="UtilisateursROVOIterator" id="UtilisateursROVO">
+      <nodeDefinition DefName="model.readOnlyView.UtilisateursROVO" Name="UtilisateursROVO0">
+        <AttrNames>
+          <Item Value="Prenom"/>
+          <Item Value="Nom"/>
+          <Item Value="Etablissement"/>
+          <Item Value="Email"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Commit" DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="PersonnesIterator" id="CreateUser"
+            InstanceName="gestdapAppDataControl.Personnes" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="NomMarital">
+      <AttrNames>
+        <Item Value="NomMarital"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="EmailInstitutionnel">
+      <AttrNames>
+        <Item Value="EmailInstitutionnel"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="EmailPersonnel">
+      <AttrNames>
+        <Item Value="EmailPersonnel"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Adresse">
+      <AttrNames>
+        <Item Value="Adresse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Telephone">
+      <AttrNames>
+        <Item Value="Telephone"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Portable">
+      <AttrNames>
+        <Item Value="Portable"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdPays" id="IdPays" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdPaysNationalite" id="IdPaysNationalite"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdCivilite" id="IdCivilite"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="PersonnesIterator" id="PieceIdentification">
+      <AttrNames>
+        <Item Value="PieceIdentification"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Rollback" DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="rollbackTransaction"/>
+    <action IterBinding="isUserExisteROVO1Iterator" id="isUserExiste"
+            InstanceName="gestdapAppDataControl.isUserExisteROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="email_inst" NDType="java.lang.String"/>
+    </action>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdSexe" id="IdSexe" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject"/>
+    <methodAction id="createUser" RequiresUpdateModel="true" Action="invokeMethod" MethodName="createUser"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createUser.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createUser_createUser_dataControl_dataProvider_createUser_result">
+      <NamedData NDName="login" NDType="java.lang.String"/>
+      <NamedData NDName="str_id" NDType="java.lang.Long"/>
+      <NamedData NDName="p_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

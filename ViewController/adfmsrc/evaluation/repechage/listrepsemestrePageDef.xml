@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listrepsemestrePageDef"
+                Package="evaluation.repechage">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="RepechableSemestre" RangeSize="12" DataControl="evaluationAppDataControl"
+              id="RepechableSemestreIterator"/>
+    <searchRegion Binds="RepechableSemestreIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="RepechableSemestreQuery"/>
+    <iterator Binds="FiliereUEInvalidRepech" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="FiliereUEInvalidRepechIterator"/>
+    <searchRegion Binds="FiliereUEInvalidRepechIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FiliereUEInvalidRepechQuery"/>
+    <iterator Binds="StructureRegleRepeche" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="StructureRegleRepecheIterator"/>
+    <iterator Binds="ParcoursInfo" RangeSize="25" DataControl="evaluationAppDataControl" id="ParcoursInfoIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="RepechableSemestreIterator" id="RepechableSemestre">
+      <nodeDefinition DefName="model.readOnlyView.RepechableSemestreROVO" Name="RepechableSemestre0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="Note"/>
+          <Item Value="Resultat"/>
+          <Item Value="Credit"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="RepechSem" RequiresUpdateModel="true" Action="invokeMethod" MethodName="RepechSem"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.RepechSem.dataControl.dataProvider">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="moyenne_valid" NDType="java.math.BigDecimal"/>
+      <NamedData NDName="inspedSem" NDType="java.lang.Long"/>
+      <NamedData NDName="prcrs_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="repecherSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="repecherSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.repecherSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.repecherSemestre_repecherSemestre_dataControl_dataProvider_repecherSemestre_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="FiliereUEInvalidRepechIterator" id="getFilUeInvald"
+            InstanceName="evaluationAppDataControl.FiliereUEInvalidRepech" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="moyenne_valid" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="inspedSem" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="FiliereUEInvalidRepechIterator" id="FiliereUEInvalidRepech">
+      <nodeDefinition DefName="model.readOnlyView.FiliereUEInvalidRepechROVO" Name="FiliereUEInvalidRepech0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="Coefficient"/>
+          <Item Value="Note"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="getTotalCoef" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getTotalCoef"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getTotalCoef.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getTotalCoef_getTotalCoef_dataControl_dataProvider_getTotalCoef_result">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="prcrs_maq" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getTotalCoefUENonValid" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getTotalCoefUENonValid" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getTotalCoefUENonValid.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getTotalCoefUENonValid_getTotalCoefUENonValid_dataControl_dataProvider_getTotalCoefUENonValid_result">
+      <NamedData NDName="inspedSem" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="moyenne_valid" NDType="java.math.BigDecimal"/>
+    </methodAction>
+    <attributeValues IterBinding="RepechableSemestreIterator" id="Note">
+      <AttrNames>
+        <Item Value="Note"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="RepechableSemestreIterator" id="getRepechable"
+            InstanceName="evaluationAppDataControl.RepechableSemestre" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="notInf" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="notSup" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="credInf" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="credSup" NDType="oracle.jbo.domain.Number"/>
+    </action>
+    <action IterBinding="StructureRegleRepecheIterator" id="getRegleRepech"
+            InstanceName="evaluationAppDataControl.StructureRegleRepeche" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="str_id" NDType="java.lang.Long"/>
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="RepechableSemestreIterator" id="RepechableSemestre1">
+      <nodeDefinition DefName="model.readOnlyView.RepechableSemestreROVO" Name="RepechableSemestre10">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="Note"/>
+          <Item Value="Credit"/>
+          <Item Value="Resultat"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="ParcoursInfoIterator" ListOperMode="navigation" ListIter="ParcoursInfoIterator"
+          id="ParcoursInfo" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+  </bindings>
+</pageDefinition>

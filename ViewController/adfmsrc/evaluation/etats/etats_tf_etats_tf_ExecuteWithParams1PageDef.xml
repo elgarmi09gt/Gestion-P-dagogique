@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="etats_tf_etats_tf_ExecuteWithParams1PageDef" Package="evaluation.etats" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="MaquetteParcoursAn" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="MaquetteParcoursAnIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="MaquetteParcoursAnIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="an_id" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Long"/>
+      <NamedData NDName="str_id" NDValue="#{sessionScope.id_str}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

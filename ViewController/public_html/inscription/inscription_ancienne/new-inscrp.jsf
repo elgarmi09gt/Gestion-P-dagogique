@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <af:document title="new-inscrp.jsf" id="d1">
+        <af:messages id="m1"/>
+        <af:form id="f1">
+            <af:panelBox text="Inscription et Résultat des anciens étudiants" id="pb1" showDisclosure="false"
+                         background="medium">
+                <f:facet name="toolbar"/>
+                <af:panelFormLayout id="pfl1" rows="3">
+                    <af:panelLabelAndMessage label="Etudiant Ancien" id="plam1">
+                        <af:panelGroupLayout id="pgl1" layout="horizontal">
+                            <af:inputText value="#{bindings.IdEtudiantAncien.inputValue}"
+                                          required="#{bindings.IdEtudiantAncien.hints.mandatory}"
+                                          columns="#{bindings.IdEtudiantAncien.hints.displayWidth}"
+                                          maximumLength="#{bindings.IdEtudiantAncien.hints.precision}"
+                                          shortDesc="#{bindings.IdEtudiantAncien.hints.tooltip}" id="it1"
+                                          binding="#{InscAnciennebean.etud_update}" disabled="true">
+                                <f:validator binding="#{bindings.IdEtudiantAncien.validator}"/>
+                                <af:convertNumber groupingUsed="false" pattern="#{bindings.IdEtudiantAncien.format}"/>
+                            </af:inputText>
+                            <af:link text="Search" id="l1" immediate="true" useWindow="true"
+                                     windowEmbedStyle="inlineDocument" windowHeight="650" windowWidth="650"
+                                     action="lov_etud" returnListener="#{InscAnciennebean.onReturnEtud}"
+                                     icon="/images/search_ptit_model.PNG"/>
+                        </af:panelGroupLayout>
+                    </af:panelLabelAndMessage>
+                    <af:panelLabelAndMessage label="Numéro Diplome" id="plam2">
+                        <af:panelGroupLayout id="pgl2" layout="horizontal">
+                            <af:inputText value="#{bindings.IdNumeroDiplome.inputValue}"
+                                          required="#{bindings.IdNumeroDiplome.hints.mandatory}"
+                                          columns="#{bindings.IdNumeroDiplome.hints.displayWidth}"
+                                          maximumLength="#{bindings.IdNumeroDiplome.hints.precision}"
+                                          shortDesc="#{bindings.IdNumeroDiplome.hints.tooltip}" id="it2"
+                                          binding="#{InscAnciennebean.diplome_update}" disabled="true">
+                                <f:validator binding="#{bindings.IdNumeroDiplome.validator}"/>
+                                <af:convertNumber groupingUsed="false" pattern="#{bindings.IdNumeroDiplome.format}"/>
+                            </af:inputText>
+                            <af:link text="Search" id="l2" useWindow="true" immediate="true" action="lov_diplome"
+                                     windowEmbedStyle="inlineDocument" windowHeight="550" windowWidth="430"
+                                     returnListener="#{InscAnciennebean.onReturnDiplome}"
+                                     icon="/images/search_ptit_model.PNG"/>
+                        </af:panelGroupLayout>
+                    </af:panelLabelAndMessage>
+                    <af:selectOneChoice value="#{bindings.Valide.inputValue}" label="Validé"
+                                        required="#{bindings.Valide.hints.mandatory}"
+                                        shortDesc="#{bindings.Valide.hints.tooltip}" id="soc1">
+                        <f:selectItems value="#{bindings.Valide.items}" id="si1"/>
+                        <f:validator binding="#{bindings.Valide.validator}"/>
+                    </af:selectOneChoice>
+                    <af:inputDate value="#{bindings.DateDeliberation.inputValue}"
+                                  label="Date Délibération"
+                                  required="#{bindings.DateDeliberation.hints.mandatory}"
+                                  columns="#{bindings.DateDeliberation.hints.displayWidth}"
+                                  shortDesc="#{bindings.DateDeliberation.hints.tooltip}" id="id1">
+                        <f:validator binding="#{bindings.DateDeliberation.validator}"/>
+                        <af:convertDateTime pattern="#{bindings.DateDeliberation.format}"/>
+                    </af:inputDate>
+                    <af:selectOneChoice value="#{bindings.IdOption.inputValue}" label="Option"
+                                        required="#{bindings.IdOption.hints.mandatory}"
+                                        shortDesc="#{bindings.IdOption.hints.tooltip}" id="soc2">
+                        <f:selectItems value="#{bindings.IdOption.items}" id="si2"/>
+                        <f:validator binding="#{bindings.IdOption.validator}"/>
+                    </af:selectOneChoice>
+                    <af:selectOneChoice value="#{bindings.IdSession.inputValue}" label="Session"
+                                        required="#{bindings.IdSession.hints.mandatory}"
+                                        shortDesc="#{bindings.IdSession.hints.tooltip}" id="soc3">
+                        <f:selectItems value="#{bindings.IdSession.items}" id="si3"/>
+                        <f:validator binding="#{bindings.IdSession.validator}"/>
+                    </af:selectOneChoice>
+                    <af:inputDate value="#{bindings.DateDelivrance.inputValue}"
+                                  label="Date Délivrance"
+                                  required="#{bindings.DateDelivrance.hints.mandatory}"
+                                  columns="#{bindings.DateDelivrance.hints.displayWidth}"
+                                  shortDesc="#{bindings.DateDelivrance.hints.tooltip}" id="id2">
+                        <f:validator binding="#{bindings.DateDelivrance.validator}"/>
+                        <af:convertDateTime pattern="#{bindings.DateDelivrance.format}"/>
+                    </af:inputDate>
+                    <af:inputText value="#{bindings.NumIdentite.inputValue}" label="Numéro d'Identité"
+                                  required="#{bindings.NumIdentite.hints.mandatory}"
+                                  columns="#{bindings.NumIdentite.hints.displayWidth}"
+                                  maximumLength="#{bindings.NumIdentite.hints.precision}"
+                                  shortDesc="#{bindings.NumIdentite.hints.tooltip}" id="it3">
+                        <f:validator binding="#{bindings.NumIdentite.validator}"/>
+                    </af:inputText>
+                    <af:selectOneChoice value="#{bindings.IdTypeResultat.inputValue}"
+                                        label="Resultat"
+                                        required="#{bindings.IdTypeResultat.hints.mandatory}"
+                                        shortDesc="#{bindings.IdTypeResultat.hints.tooltip}" id="soc4">
+                        <f:selectItems value="#{bindings.IdTypeResultat.items}" id="si4"/>
+                        <f:validator binding="#{bindings.IdTypeResultat.validator}"/>
+                    </af:selectOneChoice>
+                    <af:selectOneChoice value="#{bindings.IdTypeMention.inputValue}"
+                                        label="Mention"
+                                        required="#{bindings.IdTypeMention.hints.mandatory}"
+                                        shortDesc="#{bindings.IdTypeMention.hints.tooltip}" id="soc5">
+                        <f:selectItems value="#{bindings.IdTypeMention.items}" id="si5"/>
+                        <f:validator binding="#{bindings.IdTypeMention.validator}"/>
+                    </af:selectOneChoice>
+                </af:panelFormLayout>
+            </af:panelBox>
+            <af:button text="Valider" id="b1" action="#{InscAnciennebean.onValiderInsAnc}"
+                       inlineStyle="margin-left:10px;margin-top:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#ffffff;margin-bottom:15px;"/>
+            <af:button text="Annuler" id="b2" action="return"
+                       inlineStyle="margin-left:10px;margin-top:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#ffffff;margin-bottom:15px;"/>
+        </af:form>
+    </af:document>
+</f:view>

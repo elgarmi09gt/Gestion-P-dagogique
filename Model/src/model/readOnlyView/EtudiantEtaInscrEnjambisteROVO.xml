@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="EtudiantEtaInscrEnjambisteROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.EtudiantEtaInscrEnjambisteROVORowImpl"
+  ComponentClass="model.readOnlyView.EtudiantEtaInscrEnjambisteROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.EtudiantEtaInscrEnjambisteROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="p_num"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="p_an"
+    Kind="where"
+    Type="oracle.jbo.domain.Number"/>
+  <Variable
+    Name="p_fr_acc"
+    Kind="where"
+    Type="java.lang.String"/>
+  <SQLQuery><![CDATA[Select distinct fa.code_formation,rex.code_niv_sec, etu.numero ScolNumero, etu.nom ScolNom, etu.prenoms ScolPrenom, ns.libelle_long ,op.code, op.libelle       
+From RESULTATEXAMEN@scolprodref rex       
+JOIN NIVEAUX_SECTIONS@scolProdref ns on rex.CODE_NIV_SEC=ns.code_niv_sec  
+JOIN etudiants@scolprodref etu on rex.idetudiant=etu.numero     
+JOIN inscriptions@scolprodref insc_adm on etu.numero=insc_adm.etudiant_numero       
+And an_univers_an_univers_id=rex.anneeacademique+1       
+JOIN NIVEAUX_SECTION_FORMATIONS@scolProdref nsf On insc_adm.CODE_NIV_SEC = nsf.CODE_NIV_SEC       
+JOIN Formation@scolProdref fr On  nsf.CODE_FORMATION = fr.CODE_FORMATION       
+JOIN FORMATION_ACC_FORMATION@scolProdref faf On faf.ID_FORMATION = fr.CODE_FORMATION       
+JOIN FORMATION_ACCREDITE@scolProdref fa On fa.CODE_FORMATION=faf.ID_FORMATION_ACC       
+Left Join options@scolprodref op on rex.code_option=op.code       
+where etu.numero=:p_num and rex.anneeacademique=:p_an-1 and rex.resultat in (2,4)       
+AND fa.code_formation=:p_fr_acc]]></SQLQuery>
+  <ViewAttribute
+    Name="CodeFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="CODE_FORMATION"
+    Expression="CODE_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="CodeNivSec"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="CODE_NIV_SEC"
+    Expression="CODE_NIV_SEC"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Scolnumero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="9"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SCOLNUMERO"
+    Expression="SCOLNUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="9"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Scolnom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="70"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SCOLNOM"
+    Expression="SCOLNOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="70"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Scolprenom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="60"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SCOLPRENOM"
+    Expression="SCOLPRENOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="60"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="120"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="120"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Code"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODE"
+    Expression="CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Libelle"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE"
+    Expression="LIBELLE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="CodeNivSec"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

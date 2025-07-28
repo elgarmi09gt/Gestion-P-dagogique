@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject xmlns="http://xmlns.oracle.com/bc4j" Name="FiliereUeSemestreROVO" Version="12.2.1.12.24"
+            InheritPersonalization="merge" BindingStyle="OracleName" CustomQuery="true"
+            RowClass="model.readOnlyView.FiliereUeSemestreROVORowImpl"
+            ComponentClass="model.readOnlyView.FiliereUeSemestreROVOImpl" PageIterMode="Full">
+    <DesignTime>
+        <Attr Name="_codeGenFlag2" Value="Access|Coll"/>
+        <Attr Name="_isExpertMode" Value="true"/>
+        <Attr Name="_isCodegen" Value="true"/>
+    </DesignTime>
+    <Properties>
+        <SchemaBasedProperties>
+            <LABEL ResId="model.readOnlyView.FiliereUeSemestreROVO_LABEL"/>
+        </SchemaBasedProperties>
+    </Properties>
+    <ViewAccessor Name="UeROVO1" ViewObjectName="model.readOnlyView.UeROVO" RowLevelBinds="true"/>
+    <ViewAccessor Name="SemestreROVO1" ViewObjectName="model.readOnlyView.SemestreROVO" RowLevelBinds="true"/>
+    <ListBinding
+        Name="LOV_IdUe"
+        ListVOName="UeROVO1"
+        NullValueFlag="start"
+        NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+        MRUCount="0">
+        <AttrArray Name="AttrNames">
+            <Item Value="IdUe"/>
+        </AttrArray>
+        <AttrArray Name="AttrExpressions"/>
+        <AttrArray Name="ListAttrNames">
+            <Item Value="IdUe"/>
+        </AttrArray>
+        <AttrArray Name="ListDisplayAttrNames">
+            <Item Value="LibelleLong"/>
+        </AttrArray>
+        <DisplayCriteria/>
+    </ListBinding>
+    <SQLQuery><![CDATA[SELECT  DISTINCT  
+    fue.ID_FILIERE_UE_SEMSTRE, fue.CODIFICATION, fue.ID_UE, fue.ID_SEMESTRE, fue.ID_MAQUETTE, UE.LIBELLE_LONG,                                     
+    pma.ID_PARCOURS_MAQUET_ANNEE,nf.ID_NIVEAU_FORMATION, nf.ID_FORMATION, uf.responsableId,uf.responsable,unv.ResponsableNivFr                                   
+FROM FILIERE_UE_SEMSTRE fue                                     
+JOIN MAQUETTES mq ON fue.ID_MAQUETTE=mq.ID_MAQUETTE                                    
+JOIN PARCOURS_MAQUETTE_ANNEE pma ON mq.ID_MAQUETTE=pma.ID_MAQUETTE                                    
+JOIN UE ON fue.ID_UE = UE.ID_UE              
+join NIVEAUX_FORMATION_PARCOURS nfp on pma.ID_NIVEAU_FORMATION_PARCOURS = nfp.ID_NIVEAU_FORMATION_PARCOURS              
+join NIVEAU_FORMATION_COHORTES nfc on nfp.ID_NIVEAU_FORMATION_COHORTE = nfc.ID_NIVEAU_FORMATION_COHORTE              
+join NIVEAUX_FORMATIONS nf on nfc.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION              
+LEFT JOIN(                 
+  Select unf.ID_UTILISATEUR ResponsableNivFr, pma.ID_PARCOURS_MAQUET_ANNEE, pma.ID_MAQUETTE,nfr.ID_NIVEAU_FORMATION                  
+  From PARCOURS_MAQUETTE_ANNEE pma                  
+  JOIN NIVEAUX_FORMATION_PARCOURS nfp on pma.ID_NIVEAU_FORMATION_PARCOURS=nfp.ID_NIVEAU_FORMATION_PARCOURS                 
+  JOIN NIVEAU_FORMATION_COHORTES nfc on nfp.ID_NIVEAU_FORMATION_COHORTE=nfc.ID_NIVEAU_FORMATION_COHORTE                 
+  JOIN NIVEAUX_FORMATIONS nfr on nfc.ID_NIVEAU_FORMATION = nfr.ID_NIVEAU_FORMATION                 
+  join UTILISATEUR_NIVEAUX_FORMATIONS unf on unf.ID_NIVEAU_FORMATION=nfr.ID_NIVEAU_FORMATION                  
+  and unf.ROLE='RESPONSABLE NIVEAU'                 
+) unv On unv.ID_PARCOURS_MAQUET_ANNEE=pma.ID_PARCOURS_MAQUET_ANNEE and unv.ID_NIVEAU_FORMATION=nf.ID_NIVEAU_FORMATION and mq.ID_MAQUETTE = unv.ID_MAQUETTE                 
+LEFT JOIN (                         
+  Select fu.ID_FILIERE_UE_SEMSTRE,pm.ID_PARCOURS_MAQUET_ANNEE,ufue.ID_UTILISATEUR responsableId,pers.PRENOMS || ' '||pers.NOM responsable                           
+  from FILIERE_UE_SEMSTRE fu                          
+  join UTILIS_FILIERE_UE_SEMESTRE ufue on fu.ID_FILIERE_UE_SEMSTRE=ufue.ID_FILIERE_UE_SEMSTRE and ufue.ROLE='RESPONSABLE UE'                        
+  Join PARCOURS_MAQUETTE_ANNEE pm on ufue.ID_PARCOURS_MAQ_ANNEE=pm.ID_PARCOURS_MAQUET_ANNEE                         
+  JOIN UTILISATEURS uti on uti.ID_UTILISATEUR=ufue.ID_UTILISATEUR                      
+  Join PERSONNES pers on pers.ID_PERSONNE=uti.ID_PERSONNE               
+) uf On uf.ID_FILIERE_UE_SEMSTRE=fue.ID_FILIERE_UE_SEMSTRE AND uf.ID_PARCOURS_MAQUET_ANNEE=pma.ID_PARCOURS_MAQUET_ANNEE                 
+ORDER BY fue.ID_SEMESTRE, fue.CODIFICATION]]></SQLQuery>
+    <ViewAttribute
+        Name="IdFiliereUeSemstre"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="10"
+        Scale="0"
+        Type="java.lang.Long"
+        ColumnType="NUMBER"
+        AliasName="ID_FILIERE_UE_SEMSTRE"
+        Expression="ID_FILIERE_UE_SEMSTRE"
+        SQLType="NUMERIC"/>
+    <ViewAttribute
+        Name="Codification"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="20"
+        Type="java.lang.String"
+        ColumnType="VARCHAR2"
+        AliasName="CODIFICATION"
+        Expression="CODIFICATION"
+        SQLType="VARCHAR">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="IdUe"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="10"
+        Scale="0"
+        Type="java.lang.Long"
+        ColumnType="NUMBER"
+        AliasName="ID_UE"
+        Expression="ID_UE"
+        SQLType="NUMERIC"
+        LOVName="LOV_IdUe">
+        <Properties>
+            <SchemaBasedProperties>
+                <CONTROLTYPE
+                    Value="choice"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="IdSemestre"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="10"
+        Scale="0"
+        Type="java.lang.Long"
+        ColumnType="NUMBER"
+        AliasName="ID_SEMESTRE"
+        Expression="ID_SEMESTRE"
+        SQLType="NUMERIC"/>
+    <ViewAttribute
+        Name="IdMaquette"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="10"
+        Scale="0"
+        Type="java.lang.Long"
+        ColumnType="NUMBER"
+        AliasName="ID_MAQUETTE"
+        Expression="ID_MAQUETTE"
+        SQLType="NUMERIC"/>
+    <ViewAttribute
+        Name="LibelleLong"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="200"
+        Type="java.lang.String"
+        ColumnType="VARCHAR2"
+        AliasName="LIBELLE_LONG"
+        Expression="LIBELLE_LONG"
+        SQLType="VARCHAR">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="200"/>
+        </DesignTime>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="IdParcoursMaquetAnnee"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="10"
+        Scale="0"
+        Type="java.lang.Long"
+        ColumnType="NUMBER"
+        AliasName="ID_PARCOURS_MAQUET_ANNEE"
+        Expression="ID_PARCOURS_MAQUET_ANNEE"
+        SQLType="NUMERIC"/>
+    <ViewAttribute
+        Name="IdNiveauFormation"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="10"
+        Scale="0"
+        Type="java.lang.Long"
+        ColumnType="NUMBER"
+        AliasName="ID_NIVEAU_FORMATION"
+        Expression="ID_NIVEAU_FORMATION"
+        SQLType="NUMERIC"/>
+    <ViewAttribute
+        Name="IdFormation"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="10"
+        Scale="0"
+        Type="java.lang.Long"
+        ColumnType="NUMBER"
+        AliasName="ID_FORMATION"
+        Expression="ID_FORMATION"
+        SQLType="NUMERIC"/>
+    <ViewAttribute
+        Name="Responsableid"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="10"
+        Scale="0"
+        Type="java.lang.Long"
+        ColumnType="NUMBER"
+        AliasName="RESPONSABLEID"
+        Expression="RESPONSABLEID"
+        SQLType="NUMERIC"/>
+    <ViewAttribute
+        Name="Responsable"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="301"
+        Type="java.lang.String"
+        ColumnType="VARCHAR2"
+        AliasName="RESPONSABLE"
+        Expression="RESPONSABLE"
+        SQLType="VARCHAR">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="301"/>
+        </DesignTime>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="Responsablenivfr"
+        IsUpdateable="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Precision="10"
+        Scale="0"
+        Type="java.lang.Long"
+        ColumnType="NUMBER"
+        AliasName="RESPONSABLENIVFR"
+        Expression="RESPONSABLENIVFR"
+        SQLType="NUMERIC"/>
+    <ViewAttribute
+        Name="isSelected"
+        IsSelected="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Type="java.lang.Boolean"
+        ColumnType="NUMBER"
+        AliasName="VIEW_ATTR"
+        SQLType="BIT">
+        <Properties>
+            <SchemaBasedProperties>
+                <CONTROLTYPE
+                    Value="check_box"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </ViewAttribute>
+    <ViewLinkAccessor Name="FiliereUeSemestreEcROVO" ViewLink="model.viewlink.FiliereUeSemestreToFiliereUeSemestreEc"
+                      Type="oracle.jbo.RowIterator" IsUpdateable="false"/>
+    <ViewLinkAccessor
+        Name="ParcrsParamModeSaisieECROVO"
+        ViewLink="model.viewlink.PrcrsModeSaisieToFilUeSemVL"
+        Type="model.readOnlyView.ParcrsParamModeSaisieECROVORowImpl"
+        Reversed="true"
+        IsUpdateable="false"/>
+    <ResourceBundle>
+        <PropertiesBundle PropertiesFile="model.ModelBundle"/>
+    </ResourceBundle>
+</ViewObject>

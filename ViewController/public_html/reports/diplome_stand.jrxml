@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="diplomebis" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="08dd1e22-a46e-401a-9bab-dd0ba245200f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_f" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="annee_univers" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_hs" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+etu.NUMERO, pers.prenoms,pers.nom, pers.DATE_NAISSANCE, pers.LIEU_NAISSANCE
+,cv.LIBELLE_COURT Civilite,
+an.LIBELLE_LONG AnneeUnivers,an.ID_ANNEES_UNIVERS
+,f.LIBELLE_LONG ||' : '|| DECODE(de.ID_SPECIALITE, NULL, '',sp.specialite)||DECODE(de.ID_OPTION, NULL, '',' Option : '||op.Options) Parcours
+,DECODE(gf.ID_GRADES_FORMATION,1,'La LICENCE',DECODE(gf.ID_GRADES_FORMATION,2,'Le MASTER','le DOCTORAT')) Resultat, gf.LIBELLE_LONG grade
+,dm.LIBELLE_LONG Domaine,s.LIBELLE_LONG Structures
+,tl.TEXT, tlf.ORDRE ordre
+FROM  DIPLOMES_ETUDIANTS de
+JOIN  ANNEES_UNIVERS an on de.ID_ANNEES_UNIVERS = an.ID_ANNEES_UNIVERS
+JOIN  ETUDIANTS etu ON etu.ID_ETUDIANT=de.ID_ETUDIANT
+JOIN  PERSONNES pers ON pers.ID_PERSONNE=etu.ID_PERSONNE
+JOIN  CIVILITES cv on pers.ID_CIVILITE = cv.ID_CIVILITE
+JOIN  GRADES_FORMATION gf ON de.ID_GRADES_FORMATION = gf.ID_GRADES_FORMATION
+JOIN  FORMATIONS f on f.ID_GRADES_FORMATION = gf.ID_GRADES_FORMATION
+JOIN  TEXT_LOI_FORMATION tlf on f.ID_FORMATION = tlf.ID_FORMATION
+JOIN  TEXT_LOIS tl on tlf.ID_TEXT_LOI = tl.ID_TEXT_LOI
+JOIN  MENTIONS mnt on f.ID_MENTION = mnt.ID_MENTION
+JOIN  DOMAINES dm on mnt.ID_DOMAINE = dm.ID_DOMAINE
+JOIN  HISTORIQUES_STRUCTURES hs on f.ID_HISTORIQUES_STRUCTURE = hs.ID_HISTORIQUES_STRUCTURE
+JOIN  STRUCTURES s on hs.ID_STRUCTURES = s.ID_STRUCTURE
+LEFT JOIN (
+          SELECT sp.LIBELLE_LONG specialite, fsp.ID_FORMATION_SPECIALITE
+          FROM FORMATIONS_SPECIALITES fsp JOIN SPECIALITES sp on fsp.ID_SPECIALITE = sp.ID_SPECIALITE
+          ) sp ON sp.ID_FORMATION_SPECIALITE = de.ID_SPECIALITE
+LEFT JOIN (
+          SELECT op.LIBELLE_LONG Options, fop.ID_FORMATION_OPTION
+          FROM FORMATIONS_OPTIONS fop JOIN OPTIONS op on fop.ID_OPTION = op.ID_OPTION
+          ) op ON op.ID_FORMATION_OPTION = de.ID_OPTION
+WHERE de.ID_ANNEES_UNIVERS=$P{annee_univers}
+AND hs.ID_HISTORIQUES_STRUCTURE=$P{id_hs}
+AND f.ID_FORMATION=$P{id_f}
+ORDER by etu.NUMERO, ordre]]>
+	</queryString>
+	<field name="NUMERO" class="java.lang.String"/>
+	<field name="PRENOMS" class="java.lang.String"/>
+	<field name="NOM" class="java.lang.String"/>
+	<field name="DATE_NAISSANCE" class="java.sql.Timestamp"/>
+	<field name="LIEU_NAISSANCE" class="java.lang.String"/>
+	<field name="CIVILITE" class="java.lang.String"/>
+	<field name="ANNEEUNIVERS" class="java.lang.String"/>
+	<field name="ID_ANNEES_UNIVERS" class="java.math.BigDecimal"/>
+	<field name="PARCOURS" class="java.lang.String"/>
+	<field name="RESULTAT" class="java.lang.String"/>
+	<field name="GRADE" class="java.lang.String"/>
+	<field name="DOMAINE" class="java.lang.String"/>
+	<field name="STRUCTURES" class="java.lang.String"/>
+	<field name="TEXT" class="java.lang.String"/>
+	<field name="ORDRE" class="java.math.BigDecimal"/>
+	<group name="ANNEE_UNIVERS">
+		<groupExpression><![CDATA[$F{ID_ANNEES_UNIVERS}]]></groupExpression>
+	</group>
+	<group name="ETUDIANT">
+		<groupExpression><![CDATA[$F{NUMERO}]]></groupExpression>
+		<groupHeader>
+			<band height="34">
+				<staticText>
+					<reportElement x="31" y="0" width="742" height="34" uuid="39e7a30e-b078-4de4-b35b-ff36d429d705"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<text><![CDATA[Nous, Recteur, Président de l'Assemblée de l'Université Cheikh Anta Diop de Dakar]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="251">
+				<staticText>
+					<reportElement x="31" y="5" width="56" height="20" uuid="10c8e531-a959-4201-b3f2-43ee4de6369c"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<text><![CDATA[confère à ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="87" y="5" width="18" height="20" uuid="48e23bbf-ad34-4955-883e-1766d9c5b77a"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CIVILITE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="106" y="5" width="100" height="20" uuid="0483a0f7-506e-406e-8ad5-909f865dd0da"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PRENOMS}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="210" y="5" width="548" height="20" uuid="16d47187-a3f8-48f1-8e37-8c8e63592a2f"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NOM}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="31" y="27" width="43" height="20" uuid="d5a58180-feae-4baa-9a86-2c7cb2aca8e0"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<text><![CDATA[né(e) le ]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="73" y="27" width="50" height="20" uuid="8c71a481-6d21-41b4-a103-88e31572089d"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DATE_NAISSANCE}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="126" y="27" width="12" height="20" uuid="9f7cce4c-6c50-4026-a655-1f5fe4ea749d"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<text><![CDATA[à]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="140" y="27" width="633" height="20" uuid="d6a348f8-467a-4740-90fa-a679508de822"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LIEU_NAISSANCE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="31" y="49" width="77" height="20" uuid="f9e0f57d-04fe-4092-8622-aa744bb1e730"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{RESULTAT}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="111" y="49" width="18" height="20" uuid="c76cf927-b31f-4ab4-a5db-c652d6115baf"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<text><![CDATA[en]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="129" y="49" width="644" height="20" uuid="155e9296-d940-4406-aee4-1b46e2335691"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PARCOURS}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="31" y="69" width="742" height="20" uuid="b4963b99-0248-456a-8cb8-0de5a7088cea"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<text><![CDATA[pour en jouir avec les droits et prérogative qui y sont attachés]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="111" y="98" width="114" height="20" uuid="cd181254-b2e2-47c4-9e03-0f5ad5077177"/>
+					<textElement>
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="31" y="98" width="80" height="20" uuid="307f8407-a0b2-4025-b0b6-54101bff64d8"/>
+					<textElement>
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<text><![CDATA[Fait à Dakar, le ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="31" y="134" width="100" height="20" uuid="56d6de03-5ac6-4bc0-99d7-5e8c095d9355"/>
+					<textElement>
+						<font fontName="Times New Roman" size="12"/>
+					</textElement>
+					<text><![CDATA[N°100/...]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="564" y="120" width="209" height="20" uuid="e95fc355-f1cb-4964-96ac-971c91998b79"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Le Recteur,]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="564" y="140" width="209" height="20" uuid="40797dab-affc-41b1-808a-fea9a7cb7269"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Président de l'Assemblée]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="564" y="159" width="209" height="20" uuid="70c26d2a-6cc2-470f-afe1-27b9979acdcf"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[de l'Université Cheikh Anta Diop de Dakar]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="564" y="179" width="209" height="20" uuid="33877200-1778-4f84-aa8a-07d390aaddfb"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Pr Amadou Ali Mbaye]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="169" splitType="Stretch">
+			<staticText>
+				<reportElement x="141" y="0" width="569" height="26" uuid="a8b89089-e03d-4340-8fe0-509fff6a91db"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPUBLIQUE DU SENEGAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="141" y="26" width="569" height="30" uuid="75ee80c8-c44d-4c89-9de8-755e1088ceb0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial Narrow" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSITE CHEIKH ANTA DIOP DE DAKAR]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="141" y="58" width="569" height="26" uuid="1f9fa7dc-a813-457a-b502-d43895b8d32e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Verdana" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STRUCTURES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="84" width="569" height="85" uuid="d9f406b7-30b0-4fb5-8b29-e36dd572471c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GRADE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="31" y="1" width="742" height="23" uuid="4c129cc8-bc81-417d-8c1d-0078ac519b72"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TEXT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

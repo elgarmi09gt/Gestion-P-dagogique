@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:table value="#{bindings.FontionalitesUsers.collectionModel}" var="row"
+            rows="#{bindings.FontionalitesUsers.rangeSize}"
+            emptyText="#{bindings.FontionalitesUsers.viewable ? 'No data to display.' : 'Access Denied.'}"
+            rowBandingInterval="0" selectedRowKeys="#{bindings.FontionalitesUsers.collectionModel.selectedRow}"
+            selectionListener="#{bindings.FontionalitesUsers.collectionModel.makeCurrent}" rowSelection="single"
+            fetchSize="#{bindings.FontionalitesUsers.rangeSize}"
+            filterModel="#{bindings.FontionalitesUsersQuery.queryDescriptor}" filterVisible="true"
+            queryListener="#{bindings.FontionalitesUsersQuery.processQuery}" varStatus="vs" id="t1">
+    <af:column sortProperty="#{bindings.FontionalitesUsers.hints.LibelleLong.name}" filterable="true" sortable="true"
+               headerText="#{bindings.FontionalitesUsers.hints.LibelleLong.label}" id="c1">
+      <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.FontionalitesUsers.hints.LibelleLong.tooltip}"
+                     id="ot1"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.FontionalitesUsers.hints.UrlAction.name}" filterable="true" sortable="true"
+               headerText="#{bindings.FontionalitesUsers.hints.UrlAction.label}" id="c2">
+      <af:outputText value="#{row.UrlAction}" shortDesc="#{bindings.FontionalitesUsers.hints.UrlAction.tooltip}"
+                     id="ot2"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.FontionalitesUsers.hints.Active.name}" filterable="true" sortable="true"
+               headerText="#{bindings.FontionalitesUsers.hints.Active.label}" id="c3">
+      <af:outputText value="#{row.Active}" shortDesc="#{bindings.FontionalitesUsers.hints.Active.tooltip}" id="ot3">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.FontionalitesUsers.hints.Active.format}"/>
+      </af:outputText>
+    </af:column>
+  </af:table>
+</ui:composition>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="inscconnectionPageDef"
+                Package="evaluation.connection">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AnneeUniverROVO" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="AnneeUniverROVOIterator"/>
+    <iterator Binds="StructureAccesByUsername" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="StructureAccesByUsernameIterator"/>
+    <iterator Binds="DepartementUser" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="DepartementUserIterator"/>
+    <iterator Binds="ParcoursUser" RangeSize="-1" DataControl="evaluationAppDataControl" id="ParcoursUserIterator"/>
+    <iterator Binds="FonctionnalitesUsers" RangeSize="-1" DataControl="menuAppDataControl"
+              id="FonctionnalitesUsersIterator"/>
+    <iterator Binds="MaquetteParcoursAnnee" RangeSize="-1" DataControl="evaluationAppDataControl"
+              id="MaquetteParcoursAnneeIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="AnneeUniverROVOIterator" ListOperMode="navigation" ListIter="AnneeUniverROVOIterator"
+          id="AnneeUniverROVO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="StructureAccesByUsernameIterator" ListOperMode="navigation"
+          ListIter="StructureAccesByUsernameIterator" id="StructureAccesByUsername" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="DepartementUserIterator" ListOperMode="navigation" ListIter="DepartementUserIterator"
+          id="DepartementUser" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="ParcoursUserIterator" ListOperMode="navigation" ListIter="ParcoursUserIterator"
+          id="ParcoursUser" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="FonctionnalitesUsersIterator" id="FonctionnalitesUsers"
+            InstanceName="menuAppDataControl.FonctionnalitesUsers" DataControl="menuAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="log" NDType="java.lang.String"/>
+      <NamedData NDName="module" NDType="java.lang.Long"/>
+    </action>
+    <list IterBinding="MaquetteParcoursAnneeIterator" ListOperMode="navigation" ListIter="MaquetteParcoursAnneeIterator"
+          id="MaquetteParcoursAnnee" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="AnneeUniverROVOIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructureAccesByUsernameIterator" id="IdStructure">
+      <AttrNames>
+        <Item Value="IdStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="MaquetteParcoursAnneeIterator" id="ExecuteWithParams3"
+            InstanceName="evaluationAppDataControl.MaquetteParcoursAnnee" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+      <NamedData NDName="str_id" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="ParcoursUserIterator" id="IdNiveauFormationParcours1">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,262 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelTabbed position="above" id="pt1">
+    <af:showDetailItem id="tab1" text="RECETTES" disclosed="true">
+      <af:iterator value="#{OperationCmpteFormBean.refreshTableOperation()}" id="i2"/>
+        <af:button text="Les recettes de la formation : #{bindings.LibForm}" id="b1"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+      <af:table value="#{bindings.lesRecettesCmptFormRO.collectionModel}" var="row"
+                rows="#{bindings.lesRecettesCmptFormRO.rangeSize}"
+                emptyText="#{bindings.lesRecettesCmptFormRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.lesRecettesCmptFormRO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.lesRecettesCmptFormRO.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.lesRecettesCmptFormRO.rangeSize}"
+                filterModel="#{bindings.lesRecettesCmptFormROQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.lesRecettesCmptFormROQuery.processQuery}" varStatus="vs" id="t1"
+                scrollPolicy="page" columnStretching="last" inlineStyle="border:solid  2px #2897e8;">
+        <af:column sortProperty="#{bindings.lesRecettesCmptFormRO.hints.Numero.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.lesRecettesCmptFormRO.hints.Numero.label}" id="c1">
+          <af:outputText value="#{row.Numero}" shortDesc="#{bindings.lesRecettesCmptFormRO.hints.Numero.tooltip}"
+                         id="ot1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesRecettesCmptFormRO.hints.Montant.name}" filterable="true" sortable="true"
+                   headerText="Montant (FCFA)" id="c4">
+          <af:outputText value="#{row.Montant}" shortDesc="#{bindings.lesRecettesCmptFormRO.hints.Montant.tooltip}"
+                         id="ot4">
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.lesRecettesCmptFormRO.hints.Montant.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesRecettesCmptFormRO.hints.DateOperation.name}" filterable="true"
+                   sortable="true" headerText="Date" id="c5">
+          <f:facet name="filter">
+            <af:inputDate value="#{bindings.lesRecettesCmptFormROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateOperation.value}"
+                          id="id2">
+              <af:convertDateTime pattern="#{bindings.lesRecettesCmptFormRO.hints.DateOperation.format}"/>
+            </af:inputDate>
+          </f:facet>
+          <af:outputText value="#{row.DateOperation}"
+                         shortDesc="#{bindings.lesRecettesCmptFormRO.hints.DateOperation.tooltip}" id="ot5">
+            <af:convertDateTime pattern="#{bindings.lesRecettesCmptFormRO.hints.DateOperation.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesRecettesCmptFormRO.hints.Motif.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.lesRecettesCmptFormRO.hints.Motif.label}" id="c6">
+          <af:outputText value="#{row.Motif}" shortDesc="#{bindings.lesRecettesCmptFormRO.hints.Motif.tooltip}"
+                         id="ot6"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesRecettesCmptFormRO.hints.Pourcentage.name}" filterable="true"
+                   sortable="true" headerText="Pourcentage (%)" id="c7">
+          <af:outputText value="#{row.Pourcentage}"
+                         shortDesc="#{bindings.lesRecettesCmptFormRO.hints.Pourcentage.tooltip}" id="ot7">
+            <af:convertNumber groupingUsed="false"
+                              pattern="#{bindings.lesRecettesCmptFormRO.hints.Pourcentage.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesRecettesCmptFormRO.hints.MontantVerse.name}" filterable="true"
+                   sortable="true" headerText="Montant Versé (FCFA)" id="c8" width="120">
+          <af:outputText value="#{row.MontantVerse}"
+                         shortDesc="#{bindings.lesRecettesCmptFormRO.hints.MontantVerse.tooltip}" id="ot8">
+            <af:convertNumber groupingUsed="false"
+                              pattern="#{bindings.lesRecettesCmptFormRO.hints.MontantVerse.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesRecettesCmptFormRO.hints.Banque.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.lesRecettesCmptFormRO.hints.Banque.label}" id="c9" width="120">
+          <af:outputText value="#{row.Banque}" shortDesc="#{bindings.lesRecettesCmptFormRO.hints.Banque.tooltip}"
+                         id="ot9"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesRecettesCmptFormRO.hints.NumChqVir.name}" filterable="true"
+                   sortable="true" headerText="N° Chèque (Virement)" id="c10" width="120">
+          <af:outputText value="#{row.NumChqVir}" shortDesc="#{bindings.lesRecettesCmptFormRO.hints.NumChqVir.tooltip}"
+                         id="ot10"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesRecettesCmptFormRO.hints.LibTypeCmpte.name}" filterable="true"
+                   sortable="true" headerText="Compte" id="c11" width="200">
+          <af:outputText value="#{row.LibTypeCmpte}"
+                         shortDesc="#{bindings.lesRecettesCmptFormRO.hints.LibTypeCmpte.tooltip}" id="ot11"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesRecettesCmptFormRO.hints.LibNivForm.name}" filterable="true"
+                   sortable="true" headerText="Niveau Formation" id="c12">
+          <af:outputText value="#{row.LibNivForm}"
+                         shortDesc="#{bindings.lesRecettesCmptFormRO.hints.LibNivForm.tooltip}" id="ot12"/>
+        </af:column>
+      </af:table>
+      <af:panelGroupLayout id="pgl1" layout="horizontal">
+        <af:table value="#{bindings.RechCompteGlobRO.collectionModel}" var="row"
+                  rows="#{bindings.RechCompteGlobRO.rangeSize}"
+                  emptyText="#{bindings.RechCompteGlobRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.RechCompteGlobRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.RechCompteGlobRO.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.RechCompteGlobRO.rangeSize}" id="t3" inlineStyle="border:solid  2px #2897e8;">
+          <af:column headerText="Compte" id="c14" width="250">
+            <af:outputText value="#{row.LibCompte}" shortDesc="#{bindings.RechCompteGlobRO.hints.LibCompte.tooltip}"
+                           id="ot14"/>
+          </af:column>
+          <af:column headerText="Solde Initial" id="c15" width="120">
+            <af:outputText value="#{row.SoldeInitial}"
+                           shortDesc="#{bindings.RechCompteGlobRO.hints.SoldeInitial.tooltip}" id="ot15">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.RechCompteGlobRO.hints.SoldeInitial.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="Solde Actuel" id="c16" width="120">
+            <af:outputText value="#{row.SoldeActuel}" shortDesc="#{bindings.RechCompteGlobRO.hints.SoldeActuel.tooltip}"
+                           id="ot16">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.RechCompteGlobRO.hints.SoldeActuel.format}"/>
+            </af:outputText>
+          </af:column>
+        </af:table>
+        <af:panelGroupLayout id="pgl13" layout="horizontal"
+                             inlineStyle="border:solid  1px #2897e8;width:250px;margin-top:15px;margin-left:20px;">
+          <af:inputText label="Total ( Recettes ) :   " id="it19"
+                        inlineStyle="margin-top:10px; margin-left:25px; font-size:large;margin-bottom:10px;font-weight:normal;"
+                        contentStyle="font-size:large;" readOnly="true" value="#{OperationCmpteFormBean.somme_total}">
+            <f:validator/>
+            <f:convertNumber/>
+          </af:inputText>
+          <af:outputLabel value="FCFA" id="ol2"/>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl2" inlineStyle="margin-left:10px;margin-top:20px;">
+          <af:table value="#{bindings.etatActuCmpteFormRO.collectionModel}" var="row"
+                    rows="#{bindings.etatActuCmpteFormRO.rangeSize}"
+                    emptyText="#{bindings.etatActuCmpteFormRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.etatActuCmpteFormRO.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.etatActuCmpteFormRO.collectionModel.makeCurrent}"
+                    rowSelection="single" fetchSize="#{bindings.etatActuCmpteFormRO.rangeSize}"
+                    filterModel="#{bindings.etatActuCmpteFormROQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.etatActuCmpteFormROQuery.processQuery}" varStatus="vs" id="t2" width="540"
+                    inlineStyle="margin-left:10px;border:solid  2px #2897e8;">
+            <af:column sortProperty="#{bindings.etatActuCmpteFormRO.hints.LibTypeCmpte.name}" filterable="true"
+                       sortable="true" headerText="Compte" id="c2" width="300">
+              <af:outputText value="#{row.LibTypeCmpte}"
+                             shortDesc="#{bindings.etatActuCmpteFormRO.hints.LibTypeCmpte.tooltip}" id="ot2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.etatActuCmpteFormRO.hints.SoldeInitial.name}" filterable="true"
+                       sortable="true" headerText="Solde Initial" id="c3">
+              <af:outputText value="#{row.SoldeInitial}"
+                             shortDesc="#{bindings.etatActuCmpteFormRO.hints.SoldeInitial.tooltip}" id="ot3">
+                <af:convertNumber groupingUsed="false"
+                                  pattern="#{bindings.etatActuCmpteFormRO.hints.SoldeInitial.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.etatActuCmpteFormRO.hints.SoldeActuel.name}" filterable="true"
+                       sortable="true" headerText="Solde Actuel" id="c13">
+              <af:outputText value="#{row.SoldeActuel}"
+                             shortDesc="#{bindings.etatActuCmpteFormRO.hints.SoldeActuel.tooltip}" id="ot13">
+                <af:convertNumber groupingUsed="false"
+                                  pattern="#{bindings.etatActuCmpteFormRO.hints.SoldeActuel.format}"/>
+              </af:outputText>
+            </af:column>
+          </af:table>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl3" layout="horizontal"
+                             inlineStyle="border:solid  1px #2897e8;width:250px;margin-top:15px;margin-left:420px;">
+          <af:inputText label="Total :   " id="it1"
+                        inlineStyle="margin-top:10px; margin-left:75px; font-size:large;margin-bottom:10px;font-weight:normal;"
+                        contentStyle="font-size:large;" readOnly="true" value="#{OperationCmpteFormBean.somme_total}">
+            <f:validator/>
+            <f:convertNumber/>
+          </af:inputText>
+          <af:outputLabel value="FCFA" id="ol1"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </af:showDetailItem>
+    <af:showDetailItem id="tab2" text="DEPENSES">
+      <af:table value="#{bindings.lesDepensesEffectueesFromRO.collectionModel}" var="row"
+                rows="#{bindings.lesDepensesEffectueesFromRO.rangeSize}"
+                emptyText="#{bindings.lesDepensesEffectueesFromRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0"
+                selectedRowKeys="#{bindings.lesDepensesEffectueesFromRO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.lesDepensesEffectueesFromRO.collectionModel.makeCurrent}"
+                rowSelection="single" fetchSize="#{bindings.lesDepensesEffectueesFromRO.rangeSize}"
+                filterModel="#{bindings.lesDepensesEffectueesFromROQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.lesDepensesEffectueesFromROQuery.processQuery}" varStatus="vs" id="t4">
+        <af:column sortProperty="#{bindings.lesDepensesEffectueesFromRO.hints.DateOperation.name}" filterable="true"
+                   sortable="true" headerText="Date"
+                   id="c17">
+          <f:facet name="filter">
+            <af:inputDate value="#{bindings.lesDepensesEffectueesFromROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateOperation.value}"
+                          id="id1">
+              <af:convertDateTime pattern="#{bindings.lesDepensesEffectueesFromRO.hints.DateOperation.format}"/>
+            </af:inputDate>
+          </f:facet>
+          <af:outputText value="#{row.DateOperation}"
+                         shortDesc="#{bindings.lesDepensesEffectueesFromRO.hints.DateOperation.tooltip}" id="ot17">
+            <af:convertDateTime pattern="#{bindings.lesDepensesEffectueesFromRO.hints.DateOperation.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesDepensesEffectueesFromRO.hints.Montant.name}" filterable="true"
+                   sortable="true" headerText="Montant (FCFA)" id="c18"
+                   width="120">
+          <af:outputText value="#{row.Montant}"
+                         shortDesc="#{bindings.lesDepensesEffectueesFromRO.hints.Montant.tooltip}" id="ot18">
+            <af:convertNumber groupingUsed="false"
+                              pattern="#{bindings.lesDepensesEffectueesFromRO.hints.Montant.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesDepensesEffectueesFromRO.hints.LibModePaie.name}" filterable="true"
+                   sortable="true" headerText="Mode"
+                   id="c19">
+          <af:outputText value="#{row.LibModePaie}"
+                         shortDesc="#{bindings.lesDepensesEffectueesFromRO.hints.LibModePaie.tooltip}" id="ot19"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesDepensesEffectueesFromRO.hints.LibTypeCmpte.name}" filterable="true"
+                   sortable="true" headerText="Compte"
+                   id="c20" width="200">
+          <af:outputText value="#{row.LibTypeCmpte}"
+                         shortDesc="#{bindings.lesDepensesEffectueesFromRO.hints.LibTypeCmpte.tooltip}" id="ot20"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesDepensesEffectueesFromRO.hints.NumeroRecu.name}" filterable="true"
+                   sortable="true" headerText="Reçu" id="c21">
+          <af:outputText value="#{row.NumeroRecu}"
+                         shortDesc="#{bindings.lesDepensesEffectueesFromRO.hints.NumeroRecu.tooltip}" id="ot21"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesDepensesEffectueesFromRO.hints.Motif.name}" filterable="true"
+                   sortable="true" headerText="#{bindings.lesDepensesEffectueesFromRO.hints.Motif.label}" id="c22"
+                   width="250">
+          <af:outputText value="#{row.Motif}" shortDesc="#{bindings.lesDepensesEffectueesFromRO.hints.Motif.tooltip}"
+                         id="ot22"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesDepensesEffectueesFromRO.hints.Proprietaire.name}" filterable="true"
+                   sortable="true" headerText="Bénéficiaire"
+                   id="c23" width="220">
+          <af:outputText value="#{row.Proprietaire}"
+                         shortDesc="#{bindings.lesDepensesEffectueesFromRO.hints.Proprietaire.tooltip}" id="ot23"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesDepensesEffectueesFromRO.hints.NumChqVir.name}" filterable="true"
+                   sortable="true" headerText="N° Chèque (Virement)" id="c24">
+          <af:outputText value="#{row.NumChqVir}"
+                         shortDesc="#{bindings.lesDepensesEffectueesFromRO.hints.NumChqVir.tooltip}" id="ot24"/>
+        </af:column>
+        <af:column headerText="#{bindings.lesDepensesEffectueesFromRO.hints.Banque.label}" id="c26" width="150"
+                   sortable="true" filterable="true"
+                   sortProperty="#{bindings.lesDepensesEffectueesFromRO.hints.Banque.name}">
+          <af:outputText value="#{row.Banque}" shortDesc="#{bindings.lesDepensesEffectueesFromRO.hints.Banque.tooltip}"
+                         id="ot25"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.lesDepensesEffectueesFromRO.hints.OpVal.name}" filterable="true"
+                   sortable="true" headerText="Etat Opération" id="c25" width="120">
+          <af:selectOneChoice value="#{row.bindings.OpVal.inputValue}" label="#{row.bindings.OpVal.label}"
+                              required="#{bindings.lesDepensesEffectueesFromRO.hints.OpVal.mandatory}"
+                              shortDesc="#{bindings.lesDepensesEffectueesFromRO.hints.OpVal.tooltip}" readOnly="true"
+                              id="soc1">
+            <f:selectItems value="#{row.bindings.OpVal.items}" id="si1"/>
+            <f:validator binding="#{row.bindings.OpVal.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+      </af:table>
+              <af:panelGroupLayout id="pgl4" layout="horizontal"
+                             inlineStyle="border:solid  1px #2897e8;width:250px;margin-top:15px;margin-left:5px;">
+          <af:inputText label="Total ( Dépenses ) :   " id="it2"
+                        inlineStyle="margin-top:10px; margin-left:25px; font-size:large;margin-bottom:10px;font-weight:normal;"
+                        contentStyle="font-size:large;" readOnly="true"
+                        value="#{OperationCmpteFormBean.somme_total_depenses}">
+            <f:validator/>
+            <f:convertNumber/>
+          </af:inputText>
+          <af:outputLabel value="FCFA" id="ol3"/>
+        </af:panelGroupLayout>
+    </af:showDetailItem>
+  </af:panelTabbed>
+</ui:composition>

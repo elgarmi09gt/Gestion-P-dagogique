@@ -1,0 +1,320 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <af:panelGroupLayout id="pgl7" layout="scroll" inlineStyle="line-height:15px;">
+    <af:panelGroupLayout id="pgl5" layout="vertical" inlineStyle="margin:20px">
+      <af:panelStretchLayout id="psl1" startWidth="10px" dimensionsFrom="children">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="margin:10px">
+            <af:panelGroupLayout id="pgl13" layout="horizontal" styleClass="AFStretchWidth">
+              <af:panelGroupLayout id="pgl8" halign="left" layout="horizontal">
+                <af:panelGroupLayout id="pgl15" inlineStyle="width:120px">
+                  <af:outputFormatted value="Etablissement" id="of4"
+                                      inlineStyle="font-size:medium; font-weight:bolder; "/>
+                </af:panelGroupLayout>
+                <af:selectOneChoice value="#{bindings.StructureAcces.inputValue}"
+                                    required="#{bindings.StructureAcces.hints.mandatory}"
+                                    shortDesc="#{bindings.StructureAcces.hints.tooltip}" id="soc1" autoSubmit="true"
+                                    contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;">
+                  <f:selectItems value="#{bindings.StructureAcces.items}" id="si1"/>
+                  <f:validator binding="#{bindings.StructureAcces.validator}"/>
+                </af:selectOneChoice>
+              </af:panelGroupLayout>
+              <af:spacer width="10" height="10" id="s1"/>
+              <af:panelGroupLayout id="pgl1" layout="horizontal" halign="left">
+                <af:outputFormatted value="Département" id="of1" inlineStyle="font-size:medium; font-weight:bolder; "/>
+                <af:selectOneChoice value="#{bindings.HistoriquesStructuresROVO.inputValue}"
+                                    required="#{bindings.HistoriquesStructuresROVO.hints.mandatory}"
+                                    shortDesc="#{bindings.HistoriquesStructuresROVO.hints.tooltip}" id="soc2"
+                                    autoSubmit="true" partialTriggers="soc1"
+                                    contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:500px"
+                                    valueChangeListener="#{IntegrationFormationBean.OnDepartementValueChange}">
+                  <f:selectItems value="#{bindings.HistoriquesStructuresROVO.items}" id="si2"/>
+                  <f:validator binding="#{bindings.HistoriquesStructuresROVO.validator}"/>
+                </af:selectOneChoice>
+                <!--af:selectOneChoice value="#{bindings.HStructByStructure.inputValue}"
+                              required="#{bindings.HStructByStructure.hints.mandatory}"
+                              shortDesc="#{bindings.HStructByStructure.hints.tooltip}" id="soc1" autoSubmit="true"
+                              contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:300px"
+                              valueChangeListener="#{IntegrationFormationBean.OnDepartementValueChange}">
+            <f:selectItems value="#{bindings.HStructByStructure.items}" id="si1"/>
+            <f:validator binding="#{bindings.HStructByStructure.validator}"/>
+          </af:selectOneChoice-->
+              </af:panelGroupLayout>
+            </af:panelGroupLayout>
+            <af:spacer width="10" height="10" id="s4"/>
+            <af:panelGroupLayout id="pgl2" layout="horizontal" styleClass="AFStretchWidth">
+              <af:panelGroupLayout id="pgl14" halign="left" layout="horizontal">
+                <af:panelGroupLayout id="pgl17" inlineStyle="width:120px">
+                  <af:outputFormatted value="Formation" id="of2" inlineStyle="font-size:medium; font-weight:bolder; "/>
+                </af:panelGroupLayout>
+                <af:selectOneChoice value="#{bindings.ScolFormationROVO1.inputValue}"
+                                    required="#{bindings.ScolFormationROVO1.hints.mandatory}"
+                                    shortDesc="#{bindings.ScolFormationROVO1.hints.tooltip}" id="soc3" autoSubmit="true"
+                                    partialTriggers="soc2"
+                                    contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px"
+                                    valueChangeListener="#{IntegrationFormationBean.OnFormationValueChange}">
+                  <f:selectItems value="#{bindings.ScolFormationROVO1.items}" id="si3"/>
+                  <f:validator binding="#{bindings.ScolFormationROVO1.validator}"/>
+                </af:selectOneChoice>
+                <!--af:selectOneChoice value="#{bindings.ScolFormationROVO.inputValue}"
+                              required="#{bindings.ScolFormationROVO.hints.mandatory}"
+                              shortDesc="#{bindings.ScolFormationROVO.hints.tooltip}" id="soc2" autoSubmit="true"
+                              partialTriggers="soc1"
+                              contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:350px"
+                              valueChangeListener="#{IntegrationFormationBean.OnFormationValueChange}">
+            <f:selectItems value="#{bindings.ScolFormationROVO.items}" id="si2"/>
+            <f:validator binding="#{bindings.ScolFormationROVO.validator}"/>
+          </af:selectOneChoice-->
+              </af:panelGroupLayout>
+              <af:spacer width="10" height="10" id="s2"/>
+              <af:panelGroupLayout id="pgl3" layout="horizontal" halign="left">
+                <af:outputFormatted value="Niveau Formation" id="of3"
+                                    inlineStyle="font-size:medium; font-weight:bolder; "/>
+                <af:selectOneChoice value="#{bindings.ScolNivFormationROVO1.inputValue}"
+                                    required="#{bindings.ScolNivFormationROVO1.hints.mandatory}"
+                                    shortDesc="#{bindings.ScolNivFormationROVO1.hints.tooltip}" id="soc5"
+                                    partialTriggers="soc3" autoSubmit="true"
+                                    contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:500px"
+                                    valueChangeListener="#{IntegrationFormationBean.OnNivSecChanged}">
+                  <f:selectItems value="#{bindings.ScolNivFormationROVO1.items}" id="si5"/>
+                  <f:validator binding="#{bindings.ScolNivFormationROVO1.validator}"/>
+                </af:selectOneChoice>
+                <!--af:selectOneChoice value="#{bindings.ScolNivFormationROVO.inputValue}"
+                              required="#{bindings.ScolNivFormationROVO.hints.mandatory}"
+                              shortDesc="#{bindings.ScolNivFormationROVO.hints.tooltip}" id="soc3" autoSubmit="true"
+                              partialTriggers="soc2"
+                              contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:350px"
+                              valueChangeListener="#{IntegrationFormationBean.OnNivSecChanged}">
+            <f:selectItems value="#{bindings.ScolNivFormationROVO.items}" id="si3"/>
+            <f:validator binding="#{bindings.ScolNivFormationROVO.validator}"/>
+          </af:selectOneChoice-->
+              </af:panelGroupLayout>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+      <af:button text="Importer" id="b4" visible="#{securityContext.userInRole['Init Etab,Admin']}"
+                 inlineStyle="font-size:small; border-radius:8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                 actionListener="#{IntegrationFormationBean.OnImportFormationClicked}"/> <!-- Init Etab -->
+      <af:button text="Voir la maquette" id="b1" actionListener="#{IntegrationFormationBean.OnGetMaquetteNivSecAction}"
+                 inlineStyle="font-size:small; border-radius:8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                 visible="#{!(securityContext.userInRole['Init Etab,Admin'])}"/> <!-- Init Etab -->
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl9" binding="#{IntegrationFormationBean.scolpaninsc}" layout="horizontal" valign="middle"
+                         halign="center" visible="false">
+      <af:outputFormatted value="Total Etudiant Inscrit Semestre #{sessionScope.first_semestre} : #{sessionScope.inscrit_first_sem}"
+                          id="of5" styleUsage="instruction" inlineStyle="font-size:large;"
+                          binding="#{IntegrationFormationBean.insc_first}" visible="false"/>
+      <af:spacer width="30" height="10" id="s3"/>
+      <af:outputFormatted value="Total Etudiant Inscrit Semestre #{sessionScope.last_semestre} :  #{sessionScope.inscrit_last_sem}"
+                          id="of6" styleUsage="instruction" inlineStyle="font-size:large;"/>
+    </af:panelGroupLayout>
+    <af:panelHeader text="Maquette #{bindings.LibelleLong.inputValue}" id="ph1"
+                    binding="#{IntegrationFormationBean.scolmaqpan}" inlineStyle="margin:20px;" visible="false">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:panelGroupLayout id="pgl6" layout="scroll">
+        <af:panelHeader text="Unités d'Enseignement" id="ph2">
+          <af:table id="md1" rows="#{bindings.ScolFilUe.rangeSize}" fetchSize="#{bindings.ScolFilUe.rangeSize}"
+                    emptyText="#{bindings.ScolFilUe.viewable ? 'No data to display.' : 'Access Denied.'}" var="row"
+                    value="#{bindings.ScolFilUe.collectionModel}" rowBandingInterval="0"
+                    selectedRowKeys="#{bindings.ScolFilUe.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.ScolFilUe.collectionModel.makeCurrent}" rowSelection="single"
+                    columnStretching="last" inlineStyle="font-size:small;">
+            <af:column headerText="#{viewcontrollerBundle.CODIFICATION}"
+                       sortProperty="#{bindings.ScolFilUe.hints.CodificationUe.name}" sortable="false" id="c2"
+                       inlineStyle="font-size:medium;">
+              <af:outputText value="#{row.CodificationUe}"
+                             shortDesc="#{bindings.ScolFilUe.hints.CodificationUe.tooltip}" id="ot2"/>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.UNITE_ENSEIGNEMENT}"
+                       sortProperty="#{bindings.ScolFilUe.hints.LibLongUe.name}" sortable="false" id="c9" width="500">
+              <af:outputText value="#{row.LibLongUe}" shortDesc="#{bindings.ScolFilUe.hints.LibLongUe.tooltip}"
+                             id="ot8"/>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.CAT_U00E9GORIE_UE}"
+                       sortProperty="#{bindings.ScolFilUe.hints.LibCategorieUe.name}" sortable="false" id="c10">
+              <af:outputText value="#{row.LibCategorieUe}"
+                             shortDesc="#{bindings.ScolFilUe.hints.LibCategorieUe.tooltip}" id="ot9"/>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle.SEMESTRE}"
+                       sortProperty="#{bindings.ScolFilUe.hints.CodeSemestre.name}" sortable="false" id="c4" width="80">
+              <af:outputText value="#{row.CodeSemestre}" shortDesc="#{bindings.ScolFilUe.hints.CodeSemestre.tooltip}"
+                             id="ot4">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilUe.hints.CodeSemestre.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle.COEFICIENT}"
+                       sortProperty="#{bindings.ScolFilUe.hints.Coefue.name}" sortable="false" id="c6" width="80">
+              <af:outputText value="#{row.Coefue}" shortDesc="#{bindings.ScolFilUe.hints.Coefue.tooltip}" id="ot6">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilUe.hints.Coefue.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.CREDIT}"
+                       sortProperty="#{bindings.ScolFilUe.hints.CreditUe.name}" sortable="false" id="c5" width="50">
+              <af:outputText value="#{row.CreditUe}" shortDesc="#{bindings.ScolFilUe.hints.CreditUe.tooltip}" id="ot5">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilUe.hints.CreditUe.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.NOMBRE_EC}"
+                       sortProperty="#{bindings.ScolFilUe.hints.NbreEc.name}" sortable="false" id="c1">
+              <af:outputText value="#{row.NbreEc}" shortDesc="#{bindings.ScolFilUe.hints.NbreEc.tooltip}" id="ot1">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilUe.hints.NbreEc.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.RESPONSABLE}"
+                       sortProperty="#{bindings.ScolFilUe.hints.ResponsableId.name}" sortable="false" id="c8">
+              <af:selectOneChoice value="#{row.bindings.ResponsableId.inputValue}"
+                                  label="#{row.bindings.ResponsableId.label}"
+                                  required="#{bindings.ScolFilUe.hints.ResponsableId.mandatory}"
+                                  shortDesc="#{bindings.ScolFilUe.hints.ResponsableId.tooltip}" readOnly="true"
+                                  id="soc4" inlineStyle="font-size:medium;" contentStyle="font-size:medium;">
+                <f:selectItems value="#{row.bindings.ResponsableId.items}" id="si4"/>
+                <f:validator binding="#{row.bindings.ResponsableId.validator}"/>
+              </af:selectOneChoice>
+            </af:column>
+          </af:table>
+        </af:panelHeader>
+        <af:panelHeader text="Elements Constitutifs" id="ph3">
+          <af:table rows="#{bindings.ScolFilEc.rangeSize}" fetchSize="#{bindings.ScolFilEc.rangeSize}"
+                    emptyText="#{bindings.ScolFilEc.viewable ? 'No data to display.' : 'Access Denied.'}" var="row"
+                    value="#{bindings.ScolFilEc.collectionModel}" rowBandingInterval="0"
+                    selectedRowKeys="#{bindings.ScolFilEc.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.ScolFilEc.collectionModel.makeCurrent}" rowSelection="single" id="t1"
+                    columnStretching="last">
+            <af:column headerText="#{viewcontrollerBundle.CODIFICATION}"
+                       sortProperty="#{bindings.ScolFilEc.hints.CodificationEc.name}" sortable="false" id="c18">
+              <af:outputText value="#{row.CodificationEc}"
+                             shortDesc="#{bindings.ScolFilEc.hints.CodificationEc.tooltip}" id="ot17"/>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.LIBELLE}"
+                       sortProperty="#{bindings.ScolFilEc.hints.LibLongEc.name}" sortable="false" id="c25" width="400">
+              <af:outputText value="#{row.LibLongEc}" shortDesc="#{bindings.ScolFilEc.hints.LibLongEc.tooltip}"
+                             id="ot24"/>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.NATURE_EC}"
+                       sortProperty="#{bindings.ScolFilEc.hints.LibNatureEc.name}" sortable="false" id="c26">
+              <af:outputText value="#{row.LibNatureEc}" shortDesc="#{bindings.ScolFilEc.hints.LibNatureEc.tooltip}"
+                             id="ot25"/>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle.COEFICIENT}"
+                       sortProperty="#{bindings.ScolFilEc.hints.Coefficient.name}" sortable="false" id="c13" width="80">
+              <af:outputText value="#{row.Coefficient}" shortDesc="#{bindings.ScolFilEc.hints.Coefficient.tooltip}"
+                             id="ot12">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.Coefficient.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.MOYENNE_VALIDATION}"
+                       sortProperty="#{bindings.ScolFilEc.hints.MoyenneValidation.name}" sortable="false" id="c14"
+                       width="80">
+              <af:outputText value="#{row.MoyenneValidation}"
+                             shortDesc="#{bindings.ScolFilEc.hints.MoyenneValidation.tooltip}" id="ot13">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.MoyenneValidation.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.MOYENNE_ELIMINATOIRE}"
+                       sortProperty="#{bindings.ScolFilEc.hints.MoyenneEliminatoire.name}" sortable="false" id="c15"
+                       width="80">
+              <af:outputText value="#{row.MoyenneEliminatoire}"
+                             shortDesc="#{bindings.ScolFilEc.hints.MoyenneEliminatoire.tooltip}" id="ot14">
+                <af:convertNumber groupingUsed="false"
+                                  pattern="#{bindings.ScolFilEc.hints.MoyenneEliminatoire.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.POURCENTAGE_CC}"
+                       sortProperty="#{bindings.ScolFilEc.hints.PourcentageCc.name}" sortable="false" id="c16"
+                       width="80">
+              <af:outputText value="#{row.PourcentageCc}" shortDesc="#{bindings.ScolFilEc.hints.PourcentageCc.tooltip}"
+                             id="ot15">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.PourcentageCc.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.POURCENTAGE_CT}"
+                       sortProperty="#{bindings.ScolFilEc.hints.PourcentageCt.name}" sortable="false" id="c17"
+                       width="80">
+              <af:outputText value="#{row.PourcentageCt}" shortDesc="#{bindings.ScolFilEc.hints.PourcentageCt.tooltip}"
+                             id="ot16">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.PourcentageCt.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.HEURE_COURS_MAGISTRAL}"
+                       sortProperty="#{bindings.ScolFilEc.hints.HeureCm.name}" sortable="false" id="c19" width="50">
+              <af:outputText value="#{row.HeureCm}" shortDesc="#{bindings.ScolFilEc.hints.HeureCm.tooltip}" id="ot18">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.HeureCm.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.HEURE_TP}"
+                       sortProperty="#{bindings.ScolFilEc.hints.HeureTp.name}" sortable="false" id="c20" width="50">
+              <af:outputText value="#{row.HeureTp}" shortDesc="#{bindings.ScolFilEc.hints.HeureTp.tooltip}" id="ot19">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.HeureTp.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.HEURE_TD}"
+                       sortProperty="#{bindings.ScolFilEc.hints.HeureTd.name}" sortable="false" id="c21" width="50">
+              <af:outputText value="#{row.HeureTd}" shortDesc="#{bindings.ScolFilEc.hints.HeureTd.tooltip}" id="ot20">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.HeureTd.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.HEURE_STAGE}"
+                       sortProperty="#{bindings.ScolFilEc.hints.HeureStage.name}" sortable="false" id="c22" width="50">
+              <af:outputText value="#{row.HeureStage}" shortDesc="#{bindings.ScolFilEc.hints.HeureStage.tooltip}"
+                             id="ot21">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.HeureStage.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.HEURE_TPE}"
+                       sortProperty="#{bindings.ScolFilEc.hints.HeureTpe.name}" sortable="false" id="c23" width="50">
+              <af:outputText value="#{row.HeureTpe}" shortDesc="#{bindings.ScolFilEc.hints.HeureTpe.tooltip}" id="ot22">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.HeureTpe.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{viewcontrollerBundle1.RESPONSABLE}"
+                       sortProperty="#{bindings.ScolFilEc.hints.Responsable.name}" sortable="false" id="c28">
+              <af:outputText value="#{row.Responsable}" shortDesc="#{bindings.ScolFilEc.hints.Responsable.tooltip}"
+                             id="ot27"/>
+            </af:column>
+          </af:table>
+        </af:panelHeader>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl10" binding="#{IntegrationFormationBean.panBtn}"
+                           visible="#{!(securityContext.userInRole['Init Etab'])}">
+        <!-- Init Etab -->
+        <af:button text="Importer La Maquette" id="b2"
+                   inlineStyle="font-size:small; border-radius:8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                   binding="#{IntegrationFormationBean.btnimportmaq}"
+                   actionListener="#{IntegrationFormationBean.OnImportMaquetteNivSectionClicked}"/>
+        <!--disabled="true" -->
+        <af:button text="Importer Les Etudiants" id="b3"
+                   inlineStyle="font-size:small; border-radius:8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                   binding="#{IntegrationFormationBean.btnimprtetd}"
+                   actionListener="#{IntegrationFormationBean.OnImportEtudiantClicked}"/>
+        <!--af:button text="test" id="b40" actionListener="#{IntegrationFormationBean.ontest}" visible="false"/-->
+      </af:panelGroupLayout>
+    </af:panelHeader>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{IntegrationFormationBean.popSuccess}">
+      <af:dialog id="d1" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl11" layout="vertical" halign="center">
+          <af:icon name="info" id="i1"/>
+          <af:outputFormatted value="Import bien effectué" id="of8"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{IntegrationFormationBean.popFailed}">
+      <af:dialog id="d2" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl12" layout="vertical" halign="center">
+          <af:icon name="error" id="i2"/>
+          <af:outputFormatted value="L'import a échoué !!! contacter l'administrateur" id="of7"/>
+        </af:panelGroupLayout>
+        <af:outputFormatted value="#{sessionScope.msg}" id="of9" inlineStyle="font-size:small; color:Red;"/>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</ui:composition>

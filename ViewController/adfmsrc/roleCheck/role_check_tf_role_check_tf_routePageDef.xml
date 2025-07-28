@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="role_check_tf_role_check_tf_routePageDef" Package="roleCheck" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UtiRolesROVO" RangeSize="10" DataControl="gestdapAppDataControl" id="UtiRolesROVOIterator"/>
+  </executables>
+  <bindings>
+    <methodAction id="getUtiRoles" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getUtiRoles"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getUtiRoles.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getUtiRoles_getUtiRoles_dataControl_dataProvider_getUtiRoles_result">
+      <NamedData NDName="username" NDValue="#{sessionScope.userName}" NDType="java.lang.String"/>
+    </methodAction>
+    <action IterBinding="UtiRolesROVOIterator" id="ExecuteWithParams" InstanceName="gestdapAppDataControl.UtiRolesROVO"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="user_name" NDValue="#{sessionScope.userName}" NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

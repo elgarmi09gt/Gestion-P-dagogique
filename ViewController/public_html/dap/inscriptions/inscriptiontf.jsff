@@ -1,0 +1,2131 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl2" binding="#{MaquetteBean.panimport}" layout="scroll">
+    <!--af:panelGroupLayout id="pgl1" layout="vertical">
+      <af:button text="Importer" id="b25"
+                 inlineStyle="font-size:large; color:White; font-family:cursive; border-radius:8px  ; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8;"
+                 actionListener="#{MaquetteBean.OnImportEtudiantAction}" visible="#{securityContext.userInRole['Dap,Admin,G-Maquette,G-Exam']}">
+        <af:showPopupBehavior popupId="p2"/>
+      </af:button>
+      <af:outputFormatted value="Import des étudiants dans les parcours corespondants " id="of1"
+                          inlineStyle="color:Navy; font-size:small; font-style:italic;"/>
+    </af:panelGroupLayout-->
+    <af:panelGroupLayout id="pgl3" layout="horizontal">
+      <af:panelGroupLayout id="pgl5" layout="horizontal">
+        <af:outputFormatted value="Departement" id="of2" inlineStyle="font-size:medium; font-weight:bolder; "
+                            styleUsage="instruction"/>
+        <af:selectOneChoice value="#{bindings.HistoriqueStructureByUserName.inputValue}"
+                            required="#{bindings.HistoriqueStructureByUserName.hints.mandatory}"
+                            shortDesc="#{bindings.HistoriqueStructureByUserName.hints.tooltip}" id="soc1"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                            autoSubmit="true">
+          <f:selectItems value="#{bindings.HistoriqueStructureByUserName.items}" id="si1"/>
+          <f:validator binding="#{bindings.HistoriqueStructureByUserName.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+      <af:spacer width="10" height="10" id="s1"/>
+      <af:panelGroupLayout id="pgl4" layout="horizontal">
+        <af:outputFormatted value="Parcours" id="of3" styleUsage="instruction"
+                            inlineStyle="font-size:medium; font-weight:bolder; "/>
+        <af:selectOneChoice value="#{bindings.ParcoursRespFrImpMaqEtd.inputValue}"
+                            required="#{bindings.ParcoursRespFrImpMaqEtd.hints.mandatory}"
+                            shortDesc="#{bindings.ParcoursRespFrImpMaqEtd.hints.tooltip}" id="soc2"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                            autoSubmit="true" partialTriggers="soc1">
+          <f:selectItems value="#{bindings.ParcoursRespFrImpMaqEtd.items}" id="si2"/>
+          <f:validator binding="#{bindings.ParcoursRespFrImpMaqEtd.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+              contentDelivery="lazyUncached" binding="#{MaquetteBean.popupImportEtu}">
+      <af:dialog id="d22" title="Import Etudiant" inlineStyle="text-align:center;border-radius:8px"
+                 affirmativeTextAndAccessKey="Enregistrer" cancelTextAndAccessKey="Annuler" noTextAndAccessKey="Fermer"
+                 type="none">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl7" layout="vertical" inlineStyle="text-align:center;">
+          <af:inputFile label="Selectionner" id="if1" value="#{MaquetteBean.uploadEtuFile}"/>
+          <af:panelGroupLayout id="pgl8" inlineStyle="line-height:normal;">
+            <af:button text="Enregistrer" id="b26" actionListener="#{MaquetteBean.OnImportEtuValideAction}"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:panelGroupLayout id="pgl21" layout="horizontal" inlineStyle="line-height:normal;">
+      <af:button text="Voir la Maquette" id="b1"
+                 inlineStyle="font-size:medium; font-family:cursive; border-radius:8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; margin-top:10px;"
+                 actionListener="#{MaquetteBean.OnShowMaquetteClicked}" partialTriggers="b1 soc2"
+                 disabled="#{bindings.ParcoursRespFrImpMaqEtdIterator.estimatedRowCount=='0' ? true :  false}"
+                 depressedIcon="/images/disable-24.png" iconPosition="leading" icon="/images/icons8-eye-24.png"/>
+                 <!---->
+      <af:button text="Importer la Maquette" id="b10"
+                 inlineStyle="font-size:medium; font-family:cursive; border-radius:8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; margin-top:10px;margin-left: 10px"
+                 partialTriggers="b1 soc2" depressedIcon="/images/disable-24.png" iconPosition="leading"
+                 icon="/images/export-excel-24.png" visible="false">
+        <af:showPopupBehavior popupId="p22"/>
+      </af:button>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl11" layout="scroll"
+                         binding="#{MaquetteBean.btnMaqImported}" halign="center"
+                         visible="#{bindings.MaquetteValideImportedIterator.estimatedRowCount ge 1 ? bindings.MaquetteIntegratedNivSec1Iterator.estimatedRowCount ge 1 ? true : false : false}">
+      <af:selectOneChoice value="#{bindings.MaquetteValideImported.inputValue}"
+                          required="#{bindings.MaquetteValideImported.hints.mandatory}"
+                          shortDesc="#{bindings.MaquetteValideImported.hints.tooltip}" id="soc11" autoSubmit="true"
+                          visible="#{bindings.MaquetteValideImportedIterator.estimatedRowCount gt 1}"
+                          contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                          binding="#{MaquetteBean.maqimported}">
+        <f:selectItems value="#{bindings.MaquetteValideImported.items}" id="si11"/>
+        <f:validator binding="#{bindings.MaquetteValideImported.validator}"/>
+      </af:selectOneChoice>
+      <af:iterator id="i1"
+                   value="#{MaquetteBean.isMaquetteValide(bindings.IdNiveauFormationParcours.inputValue,bindings.IdMaquette.inputValue)}"/>
+      <af:panelGroupLayout id="pgl20" layout="vertical">
+        <af:panelGroupLayout id="pgl10" layout="vertical" inlineStyle="margin-top:20px;background:#2898e8;"
+                             halign="center">
+          <af:outputFormatted value="Maquette Importée et Validée" id="of4" styleUsage="instruction"
+                              inlineStyle="font-size:large; font-weight:bold; color:White;"/>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl24">
+          <af:panelGroupLayout id="pgl25" layout="vertical" halign="center">
+            <af:button text="Importer Etudiants" id="b4" icon="/images/import24.png"
+                       inlineStyle="font-size:large; font-family:cursive; border-radius:8px  ; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8;margin:5px"
+                       actionListener="#{MaquetteBean.onImportEtudiantScolAction}"
+                       disabled="#{bindings.Inscriptionouverte.inputValue eq 0 ? bindings.MaquetteIntegratedNivSec1Iterator.estimatedRowCount eq 0 ? true : ( sessionScope.is_one_closed eq 1 ?  true : false ) : true}"/>
+            <af:panelGroupLayout id="pgl26" layout="vertical"
+                                 visible="#{bindings.Inscriptionouverte.inputValue eq 0 ? false : true}">
+              <af:icon name="error" id="i6"/>
+              <af:outputFormatted value="Impossible d'importer les etudiants car les inscriptions sont en cours !!!"
+                                  id="of9"
+                                  inlineStyle="color:red; font-family:Verdana; font-size:medium; font-weight:bold;"/>
+              <af:outputFormatted value="Merci de vous rapprocher du DAP pour la clôture des inscriptions de ce niveau !"
+                                  id="of10"
+                                  inlineStyle="color:blue; font-family:Verdana; font-size:medium; font-weight:bold;"/>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+          <af:button text="Import Etudiants" id="b12" icon="/images/export-excel-24.png"
+                     inlineStyle="font-size:large; font-family:cursive; border-radius:8px  ; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8;margin:5px"
+                     visible="false"
+                     disabled="#{bindings.Inscriptionouverte.inputValue eq 0 ? bindings.MaquetteIntegratedNivSec1Iterator.estimatedRowCount eq 0 ? true : ( sessionScope.is_one_closed eq 1 ?  true : false ) : true}">
+            <af:showPopupBehavior popupId="p22"/>
+          </af:button>
+          <af:outputFormatted value="#{sessionScope.is_one_closed}" id="of11" visible="false"/>
+        </af:panelGroupLayout>
+        <af:panelHeader text="Unité d'Enseignements" id="ph3" binding="#{MaquetteBean.filUePanHdr}">
+          <af:panelCollection id="pc3" styleClass="AFStretchWidth" binding="#{MaquetteBean.filUePanCol}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table id="md1" rows="#{bindings.MaquetteIntegratedNivSec1.rangeSize}"
+                      fetchSize="#{bindings.MaquetteIntegratedNivSec1.rangeSize}"
+                      emptyText="#{bindings.MaquetteIntegratedNivSec1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      var="row" value="#{bindings.MaquetteIntegratedNivSec1.collectionModel}" rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.MaquetteIntegratedNivSec1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.MaquetteIntegratedNivSec1.collectionModel.makeCurrent}"
+                      rowSelection="single" columnStretching="column:c56" scrollPolicy="page"
+                      binding="#{MaquetteBean.filUe}">
+              <af:column headerText="#{viewcontrollerBundle1.LIBELLE}"
+                         sortProperty="#{bindings.MaquetteIntegratedNivSec1.hints.LibelleLong.name}" sortable="false"
+                         id="c56">
+                <af:outputText value="#{row.LibelleLong}"
+                               shortDesc="#{bindings.MaquetteIntegratedNivSec1.hints.LibelleLong.tooltip}" id="ot51"/>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle1.CODIFICATION}"
+                         sortProperty="#{bindings.MaquetteIntegratedNivSec1.hints.Codification.name}" sortable="false"
+                         id="c47">
+                <af:outputText value="#{row.Codification}"
+                               shortDesc="#{bindings.MaquetteIntegratedNivSec1.hints.Codification.tooltip}" id="ot44"/>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle1.SEMESTRE}"
+                         sortProperty="#{bindings.MaquetteIntegratedNivSec1.hints.IdSemestre.name}" sortable="false"
+                         id="c34" visible="false">
+                <af:outputText value="#{row.IdSemestre}"
+                               shortDesc="#{bindings.MaquetteIntegratedNivSec1.hints.IdSemestre.tooltip}" id="ot43">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.MaquetteIntegratedNivSec1.hints.IdSemestre.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle1.CREDIT}"
+                         sortProperty="#{bindings.MaquetteIntegratedNivSec1.hints.Credit.name}" sortable="false"
+                         id="c48" visible="false">
+                <af:outputText value="#{row.Credit}"
+                               shortDesc="#{bindings.MaquetteIntegratedNivSec1.hints.Credit.tooltip}" id="ot45">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.MaquetteIntegratedNivSec1.hints.Credit.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle1.COEFICIENT}"
+                         sortProperty="#{bindings.MaquetteIntegratedNivSec1.hints.Coefficient.name}" sortable="false"
+                         id="c49" visible="false">
+                <af:outputText value="#{row.Coefficient}"
+                               shortDesc="#{bindings.MaquetteIntegratedNivSec1.hints.Coefficient.tooltip}" id="ot46">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.MaquetteIntegratedNivSec1.hints.Coefficient.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.CATEGORIE}"
+                         sortProperty="#{bindings.MaquetteIntegratedNivSec1.hints.IdCategorieUe.name}" sortable="false"
+                         id="c35" visible="false">
+                <af:selectOneChoice value="#{row.bindings.IdCategorieUe.inputValue}"
+                                    label="#{row.bindings.IdCategorieUe.label}"
+                                    required="#{bindings.MaquetteIntegratedNivSec1.hints.IdCategorieUe.mandatory}"
+                                    shortDesc="#{bindings.MaquetteIntegratedNivSec1.hints.IdCategorieUe.tooltip}"
+                                    readOnly="true" id="soc4">
+                  <f:selectItems value="#{row.bindings.IdCategorieUe.items}" id="si4"/>
+                  <f:validator binding="#{row.bindings.IdCategorieUe.validator}"/>
+                </af:selectOneChoice>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.MOYENNE_VALIDATION}"
+                         sortProperty="#{bindings.MaquetteIntegratedNivSec1.hints.MoyenneValidation.name}"
+                         sortable="false" id="c50" visible="false">
+                <af:outputText value="#{row.MoyenneValidation}"
+                               shortDesc="#{bindings.MaquetteIntegratedNivSec1.hints.MoyenneValidation.tooltip}"
+                               id="ot47">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.MaquetteIntegratedNivSec1.hints.MoyenneValidation.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}"
+                         sortProperty="#{bindings.MaquetteIntegratedNivSec1.hints.MoyenneEliminatoire.name}"
+                         sortable="false" id="c51" visible="false">
+                <af:outputText value="#{row.MoyenneEliminatoire}"
+                               shortDesc="#{bindings.MaquetteIntegratedNivSec1.hints.MoyenneEliminatoire.tooltip}"
+                               id="ot48">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.MaquetteIntegratedNivSec1.hints.MoyenneEliminatoire.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.NATURE}"
+                         sortProperty="#{bindings.MaquetteIntegratedNivSec1.hints.IdNatureUe.name}" sortable="false"
+                         id="c52" visible="false">
+                <af:selectOneChoice value="#{row.bindings.IdNatureUe.inputValue}"
+                                    label="#{row.bindings.IdNatureUe.label}"
+                                    required="#{bindings.MaquetteIntegratedNivSec1.hints.IdNatureUe.mandatory}"
+                                    shortDesc="#{bindings.MaquetteIntegratedNivSec1.hints.IdNatureUe.tooltip}"
+                                    readOnly="true" id="soc5">
+                  <f:selectItems value="#{row.bindings.IdNatureUe.items}" id="si5"/>
+                  <f:validator binding="#{row.bindings.IdNatureUe.validator}"/>
+                </af:selectOneChoice>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.COMPENSABLE}"
+                         sortProperty="#{bindings.MaquetteIntegratedNivSec1.hints.Compensable.name}" sortable="false"
+                         id="c53" visible="false">
+                <af:selectOneChoice value="#{row.bindings.Compensable.inputValue}"
+                                    label="#{row.bindings.Compensable.label}"
+                                    required="#{bindings.MaquetteIntegratedNivSec1.hints.Compensable.mandatory}"
+                                    shortDesc="#{bindings.MaquetteIntegratedNivSec1.hints.Compensable.tooltip}"
+                                    readOnly="true" id="soc6">
+                  <f:selectItems value="#{row.bindings.Compensable.items}" id="si6"/>
+                  <f:validator binding="#{row.bindings.Compensable.validator}"/>
+                </af:selectOneChoice>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.DE_SOUTENANCE}"
+                         sortProperty="#{bindings.MaquetteIntegratedNivSec1.hints.IsSoutenance.name}" sortable="false"
+                         id="c55" visible="false">
+                <af:outputText value="#{row.IsSoutenance}"
+                               shortDesc="#{bindings.MaquetteIntegratedNivSec1.hints.IsSoutenance.tooltip}" id="ot50">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.MaquetteIntegratedNivSec1.hints.IsSoutenance.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column id="c54" headerText="#{viewcontrollerBundle.DETAILS}" align="center">
+                <af:link id="l1" icon="/images/icons8-eye-24.png">
+                  <af:showPopupBehavior popupId=":::p10"/>
+                </af:link>
+              </af:column>
+              <af:column id="c57" headerText="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" align="center">
+                <af:link id="l2" icon="/images/details-24.png">
+                  <af:showPopupBehavior popupId=":::p11"/>
+                </af:link>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelHeader>
+        <af:panelHeader text="Eléments Constitutifs" id="ph4" binding="#{MaquetteBean.filEcPanHdr}" visible="false">
+          <af:panelCollection id="pc4" styleClass="AFStretchWidth" binding="#{MaquetteBean.filEcPanCol}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table rows="#{bindings.FilEc1.rangeSize}" fetchSize="#{bindings.FilEc1.rangeSize}"
+                      emptyText="#{bindings.FilEc1.viewable ? 'No data to display.' : 'Access Denied.'}" var="row"
+                      value="#{bindings.FilEc1.collectionModel}" rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.FilEc1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.FilEc1.collectionModel.makeCurrent}" rowSelection="single" id="t3"
+                      scrollPolicy="page" columnStretching="column:c115" binding="#{MaquetteBean.filEc}">
+              <af:column headerText="#{viewcontrollerBundle.LIBELLE}"
+                         sortProperty="#{bindings.FilEc1.hints.LibelleLong.name}" sortable="false" id="c115">
+                <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.FilEc1.hints.LibelleLong.tooltip}"
+                               id="ot108"/>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.CODIFICATION}"
+                         sortProperty="#{bindings.FilEc1.hints.Codification.name}" sortable="false" id="c83">
+                <af:outputText value="#{row.Codification}" shortDesc="#{bindings.FilEc1.hints.Codification.tooltip}"
+                               id="ot76"/>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle1.COEFICIENT}"
+                         sortProperty="#{bindings.FilEc1.hints.Coefficient.name}" sortable="false" id="c99">
+                <af:outputText value="#{row.Coefficient}" shortDesc="#{bindings.FilEc1.hints.Coefficient.tooltip}"
+                               id="ot92">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.FilEc1.hints.Coefficient.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.MOYENNE_VALIDATION}"
+                         sortProperty="#{bindings.FilEc1.hints.MoyenneValidation.name}" sortable="false" id="c100">
+                <af:outputText value="#{row.MoyenneValidation}"
+                               shortDesc="#{bindings.FilEc1.hints.MoyenneValidation.tooltip}" id="ot93">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.FilEc1.hints.MoyenneValidation.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}"
+                         sortProperty="#{bindings.FilEc1.hints.MoyenneEliminatoire.name}" sortable="false" id="c102">
+                <af:outputText value="#{row.MoyenneEliminatoire}"
+                               shortDesc="#{bindings.FilEc1.hints.MoyenneEliminatoire.tooltip}" id="ot95">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.FilEc1.hints.MoyenneEliminatoire.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.POURCENTAGE_CC}"
+                         sortProperty="#{bindings.FilEc1.hints.PourcentageCc.name}" sortable="false" id="c103">
+                <af:outputText value="#{row.PourcentageCc}" shortDesc="#{bindings.FilEc1.hints.PourcentageCc.tooltip}"
+                               id="ot96">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.FilEc1.hints.PourcentageCc.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.POURCENTAGE_CT}"
+                         sortProperty="#{bindings.FilEc1.hints.PourcentageCt.name}" sortable="false" id="c104">
+                <af:outputText value="#{row.PourcentageCt}" shortDesc="#{bindings.FilEc1.hints.PourcentageCt.tooltip}"
+                               id="ot97">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.FilEc1.hints.PourcentageCt.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.HEURE_COURS_MAGISTRAL}"
+                         sortProperty="#{bindings.FilEc1.hints.HeuresCm.name}" sortable="false" id="c105">
+                <af:outputText value="#{row.HeuresCm}" shortDesc="#{bindings.FilEc1.hints.HeuresCm.tooltip}" id="ot98">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.FilEc1.hints.HeuresCm.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.HEURE_TP}"
+                         sortProperty="#{bindings.FilEc1.hints.HeuresTp.name}" sortable="false" id="c106">
+                <af:outputText value="#{row.HeuresTp}" shortDesc="#{bindings.FilEc1.hints.HeuresTp.tooltip}" id="ot99">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.FilEc1.hints.HeuresTp.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.HEURE_TD}"
+                         sortProperty="#{bindings.FilEc1.hints.HeuresTd.name}" sortable="false" id="c107">
+                <af:outputText value="#{row.HeuresTd}" shortDesc="#{bindings.FilEc1.hints.HeuresTd.tooltip}" id="ot100">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.FilEc1.hints.HeuresTd.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.HEURE_TPE}"
+                         sortProperty="#{bindings.FilEc1.hints.HeuresTpe.name}" sortable="false" id="c108">
+                <af:outputText value="#{row.HeuresTpe}" shortDesc="#{bindings.FilEc1.hints.HeuresTpe.tooltip}"
+                               id="ot101">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.FilEc1.hints.HeuresTpe.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.HEURE_STAGE}"
+                         sortProperty="#{bindings.FilEc1.hints.HeuresStage.name}" sortable="false" id="c109">
+                <af:outputText value="#{row.HeuresStage}" shortDesc="#{bindings.FilEc1.hints.HeuresStage.tooltip}"
+                               id="ot102">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.FilEc1.hints.HeuresStage.format}"/>
+                </af:outputText>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelHeader>
+        <af:button text="Importer Etudiants" id="b5" icon="/images/import24.png"
+                   inlineStyle="font-size:large; font-family:cursive; border-radius:8px  ; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8;"
+                   actionListener="#{MaquetteBean.onImportEtudiantScolAction}"
+                   visible="true"
+                   disabled="#{bindings.Inscriptionouverte.inputValue eq 0 ? bindings.MaquetteIntegratedNivSec1Iterator.estimatedRowCount eq 0 ? true : ( sessionScope.is_one_closed eq 1 ?  true : false ) : true}"/><!--#{bindings.MaquetteIntegratedNivSec1Iterator.estimatedRowCount le 0 ? false : true}-->
+      </af:panelGroupLayout>
+      <!--af:iterator id="i6"/-->
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{MaquetteBean.popupScolMaq}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d1" type="none" title="Importer Maquette">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl6" layout="scroll">
+        <af:panelHeader text="#{viewcontrollerBundle.UNITE_ENSEIGNEMENT}" id="ph1">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.ScolFilUe.collectionModel}" var="row" rows="#{bindings.ScolFilUe.rangeSize}"
+                      emptyText="#{bindings.ScolFilUe.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.ScolFilUe.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ScolFilUe.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.ScolFilUe.rangeSize}"
+                      filterModel="#{bindings.ScolFilUeQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ScolFilUeQuery.processQuery}" varStatus="vs" id="t1"
+                      scrollPolicy="page" columnStretching="column:c2">
+              <af:column sortProperty="#{bindings.ScolFilUe.hints.LibLongUe.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.LIBELLE}" id="c2" noWrap="false" width="300">
+                <af:outputText value="#{row.LibLongUe}" shortDesc="#{bindings.ScolFilUe.hints.LibLongUe.tooltip}"
+                               id="ot2"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUe.hints.CodificationUe.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.CODIFICATION}" id="c3">
+                <af:outputText value="#{row.CodificationUe}"
+                               shortDesc="#{bindings.ScolFilUe.hints.CodificationUe.tooltip}" id="ot3"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUe.hints.CodeSemestre.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.SEMESTRE}" id="c4" visible="false">
+                <af:outputText value="#{row.CodeSemestre}" shortDesc="#{bindings.ScolFilUe.hints.CodeSemestre.tooltip}"
+                               id="ot4">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilUe.hints.CodeSemestre.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUe.hints.CreditUe.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.CREDIT}" id="c5" visible="false">
+                <af:outputText value="#{row.CreditUe}" shortDesc="#{bindings.ScolFilUe.hints.CreditUe.tooltip}"
+                               id="ot5">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilUe.hints.CreditUe.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle1.COEFICIENT}" id="c1" visible="false">
+                <af:outputText value="#{row.Coefue}" shortDesc="#{bindings.ScolFilUe.hints.Coefue.tooltip}" id="ot1">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilUe.hints.Coefue.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUe.hints.LibCategorieUe.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.CATEGORIE}" id="c7" visible="false">
+                <af:outputText value="#{row.LibCategorieUe}"
+                               shortDesc="#{bindings.ScolFilUe.hints.LibCategorieUe.tooltip}" id="ot7"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUe.hints.MoyenneValidation.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_VALIDATION}" id="c10"
+                         visible="false">
+                <af:outputText value="#{row.MoyenneValidation}"
+                               shortDesc="#{bindings.ScolFilUe.hints.MoyenneValidation.tooltip}" id="ot10">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilUe.hints.MoyenneValidation.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUe.hints.MoyenneEliminatoire.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}" id="c11"
+                         visible="false">
+                <af:outputText value="#{row.MoyenneEliminatoire}"
+                               shortDesc="#{bindings.ScolFilUe.hints.MoyenneEliminatoire.tooltip}" id="ot11">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilUe.hints.MoyenneEliminatoire.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUe.hints.NbreEc.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.NOMBRE_EC}" id="c12" visible="false">
+                <af:outputText value="#{row.NbreEc}" shortDesc="#{bindings.ScolFilUe.hints.NbreEc.tooltip}" id="ot12">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilUe.hints.NbreEc.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUe.hints.ResponsableId.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.RESPONSABLE}" id="c13" visible="false">
+                <af:selectOneChoice value="#{row.bindings.ResponsableId.inputValue}"
+                                    label="#{row.bindings.ResponsableId.label}"
+                                    required="#{bindings.ScolFilUe.hints.ResponsableId.mandatory}"
+                                    shortDesc="#{bindings.ScolFilUe.hints.ResponsableId.tooltip}" readOnly="true"
+                                    id="soc3">
+                  <f:selectItems value="#{row.bindings.ResponsableId.items}" id="si3"/>
+                  <f:validator binding="#{row.bindings.ResponsableId.validator}"/>
+                </af:selectOneChoice>
+              </af:column>
+              <af:column id="c28" headerText="#{viewcontrollerBundle.DETAILS}" align="center">
+                <af:link id="l6" icon="/images/icons8-eye-24.png">
+                  <af:showPopupBehavior popupId=":::p13"/>
+                </af:link>
+              </af:column>
+              <af:column id="c9" headerText="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" align="center">
+                <af:link id="l7" icon="/images/details-20.png">
+                  <af:showPopupBehavior popupId=":::p14"/>
+                </af:link>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelHeader>
+        <af:panelHeader text="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" id="ph2" visible="false">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.ScolFilEc.collectionModel}" var="row" rows="#{bindings.ScolFilEc.rangeSize}"
+                      emptyText="#{bindings.ScolFilEc.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.ScolFilEc.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ScolFilEc.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.ScolFilEc.rangeSize}"
+                      filterModel="#{bindings.ScolFilEcQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ScolFilEcQuery.processQuery}" varStatus="vs" id="t2"
+                      columnStretching="column:c14">
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.LibLongEc.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.LIBELLE}" id="c14">
+                <af:outputText value="#{row.LibLongEc}" shortDesc="#{bindings.ScolFilEc.hints.LibLongEc.tooltip}"
+                               id="ot13"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.CodificationEc.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.CODIFICATION}" id="c15">
+                <af:outputText value="#{row.CodificationEc}"
+                               shortDesc="#{bindings.ScolFilEc.hints.CodificationEc.tooltip}" id="ot14"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.Coefficient.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.COEFICIENT}" id="c16">
+                <af:outputText value="#{row.Coefficient}" shortDesc="#{bindings.ScolFilEc.hints.Coefficient.tooltip}"
+                               id="ot15">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.Coefficient.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.LibNatureEc.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.NATURE}" id="c17">
+                <af:outputText value="#{row.LibNatureEc}" shortDesc="#{bindings.ScolFilEc.hints.LibNatureEc.tooltip}"
+                               id="ot16"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.MoyenneValidation.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_VALIDATION}" id="c18">
+                <af:outputText value="#{row.MoyenneValidation}"
+                               shortDesc="#{bindings.ScolFilEc.hints.MoyenneValidation.tooltip}" id="ot17">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilEc.hints.MoyenneValidation.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.MoyenneEliminatoire.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}" id="c19">
+                <af:outputText value="#{row.MoyenneEliminatoire}"
+                               shortDesc="#{bindings.ScolFilEc.hints.MoyenneEliminatoire.tooltip}" id="ot18">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilEc.hints.MoyenneEliminatoire.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.PourcentageCc.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.POURCENTAGE_CC}" id="c20">
+                <af:outputText value="#{row.PourcentageCc}"
+                               shortDesc="#{bindings.ScolFilEc.hints.PourcentageCc.tooltip}" id="ot19">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.PourcentageCc.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.PourcentageCt.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.POURCENTAGE_CT}" id="c21">
+                <af:outputText value="#{row.PourcentageCt}"
+                               shortDesc="#{bindings.ScolFilEc.hints.PourcentageCt.tooltip}" id="ot20">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.PourcentageCt.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.HeureCm.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_COURS_MAGISTRAL}" id="c22">
+                <af:outputText value="#{row.HeureCm}" shortDesc="#{bindings.ScolFilEc.hints.HeureCm.tooltip}" id="ot21">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.HeureCm.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.HeureTp.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_TP}" id="c23">
+                <af:outputText value="#{row.HeureTp}" shortDesc="#{bindings.ScolFilEc.hints.HeureTp.tooltip}" id="ot22">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.HeureTp.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.HeureTd.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_TD}" id="c24">
+                <af:outputText value="#{row.HeureTd}" shortDesc="#{bindings.ScolFilEc.hints.HeureTd.tooltip}" id="ot23">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.HeureTd.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.HeureStage.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_STAGE}" id="c25">
+                <af:outputText value="#{row.HeureStage}" shortDesc="#{bindings.ScolFilEc.hints.HeureStage.tooltip}"
+                               id="ot24">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.HeureStage.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.HeureTpe.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_TPE}" id="c26">
+                <af:outputText value="#{row.HeureTpe}" shortDesc="#{bindings.ScolFilEc.hints.HeureTpe.tooltip}"
+                               id="ot25">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc.hints.HeureTpe.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc.hints.Responsable.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.RESPONSABLE}" id="c27">
+                <af:outputText value="#{row.Responsable}" shortDesc="#{bindings.ScolFilEc.hints.Responsable.tooltip}"
+                               id="ot26"/>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelHeader>
+        <af:panelGroupLayout id="pgl9" binding="#{MaquetteBean.btnPanGrp}">
+          <af:button text="Valider" id="b2" icon="/images/validate-24.png"
+                     inlineStyle="margin-right:5px; width:100px;font-family:cursive; border-radius:8px  ; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8;"
+                     actionListener="#{MaquetteBean.OnValideMaquetteAction}"
+                     visible="#{sessionScope.is_maq_val=='0' ? bindings.ScolFilUeIterator.estimatedRowCount gt 0 ? true : false : false}"/>
+          <af:button text="Importer" id="b3" icon="/images/import24.png"
+                     actionListener="#{MaquetteBean.OnImportMaquetteActionListener}"
+                     visible="#{sessionScope.is_maq_val=='1' ?  bindings.ScolFilUeIterator.estimatedRowCount gt 0 ? true : false : false}"
+                     inlineStyle="width:100px; font-family:cursive; border-radius:8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:Black;"/>
+          <!--af:outputFormatted value="#{sessionScope.validMaq.get()}" id="of9"/-->
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{MaquetteBean.popupNoStudent}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d2" type="cancel" title="Info" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{MaquetteBean.popuptotalStudent}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d3" type="cancel" title="Info" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl1" layout="vertical" halign="center">
+        <af:icon name="info" id="i2"/>
+        <af:outputFormatted value="#{sessionScope.totalImported} étudiant(s) importé(s)" id="of1"
+                            inlineStyle="color:#2898e8;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p5" binding="#{MaquetteBean.popupNoScolMaq}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d4" type="cancel" title="Info" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl12" layout="vertical" halign="center">
+        <af:icon name="error" id="i3"/>
+        <af:outputFormatted value="Maquette inexistante !" id="of5"
+                            inlineStyle="color:red;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p6" binding="#{MaquetteBean.popupMaqvalidated}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d5" type="cancel" title="Info" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl13" layout="vertical" halign="center">
+        <af:icon name="info" id="i4"/>
+        <af:outputFormatted value="Validation Maquette effectuée !" id="of6"
+                            inlineStyle="color:#2898e8;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <!--af:popup childCreation="deferred" autoCancel="disabled" id="p9" binding="#{MaquetteBean.popupMaqvalidated}">
+    <af:dialog id="d8" type="cancel" title="Info" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl17" layout="vertical" halign="center">
+        <af:icon name="info" id="i6"/>
+        <af:outputFormatted value="Validation Maquette effectuée !" id="of8"
+                            inlineStyle="color:#2898e8;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup-->
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p7" binding="#{MaquetteBean.popupValidMaqErr}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d6" type="cancel" title="Info" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl14" layout="vertical" halign="center">
+        <af:icon name="error" id="i5"/>
+        <af:outputFormatted value="Erreur lors de la validation de la maquette !! réessayer ou conctaer l'administrateur !" id="of7"
+                            inlineStyle="color:red;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p8" binding="#{MaquetteBean.popupScolMaqOp}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d7" title="Import Maquette" type="none">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl15" layout="scroll">
+        <af:panelHeader text="#{viewcontrollerBundle.UNITE_ENSEIGNEMENT}" id="ph5">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelCollection id="pc5" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.ScolFilUeOptions.collectionModel}" var="row"
+                      rows="#{bindings.ScolFilUeOptions.rangeSize}"
+                      emptyText="#{bindings.ScolFilUeOptions.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.ScolFilUeOptions.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ScolFilUeOptions.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.ScolFilUeOptions.rangeSize}"
+                      filterModel="#{bindings.ScolFilUeOptionsQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ScolFilUeOptionsQuery.processQuery}" varStatus="vs" id="t4"
+                      columnStretching="column:c6" scrollPolicy="page">
+              <af:column sortProperty="#{bindings.ScolFilUeOptions.hints.LibLongUe.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.LIBELLE}" id="c6" width="300"
+                         noWrap="false">
+                <af:outputText value="#{row.LibLongUe}" shortDesc="#{bindings.ScolFilUeOptions.hints.LibLongUe.tooltip}"
+                               id="ot6"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptions.hints.CodificationUe.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.CODIFICATION}" id="c33">
+                <af:outputText value="#{row.CodificationUe}"
+                               shortDesc="#{bindings.ScolFilUeOptions.hints.CodificationUe.tooltip}" id="ot31"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptions.hints.CodeSemestre.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.SEMESTRE}" id="c37" visible="false">
+                <af:outputText value="#{row.CodeSemestre}"
+                               shortDesc="#{bindings.ScolFilUeOptions.hints.CodeSemestre.tooltip}" id="ot33">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilUeOptions.hints.CodeSemestre.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptions.hints.CreditUe.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.CREDIT}" id="c38" visible="false">
+                <af:outputText value="#{row.CreditUe}" shortDesc="#{bindings.ScolFilUeOptions.hints.CreditUe.tooltip}"
+                               id="ot34">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilUeOptions.hints.CreditUe.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptions.hints.Coefue.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.COEFICIENT}" id="c39" visible="false">
+                <af:outputText value="#{row.Coefue}" shortDesc="#{bindings.ScolFilUeOptions.hints.Coefue.tooltip}"
+                               id="ot35">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilUeOptions.hints.Coefue.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptions.hints.LibCategorieUe.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.CATEGORIE}" id="c40" visible="false">
+                <af:outputText value="#{row.LibCategorieUe}"
+                               shortDesc="#{bindings.ScolFilUeOptions.hints.LibCategorieUe.tooltip}" id="ot36"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptions.hints.MoyenneValidation.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_VALIDATION}"
+                         id="c45" visible="false">
+                <af:outputText value="#{row.MoyenneValidation}"
+                               shortDesc="#{bindings.ScolFilUeOptions.hints.MoyenneValidation.tooltip}" id="ot42">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilUeOptions.hints.MoyenneValidation.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptions.hints.MoyenneEliminatoire.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}"
+                         id="c46" visible="false">
+                <af:outputText value="#{row.MoyenneEliminatoire}"
+                               shortDesc="#{bindings.ScolFilUeOptions.hints.MoyenneEliminatoire.tooltip}" id="ot54">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilUeOptions.hints.MoyenneEliminatoire.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptions.hints.NbreEc.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.NOMBRE_EC}" id="c36" visible="false">
+                <af:outputText value="#{row.NbreEc}" shortDesc="#{bindings.ScolFilUeOptions.hints.NbreEc.tooltip}"
+                               id="ot32">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilUeOptions.hints.NbreEc.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{viewcontrollerBundle.RESPONSABLE}" id="c8" visible="false">
+                <af:selectOneChoice value="#{row.bindings.ResponsableId.inputValue}"
+                                    label="#{row.bindings.ResponsableId.label}"
+                                    required="#{bindings.ScolFilUeOptions.hints.ResponsableId.mandatory}"
+                                    shortDesc="#{bindings.ScolFilUeOptions.hints.ResponsableId.tooltip}" id="soc8">
+                  <f:selectItems value="#{row.bindings.ResponsableId.items}" id="si8"/>
+                  <f:validator binding="#{row.bindings.ResponsableId.validator}"/>
+                </af:selectOneChoice>
+              </af:column>
+              <af:column id="c29" align="center" headerText="#{viewcontrollerBundle.DETAILS}">
+                <af:link id="l9" icon="/images/icons8-eye-24.png">
+                  <af:showPopupBehavior popupId=":::p16"/>
+                </af:link>
+              </af:column>
+              <af:column id="c30" headerText="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" align="center">
+                <af:link id="l10" icon="/images/details-24.png">
+                  <af:showPopupBehavior popupId=":::p17"/>
+                </af:link>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelHeader>
+        <af:panelHeader text="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" id="ph6" visible="false">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelCollection id="pc6" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.ScolFilEc1.collectionModel}" var="row" rows="#{bindings.ScolFilEc1.rangeSize}"
+                      emptyText="#{bindings.ScolFilEc1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.ScolFilEc1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ScolFilEc1.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.ScolFilEc1.rangeSize}"
+                      filterModel="#{bindings.ScolFilEc1Query.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ScolFilEc1Query.processQuery}" varStatus="vs" id="t5"
+                      columnStretching="column:c60" scrollPolicy="page">
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.LibLongEc.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.LIBELLE}" id="c60">
+                <af:outputText value="#{row.LibLongEc}" shortDesc="#{bindings.ScolFilEc1.hints.LibLongEc.tooltip}"
+                               id="ot57"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.CodificationEc.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.CODIFICATION}" id="c68">
+                <af:outputText value="#{row.CodificationEc}"
+                               shortDesc="#{bindings.ScolFilEc1.hints.CodificationEc.tooltip}" id="ot63"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.Coefficient.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.COEFICIENT}" id="c63">
+                <af:outputText value="#{row.Coefficient}" shortDesc="#{bindings.ScolFilEc1.hints.Coefficient.tooltip}"
+                               id="ot58">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc1.hints.Coefficient.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.LibNatureEc.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.NATURE}" id="c75">
+                <af:outputText value="#{row.LibNatureEc}" shortDesc="#{bindings.ScolFilEc1.hints.LibNatureEc.tooltip}"
+                               id="ot70"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.MoyenneValidation.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_VALIDATION}" id="c64">
+                <af:outputText value="#{row.MoyenneValidation}"
+                               shortDesc="#{bindings.ScolFilEc1.hints.MoyenneValidation.tooltip}" id="ot59">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilEc1.hints.MoyenneValidation.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.MoyenneEliminatoire.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}" id="c65">
+                <af:outputText value="#{row.MoyenneEliminatoire}"
+                               shortDesc="#{bindings.ScolFilEc1.hints.MoyenneEliminatoire.tooltip}" id="ot60">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilEc1.hints.MoyenneEliminatoire.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.PourcentageCc.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.POURCENTAGE_CC}" id="c66">
+                <af:outputText value="#{row.PourcentageCc}"
+                               shortDesc="#{bindings.ScolFilEc1.hints.PourcentageCc.tooltip}" id="ot61">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc1.hints.PourcentageCc.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.PourcentageCt.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.POURCENTAGE_CT}" id="c67">
+                <af:outputText value="#{row.PourcentageCt}"
+                               shortDesc="#{bindings.ScolFilEc1.hints.PourcentageCt.tooltip}" id="ot62">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc1.hints.PourcentageCt.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.HeureCm.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_COURS_MAGISTRAL}" id="c69">
+                <af:outputText value="#{row.HeureCm}" shortDesc="#{bindings.ScolFilEc1.hints.HeureCm.tooltip}"
+                               id="ot64">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc1.hints.HeureCm.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.HeureTp.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_TP}" id="c70">
+                <af:outputText value="#{row.HeureTp}" shortDesc="#{bindings.ScolFilEc1.hints.HeureTp.tooltip}"
+                               id="ot65">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc1.hints.HeureTp.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.HeureTd.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_TD}" id="c71">
+                <af:outputText value="#{row.HeureTd}" shortDesc="#{bindings.ScolFilEc1.hints.HeureTd.tooltip}"
+                               id="ot66">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc1.hints.HeureTd.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.HeureStage.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_STAGE}" id="c72">
+                <af:outputText value="#{row.HeureStage}" shortDesc="#{bindings.ScolFilEc1.hints.HeureStage.tooltip}"
+                               id="ot67">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc1.hints.HeureStage.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.HeureTpe.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_TPE}" id="c73">
+                <af:outputText value="#{row.HeureTpe}" shortDesc="#{bindings.ScolFilEc1.hints.HeureTpe.tooltip}"
+                               id="ot68">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc1.hints.HeureTpe.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc1.hints.Responsable.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.RESPONSABLE}" id="c78">
+                <af:outputText value="#{row.Responsable}" shortDesc="#{bindings.ScolFilEc1.hints.Responsable.tooltip}"
+                               id="ot73"/>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelHeader>
+        <af:panelGroupLayout id="pgl16" binding="#{MaquetteBean.btnPanGrpOp}">
+            <af:button text="Valider" id="b6" icon="/images/validate-24.png"
+                     inlineStyle="margin-right:5px; width:100px;font-family:cursive; border-radius:8px  ; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8;"
+                     visible="#{sessionScope.is_maq_val=='0' ? bindings.ScolFilUeOptions.estimatedRowCount ge 1  ? true : false : false}"
+                       actionListener="#{MaquetteBean.OnValideMaquetteAction}"/>
+          <af:button text="Importer" id="b7" icon="/images/import24.png"
+                     visible="#{sessionScope.is_maq_val=='1' ?  bindings.ScolFilUeOptions.estimatedRowCount ge 1  ? true : false : false}"
+                     inlineStyle="width:100px; font-family:cursive; border-radius:8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:Black;"
+                     actionListener="#{MaquetteBean.OnImportMaquetteOpActionListener}"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p9" binding="#{MaquetteBean.popupScolMaqOpANCNO}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d8" type="none" title="Import Maquette">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl17" layout="scroll">
+        <af:panelGroupLayout id="pgl19" layout="horizontal" halign="center"
+                             visible="#{bindings.OptionANCNOParcoursIterator.estimatedRowCount gt 1 ? true : false}">
+        <af:outputFormatted value="Options Scolarité" id="of8" inlineStyle="font-size:medium; font-weight:bolder; "
+                            styleUsage="instruction"/>
+          <af:selectOneChoice value="#{bindings.OptionANCNOParcours.inputValue}"
+                              required="#{bindings.OptionANCNOParcours.hints.mandatory}"
+                              shortDesc="#{bindings.OptionANCNOParcours.hints.tooltip}" id="soc9"
+                              contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                              autoSubmit="true">
+            <f:selectItems value="#{bindings.OptionANCNOParcours.items}" id="si9"/>
+            <f:validator binding="#{bindings.OptionANCNOParcours.validator}"/>
+          </af:selectOneChoice>
+        </af:panelGroupLayout>
+        <af:panelHeader text="#{viewcontrollerBundle.UNITE_ENSEIGNEMENT}" id="ph7">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelCollection id="pc7" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <af:table value="#{bindings.ScolFilUeOptionsANCNO.collectionModel}" var="row"
+                      rows="#{bindings.ScolFilUeOptionsANCNO.rangeSize}"
+                      emptyText="#{bindings.ScolFilUeOptionsANCNO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.ScolFilUeOptionsANCNO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ScolFilUeOptionsANCNO.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.ScolFilUeOptionsANCNO.rangeSize}"
+                      filterModel="#{bindings.ScolFilUeOptionsANCNOQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ScolFilUeOptionsANCNOQuery.processQuery}" varStatus="vs" id="t6"
+                      scrollPolicy="page" columnStretching="column:c76" partialTriggers=":::soc9">
+              <af:column sortProperty="#{bindings.ScolFilUeOptionsANCNO.hints.LibLongUe.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.LIBELLE}" id="c76" width="300"
+                         noWrap="false">
+                <af:outputText value="#{row.LibLongUe}"
+                               shortDesc="#{bindings.ScolFilUeOptionsANCNO.hints.LibLongUe.tooltip}" id="ot55"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptionsANCNO.hints.CodificationUe.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.CODIFICATION}" id="c42">
+                <af:outputText value="#{row.CodificationUe}"
+                               shortDesc="#{bindings.ScolFilUeOptionsANCNO.hints.CodificationUe.tooltip}" id="ot38"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptionsANCNO.hints.CodeSemestre.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.SEMESTRE}" id="c43" visible="false">
+                <af:outputText value="#{row.CodeSemestre}"
+                               shortDesc="#{bindings.ScolFilUeOptionsANCNO.hints.CodeSemestre.tooltip}" id="ot39">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilUeOptionsANCNO.hints.CodeSemestre.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptionsANCNO.hints.CreditUe.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.CREDIT}" id="c44" visible="false">
+                <af:outputText value="#{row.CreditUe}"
+                               shortDesc="#{bindings.ScolFilUeOptionsANCNO.hints.CreditUe.tooltip}" id="ot40">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilUeOptionsANCNO.hints.CreditUe.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptionsANCNO.hints.Coefue.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.COEFICIENT}" id="c59" visible="false">
+                <af:outputText value="#{row.Coefue}" shortDesc="#{bindings.ScolFilUeOptionsANCNO.hints.Coefue.tooltip}"
+                               id="ot41">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilUeOptionsANCNO.hints.Coefue.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptionsANCNO.hints.LibCategorieUe.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.CATEGORIE}" id="c77" visible="false">
+                <af:outputText value="#{row.LibCategorieUe}"
+                               shortDesc="#{bindings.ScolFilUeOptionsANCNO.hints.LibCategorieUe.tooltip}" id="ot69"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptionsANCNO.hints.MoyenneValidation.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_VALIDATION}" id="c84"
+                         visible="false">
+                <af:outputText value="#{row.MoyenneValidation}"
+                               shortDesc="#{bindings.ScolFilUeOptionsANCNO.hints.MoyenneValidation.tooltip}" id="ot77">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilUeOptionsANCNO.hints.MoyenneValidation.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptionsANCNO.hints.MoyenneEliminatoire.name}"
+                         filterable="true" sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}"
+                         id="c85" visible="false">
+                <af:outputText value="#{row.MoyenneEliminatoire}"
+                               shortDesc="#{bindings.ScolFilUeOptionsANCNO.hints.MoyenneEliminatoire.tooltip}"
+                               id="ot78">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilUeOptionsANCNO.hints.MoyenneEliminatoire.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptionsANCNO.hints.NbreEc.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.NOMBRE_EC}" id="c41" visible="false">
+                <af:outputText value="#{row.NbreEc}" shortDesc="#{bindings.ScolFilUeOptionsANCNO.hints.NbreEc.tooltip}"
+                               id="ot8">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilUeOptionsANCNO.hints.NbreEc.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilUeOptionsANCNO.hints.ResponsableId.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.RESPONSABLE}"
+                         id="c74" visible="false">
+                <af:selectOneChoice value="#{row.bindings.ResponsableId.inputValue}"
+                                    label="#{row.bindings.ResponsableId.label}"
+                                    required="#{bindings.ScolFilUeOptionsANCNO.hints.ResponsableId.mandatory}"
+                                    shortDesc="#{bindings.ScolFilUeOptionsANCNO.hints.ResponsableId.tooltip}"
+                                    readOnly="true" id="soc10">
+                  <f:selectItems value="#{row.bindings.ResponsableId.items}" id="si10"/>
+                  <f:validator binding="#{row.bindings.ResponsableId.validator}"/>
+                </af:selectOneChoice>
+              </af:column>
+              <af:column id="c31" align="center" headerText="#{viewcontrollerBundle.DETAILS}">
+                <af:link id="l4" icon="/images/icons8-eye-24.png">
+                  <af:showPopupBehavior popupId=":::p19"/>
+                </af:link>
+              </af:column>
+              <af:column id="c32" align="center" headerText="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}">
+                <af:link id="l5" icon="/images/details-20.png">
+                  <af:showPopupBehavior popupId=":::p20"/>
+                </af:link>
+              </af:column>
+            </af:table>
+            <f:facet name="statusbar"/>
+          </af:panelCollection>
+        </af:panelHeader>
+        <af:panelHeader text="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" id="ph8" visible="false">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelCollection id="pc8" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <af:table value="#{bindings.ScolFilEc2.collectionModel}" var="row" rows="#{bindings.ScolFilEc2.rangeSize}"
+                      emptyText="#{bindings.ScolFilEc2.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.ScolFilEc2.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ScolFilEc2.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.ScolFilEc2.rangeSize}"
+                      filterModel="#{bindings.ScolFilEc2Query.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ScolFilEc2Query.processQuery}" varStatus="vs" id="t7"
+                      columnStretching="column:c97">
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.LibLongEc.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.LIBELLE}" id="c97" width="300" noWrap="false">
+                <af:outputText value="#{row.LibLongEc}" shortDesc="#{bindings.ScolFilEc2.hints.LibLongEc.tooltip}"
+                               id="ot90"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.CodificationEc.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.CODIFICATION}" id="c91">
+                <af:outputText value="#{row.CodificationEc}"
+                               shortDesc="#{bindings.ScolFilEc2.hints.CodificationEc.tooltip}" id="ot84"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.Coefficient.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.COEFICIENT}" id="c86">
+                <af:outputText value="#{row.Coefficient}" shortDesc="#{bindings.ScolFilEc2.hints.Coefficient.tooltip}"
+                               id="ot79">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc2.hints.Coefficient.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.LibNatureEc.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.NATURE}" id="c98">
+                <af:outputText value="#{row.LibNatureEc}" shortDesc="#{bindings.ScolFilEc2.hints.LibNatureEc.tooltip}"
+                               id="ot91"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.MoyenneValidation.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_VALIDATION}" id="c87">
+                <af:outputText value="#{row.MoyenneValidation}"
+                               shortDesc="#{bindings.ScolFilEc2.hints.MoyenneValidation.tooltip}" id="ot80">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilEc2.hints.MoyenneValidation.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.MoyenneEliminatoire.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}" id="c88">
+                <af:outputText value="#{row.MoyenneEliminatoire}"
+                               shortDesc="#{bindings.ScolFilEc2.hints.MoyenneEliminatoire.tooltip}" id="ot81">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.ScolFilEc2.hints.MoyenneEliminatoire.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.PourcentageCc.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.POURCENTAGE_CC}" id="c89">
+                <af:outputText value="#{row.PourcentageCc}"
+                               shortDesc="#{bindings.ScolFilEc2.hints.PourcentageCc.tooltip}" id="ot82">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc2.hints.PourcentageCc.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.PourcentageCt.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle.POURCENTAGE_CT}" id="c90">
+                <af:outputText value="#{row.PourcentageCt}"
+                               shortDesc="#{bindings.ScolFilEc2.hints.PourcentageCt.tooltip}" id="ot83">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc2.hints.PourcentageCt.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.HeureCm.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_COURS_MAGISTRAL}" id="c92">
+                <af:outputText value="#{row.HeureCm}" shortDesc="#{bindings.ScolFilEc2.hints.HeureCm.tooltip}"
+                               id="ot85">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc2.hints.HeureCm.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.HeureTp.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_TP}" id="c93">
+                <af:outputText value="#{row.HeureTp}" shortDesc="#{bindings.ScolFilEc2.hints.HeureTp.tooltip}"
+                               id="ot86">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc2.hints.HeureTp.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.HeureTd.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_TD}" id="c94">
+                <af:outputText value="#{row.HeureTd}" shortDesc="#{bindings.ScolFilEc2.hints.HeureTd.tooltip}"
+                               id="ot87">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc2.hints.HeureTd.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.HeureStage.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_STAGE}" id="c95">
+                <af:outputText value="#{row.HeureStage}" shortDesc="#{bindings.ScolFilEc2.hints.HeureStage.tooltip}"
+                               id="ot88">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc2.hints.HeureStage.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.HeureTpe.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.HEURE_TPE}" id="c96">
+                <af:outputText value="#{row.HeureTpe}" shortDesc="#{bindings.ScolFilEc2.hints.HeureTpe.tooltip}"
+                               id="ot89">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ScolFilEc2.hints.HeureTpe.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ScolFilEc2.hints.Responsable.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.RESPONSABLE}" id="c101">
+                <af:outputText value="#{row.Responsable}" shortDesc="#{bindings.ScolFilEc2.hints.Responsable.tooltip}"
+                               id="ot94"/>
+              </af:column>
+            </af:table>
+            <f:facet name="statusbar"/>
+          </af:panelCollection>
+        </af:panelHeader>
+        <af:panelGroupLayout id="pgl18" binding="#{MaquetteBean.btnPanGrpOpANCNO}">
+            <af:button text="Valider" id="b8" icon="/images/validate-24.png"
+                     inlineStyle="margin-right:5px; width:100px;font-family:cursive; border-radius:8px  ; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8;"
+                     visible="#{sessionScope.is_maq_val ==  '0' ?  bindings.ScolFilUeOptionsANCNOIterator.estimatedRowCount gt 0 ? true : false : false}"
+                       actionListener="#{MaquetteBean.OnValideMaquetteAction}"
+                       disabled="#{bindings.ScolFilUeOptionsANCNOIterator.estimatedRowCount le 0 ? true : false}"
+                       partialTriggers="soc9"/>
+          <af:button text="Importer" id="b9" icon="/images/import24.png"
+                     visible="#{sessionScope.is_maq_val=='1' ? bindings.ScolFilUeOptionsANCNOIterator.estimatedRowCount gt 0 ? true : false : false}"
+                     inlineStyle="width:100px; font-family:cursive; border-radius:8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:Black;"
+                     actionListener="#{MaquetteBean.OnImportMaqOpANCNOActionListener}"
+                     disabled="#{bindings.ScolFilUeOptionsANCNOIterator.estimatedRowCount gt 0 ? false : true}"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p10" contentDelivery="lazyUncached">
+    <af:noteWindow id="nw1">
+      <af:panelFormLayout id="pfl2" inlineStyle="width:600px">
+        <af:inputText value="#{bindings.LibelleLong1.inputValue}" required="#{bindings.LibelleLong1.hints.mandatory}"
+                      readOnly="true" columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it13"
+                      labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;"
+                      label="#{viewcontrollerBundle.LIBELLE}">
+          <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Codification1.inputValue}" label="#{viewcontrollerBundle.CODIFICATION}"
+                      required="#{bindings.Codification1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Codification1.hints.displayWidth}"
+                      maximumLength="#{bindings.Codification1.hints.precision}"
+                      shortDesc="#{bindings.Codification1.hints.tooltip}" id="it14"
+                      labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.Codification1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.IdSemestre.inputValue}" label="#{viewcontrollerBundle1.SEMESTRE}"
+                      required="#{bindings.IdSemestre.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.IdSemestre.hints.displayWidth}"
+                      maximumLength="#{bindings.IdSemestre.hints.precision}"
+                      shortDesc="#{bindings.IdSemestre.hints.tooltip}" id="it15"
+                      labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.IdSemestre.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.IdSemestre.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Credit.inputValue}" label="#{viewcontrollerBundle.CREDIT}"
+                      required="#{bindings.Credit.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Credit.hints.displayWidth}" maximumLength="#{bindings.Credit.hints.precision}"
+                      shortDesc="#{bindings.Credit.hints.tooltip}" id="it17" 
+                      labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.Credit.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Credit.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Coefficient1.inputValue}" label="#{viewcontrollerBundle1.COEFICIENT}"
+                      required="#{bindings.Coefficient1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Coefficient1.hints.displayWidth}"
+                      maximumLength="#{bindings.Coefficient1.hints.precision}"
+                      shortDesc="#{bindings.Coefficient1.hints.tooltip}" id="it16" 
+                      labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.Coefficient1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Coefficient1.format}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdCategorieUe.inputValue}" label="#{viewcontrollerBundle.CATEGORIE}"
+                            required="#{bindings.IdCategorieUe.hints.mandatory}"
+                            shortDesc="#{bindings.IdCategorieUe.hints.tooltip}" readOnly="true" id="soc7"
+                            labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:selectItems value="#{bindings.IdCategorieUe.items}" id="si7"/>
+          <f:validator binding="#{bindings.IdCategorieUe.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdNatureUe.inputValue}" label="#{viewcontrollerBundle.NATURE}"
+                            required="#{bindings.IdNatureUe.hints.mandatory}"
+                            shortDesc="#{bindings.IdNatureUe.hints.tooltip}" readOnly="true" id="soc12"
+                            labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:selectItems value="#{bindings.IdNatureUe.items}" id="si12"/>
+          <f:validator binding="#{bindings.IdNatureUe.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.MoyenneValidation1.inputValue}"
+                      label="#{viewcontrollerBundle.MOYENNE_VALIDATION}"
+                      required="#{bindings.MoyenneValidation1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneValidation1.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneValidation1.hints.precision}"
+                      shortDesc="#{bindings.MoyenneValidation1.hints.tooltip}" id="it18"
+                      labelStyle="font-size:large;text-align:left;width:100px"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.MoyenneValidation1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneValidation1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneEliminatoire1.inputValue}"
+                      label="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}"
+                      required="#{bindings.MoyenneEliminatoire1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneEliminatoire1.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneEliminatoire1.hints.precision}"
+                      shortDesc="#{bindings.MoyenneEliminatoire1.hints.tooltip}" id="it19"
+                      labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.MoyenneEliminatoire1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneEliminatoire1.format}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.Compensable.inputValue}" label="#{viewcontrollerBundle.COMPENSABLE}"
+                            required="#{bindings.Compensable.hints.mandatory}"
+                            shortDesc="#{bindings.Compensable.hints.tooltip}" readOnly="true" id="soc13"
+                            labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:selectItems value="#{bindings.Compensable.items}" id="si13"/>
+          <f:validator binding="#{bindings.Compensable.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IsSoutenance.inputValue}" label="#{viewcontrollerBundle.MEMOIRE}"
+                            required="#{bindings.IsSoutenance.hints.mandatory}"
+                            shortDesc="#{bindings.IsSoutenance.hints.tooltip}" id="soc17"
+                            contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;"
+                            labelStyle="font-size:large;text-align:left;">
+          <f:selectItems value="#{bindings.IsSoutenance.items}" id="si17"/>
+          <f:validator binding="#{bindings.IsSoutenance.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+    </af:noteWindow>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p11" contentDelivery="lazyUncached">
+    <af:dialog id="d9" title="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" type="cancel"
+               cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelCollection id="pc9" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.FilEc11.collectionModel}" var="row" rows="#{bindings.FilEc11.rangeSize}"
+                  emptyText="#{bindings.FilEc11.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.FilEc11.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.FilEc11.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.FilEc11.rangeSize}" filterModel="#{bindings.FilEc11Query.queryDescriptor}"
+                  filterVisible="true" queryListener="#{bindings.FilEc11Query.processQuery}" varStatus="vs" id="t8"
+                  columnStretching="column:c58" scrollPolicy="page">
+          <af:column sortProperty="#{bindings.FilEc11.hints.LibelleLong.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.LIBELLE}" id="c58">
+            <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.FilEc11.hints.LibelleLong.tooltip}"
+                           id="ot9"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.FilEc11.hints.Codification.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.CODIFICATION}" id="c61">
+            <af:outputText value="#{row.Codification}" shortDesc="#{bindings.FilEc11.hints.Codification.tooltip}"
+                           id="ot27"/>
+          </af:column>
+          <af:column id="c62" headerText="#{viewcontrollerBundle.DETAILS}" align="center">
+            <af:link id="l3" icon="/images/icons8-eye-24.png">
+              <af:showPopupBehavior popupId=":::p12"/>
+            </af:link>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p12" contentDelivery="lazyUncached">
+    <af:noteWindow id="nw2">
+      <af:panelFormLayout id="pfl1" inlineStyle="width:600px">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibelleLong.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Codification.inputValue}" label="#{viewcontrollerBundle.CODIFICATION}"
+                      required="#{bindings.Codification.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Codification.hints.displayWidth}"
+                      maximumLength="#{bindings.Codification.hints.precision}"
+                      shortDesc="#{bindings.Codification.hints.tooltip}" id="it2" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.Codification.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Coefficient.inputValue}" label="#{viewcontrollerBundle1.COEFICIENT}"
+                      required="#{bindings.Coefficient.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Coefficient.hints.displayWidth}"
+                      maximumLength="#{bindings.Coefficient.hints.precision}"
+                      shortDesc="#{bindings.Coefficient.hints.tooltip}" id="it3" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.Coefficient.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Coefficient.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneValidation.inputValue}"
+                      label="#{viewcontrollerBundle.MOYENNE_VALIDATION}"
+                      required="#{bindings.MoyenneValidation.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneValidation.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneValidation.hints.precision}"
+                      shortDesc="#{bindings.MoyenneValidation.hints.tooltip}" id="it4" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.MoyenneValidation.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneValidation.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneEliminatoire.inputValue}"
+                      label="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}"
+                      required="#{bindings.MoyenneEliminatoire.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneEliminatoire.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneEliminatoire.hints.precision}"
+                      shortDesc="#{bindings.MoyenneEliminatoire.hints.tooltip}" id="it5" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.MoyenneEliminatoire.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneEliminatoire.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.PourcentageCc.inputValue}" label="#{viewcontrollerBundle.POURCENTAGE_CC}"
+                      required="#{bindings.PourcentageCc.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.PourcentageCc.hints.displayWidth}"
+                      maximumLength="#{bindings.PourcentageCc.hints.precision}"
+                      shortDesc="#{bindings.PourcentageCc.hints.tooltip}" id="it6" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.PourcentageCc.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.PourcentageCc.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.PourcentageCt.inputValue}" label="#{viewcontrollerBundle.POURCENTAGE_CT}"
+                      required="#{bindings.PourcentageCt.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.PourcentageCt.hints.displayWidth}"
+                      maximumLength="#{bindings.PourcentageCt.hints.precision}"
+                      shortDesc="#{bindings.PourcentageCt.hints.tooltip}" id="it7" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.PourcentageCt.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.PourcentageCt.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeuresCm.inputValue}" label="#{viewcontrollerBundle.HEURE_COURS_MAGISTRAL}"
+                      required="#{bindings.HeuresCm.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeuresCm.hints.displayWidth}"
+                      maximumLength="#{bindings.HeuresCm.hints.precision}"
+                      shortDesc="#{bindings.HeuresCm.hints.tooltip}" id="it8" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.HeuresCm.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeuresCm.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeuresTp.inputValue}" label="#{viewcontrollerBundle.HEURE_TP}"
+                      required="#{bindings.HeuresTp.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeuresTp.hints.displayWidth}"
+                      maximumLength="#{bindings.HeuresTp.hints.precision}"
+                      shortDesc="#{bindings.HeuresTp.hints.tooltip}" id="it9" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.HeuresTp.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeuresTp.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeuresTd.inputValue}" label="#{viewcontrollerBundle.HEURE_TD}"
+                      required="#{bindings.HeuresTd.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeuresTd.hints.displayWidth}"
+                      maximumLength="#{bindings.HeuresTd.hints.precision}"
+                      shortDesc="#{bindings.HeuresTd.hints.tooltip}" id="it10" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.HeuresTd.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeuresTd.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeuresTpe.inputValue}" label="#{viewcontrollerBundle.HEURE_TPE}"
+                      required="#{bindings.HeuresTpe.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeuresTpe.hints.displayWidth}"
+                      maximumLength="#{bindings.HeuresTpe.hints.precision}"
+                      shortDesc="#{bindings.HeuresTpe.hints.tooltip}" id="it11" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.HeuresTpe.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeuresTpe.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeuresStage.inputValue}" label="#{viewcontrollerBundle.HEURE_STAGE}"
+                      required="#{bindings.HeuresStage.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeuresStage.hints.displayWidth}"
+                      maximumLength="#{bindings.HeuresStage.hints.precision}"
+                      shortDesc="#{bindings.HeuresStage.hints.tooltip}" id="it12" labelStyle="font-size:large;text-align:left;"
+                      contentStyle="font-size:large;background : #2898e8;color:white;text-align:left;">
+          <f:validator binding="#{bindings.HeuresStage.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeuresStage.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:noteWindow>
+  </af:popup>
+  <af:popup childCreation="deferred" id="p13" contentDelivery="lazyUncached" autoCancel="disabled">
+    <af:noteWindow id="nw3">
+      <af:panelFormLayout id="pfl3">
+        <af:inputText value="#{bindings.LibLongUe.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibLongUe.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibLongUe.hints.displayWidth}"
+                      maximumLength="#{bindings.LibLongUe.hints.precision}"
+                      shortDesc="#{bindings.LibLongUe.hints.tooltip}" id="it21">
+          <f:validator binding="#{bindings.LibLongUe.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CodificationUe.inputValue}" label="#{viewcontrollerBundle.CODIFICATION}"
+                      required="#{bindings.CodificationUe.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CodificationUe.hints.displayWidth}"
+                      maximumLength="#{bindings.CodificationUe.hints.precision}"
+                      shortDesc="#{bindings.CodificationUe.hints.tooltip}" id="it22">
+          <f:validator binding="#{bindings.CodificationUe.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CodeSemestre.inputValue}" label="#{viewcontrollerBundle.SEMESTRE}"
+                      required="#{bindings.CodeSemestre.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CodeSemestre.hints.displayWidth}"
+                      maximumLength="#{bindings.CodeSemestre.hints.precision}"
+                      shortDesc="#{bindings.CodeSemestre.hints.tooltip}" id="it23">
+          <f:validator binding="#{bindings.CodeSemestre.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.CodeSemestre.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CreditUe.inputValue}" label="#{viewcontrollerBundle.CREDIT}"
+                      required="#{bindings.CreditUe.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CreditUe.hints.displayWidth}"
+                      maximumLength="#{bindings.CreditUe.hints.precision}"
+                      shortDesc="#{bindings.CreditUe.hints.tooltip}" id="it24">
+          <f:validator binding="#{bindings.CreditUe.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.CreditUe.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Coefue.inputValue}" label="#{viewcontrollerBundle.COEFICIENT}"
+                      required="#{bindings.Coefue.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Coefue.hints.displayWidth}" maximumLength="#{bindings.Coefue.hints.precision}"
+                      shortDesc="#{bindings.Coefue.hints.tooltip}" id="it25">
+          <f:validator binding="#{bindings.Coefue.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Coefue.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibCategorieUe.inputValue}" label="#{viewcontrollerBundle.CATEGORIE}"
+                      required="#{bindings.LibCategorieUe.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibCategorieUe.hints.displayWidth}"
+                      maximumLength="#{bindings.LibCategorieUe.hints.precision}"
+                      shortDesc="#{bindings.LibCategorieUe.hints.tooltip}" id="it26">
+          <f:validator binding="#{bindings.LibCategorieUe.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibNature.inputValue}" label="#{viewcontrollerBundle.NATURE_UE}"
+                      required="#{bindings.LibNature.hints.mandatory}"
+                      columns="#{bindings.LibNature.hints.displayWidth}"
+                      maximumLength="#{bindings.LibNature.hints.precision}"
+                      shortDesc="#{bindings.LibNature.hints.tooltip}" id="it94">
+          <f:validator binding="#{bindings.LibNature.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneValidation2.inputValue}"
+                      label="#{viewcontrollerBundle.MOYENNE_VALIDATION}"
+                      required="#{bindings.MoyenneValidation2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneValidation2.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneValidation2.hints.precision}"
+                      shortDesc="#{bindings.MoyenneValidation2.hints.tooltip}" id="it28">
+          <f:validator binding="#{bindings.MoyenneValidation2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneValidation2.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneEliminatoire2.inputValue}"
+                      label="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}"
+                      required="#{bindings.MoyenneEliminatoire2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneEliminatoire2.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneEliminatoire2.hints.precision}"
+                      shortDesc="#{bindings.MoyenneEliminatoire2.hints.tooltip}" id="it29">
+          <f:validator binding="#{bindings.MoyenneEliminatoire2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneEliminatoire2.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.NbreEc.inputValue}" label="#{viewcontrollerBundle.NOMBRE_EC}"
+                      required="#{bindings.NbreEc.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.NbreEc.hints.displayWidth}" maximumLength="#{bindings.NbreEc.hints.precision}"
+                      shortDesc="#{bindings.NbreEc.hints.tooltip}" id="it30">
+          <f:validator binding="#{bindings.NbreEc.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.NbreEc.format}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.ResponsableId.inputValue}" label="#{viewcontrollerBundle.RESPONSABLE}"
+                            required="#{bindings.ResponsableId.hints.mandatory}"
+                            shortDesc="#{bindings.ResponsableId.hints.tooltip}" readOnly="true" id="soc14">
+          <f:selectItems value="#{bindings.ResponsableId.items}" id="si14"/>
+          <f:validator binding="#{bindings.ResponsableId.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+    </af:noteWindow>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p14" contentDelivery="lazyUncached">
+    <af:dialog id="d10" title="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" type="cancel"
+               cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelCollection id="pc10" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.ScolFilEc3.collectionModel}" var="row" rows="#{bindings.ScolFilEc3.rangeSize}"
+                  emptyText="#{bindings.ScolFilEc3.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.ScolFilEc3.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ScolFilEc3.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.ScolFilEc3.rangeSize}" filterModel="#{bindings.ScolFilEcQuery.queryDescriptor}"
+                  filterVisible="true" queryListener="#{bindings.ScolFilEcQuery.processQuery}" varStatus="vs" id="t9"
+                  scrollPolicy="page" columnStretching="column:c79">
+          <af:column sortProperty="#{bindings.ScolFilEc3.hints.LibLongEc.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.LIBELLE}" id="c79" noWrap="false" width="300">
+            <af:outputText value="#{row.LibLongEc}" shortDesc="#{bindings.ScolFilEc3.hints.LibLongEc.tooltip}"
+                           id="ot28"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ScolFilEc3.hints.CodificationEc.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.CODIFICATION}" id="c80">
+            <af:outputText value="#{row.CodificationEc}" shortDesc="#{bindings.ScolFilEc3.hints.CodificationEc.tooltip}"
+                           id="ot29"/>
+          </af:column>
+          <af:column id="c82" headerText="#{viewcontrollerBundle.DETAILS}" align="center">
+            <af:link id="l8" icon="/images/icons8-eye-24.png">
+              <af:showPopupBehavior popupId=":::p15"/>
+            </af:link>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p15" contentDelivery="lazyUncached">
+    <af:noteWindow id="nw4">
+      <af:panelFormLayout id="pfl4">
+        <af:inputText value="#{bindings.LibLongEc.inputValue}" label="#{bindings.LibLongEc.hints.label}"
+                      required="#{bindings.LibLongEc.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibLongEc.hints.displayWidth}"
+                      maximumLength="#{bindings.LibLongEc.hints.precision}"
+                      shortDesc="#{bindings.LibLongEc.hints.tooltip}" id="it31">
+          <f:validator binding="#{bindings.LibLongEc.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CodificationEc.inputValue}" label="#{bindings.CodificationEc.hints.label}"
+                      required="#{bindings.CodificationEc.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CodificationEc.hints.displayWidth}"
+                      maximumLength="#{bindings.CodificationEc.hints.precision}"
+                      shortDesc="#{bindings.CodificationEc.hints.tooltip}" id="it32">
+          <f:validator binding="#{bindings.CodificationEc.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Coefficient2.inputValue}" label="#{bindings.Coefficient2.hints.label}"
+                      required="#{bindings.Coefficient2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Coefficient2.hints.displayWidth}"
+                      maximumLength="#{bindings.Coefficient2.hints.precision}"
+                      shortDesc="#{bindings.Coefficient2.hints.tooltip}" id="it33">
+          <f:validator binding="#{bindings.Coefficient2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Coefficient2.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibNatureEc.inputValue}" label="#{bindings.LibNatureEc.hints.label}"
+                      required="#{bindings.LibNatureEc.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibNatureEc.hints.displayWidth}"
+                      maximumLength="#{bindings.LibNatureEc.hints.precision}"
+                      shortDesc="#{bindings.LibNatureEc.hints.tooltip}" id="it34">
+          <f:validator binding="#{bindings.LibNatureEc.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneValidation3.inputValue}"
+                      label="#{bindings.MoyenneValidation3.hints.label}"
+                      required="#{bindings.MoyenneValidation3.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneValidation3.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneValidation3.hints.precision}"
+                      shortDesc="#{bindings.MoyenneValidation3.hints.tooltip}" id="it35">
+          <f:validator binding="#{bindings.MoyenneValidation3.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneValidation3.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneEliminatoire3.inputValue}"
+                      label="#{bindings.MoyenneEliminatoire3.hints.label}"
+                      required="#{bindings.MoyenneEliminatoire3.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneEliminatoire3.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneEliminatoire3.hints.precision}"
+                      shortDesc="#{bindings.MoyenneEliminatoire3.hints.tooltip}" id="it36">
+          <f:validator binding="#{bindings.MoyenneEliminatoire3.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneEliminatoire3.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.PourcentageCc1.inputValue}" label="#{bindings.PourcentageCc1.hints.label}"
+                      required="#{bindings.PourcentageCc1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.PourcentageCc1.hints.displayWidth}"
+                      maximumLength="#{bindings.PourcentageCc1.hints.precision}"
+                      shortDesc="#{bindings.PourcentageCc1.hints.tooltip}" id="it37">
+          <f:validator binding="#{bindings.PourcentageCc1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.PourcentageCc1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.PourcentageCt1.inputValue}" label="#{bindings.PourcentageCt1.hints.label}"
+                      required="#{bindings.PourcentageCt1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.PourcentageCt1.hints.displayWidth}"
+                      maximumLength="#{bindings.PourcentageCt1.hints.precision}"
+                      shortDesc="#{bindings.PourcentageCt1.hints.tooltip}" id="it38">
+          <f:validator binding="#{bindings.PourcentageCt1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.PourcentageCt1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeureCm.inputValue}" label="#{bindings.HeureCm.hints.label}"
+                      required="#{bindings.HeureCm.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeureCm.hints.displayWidth}"
+                      maximumLength="#{bindings.HeureCm.hints.precision}" shortDesc="#{bindings.HeureCm.hints.tooltip}"
+                      id="it39">
+          <f:validator binding="#{bindings.HeureCm.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureCm.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeureTp.inputValue}" label="#{bindings.HeureTp.hints.label}"
+                      required="#{bindings.HeureTp.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeureTp.hints.displayWidth}"
+                      maximumLength="#{bindings.HeureTp.hints.precision}" shortDesc="#{bindings.HeureTp.hints.tooltip}"
+                      id="it40">
+          <f:validator binding="#{bindings.HeureTp.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureTp.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeureTd.inputValue}" label="#{bindings.HeureTd.hints.label}"
+                      required="#{bindings.HeureTd.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeureTd.hints.displayWidth}"
+                      maximumLength="#{bindings.HeureTd.hints.precision}" shortDesc="#{bindings.HeureTd.hints.tooltip}"
+                      id="it41">
+          <f:validator binding="#{bindings.HeureTd.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureTd.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeureStage.inputValue}" label="#{bindings.HeureStage.hints.label}"
+                      required="#{bindings.HeureStage.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeureStage.hints.displayWidth}"
+                      maximumLength="#{bindings.HeureStage.hints.precision}"
+                      shortDesc="#{bindings.HeureStage.hints.tooltip}" id="it42">
+          <f:validator binding="#{bindings.HeureStage.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureStage.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeureTpe.inputValue}" label="#{bindings.HeureTpe.hints.label}"
+                      required="#{bindings.HeureTpe.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeureTpe.hints.displayWidth}"
+                      maximumLength="#{bindings.HeureTpe.hints.precision}"
+                      shortDesc="#{bindings.HeureTpe.hints.tooltip}" id="it43">
+          <f:validator binding="#{bindings.HeureTpe.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureTpe.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Responsable.inputValue}" label="#{bindings.Responsable.hints.label}"
+                      required="#{bindings.Responsable.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Responsable.hints.displayWidth}"
+                      maximumLength="#{bindings.Responsable.hints.precision}"
+                      shortDesc="#{bindings.Responsable.hints.tooltip}" id="it45">
+          <f:validator binding="#{bindings.Responsable.validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:noteWindow>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p16" contentDelivery="lazyUncached">
+    <af:noteWindow id="nw5">
+      <af:panelFormLayout id="pfl5">
+        <af:inputText value="#{bindings.LibLongUe1.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibLongUe1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibLongUe1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibLongUe1.hints.precision}"
+                      shortDesc="#{bindings.LibLongUe1.hints.tooltip}" id="it44">
+          <f:validator binding="#{bindings.LibLongUe1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CodificationUe1.inputValue}" label="#{viewcontrollerBundle.CODIFICATION}"
+                      required="#{bindings.CodificationUe1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CodificationUe1.hints.displayWidth}"
+                      maximumLength="#{bindings.CodificationUe1.hints.precision}"
+                      shortDesc="#{bindings.CodificationUe1.hints.tooltip}" id="it46">
+          <f:validator binding="#{bindings.CodificationUe1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CodeSemestre1.inputValue}" label="#{viewcontrollerBundle.SEMESTRE}"
+                      required="#{bindings.CodeSemestre1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CodeSemestre1.hints.displayWidth}"
+                      maximumLength="#{bindings.CodeSemestre1.hints.precision}"
+                      shortDesc="#{bindings.CodeSemestre1.hints.tooltip}" id="it47">
+          <f:validator binding="#{bindings.CodeSemestre1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.CodeSemestre1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Coefue1.inputValue}" label="#{viewcontrollerBundle.COEFICIENT}"
+                      required="#{bindings.Coefue1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Coefue1.hints.displayWidth}"
+                      maximumLength="#{bindings.Coefue1.hints.precision}" shortDesc="#{bindings.Coefue1.hints.tooltip}"
+                      id="it48">
+          <f:validator binding="#{bindings.Coefue1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Coefue1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CreditUe1.inputValue}" label="#{viewcontrollerBundle.CREDIT}"
+                      required="#{bindings.CreditUe1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CreditUe1.hints.displayWidth}"
+                      maximumLength="#{bindings.CreditUe1.hints.precision}"
+                      shortDesc="#{bindings.CreditUe1.hints.tooltip}" id="it49">
+          <f:validator binding="#{bindings.CreditUe1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.CreditUe1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibCategorieUe1.inputValue}" label="#{viewcontrollerBundle.CAT_U00E9GORIE_UE}"
+                      required="#{bindings.LibCategorieUe1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibCategorieUe1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibCategorieUe1.hints.precision}"
+                      shortDesc="#{bindings.LibCategorieUe1.hints.tooltip}" id="it50">
+          <f:validator binding="#{bindings.LibCategorieUe1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibNature1.inputValue}" label="#{viewcontrollerBundle.NATURE_UE}"
+                      required="#{bindings.LibNature1.hints.mandatory}"
+                      columns="#{bindings.LibNature1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibNature1.hints.precision}"
+                      shortDesc="#{bindings.LibNature1.hints.tooltip}" id="it20">
+          <f:validator binding="#{bindings.LibNature1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneValidation4.inputValue}"
+                      label="#{viewcontrollerBundle.MOYENNE_VALIDATION}"
+                      required="#{bindings.MoyenneValidation4.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneValidation4.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneValidation4.hints.precision}"
+                      shortDesc="#{bindings.MoyenneValidation4.hints.tooltip}" id="it52">
+          <f:validator binding="#{bindings.MoyenneValidation4.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneValidation4.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneEliminatoire4.inputValue}"
+                      label="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}"
+                      required="#{bindings.MoyenneEliminatoire4.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneEliminatoire4.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneEliminatoire4.hints.precision}"
+                      shortDesc="#{bindings.MoyenneEliminatoire4.hints.tooltip}" id="it53">
+          <f:validator binding="#{bindings.MoyenneEliminatoire4.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneEliminatoire4.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Compensable1.inputValue}" label="#{viewcontrollerBundle.COMPENSABLE}"
+                      required="#{bindings.Compensable1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Compensable1.hints.displayWidth}"
+                      maximumLength="#{bindings.Compensable1.hints.precision}"
+                      shortDesc="#{bindings.Compensable1.hints.tooltip}" id="it54">
+          <f:validator binding="#{bindings.Compensable1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Compensable1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.NbreEc1.inputValue}" label="#{viewcontrollerBundle.NOMBRE_EC}"
+                      required="#{bindings.NbreEc1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.NbreEc1.hints.displayWidth}"
+                      maximumLength="#{bindings.NbreEc1.hints.precision}" shortDesc="#{bindings.NbreEc1.hints.tooltip}"
+                      id="it55">
+          <f:validator binding="#{bindings.NbreEc1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.NbreEc1.format}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.ResponsableId1.inputValue}" label="#{viewcontrollerBundle.RESPONSABLE}"
+                            required="#{bindings.ResponsableId1.hints.mandatory}"
+                            shortDesc="#{bindings.ResponsableId1.hints.tooltip}" readOnly="true" id="soc15">
+          <f:selectItems value="#{bindings.ResponsableId1.items}" id="si15"/>
+          <f:validator binding="#{bindings.ResponsableId1.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+    </af:noteWindow>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p17" contentDelivery="lazyUncached">
+    <af:dialog id="d11" title="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" type="cancel"
+               cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelCollection id="pc11" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.ScolFilEc11.collectionModel}" var="row" rows="#{bindings.ScolFilEc11.rangeSize}"
+                  emptyText="#{bindings.ScolFilEc11.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.ScolFilEc11.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ScolFilEc11.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.ScolFilEc11.rangeSize}"
+                  filterModel="#{bindings.ScolFilEc1Query.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.ScolFilEc1Query.processQuery}" varStatus="vs" id="t10"
+                  columnStretching="column:c81">
+          <af:column sortProperty="#{bindings.ScolFilEc11.hints.LibLongEc.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.LIBELLE}" id="c81">
+            <af:outputText value="#{row.LibLongEc}" shortDesc="#{bindings.ScolFilEc11.hints.LibLongEc.tooltip}"
+                           id="ot30"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ScolFilEc11.hints.CodificationEc.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.CODIFICATION}" id="c110" width="150">
+            <af:outputText value="#{row.CodificationEc}"
+                           shortDesc="#{bindings.ScolFilEc11.hints.CodificationEc.tooltip}" id="ot37"/>
+          </af:column>
+          <af:column id="c111" headerText="#{viewcontrollerBundle.DETAILS}" align="center">
+            <af:link id="l11" icon="/images/icons8-eye-24.png">
+              <af:showPopupBehavior popupId=":::p18"/>
+            </af:link>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p18" contentDelivery="lazyUncached">
+    <af:noteWindow id="nw6">
+      <af:panelFormLayout id="pfl6">
+        <af:inputText value="#{bindings.LibLongEc1.inputValue}" label="#{bindings.LibLongEc1.hints.label}"
+                      required="#{bindings.LibLongEc1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibLongEc1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibLongEc1.hints.precision}"
+                      shortDesc="#{bindings.LibLongEc1.hints.tooltip}" id="it56">
+          <f:validator binding="#{bindings.LibLongEc1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CodificationEc1.inputValue}" label="#{bindings.CodificationEc1.hints.label}"
+                      required="#{bindings.CodificationEc1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CodificationEc1.hints.displayWidth}"
+                      maximumLength="#{bindings.CodificationEc1.hints.precision}"
+                      shortDesc="#{bindings.CodificationEc1.hints.tooltip}" id="it57">
+          <f:validator binding="#{bindings.CodificationEc1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Coefficient3.inputValue}" label="#{bindings.Coefficient3.hints.label}"
+                      required="#{bindings.Coefficient3.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Coefficient3.hints.displayWidth}"
+                      maximumLength="#{bindings.Coefficient3.hints.precision}"
+                      shortDesc="#{bindings.Coefficient3.hints.tooltip}" id="it58">
+          <f:validator binding="#{bindings.Coefficient3.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Coefficient3.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibNatureEc1.inputValue}" label="#{bindings.LibNatureEc1.hints.label}"
+                      required="#{bindings.LibNatureEc1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibNatureEc1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibNatureEc1.hints.precision}"
+                      shortDesc="#{bindings.LibNatureEc1.hints.tooltip}" id="it59">
+          <f:validator binding="#{bindings.LibNatureEc1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.PourcentageCc2.inputValue}" label="#{bindings.PourcentageCc2.hints.label}"
+                      required="#{bindings.PourcentageCc2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.PourcentageCc2.hints.displayWidth}"
+                      maximumLength="#{bindings.PourcentageCc2.hints.precision}"
+                      shortDesc="#{bindings.PourcentageCc2.hints.tooltip}" id="it60">
+          <f:validator binding="#{bindings.PourcentageCc2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.PourcentageCc2.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.PourcentageCt2.inputValue}" label="#{bindings.PourcentageCt2.hints.label}"
+                      required="#{bindings.PourcentageCt2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.PourcentageCt2.hints.displayWidth}"
+                      maximumLength="#{bindings.PourcentageCt2.hints.precision}"
+                      shortDesc="#{bindings.PourcentageCt2.hints.tooltip}" id="it61">
+          <f:validator binding="#{bindings.PourcentageCt2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.PourcentageCt2.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneValidation5.inputValue}"
+                      label="#{bindings.MoyenneValidation5.hints.label}"
+                      required="#{bindings.MoyenneValidation5.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneValidation5.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneValidation5.hints.precision}"
+                      shortDesc="#{bindings.MoyenneValidation5.hints.tooltip}" id="it62">
+          <f:validator binding="#{bindings.MoyenneValidation5.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneValidation5.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneEliminatoire5.inputValue}"
+                      label="#{bindings.MoyenneEliminatoire5.hints.label}"
+                      required="#{bindings.MoyenneEliminatoire5.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneEliminatoire5.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneEliminatoire5.hints.precision}"
+                      shortDesc="#{bindings.MoyenneEliminatoire5.hints.tooltip}" id="it63">
+          <f:validator binding="#{bindings.MoyenneEliminatoire5.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneEliminatoire5.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeureCm1.inputValue}" label="#{bindings.HeureCm1.hints.label}"
+                      required="#{bindings.HeureCm1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeureCm1.hints.displayWidth}"
+                      maximumLength="#{bindings.HeureCm1.hints.precision}"
+                      shortDesc="#{bindings.HeureCm1.hints.tooltip}" id="it64">
+          <f:validator binding="#{bindings.HeureCm1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureCm1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeureTp1.inputValue}" label="#{bindings.HeureTp1.hints.label}"
+                      required="#{bindings.HeureTp1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeureTp1.hints.displayWidth}"
+                      maximumLength="#{bindings.HeureTp1.hints.precision}"
+                      shortDesc="#{bindings.HeureTp1.hints.tooltip}" id="it65">
+          <f:validator binding="#{bindings.HeureTp1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureTp1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeureTd1.inputValue}" label="#{bindings.HeureTd1.hints.label}"
+                      required="#{bindings.HeureTd1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeureTd1.hints.displayWidth}"
+                      maximumLength="#{bindings.HeureTd1.hints.precision}"
+                      shortDesc="#{bindings.HeureTd1.hints.tooltip}" id="it66">
+          <f:validator binding="#{bindings.HeureTd1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureTd1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeureStage1.inputValue}" label="#{bindings.HeureStage1.hints.label}"
+                      required="#{bindings.HeureStage1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeureStage1.hints.displayWidth}"
+                      maximumLength="#{bindings.HeureStage1.hints.precision}"
+                      shortDesc="#{bindings.HeureStage1.hints.tooltip}" id="it67">
+          <f:validator binding="#{bindings.HeureStage1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureStage1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.HeureTpe1.inputValue}" label="#{bindings.HeureTpe1.hints.label}"
+                      required="#{bindings.HeureTpe1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.HeureTpe1.hints.displayWidth}"
+                      maximumLength="#{bindings.HeureTpe1.hints.precision}"
+                      shortDesc="#{bindings.HeureTpe1.hints.tooltip}" id="it68">
+          <f:validator binding="#{bindings.HeureTpe1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureTpe1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Responsable1.inputValue}" label="#{bindings.Responsable1.hints.label}"
+                      required="#{bindings.Responsable1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Responsable1.hints.displayWidth}"
+                      maximumLength="#{bindings.Responsable1.hints.precision}"
+                      shortDesc="#{bindings.Responsable1.hints.tooltip}" id="it69">
+          <f:validator binding="#{bindings.Responsable1.validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:noteWindow>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p19" contentDelivery="lazyUncached">
+    <af:noteWindow id="nw7">
+      <af:panelFormLayout id="pfl7">
+        <af:inputText value="#{bindings.LibLongUe2.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibLongUe2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibLongUe2.hints.displayWidth}"
+                      maximumLength="#{bindings.LibLongUe2.hints.precision}"
+                      shortDesc="#{bindings.LibLongUe2.hints.tooltip}" id="it70">
+          <f:validator binding="#{bindings.LibLongUe2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CodificationUe2.inputValue}" label="#{viewcontrollerBundle.CODIFICATION}"
+                      required="#{bindings.CodificationUe2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CodificationUe2.hints.displayWidth}"
+                      maximumLength="#{bindings.CodificationUe2.hints.precision}"
+                      shortDesc="#{bindings.CodificationUe2.hints.tooltip}" id="it71">
+          <f:validator binding="#{bindings.CodificationUe2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CodeSemestre2.inputValue}" label="#{viewcontrollerBundle.SEMESTRE}"
+                      required="#{bindings.CodeSemestre2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CodeSemestre2.hints.displayWidth}"
+                      maximumLength="#{bindings.CodeSemestre2.hints.precision}"
+                      shortDesc="#{bindings.CodeSemestre2.hints.tooltip}" id="it72">
+          <f:validator binding="#{bindings.CodeSemestre2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.CodeSemestre2.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CreditUe2.inputValue}" label="#{viewcontrollerBundle.CREDIT}"
+                      required="#{bindings.CreditUe2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CreditUe2.hints.displayWidth}"
+                      maximumLength="#{bindings.CreditUe2.hints.precision}"
+                      shortDesc="#{bindings.CreditUe2.hints.tooltip}" id="it73">
+          <f:validator binding="#{bindings.CreditUe2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.CreditUe2.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Coefue2.inputValue}" label="#{viewcontrollerBundle.COEFICIENT}"
+                      required="#{bindings.Coefue2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Coefue2.hints.displayWidth}"
+                      maximumLength="#{bindings.Coefue2.hints.precision}" shortDesc="#{bindings.Coefue2.hints.tooltip}"
+                      id="it74">
+          <f:validator binding="#{bindings.Coefue2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Coefue2.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibCategorieUe2.inputValue}" label="#{viewcontrollerBundle.CAT_U00E9GORIE_UE}"
+                      required="#{bindings.LibCategorieUe2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibCategorieUe2.hints.displayWidth}"
+                      maximumLength="#{bindings.LibCategorieUe2.hints.precision}"
+                      shortDesc="#{bindings.LibCategorieUe2.hints.tooltip}" id="it75">
+          <f:validator binding="#{bindings.LibCategorieUe2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibNature2.inputValue}" label="#{viewcontrollerBundle.NATURE_UE}"
+                      required="#{bindings.LibNature2.hints.mandatory}"
+                      columns="#{bindings.LibNature2.hints.displayWidth}"
+                      maximumLength="#{bindings.LibNature2.hints.precision}"
+                      shortDesc="#{bindings.LibNature2.hints.tooltip}" id="it27">
+          <f:validator binding="#{bindings.LibNature2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneValidation6.inputValue}"
+                      label="#{viewcontrollerBundle.MOYENNE_VALIDATION}"
+                      required="#{bindings.MoyenneValidation6.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneValidation6.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneValidation6.hints.precision}"
+                      shortDesc="#{bindings.MoyenneValidation6.hints.tooltip}" id="it77">
+          <f:validator binding="#{bindings.MoyenneValidation6.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneValidation6.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.MoyenneEliminatoire6.inputValue}"
+                      label="#{viewcontrollerBundle.MOYENNE_ELIMINATOIRE}"
+                      required="#{bindings.MoyenneEliminatoire6.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.MoyenneEliminatoire6.hints.displayWidth}"
+                      maximumLength="#{bindings.MoyenneEliminatoire6.hints.precision}"
+                      shortDesc="#{bindings.MoyenneEliminatoire6.hints.tooltip}" id="it78">
+          <f:validator binding="#{bindings.MoyenneEliminatoire6.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneEliminatoire6.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.NbreEc2.inputValue}" label="#{viewcontrollerBundle.NOMBRE_EC}"
+                      required="#{bindings.NbreEc2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.NbreEc2.hints.displayWidth}"
+                      maximumLength="#{bindings.NbreEc2.hints.precision}" shortDesc="#{bindings.NbreEc2.hints.tooltip}"
+                      id="it79">
+          <f:validator binding="#{bindings.NbreEc2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.NbreEc2.format}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.ResponsableId2.inputValue}" label="#{viewcontrollerBundle.RESPONSABLE}"
+                            required="#{bindings.ResponsableId2.hints.mandatory}"
+                            shortDesc="#{bindings.ResponsableId2.hints.tooltip}" readOnly="true" id="soc16">
+          <f:selectItems value="#{bindings.ResponsableId2.items}" id="si16"/>
+          <f:validator binding="#{bindings.ResponsableId2.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+    </af:noteWindow>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p20" contentDelivery="lazyUncached">
+    <af:dialog id="d12" type="cancel" cancelTextAndAccessKey="Fermer"
+               title="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}">
+      <f:facet name="buttonBar"/>
+      <af:panelCollection id="pc12" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.ScolFilEc21.collectionModel}" var="row" rows="#{bindings.ScolFilEc21.rangeSize}"
+                  emptyText="#{bindings.ScolFilEc21.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.ScolFilEc21.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ScolFilEc21.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.ScolFilEc21.rangeSize}"
+                  filterModel="#{bindings.ScolFilEc2Query.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.ScolFilEc2Query.processQuery}" varStatus="vs" id="t11"
+                  columnStretching="column:c112">
+          <af:column sortProperty="#{bindings.ScolFilEc21.hints.LibLongEc.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.ScolFilEc21.hints.LibLongEc.label}" id="c112">
+            <af:outputText value="#{row.LibLongEc}" shortDesc="#{bindings.ScolFilEc21.hints.LibLongEc.tooltip}"
+                           id="ot49"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ScolFilEc21.hints.CodificationEc.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.ScolFilEc21.hints.CodificationEc.label}" id="c113">
+            <af:outputText value="#{row.CodificationEc}"
+                           shortDesc="#{bindings.ScolFilEc21.hints.CodificationEc.tooltip}" id="ot52"/>
+          </af:column>
+          <af:column id="c114">
+            <af:showPopupBehavior popupId=":::p21"/>
+            <af:link id="l12" icon="/images/icons8-eye-24.png"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p21" contentDelivery="lazyUncached">
+    <af:noteWindow id="nw8">
+      <af:panelBorderLayout id="pbl1">
+        <f:facet name="top"/>
+        <f:facet name="bottom"/>
+        <f:facet name="start"/>
+        <f:facet name="end"/>
+        <af:panelFormLayout id="pfl8">
+          <af:inputText value="#{bindings.LibLongEc2.inputValue}" label="#{bindings.LibLongEc2.hints.label}"
+                        required="#{bindings.LibLongEc2.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.LibLongEc2.hints.displayWidth}"
+                        maximumLength="#{bindings.LibLongEc2.hints.precision}"
+                        shortDesc="#{bindings.LibLongEc2.hints.tooltip}" id="it80">
+            <f:validator binding="#{bindings.LibLongEc2.validator}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.CodificationEc2.inputValue}" label="#{bindings.CodificationEc2.hints.label}"
+                        required="#{bindings.CodificationEc2.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.CodificationEc2.hints.displayWidth}"
+                        maximumLength="#{bindings.CodificationEc2.hints.precision}"
+                        shortDesc="#{bindings.CodificationEc2.hints.tooltip}" id="it81">
+            <f:validator binding="#{bindings.CodificationEc2.validator}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.Coefficient4.inputValue}" label="#{bindings.Coefficient4.hints.label}"
+                        required="#{bindings.Coefficient4.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.Coefficient4.hints.displayWidth}"
+                        maximumLength="#{bindings.Coefficient4.hints.precision}"
+                        shortDesc="#{bindings.Coefficient4.hints.tooltip}" id="it82">
+            <f:validator binding="#{bindings.Coefficient4.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.Coefficient4.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.LibNatureEc2.inputValue}" label="#{bindings.LibNatureEc2.hints.label}"
+                        required="#{bindings.LibNatureEc2.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.LibNatureEc2.hints.displayWidth}"
+                        maximumLength="#{bindings.LibNatureEc2.hints.precision}"
+                        shortDesc="#{bindings.LibNatureEc2.hints.tooltip}" id="it83">
+            <f:validator binding="#{bindings.LibNatureEc2.validator}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.PourcentageCc3.inputValue}" label="#{bindings.PourcentageCc3.hints.label}"
+                        required="#{bindings.PourcentageCc3.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.PourcentageCc3.hints.displayWidth}"
+                        maximumLength="#{bindings.PourcentageCc3.hints.precision}"
+                        shortDesc="#{bindings.PourcentageCc3.hints.tooltip}" id="it84">
+            <f:validator binding="#{bindings.PourcentageCc3.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.PourcentageCc3.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.PourcentageCt3.inputValue}" label="#{bindings.PourcentageCt3.hints.label}"
+                        required="#{bindings.PourcentageCt3.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.PourcentageCt3.hints.displayWidth}"
+                        maximumLength="#{bindings.PourcentageCt3.hints.precision}"
+                        shortDesc="#{bindings.PourcentageCt3.hints.tooltip}" id="it85">
+            <f:validator binding="#{bindings.PourcentageCt3.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.PourcentageCt3.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.MoyenneValidation7.inputValue}"
+                        label="#{bindings.MoyenneValidation7.hints.label}"
+                        required="#{bindings.MoyenneValidation7.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.MoyenneValidation7.hints.displayWidth}"
+                        maximumLength="#{bindings.MoyenneValidation7.hints.precision}"
+                        shortDesc="#{bindings.MoyenneValidation7.hints.tooltip}" id="it86">
+            <f:validator binding="#{bindings.MoyenneValidation7.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneValidation7.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.MoyenneEliminatoire7.inputValue}"
+                        label="#{bindings.MoyenneEliminatoire7.hints.label}"
+                        required="#{bindings.MoyenneEliminatoire7.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.MoyenneEliminatoire7.hints.displayWidth}"
+                        maximumLength="#{bindings.MoyenneEliminatoire7.hints.precision}"
+                        shortDesc="#{bindings.MoyenneEliminatoire7.hints.tooltip}" id="it87">
+            <f:validator binding="#{bindings.MoyenneEliminatoire7.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.MoyenneEliminatoire7.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.HeureCm2.inputValue}" label="#{bindings.HeureCm2.hints.label}"
+                        required="#{bindings.HeureCm2.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.HeureCm2.hints.displayWidth}"
+                        maximumLength="#{bindings.HeureCm2.hints.precision}"
+                        shortDesc="#{bindings.HeureCm2.hints.tooltip}" id="it88">
+            <f:validator binding="#{bindings.HeureCm2.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureCm2.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.HeureTp2.inputValue}" label="#{bindings.HeureTp2.hints.label}"
+                        required="#{bindings.HeureTp2.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.HeureTp2.hints.displayWidth}"
+                        maximumLength="#{bindings.HeureTp2.hints.precision}"
+                        shortDesc="#{bindings.HeureTp2.hints.tooltip}" id="it89">
+            <f:validator binding="#{bindings.HeureTp2.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureTp2.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.HeureTd2.inputValue}" label="#{bindings.HeureTd2.hints.label}"
+                        required="#{bindings.HeureTd2.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.HeureTd2.hints.displayWidth}"
+                        maximumLength="#{bindings.HeureTd2.hints.precision}"
+                        shortDesc="#{bindings.HeureTd2.hints.tooltip}" id="it90">
+            <f:validator binding="#{bindings.HeureTd2.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureTd2.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.HeureStage2.inputValue}" label="#{bindings.HeureStage2.hints.label}"
+                        required="#{bindings.HeureStage2.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.HeureStage2.hints.displayWidth}"
+                        maximumLength="#{bindings.HeureStage2.hints.precision}"
+                        shortDesc="#{bindings.HeureStage2.hints.tooltip}" id="it91">
+            <f:validator binding="#{bindings.HeureStage2.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureStage2.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.HeureTpe2.inputValue}" label="#{bindings.HeureTpe2.hints.label}"
+                        required="#{bindings.HeureTpe2.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.HeureTpe2.hints.displayWidth}"
+                        maximumLength="#{bindings.HeureTpe2.hints.precision}"
+                        shortDesc="#{bindings.HeureTpe2.hints.tooltip}" id="it92">
+            <f:validator binding="#{bindings.HeureTpe2.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.HeureTpe2.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.Responsable2.inputValue}" label="#{bindings.Responsable2.hints.label}"
+                        required="#{bindings.Responsable2.hints.mandatory}" readOnly="true"
+                        columns="#{bindings.Responsable2.hints.displayWidth}"
+                        maximumLength="#{bindings.Responsable2.hints.precision}"
+                        shortDesc="#{bindings.Responsable2.hints.tooltip}" id="it93">
+            <f:validator binding="#{bindings.Responsable2.validator}"/>
+          </af:inputText>
+        </af:panelFormLayout>
+      </af:panelBorderLayout>
+    </af:noteWindow>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p22" binding="#{MaquetteBean.popupImportMaq}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d13" title="Importer Etudiants" inlineStyle="text-align:center;border-radius:8px" affirmativeTextAndAccessKey="Enregistrer"
+               cancelTextAndAccessKey="Annuler" noTextAndAccessKey="Fermer" type="none">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl22" layout="vertical" inlineStyle="text-align:center;">
+        <af:inputFile label="Selectionner" id="if2" valueChangeListener="#{MaquetteBean.onImportMaqValueChanged}"
+                      value="#{requestScope.MaquetteBean.uploadedMaqFile}"/>
+        <af:panelGroupLayout id="pgl23" inlineStyle="line-height:normal;">
+          <af:button text="Valider" id="b11" actionListener="#{MaquetteBean.onImportMaqValdeAction}"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="enregistrement_diplomePageDef"
+                Package="inscription.enregistrement_diplome">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="DiplomesEtudiants" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="DiplomesEtudiantsIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="DiplomesEtudiantsIterator" StaticList="false" Uses="LOV_IdTypeMention" id="IdTypeMention"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="DiplomesEtudiantsIterator" StaticList="false" Uses="LOV_IdGradesFormation"
+          id="IdGradesFormation" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="DiplomesEtudiantsIterator" StaticList="false" Uses="LOV_IdSpecialite" id="IdSpecialite"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="DiplomesEtudiantsIterator" StaticList="false" Uses="LOV_IdOption" id="IdOption"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="DiplomesEtudiantsIterator" id="IdEtudiant">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="DiplomesEtudiantsIterator" StaticList="false" Uses="LOV_IdAnneesUnivers" id="IdAnneesUnivers"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="DiplomesEtudiantsIterator" id="Lieu">
+      <AttrNames>
+        <Item Value="Lieu"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="DiplomesEtudiantsIterator" id="DateObtention">
+      <AttrNames>
+        <Item Value="DateObtention"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="DiplomesEtudiantsIterator" StaticList="false" Uses="LOV_PaysObtention" id="PaysObtention"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="DiplomesEtudiantsIterator" id="Serie">
+      <AttrNames>
+        <Item Value="Serie"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="DiplomesEtudiantsIterator" StaticList="false" Uses="LOV_IdEtab" id="IdEtab"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="DiplomesEtudiantsIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

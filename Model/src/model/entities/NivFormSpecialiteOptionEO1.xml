@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NivFormSpecialiteOptionEO1"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="NIV_FORM_SPECIALITE_OPTION"
+  AliasName="NivFormSpecialiteOptionEO1"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdNivFormSpecOption"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIV_FORM_SPEC_OPTION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="NIV_FORM_SPECIALITE_OPTION"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdNiveauFormation"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NIV_FORM_SPECIALITE_OPTION"/>
+  <Attribute
+    Name="Codeoptionscol"
+    Precision="20"
+    ColumnName="CODEOPTIONSCOL"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="NIV_FORM_SPECIALITE_OPTION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NIV_FORM_SPECIALITE_OPTION"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NIV_FORM_SPECIALITE_OPTION"/>
+  <Key
+    Name="PkIdNivFormSpecOption"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_ID_NIV_FORM_SPEC_OPTION"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NivFormSpecialiteOptionEO1.IdNivFormSpecOption"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormSpecOptNivFr">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAUX_FORMATIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORM_SPEC_OPT_NIV_FR"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NivFormSpecialiteOptionEO1.IdNiveauFormation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormSpecOptScolOpt">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="OPTIONNIVSECSCOL_PK"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORM_SPEC_OPT_SCOL_OPT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NivFormSpecialiteOptionEO1.Codeoptionscol"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormSpecOptUtiCre">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORM_SPEC_OPT_UTI_CRE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NivFormSpecialiteOptionEO1.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormSpecOptUtiMod">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORM_SPEC_OPT_UTI_MOD"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NivFormSpecialiteOptionEO1.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

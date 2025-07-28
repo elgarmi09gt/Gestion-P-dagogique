@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="EcNotClosedDelibUeROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.EcNotClosedDelibUeROVORowImpl"
+  ComponentClass="model.readOnlyView.EcNotClosedDelibUeROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.EcNotClosedDelibUeROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="p_prcrs_maq"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="p_calendrier"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="p_fil_ue"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[Select distinct fec.ID_FILIERE_UE_SEMSTRE_EC,ec.LIBELLE_LONG||'('||tc.LIBELLE_LONG||')' Libelle_Ec,mec.ID_TYPE_CONTROLE         
+from ec        
+join FILIERE_UE_SEMSTRE_EC fec on ec.ID_EC=fec.ID_EC         
+JOIN MODE_CONTROLE_EC mec on fec.ID_FILIERE_UE_SEMSTRE_EC=mec.ID_FILIERE_UE_SEMSTRE_EC         
+join PARCOURS_MAQUETTE_ANNEE pma on pma.ID_PARCOURS_MAQUET_ANNEE=mec.ID_PARCOURS_MAQUETTE_ANNEE         
+join NIVEAUX_FORMATION_PARCOURS nfp on pma.ID_NIVEAU_FORMATION_PARCOURS=nfp.ID_NIVEAU_FORMATION_PARCOURS         
+join CALENDRIER_DELIBERATION cd on nfp.ID_NIVEAU_FORMATION_COHORTE=cd.ID_NIVEAU_FORMATION_COHORTE         
+and pma.ID_ANNEES_UNIVERS=cd.ID_ANNEES_UNIVERS         
+Join FILIERE_UE_SEMSTRE fus on pma.ID_MAQUETTE=fus.ID_MAQUETTE and fec.ID_FILIERE_UE_SEMSTRE=fus.ID_FILIERE_UE_SEMSTRE          
+and fus.ID_SEMESTRE=cd.ID_SEMESTRE         
+join TYPE_CONTROLE tc on mec.ID_TYPE_CONTROLE=tc.ID_TYPE_CONTROLE         
+left join VALIDATION_SAISIE_NOTE vsn on pma.ID_PARCOURS_MAQUET_ANNEE=vsn.ID_PARCOURS_MAQ_ANNEE          
+and cd.ID_CALENDRIER_DELIBERATION=vsn.ID_CALENDRIER_DELIBERATION         
+and vsn.ID_FILIERE_UE_SEMSTRE_EC=fec.ID_FILIERE_UE_SEMSTRE_EC and mec.ID_TYPE_CONTROLE=vsn.ID_TYPE_CONTROLE          
+and vsn.SAISIE_VALIDEE='O'      
+where pma.ID_PARCOURS_MAQUET_ANNEE=:p_prcrs_maq and cd.ID_CALENDRIER_DELIBERATION=:p_calendrier  and fus.ID_FILIERE_UE_SEMSTRE=:p_fil_ue          
+and vsn.ID_VALIDATION_SAISIE_NOTE is null    
+order by Libelle_Ec]]></SQLQuery>
+  <ViewAttribute
+    Name="IdFiliereUeSemstreEc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_FILIERE_UE_SEMSTRE_EC"
+    Expression="ID_FILIERE_UE_SEMSTRE_EC"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleEc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="402"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_EC"
+    Expression="LIBELLE_EC"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="402"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdTypeControle"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_TYPE_CONTROLE"
+    Expression="ID_TYPE_CONTROLE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdFiliereUeSemstreEc"/>
+    <Item Value="IdTypeControle"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

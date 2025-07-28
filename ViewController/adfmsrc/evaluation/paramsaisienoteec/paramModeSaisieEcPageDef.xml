@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="paramModeSaisieEcPageDef"
+                Package="evaluation.paramsaisienoteec">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ParcrsParamModeSaisieEC" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="ParcrsParamModeSaisieECIterator"/>
+    <searchRegion Binds="ParcrsParamModeSaisieECIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ParcrsParamModeSaisieECQuery"/>
+    <iterator Binds="FiliereUeSemestreROVO" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="FiliereUeSemestreROVOIterator"/>
+    <searchRegion Binds="FiliereUeSemestreROVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FiliereUeSemestreROVOQuery"/>
+    <iterator Binds="FiliereUeSemestreEcROVO" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="FiliereUeSemestreEcROVOIterator"/>
+    <searchRegion Binds="FiliereUeSemestreEcROVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FiliereUeSemestreEcROVOQuery"/>
+    <iterator Binds="ModeControleEcVO" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="ModeControleEcVOIterator"/>
+    <searchRegion Binds="ModeControleEcVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ModeControleEcVOQuery"/>
+    <iterator Binds="IsParamModeCntrlExistROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsParamModeCntrlExistROVOIterator"/>
+    <iterator Binds="IsParamModeCntrlTerExistROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsParamModeCntrlTerExistROVOIterator"/>
+    <iterator Binds="IsModeControlEcUsedROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsModeControlEcUsedROVOIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ParcrsParamModeSaisieECIterator" id="ParcrsParamModeSaisieEC">
+      <nodeDefinition DefName="model.readOnlyView.ParcrsParamModeSaisieECROVO" Name="ParcrsParamModeSaisieEC0">
+        <AttrNames>
+          <Item Value="Niveauformationparcours"/>
+          <Item Value="IdAnneesUnivers"/>
+          <Item Value="Responsablefr"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FiliereUeSemestreROVOIterator" id="FiliereUeSemestreROVO">
+      <nodeDefinition DefName="model.readOnlyView.FiliereUeSemestreROVO" Name="FiliereUeSemestreROVO0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="IdUe"/>
+          <Item Value="Codification"/>
+          <Item Value="IdSemestre"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FiliereUeSemestreEcROVOIterator" id="FiliereUeSemestreEcROVO">
+      <nodeDefinition DefName="model.readOnlyView.FiliereUeSemestreEcROVO" Name="FiliereUeSemestreEcROVO0">
+        <AttrNames>
+          <Item Value="Codification"/>
+          <Item Value="IdEc"/>
+          <Item Value="Responsableniveau"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ModeControleEcVOIterator" id="ModeControleEcVO">
+      <nodeDefinition DefName="model.updatableview.ModeControleEcVO" Name="ModeControleEcVO0">
+        <AttrNames>
+          <Item Value="IdTypeControle"/>
+          <Item Value="IdModeControle"/>
+          <Item Value="Coefficient"/>
+          <Item Value="ModeCalcul"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ModeControleEcVOIterator" id="CreateModeControleEc"
+            InstanceName="evaluationAppDataControl.ModeControleEcVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="Rollback" DataControl="evaluationAppDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <attributeValues IterBinding="ModeControleEcVOIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="IsParamModeCntrlExistROVOIterator" id="IsParamModeCntrlExist"
+            InstanceName="evaluationAppDataControl.IsParamModeCntrlExistROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fil_ec_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="mde_cntrl_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="type_cntrl_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="prcrs_maq_an_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsParamModeCntrlTerExistROVOIterator" id="IsParamModeCntrlTerExist"
+            InstanceName="evaluationAppDataControl.IsParamModeCntrlTerExistROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fil_ec_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="type_cntrl_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="prcrs_maq_an_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsModeControlEcUsedROVOIterator" id="IsModeControlEcUsed"
+            InstanceName="evaluationAppDataControl.IsModeControlEcUsedROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="mde_cntrl_ec_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="ModeControleEcVOIterator" id="Delete" InstanceName="evaluationAppDataControl.ModeControleEcVO"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="ModeControleEcVOIterator" id="IdFiliereUeSemstreEc">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstreEc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ModeControleEcVOIterator" id="IdTypeControle">
+      <AttrNames>
+        <Item Value="IdTypeControle"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ModeControleEcVOIterator" id="IdModeControle">
+      <AttrNames>
+        <Item Value="IdModeControle"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ModeControleEcVOIterator" id="IdParcoursMaquetteAnnee">
+      <AttrNames>
+        <Item Value="IdParcoursMaquetteAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ModeControleEcVOIterator" id="IdModeControleEc">
+      <AttrNames>
+        <Item Value="IdModeControleEc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ModeControleEcVOIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isClosedSaisieNotesInter" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isClosedSaisieNotesInter" IsViewObjectMethod="false"
+                  DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isClosedSaisieNotesInter.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isClosedSaisieNotesInter_isClosedSaisieNotesInter_dataControl_dataProvider_isClosedSaisieNotesInter_result">
+      <NamedData NDName="fil_sem_ec" NDType="java.lang.Long"/>
+      <NamedData NDName="type_control" NDType="java.lang.Long"/>
+      <NamedData NDName="mode_control" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="FiliereUeSemestreEcROVOIterator" id="Responsableniveau">
+      <AttrNames>
+        <Item Value="Responsableniveau"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

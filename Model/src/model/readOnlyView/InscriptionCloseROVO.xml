@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="InscriptionCloseROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.InscriptionCloseROVORowImpl"
+  ComponentClass="model.readOnlyView.InscriptionCloseROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.InscriptionCloseROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="p_an"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="p_hs"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[SELECT distinct        
+    ov.ID_OUVERTURE_NIV_SEC,        
+    fr.ID_HISTORIQUES_STRUCTURE,        
+    nf.ANCIEN_CODE,        
+    au.ID_ANNEES_UNIVERS,        
+    nf.LIBELLE_LONG|| Decode(nf.IDENTITE,null,'',' ('||nf.IDENTITE||')') LIBELLE_LONG,        
+    au.LIBELLE_LONG Annees,        
+    ov.ID_TYPE_OUVERTURE,      
+    nf.id_niveau  
+FROM  
+    ((FORMATIONS fr JOIN NIVEAUX_FORMATIONS nf ON fr.ID_FORMATION = nf.ID_FORMATION) JOIN OUVERTURE_NIV_SEC ov ON nf.ID_NIVEAU_FORMATION = ov.ID_NIVEAU_FORMATION) JOIN ANNEES_UNIVERS au ON ov.ID_ANNEES_UNIVERS = au.ID_ANNEES_UNIVERS        
+WHERE    
+    ov.ID_ANNEES_UNIVERS = :p_an AND ov.OUVERT = 0 AND ov.ID_TYPE_OUVERTURE = 1 AND fr.ID_HISTORIQUES_STRUCTURE = :p_hs      
+ORDER BY nf.id_niveau]]></SQLQuery>
+  <ViewAttribute
+    Name="IdOuvertureNivSec"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_OUVERTURE_NIV_SEC"
+    Expression="ID_OUVERTURE_NIV_SEC"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdHistoriquesStructure"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="ID_HISTORIQUES_STRUCTURE"
+    Expression="ID_HISTORIQUES_STRUCTURE"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="AncienCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ANCIEN_CODE"
+    Expression="ANCIEN_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="500"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Annees"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ANNEES"
+    Expression="ANNEES"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdTypeOuverture"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_TYPE_OUVERTURE"
+    Expression="ID_TYPE_OUVERTURE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveau"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU"
+    Expression="ID_NIVEAU"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdOuvertureNivSec"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

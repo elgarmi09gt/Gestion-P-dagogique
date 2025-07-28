@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listanonymatPageDef"
+                Package="evaluation.anonymat">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ReglesAnonymatVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ReglesAnonymatVOIterator"/>
+    <searchRegion Binds="ReglesAnonymatVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ReglesAnonymatVOQuery"/>
+    <iterator Binds="Parcours" RangeSize="25" DataControl="evaluationAppDataControl" id="ParcoursIterator"/>
+    <searchRegion Binds="ParcoursIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ParcoursQuery"/>
+    <iterator Binds="IsRuleUsed" RangeSize="10" DataControl="evaluationAppDataControl" id="IsRuleUsedIterator"/>
+    <iterator Binds="gerRuleUsed" RangeSize="10" DataControl="evaluationAppDataControl" id="gerRuleUsedIterator"/>
+    <iterator Binds="AnonymatVO" RangeSize="10" DataControl="evaluationAppDataControl" id="AnonymatVOIterator"/>
+    <iterator Binds="StudentParcrsAnSemSess" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="StudentParcrsAnSemSessIterator"/>
+    <iterator Binds="GenAnonymatVO" RangeSize="10" DataControl="evaluationAppDataControl" id="GenAnonymatVOIterator"/>
+    <iterator Binds="IsExistEtuAno" RangeSize="10" DataControl="evaluationAppDataControl" id="IsExistEtuAnoIterator"/>
+    <iterator Binds="UsedAno" RangeSize="10" DataControl="evaluationAppDataControl" id="UsedAnoIterator"/>
+    <iterator Binds="AnonymatParcours" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="AnonymatParcoursIterator"/>
+    <searchRegion Binds="AnonymatParcoursIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="AnonymatParcoursQuery"/>
+    <iterator Binds="AnoGenParcours" RangeSize="10" DataControl="evaluationAppDataControl" id="AnoGenParcoursIterator"/>
+    <searchRegion Binds="AnoGenParcoursIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="AnoGenParcoursQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ReglesAnonymatVOIterator" id="ReglesAnonymatVO">
+      <nodeDefinition DefName="model.updatableview.ReglesAnonymatVO" Name="ReglesAnonymatVO0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ParcoursIterator" id="Parcours">
+      <nodeDefinition DefName="model.readOnlyView.ParcoursROVO" Name="Parcours0">
+        <AttrNames>
+          <Item Value="isChecked"/>
+          <Item Value="LibParcours"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="ParcoursIterator" id="isChecked" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isChecked"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <list IterBinding="ReglesAnonymatVOIterator" ListOperMode="navigation" ListIter="ReglesAnonymatVOIterator"
+          id="ReglesAnonymatVO1" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="ParcoursIterator" ListOperMode="navigation" ListIter="ParcoursIterator" id="Parcours1"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="gerRuleUsedIterator" id="GetRuleUsed" InstanceName="evaluationAppDataControl.gerRuleUsed"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_an" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_nfp" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_sess" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsRuleUsedIterator" id="IsRuleUsed" InstanceName="evaluationAppDataControl.IsRuleUsed"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_r" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_an" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_nfp" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_sess" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="getSelectedParcours" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getSelectedParcours" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getSelectedParcours.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getSelectedParcours_getSelectedParcours_dataControl_dataProvider_getSelectedParcours_result"/>
+    <action IterBinding="AnonymatVOIterator" id="AddRuleToParcrs" InstanceName="evaluationAppDataControl.AnonymatVO"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdRegleAnonymat" NDType="java.lang.String"/>
+      <NamedData NDName="IdAnneesUnivers" NDType="java.lang.String"/>
+      <NamedData NDName="IdNiveauFormationParcours" NDType="java.lang.String"/>
+      <NamedData NDName="IdSemestre" NDType="java.lang.String"/>
+      <NamedData NDName="IdSession" NDType="java.lang.String"/>
+      <NamedData NDName="IsActivate" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+    </action>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="StudentParcrsAnSemSessIterator" id="StudentParcrsSemSessAn"
+            InstanceName="evaluationAppDataControl.StudentParcrsAnSemSess" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_nfp" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_an" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_sess" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="GenAnonymatVOIterator" id="GenerateAnonymat"
+            InstanceName="evaluationAppDataControl.GenAnonymatVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdAnonymat" NDType="java.lang.String"/>
+      <NamedData NDName="IdEtudiant" NDType="java.lang.String"/>
+      <NamedData NDName="Anonymat" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="IsExistEtuAnoIterator" id="ExistsEtuAno"
+            InstanceName="evaluationAppDataControl.IsExistEtuAno" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_an" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_nfp" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_sess" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="initAno" RequiresUpdateModel="true" Action="invokeMethod" MethodName="initAno"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.initAno.dataControl.dataProvider">
+      <NamedData NDName="id_ano" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="UsedAnoIterator" id="GetAnoUsed" InstanceName="evaluationAppDataControl.UsedAno"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_an" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_sess" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_nfp" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="AnonymatParcoursIterator" id="GetAnonymatUsed"
+            InstanceName="evaluationAppDataControl.AnonymatParcours" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_hs" NDType="java.lang.Integer"/>
+    </action>
+    <tree IterBinding="AnonymatParcoursIterator" id="AnonymatParcours">
+      <nodeDefinition DefName="model.readOnlyView.AnonymatParcoursROVO" Name="AnonymatParcours0">
+        <AttrNames>
+          <Item Value="IsActivate"/>
+          <Item Value="IdSemestre"/>
+          <Item Value="IdSession"/>
+          <Item Value="IdNiveauFormationParcours"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="AnoGenParcoursIterator" id="AnoGenParcours">
+      <nodeDefinition DefName="model.readOnlyView.AnoGenParcours" Name="AnoGenParcours0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="Anonymat"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="AnoGenParcoursIterator" id="GetAnoGenParcours" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcous" NDType="java.lang.Integer"/>
+      <NamedData NDName="semestre" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+    </action>
+    <attributeValues IterBinding="ParcoursIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

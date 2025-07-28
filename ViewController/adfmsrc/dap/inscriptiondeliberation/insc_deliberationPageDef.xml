@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="insc_deliberationPageDef"
+                Package="dap.inscriptiondeliberation">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ParcoursUser" RangeSize="25" DataControl="evaluationAppDataControl" id="ParcoursUserIterator"/>
+    <iterator Binds="FilUeInscDelib" RangeSize="25" DataControl="evaluationAppDataControl" id="FilUeInscDelibIterator"/>
+    <iterator Binds="StudentInscDelibUe" RangeSize="15" DataControl="evaluationAppDataControl"
+              id="StudentInscDelibUeIterator"/>
+    <accessorIterator MasterBinding="StudentInscDelibUeIterator" Binds="InscriptionPedSemUeVO" RangeSize="25"
+                      DataControl="evaluationAppDataControl" BeanClass="model.updatableview.InscriptionPedSemUeVO"
+                      id="InscriptionPedSemUeVOIterator"/>
+    <searchRegion Binds="StudentInscDelibUeIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="StudentInscDelibUeQuery"/>
+  </executables>
+  <bindings>
+    <list IterBinding="ParcoursUserIterator" ListOperMode="navigation" ListIter="ParcoursUserIterator"
+          id="ParcoursUser" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="FilUeInscDelibIterator" ListOperMode="navigation" ListIter="FilUeInscDelibIterator"
+          id="FilUeInscDelib" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Codification"/>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="Rollback" DataControl="evaluationAppDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <tree IterBinding="StudentInscDelibUeIterator" id="StudentInscDelibUe">
+      <nodeDefinition DefName="model.readOnlyView.StudentInscDelibUeROVO" Name="StudentInscDelibUe0">
+        <AttrNames>
+          <Item Value="is_dlble"/>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="InscriptionPedSemUeVO"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="model.updatableview.InscriptionPedSemUeVO">
+        <AttrNames>
+          <Item Value="IsDelibarable"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="StudentInscDelibUeIterator" id="is_dlble" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="is_dlble"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+  </bindings>
+</pageDefinition>

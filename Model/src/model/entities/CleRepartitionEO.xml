@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="CleRepartitionEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="CLE_REPARTITION"
+  AliasName="CleRepartitionEO"
+  BindingStyle="OracleName"
+  xmlns:validation="http://xmlns.oracle.com/adfm/validation">
+  <Attribute
+    Name="IdCleRepartition"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_CLE_REPARTITION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="CLE_REPARTITION"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="IdRepartition"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_REPARTITION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CLE_REPARTITION"/>
+  <Attribute
+    Name="IdTypeCompte"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_TYPE_COMPTE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CLE_REPARTITION"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="CLE_REPARTITION"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="CLE_REPARTITION"/>
+  <Attribute
+    Name="UtiCree"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CLE_REPARTITION"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CLE_REPARTITION"/>
+  <Attribute
+    Name="Pourcentage"
+    Precision="5"
+    Scale="2"
+    ColumnName="POURCENTAGE"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="CLE_REPARTITION">
+    <validation:RangeValidationBean
+      Name="PourcentageRule0"
+      ResId="model.entities.CleRepartitionEO.Pourcentage_Rule_0"
+      OnAttribute="Pourcentage"
+      OperandType="LITERAL"
+      Inverse="false"
+      MinValue="0"
+      MaxValue="100"/>
+  </Attribute>
+  <Key
+    Name="PkCleRepartition"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_CLE_REPARTITION"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CleRepartitionEO.IdCleRepartition"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCleRepartRep">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_REPARTITION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CLE_REPART_REP"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CleRepartitionEO.IdRepartition"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCleRepartTypCpt">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_TYPE_CMPTE"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CLE_REPART_TYP_CPT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CleRepartitionEO.IdTypeCompte"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCleRepartUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CLE_REPART_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CleRepartitionEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCleRepartUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CLE_REPART_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.CleRepartitionEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</Entity>

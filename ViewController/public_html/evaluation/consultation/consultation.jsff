@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <af:panelGroupLayout id="pgl2" layout="scroll">
+    <af:panelGroupLayout id="pgl9" halign="left" layout="horizontal">
+      <af:inputText id="it1" binding="#{ConsultationBean.input_num}" label="Numéro Carte"
+                    contentStyle="font-size:large;width: 200px;  border-radius: 8px; line-height:30px;border : 1px solid #2898e8"
+                    value="#{ConsultationBean.input_search}"/>
+      <af:button text="Rechercher" id="b1" actionListener="#{ConsultationBean.OnSearchClicked}"
+                 icon="/images/icons8-search-16.png"
+                 inlineStyle="font-size:medium; text-align:center; background-color:Blue; border-radius:8px  ; line-height:30px;"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl5" layout="vertical" halign="center"
+                         inlineStyle="color:#2898E8; font-size:large; font-weight:bold;" visible="false"
+                         binding="#{ConsultationBean.detEtuPanGrp}">
+      <af:outputFormatted value="#{bindings.Datelieunaiss.inputValue}" id="of2"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl1" layout="vertical" binding="#{ConsultationBean.inscriptionPanelGrp}" visible="false">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{ConsultationBean.inscriptionPanelCollect}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.InscriptionsEtudiant.collectionModel}" var="row"
+                  rows="#{bindings.InscriptionsEtudiant.rangeSize}"
+                  emptyText="#{bindings.InscriptionsEtudiant.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.InscriptionsEtudiant.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.InscriptionsEtudiant.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.InscriptionsEtudiant.rangeSize}"
+                  filterModel="#{bindings.InscriptionsEtudiantQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.InscriptionsEtudiantQuery.processQuery}" varStatus="vs" id="t1"
+                  scrollPolicy="page" columnStretching="column:c2">
+          <af:column sortProperty="#{bindings.InscriptionsEtudiant.hints.Annee.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle1.ANNEE_UNIVERSITAIRE}" id="c1" width="150">
+            <af:outputFormatted value="#{row.bindings.Annee.inputValue}" id="of4"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscriptionsEtudiant.hints.LibParcours.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.PARCOURS}" id="c2">
+            <af:outputFormatted value="#{row.bindings.LibParcours.inputValue}" id="of5"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscriptionsEtudiant.hints.Credit.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle1.CREDIT}" id="c3">
+            <af:outputFormatted value="#{row.bindings.Credit.inputValue}" id="of6"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscriptionsEtudiant.hints.Resultat.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.RESULTAT}" id="c4"
+                     width="200">
+            <af:outputFormatted value="#{row.bindings.Resultat.inputValue}" id="of7"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl4" layout="vertical" visible="false" binding="#{ConsultationBean.resultatSemEtdPanGrp}">
+      <af:panelCollection id="pc2" styleClass="AFStretchWidth" binding="#{ConsultationBean.resSemEtdPanCollect}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.ResultatSemestreEtudiant.collectionModel}" var="row"
+                  rows="#{bindings.ResultatSemestreEtudiant.rangeSize}"
+                  emptyText="#{bindings.ResultatSemestreEtudiant.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.ResultatSemestreEtudiant.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ResultatSemestreEtudiant.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.ResultatSemestreEtudiant.rangeSize}"
+                  filterModel="#{bindings.ResultatSemestreEtudiantQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.ResultatSemestreEtudiantQuery.processQuery}" varStatus="vs" id="t2"
+                  partialTriggers=":::pc1:t1">
+          <af:column sortProperty="#{bindings.ResultatSemestreEtudiant.hints.LibelleLong.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.SEMESTRE}" id="c5"
+                     width="150">
+            <af:outputFormatted value="#{row.bindings.LibelleLong.inputValue}" id="of8"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ResultatSemestreEtudiant.hints.Note.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.NOTE}" id="c6">
+            <af:outputFormatted value="#{row.bindings.Note.inputValue}" id="of9"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ResultatSemestreEtudiant.hints.Credit.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.CREDIT}" id="c7">
+            <af:outputFormatted value="#{row.bindings.Credit.inputValue}" id="of10">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.ResultatSemestreEtudiant.hints.Credit.format}"/>
+            </af:outputFormatted>
+          </af:column>
+          <af:column sortProperty="#{bindings.ResultatSemestreEtudiant.hints.Resultat.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.RESULTAT}" id="c8"
+                     width="150">
+            <af:outputFormatted value="#{row.bindings.Resultat.inputValue}" id="of11"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:panelGroupLayout id="pgl3" layout="vertical" visible="false" binding="#{ConsultationBean.noInscrPanGrp}">
+    <af:outputFormatted value="Aucune Inscription trouvée" id="of1" inlineStyle="color:Orange; font-size:large;"/>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{ConsultationBean.popNoInsc}">
+    <af:dialog id="d1" type="cancel" cancelTextAndAccessKey="Fermer" title="Details Inscription">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl6" layout="vertical" halign="center">
+        <af:icon name="warning" id="i1"/>
+        <af:outputFormatted value="Aucune Inscription trouvée" id="of3" inlineStyle="color:Orange; font-size:large;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

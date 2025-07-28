@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="DelibUeModeCntrlROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.DelibUeModeCntrlROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="fil_ec"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="parcours_maq"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[Select distinct mec.ID_MODE_CONTROLE_EC ,mc.LIBELLE_LONG ||'('||tp.LIBELLE_COURT||')' modeCntrl    
+FROM PARCOURS_MAQUETTE_ANNEE pma    
+JOIN MODE_CONTROLE_EC mec on pma.ID_PARCOURS_MAQUET_ANNEE=mec.ID_PARCOURS_MAQUETTE_ANNEE    
+JOIN MODE_CONTROLE mc ON mec.ID_MODE_CONTROLE = mc.ID_MODE_CONTROLE    
+JOIN TYPE_CONTROLE tp on mec.ID_TYPE_CONTROLE=tp.ID_TYPE_CONTROLE    
+WHERE pma.ID_PARCOURS_MAQUET_ANNEE=:parcours_maq AND mec.ID_FILIERE_UE_SEMSTRE_EC=:fil_ec    
+Order by modeCntrl ASC]]></SQLQuery>
+  <ViewAttribute
+    Name="IdModeControleEc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_MODE_CONTROLE_EC"
+    Expression="ID_MODE_CONTROLE_EC"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Modecntrl"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="277"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="MODECNTRL"
+    Expression="MODECNTRL"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="277"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdModeControleEc"/>
+  </AttrArray>
+</ViewObject>

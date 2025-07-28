@@ -1,0 +1,960 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+  <af:panelTabbed position="above" id="pt1">
+    <af:showDetailItem id="tab1" text="SITUATION" disclosed="true">
+              <af:iterator value="#{EncaisseEtudBean.refresh_situation()}"  
+         id="i3" />
+      <af:panelGroupLayout id="pgl5" layout="horizontal">
+        <af:panelGroupLayout id="pgl1" layout="vertical">
+          <af:button text="Rechercher un Etudiant" id="b1"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;"
+                     partialSubmit="false" disabled="true"/>
+          <af:panelFormLayout id="pfl1" rows="3"
+                              inlineStyle="border:solid  2px #2897e8;width:800px;margin-top:10px;margin-left:10px;">
+            <f:facet name="footer"/>
+            <af:inputText id="it13" autoSubmit="true" label="Numéro Etudiant" value="#{EncaisseEtudBean.numero_etud}">
+              <af:clientListener method="catchKeyStroke" type="keyUp"/>
+              <af:serverListener type="filterShuttle" method="#{EncaisseEtudBean.onChangeNumeroEtud}"/>
+            </af:inputText>
+            <af:inputText id="it21" autoSubmit="true" label="Numéro d'identification Nationale"
+                          contentStyle="margin-bottom:5px;" value="#{EncaisseEtudBean.numero_cin}"
+                          disabled="#{sessionScope.etudNotEncEtdNull == '1' ? true : false}" partialTriggers="it13">
+              <af:clientListener method="catchKeyStroke" type="keyUp"/>
+              <af:serverListener type="filterShuttle" method="#{EncaisseEtudBean.onChangeNumeroCin}"/>
+            </af:inputText>
+            <af:inputText id="it2" autoSubmit="true" converter="javax.faces.Integer" label="Numéro Table"
+                          value="#{EncaisseEtudBean.numero_table}"
+                          disabled="#{sessionScope.cinNotEncEtdNull == '1' or sessionScope.etudNotEncEtdNull == '1' ? true : false}"
+                          partialTriggers="it13 it21">
+              <af:clientListener method="catchKeyStroke" type="keyUp"/>
+              <af:serverListener type="filterShuttle" method="#{EncaisseEtudBean.onChangeNumeroTable}"/>
+            </af:inputText>
+            <af:inputText id="it29" label="Prénom" value="#{EncaisseEtudBean.prenom}"
+                          disabled="#{sessionScope.tableNotEncEtdNull == '1' or sessionScope.etudNotEncEtdNull == '1'  or sessionScope.cinNotEncEtdNull == '1' ? true : false}"
+                          partialTriggers="it13 it21 it2 b2"/>
+            <af:inputText id="it30" label="Nom" value="#{EncaisseEtudBean.nom}"
+                          disabled="#{sessionScope.tableNotEncEtdNull == '1' or sessionScope.etudNotEncEtdNull == '1'  or sessionScope.cinNotEncEtdNull == '1' ? true : false}"
+                          partialTriggers="it13 it21 it2 b2"/>
+            <af:inputDate id="it31" label="Date Naissance" value="#{EncaisseEtudBean.date_naiss}"
+                          disabled="#{sessionScope.tableNotEncEtdNull == '1' or sessionScope.etudNotEncEtdNull == '1'  or sessionScope.cinNotEncEtdNull == '1' ? true : false}"
+                          partialTriggers="it13 it21 it2 b2"/>
+            <af:resource type="javascript">
+    function catchKeyStroke(event) {
+        component = event.getSource();
+        //if(component.getSubmittedValue().length == 0 || component.getSubmittedValue().length > 1)
+        //{
+            AdfCustomEvent.queue(component, "filterShuttle", 
+            {
+                filterKey : component.getSubmittedValue()
+            },true);
+            event.cancel();
+        //}
+    }
+  </af:resource>
+          </af:panelFormLayout>
+          <af:button text="Rechercher" id="b2"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+                     actionListener="#{EncaisseEtudBean.onValiderRecherche}"/>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="border:solid  2px #2897e8;margin-left:5px;">
+          <af:button text="Exonérations" id="b3"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+          <af:table value="#{bindings.InscExoEcolageRO.collectionModel}" var="row"
+                    rows="#{bindings.InscExoEcolageRO.rangeSize}"
+                    emptyText="#{bindings.InscExoEcolageRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.InscExoEcolageRO.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.InscExoEcolageRO.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.InscExoEcolageRO.rangeSize}"
+                    filterModel="#{bindings.InscExoEcolageROQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.InscExoEcolageROQuery.processQuery}" varStatus="vs" id="t3">
+            <af:column sortProperty="#{bindings.InscExoEcolageRO.hints.LibTypeExo.name}" filterable="true"
+                       sortable="true" headerText="Type Exoneration" id="c10" width="200">
+              <af:outputText value="#{row.LibTypeExo}" shortDesc="#{bindings.InscExoEcolageRO.hints.LibTypeExo.tooltip}"
+                             id="ot8"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.InscExoEcolageRO.hints.LibMotif.name}" filterable="true" sortable="true"
+                       headerText="Motif Exonération" id="c11" width="200">
+              <af:outputText value="#{row.LibMotif}" shortDesc="#{bindings.InscExoEcolageRO.hints.LibMotif.tooltip}"
+                             id="ot10"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.InscExoEcolageRO.hints.LibNature.name}" filterable="true"
+                       sortable="true" headerText="Nature" id="c12" width="120">
+              <af:outputText value="#{row.LibNature}" shortDesc="#{bindings.InscExoEcolageRO.hints.LibNature.tooltip}"
+                             id="ot11"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.InscExoEcolageRO.hints.Montant.name}" filterable="true" sortable="true"
+                       headerText="#{bindings.InscExoEcolageRO.hints.Montant.label}" id="c13">
+              <af:outputText value="#{row.Montant}" shortDesc="#{bindings.InscExoEcolageRO.hints.Montant.tooltip}"
+                             id="ot12">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.InscExoEcolageRO.hints.Montant.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.InscExoEcolageRO.hints.Taux.name}" filterable="true" sortable="true"
+                       headerText="#{bindings.InscExoEcolageRO.hints.Taux.label}" id="c14" width="50">
+              <af:outputText value="#{row.Taux}" shortDesc="#{bindings.InscExoEcolageRO.hints.Taux.tooltip}" id="ot13">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.InscExoEcolageRO.hints.Taux.format}"/>
+              </af:outputText>
+            </af:column>
+          </af:table>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl2" layout="horizontal" styleClass="AFStretchWidth"
+                           inlineStyle="border:solid  2px #2897e8;">
+        <af:panelGroupLayout id="pgl6" layout="vertical">
+          <af:button text="Formations" id="b4"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+          <af:panelGroupLayout id="pgl3" inlineStyle="border:solid  1px #2897e8;width:400px;margin-left:5px;"
+                               layout="vertical">
+            <af:panelStretchLayout id="psl1" dimensionsFrom="children">
+              <f:facet name="start"/>
+              <f:facet name="end"/>
+              <f:facet name="top"/>
+              <f:facet name="bottom"/>
+              <f:facet name="center">
+                <af:table value="#{bindings.ListeInscPedEcolRO.collectionModel}" var="row"
+                          rows="#{bindings.ListeInscPedEcolRO.rangeSize}"
+                          emptyText="#{bindings.ListeInscPedEcolRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0"
+                          selectedRowKeys="#{bindings.ListeInscPedEcolRO.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.ListeInscPedEcolRO.collectionModel.makeCurrent}"
+                          rowSelection="single" fetchSize="#{bindings.ListeInscPedEcolRO.rangeSize}"
+                          filterModel="#{bindings.ListeInscPedEcolROQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.ListeInscPedEcolROQuery.processQuery}" varStatus="vs" id="t1">
+                  <af:column sortProperty="#{bindings.ListeInscPedEcolRO.hints.LibNivForm.name}" filterable="true"
+                             sortable="true" headerText="Formations" id="c1" width="380">
+                    <af:outputText value="#{row.LibNivForm}"
+                                   shortDesc="#{bindings.ListeInscPedEcolRO.hints.LibNivForm.tooltip}" id="ot1"/>
+                  </af:column>
+                </af:table>
+              </f:facet>
+            </af:panelStretchLayout>
+          </af:panelGroupLayout>
+                    <af:panelGroupLayout id="pgl16" layout="vertical" inlineStyle="margin-top:20px;">
+            <af:button text="Etat financier " id="b13"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px; margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+            <af:panelFormLayout id="pfl2"
+                                inlineStyle="border:solid  2px #2897e8;margin-top:0px;width:300px;margin-left:10px;margin-bottom:10px;">
+              <f:facet name="footer"/>
+              <af:inputText label="Avoir" id="it1" value="#{EncaisseEtudBean.avoir}" disabled="true"
+                          partialTriggers="b2 b6" binding="#{EncaisseEtudBean.inputAvoirSitu}"/>
+            <af:inputText label="Reste à Payer" id="it4" value="#{EncaisseEtudBean.reste_a_payer}" disabled="true"
+                          partialTriggers="b2 b6" contentStyle="margin-bottom:5px;"
+                          binding="#{EncaisseEtudBean.inputRestePayerSitua}"/>
+            </af:panelFormLayout>
+            
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl7" layout="vertical">
+          <af:button text="Frais de formation" id="b5"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+          <af:panelGroupLayout id="pgl9" layout="horizontal">
+            <af:panelGroupLayout id="pgl8"
+                                 layout="vertical">
+              <af:panelGroupLayout id="pgl20" layout="vertical"
+                                   inlineStyle="border:solid  1px #2897e8;width:950px;margin-left:5px;margin-bottom:5px;">
+                <af:panelStretchLayout id="psl2" startWidth="50px" dimensionsFrom="children">
+                  <f:facet name="start"/>
+                  <f:facet name="end"/>
+                  <f:facet name="top"/>
+                  <f:facet name="bottom"/>
+                  <f:facet name="center">
+                    <af:table value="#{bindings.InscPedPaieEcolRO.collectionModel}" var="row"
+                              rows="#{bindings.InscPedPaieEcolRO.rangeSize}"
+                              emptyText="#{bindings.InscPedPaieEcolRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.InscPedPaieEcolRO.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.InscPedPaieEcolRO.collectionModel.makeCurrent}"
+                              rowSelection="single" fetchSize="#{bindings.InscPedPaieEcolRO.rangeSize}"
+                              filterModel="#{bindings.InscPedPaieEcolROQuery.queryDescriptor}" filterVisible="true"
+                              queryListener="#{bindings.InscPedPaieEcolROQuery.processQuery}" varStatus="vs" id="t2"
+                              scrollPolicy="page">
+                      <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.LibTypePaie.name}" filterable="true"
+                                 sortable="true" headerText="Type Paiement" id="c2" width="250">
+                        <af:outputText value="#{row.LibTypePaie}"
+                                       shortDesc="#{bindings.InscPedPaieEcolRO.hints.LibTypePaie.tooltip}" id="ot2"/>
+                      </af:column>
+                      <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.LibelleEchelon.name}"
+                                 filterable="true" sortable="true" headerText="Echéance" id="c3">
+                        <af:outputText value="#{row.LibelleEchelon}"
+                                       shortDesc="#{bindings.InscPedPaieEcolRO.hints.LibelleEchelon.tooltip}" id="ot3"/>
+                      </af:column>
+                      <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.DatePaiement.name}" filterable="true"
+                                 sortable="true" headerText="Date Paiement" id="c4">
+                        <f:facet name="filter">
+                          <af:inputDate value="#{bindings.InscPedPaieEcolROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DatePaiement.value}"
+                                        id="id1">
+                            <af:convertDateTime pattern="#{bindings.InscPedPaieEcolRO.hints.DatePaiement.format}"/>
+                          </af:inputDate>
+                        </f:facet>
+                        <af:outputText value="#{row.DatePaiement}"
+                                       shortDesc="#{bindings.InscPedPaieEcolRO.hints.DatePaiement.tooltip}" id="ot4">
+                          <af:convertDateTime pattern="#{bindings.InscPedPaieEcolRO.hints.DatePaiement.format}"/>
+                        </af:outputText>
+                      </af:column>
+                      <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.Montant.name}" filterable="true"
+                                 sortable="true" headerText="#{bindings.InscPedPaieEcolRO.hints.Montant.label}" id="c5">
+                        <af:outputText value="#{row.Montant}"
+                                       shortDesc="#{bindings.InscPedPaieEcolRO.hints.Montant.tooltip}" id="ot5">
+                          <af:convertNumber groupingUsed="false"
+                                            pattern="#{bindings.InscPedPaieEcolRO.hints.Montant.format}"/>
+                        </af:outputText>
+                      </af:column>
+                      <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.MontantExoneration.name}"
+                                 filterable="true" sortable="true" headerText="Montant Exoneration" id="c6">
+                        <af:outputText value="#{row.MontantExoneration}"
+                                       shortDesc="#{bindings.InscPedPaieEcolRO.hints.MontantExoneration.tooltip}"
+                                       id="ot6">
+                          <af:convertNumber groupingUsed="false"
+                                            pattern="#{bindings.InscPedPaieEcolRO.hints.MontantExoneration.format}"/>
+                        </af:outputText>
+                      </af:column>
+                      <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.NetAPayer.name}" filterable="true"
+                                 sortable="true" headerText="Net A Payer" id="c7">
+                        <af:outputText value="#{row.NetAPayer}"
+                                       shortDesc="#{bindings.InscPedPaieEcolRO.hints.NetAPayer.tooltip}" id="ot7">
+                          <af:convertNumber groupingUsed="false"
+                                            pattern="#{bindings.InscPedPaieEcolRO.hints.NetAPayer.format}"/>
+                        </af:outputText>
+                      </af:column>
+                      <af:column headerText="Valider" id="c8" width="50">
+                        <af:selectBooleanCheckbox value="#{row.bindings.Paye.inputValue}"
+                                                  label="#{row.bindings.Paye.label}"
+                                                  shortDesc="#{bindings.InscPedPaieEcolRO.hints.Paye.tooltip}" id="sbc1"
+                                                  disabled="true"/>
+                      </af:column>
+                      <af:column headerText="Annuler" id="c15" width="50">
+                        <af:selectBooleanCheckbox value="#{row.bindings.Annule.inputValue}"
+                                                  label="#{row.bindings.Annule.label}"
+                                                  shortDesc="#{bindings.InscPedPaieEcolRO.hints.Annule.tooltip}"
+                                                  id="sbc2"/>
+                      </af:column>
+                    </af:table>
+                  </f:facet>
+                </af:panelStretchLayout>
+              </af:panelGroupLayout>
+              <af:panelFormLayout id="pfl4"
+                                  inlineStyle="border:solid  2px #2897e8;margin-top:20px;width:300px;margin-left:270px;margin-bottom:10px;">
+            <f:facet name="footer"/>
+            <af:inputText label="Mensualité" id="it10"
+                          disabled="true" partialTriggers="b2 b6"
+                          value="#{EncaisseEtudBean.etat}" contentStyle="margin-bottom:5px;"
+                          binding="#{EncaisseEtudBean.inputMensSitua}"/>
+            <!--<af:inputText label="Reste à Payer" id="it12" value="#{EncaisseEtudBean.reste_a_payer}" disabled="true"
+                          partialTriggers="b7" contentStyle="margin-bottom:5px;"/>!-->
+          </af:panelFormLayout>
+            </af:panelGroupLayout>
+            <af:button text="Annuler Paiement" id="b6"
+                       inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:0px;margin-bottom:0px;"
+                       actionListener="#{EncaisseEtudBean.onAnnulerPaiement}"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </af:showDetailItem>
+    <af:showDetailItem id="tab2" text="PAIEMENT">
+         <af:iterator value="#{EncaisseEtudBean.refresh_paie()}"  
+         id="i1" />
+      <af:panelGroupLayout id="pgl11" layout="vertical">
+        <af:panelGroupLayout id="pgl10" layout="horizontal">
+                    <af:panelGroupLayout id="pgl14"
+                                 layout="vertical">
+        <af:button text="Frais à payer " id="b12"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px; margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+            <af:panelGroupLayout id="pgl15"
+                                 inlineStyle="border:solid  1px #2897e8;width:880px;margin-left:5px;margin-bottom:5px;"
+                                 layout="horizontal">
+              <af:table value="#{bindings.InscPedNotPaieEcolRO.collectionModel}" var="row"
+                        rows="#{bindings.InscPedNotPaieEcolRO.rangeSize}"
+                        emptyText="#{bindings.InscPedNotPaieEcolRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0"
+                        selectedRowKeys="#{bindings.InscPedNotPaieEcolRO.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.InscPedNotPaieEcolRO.collectionModel.makeCurrent}"
+                        rowSelection="single" fetchSize="#{bindings.InscPedNotPaieEcolRO.rangeSize}"
+                        filterModel="#{bindings.InscPedNotPaieEcolROQuery.queryDescriptor}" filterVisible="true"
+                        queryListener="#{bindings.InscPedNotPaieEcolROQuery.processQuery}" varStatus="vs" id="t4"
+                        scrollPolicy="page">
+                <af:column sortProperty="#{bindings.InscPedNotPaieEcolRO.hints.LibTypePaie.name}" filterable="true"
+                           sortable="true" headerText="Type Paiement" id="c9" width="250">
+                  <af:outputText value="#{row.LibTypePaie}"
+                                 shortDesc="#{bindings.InscPedNotPaieEcolRO.hints.LibTypePaie.tooltip}" id="ot9"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.InscPedNotPaieEcolRO.hints.LibelleEchelon.name}" filterable="true"
+                           sortable="true" headerText="Echéance" id="c16">
+                  <af:outputText value="#{row.LibelleEchelon}"
+                                 shortDesc="#{bindings.InscPedNotPaieEcolRO.hints.LibelleEchelon.tooltip}" id="ot14"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.InscPedNotPaieEcolRO.hints.DatePaiement.name}" filterable="true"
+                           sortable="true" headerText="Date Paiement" id="c17">
+                  <f:facet name="filter">
+                    <af:inputDate value="#{bindings.InscPedNotPaieEcolROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DatePaiement.value}"
+                                  id="id2">
+                      <af:convertDateTime pattern="#{bindings.InscPedNotPaieEcolRO.hints.DatePaiement.format}"/>
+                    </af:inputDate>
+                  </f:facet>
+                  <af:outputText value="#{row.DatePaiement}"
+                                 shortDesc="#{bindings.InscPedNotPaieEcolRO.hints.DatePaiement.tooltip}" id="ot15">
+                    <af:convertDateTime pattern="#{bindings.InscPedNotPaieEcolRO.hints.DatePaiement.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.InscPedNotPaieEcolRO.hints.Montant.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.InscPedNotPaieEcolRO.hints.Montant.label}" id="c18">
+                  <af:outputText value="#{row.Montant}"
+                                 shortDesc="#{bindings.InscPedNotPaieEcolRO.hints.Montant.tooltip}" id="ot16">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.InscPedNotPaieEcolRO.hints.Montant.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.InscPedNotPaieEcolRO.hints.MontantExoneration.name}"
+                           filterable="true" sortable="true" headerText="Montant Exonéré" id="c19">
+                  <af:outputText value="#{row.MontantExoneration}"
+                                 shortDesc="#{bindings.InscPedNotPaieEcolRO.hints.MontantExoneration.tooltip}"
+                                 id="ot17">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.InscPedNotPaieEcolRO.hints.MontantExoneration.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.InscPedNotPaieEcolRO.hints.NetAPayer.name}" filterable="true"
+                           sortable="true" headerText="Net A Payer" id="c20">
+                  <af:outputText value="#{row.NetAPayer}"
+                                 shortDesc="#{bindings.InscPedNotPaieEcolRO.hints.NetAPayer.tooltip}" id="ot18">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.InscPedNotPaieEcolRO.hints.NetAPayer.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column headerText="Payer" id="c21" width="50">
+                  <af:selectBooleanCheckbox value="#{row.bindings.Paye1.inputValue}" label="#{row.bindings.Paye.label}"
+                                            shortDesc="#{bindings.InscPedNotPaieEcolRO.hints.Paye.tooltip}" id="sbc3"
+                                            disabled="true"/>
+                </af:column>
+              </af:table>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl19" layout="vertical">
+            <af:button text="Etat financier " id="b17"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px; margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+            <af:panelFormLayout id="pfl5"
+                                inlineStyle="border:solid  2px #2897e8;margin-top:0px;width:300px;margin-left:10px;">
+              <f:facet name="footer"/>
+              <af:inputText label="Avoir" id="it11" value="#{EncaisseEtudBean.avoir}" disabled="true"
+                            partialTriggers="b7" binding="#{EncaisseEtudBean.inputAvoir}"/>
+              <af:inputText label="Due" id="it14"/>
+              <af:inputText label="Reste à Payer" id="it15" value="#{EncaisseEtudBean.reste_a_payer}" disabled="true"
+                            partialTriggers="b7" binding="#{EncaisseEtudBean.inputRestePayer}"/>
+            </af:panelFormLayout>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+                  <af:button text="Opérations" id="b10"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+        <af:panelFormLayout id="pfl3" rows="2"
+                            inlineStyle="border:solid  2px #2897e8;width:1050px;margin-top:10px;margin-left:10px;">
+          <f:facet name="footer"/>
+          <af:inputText label="Numéro reçu" id="it5" value="#{EncaisseEtudBean.num_recu}" disabled="true"
+                        binding="#{EncaisseEtudBean.inputNumRecu}"/>
+          <af:inputText label="Montant" id="it6" value="#{EncaisseEtudBean.montant}" converter="javax.faces.Integer"
+                        binding="#{EncaisseEtudBean.inputMontant}" autoSubmit="true"/>
+          <af:selectOneChoice value="#{bindings.ModePaiements.inputValue}" label="Mode Paiements"
+                              shortDesc="#{bindings.ModePaiements.hints.tooltip}" id="soc1"
+                              contentStyle="margin-top:10px;" autoSubmit="true"
+                              valueChangeListener="#{EncaisseEtudBean.onChangerModePaiement}">
+            <f:selectItems value="#{bindings.ModePaiements.items}" id="si1"/>
+            <f:validator binding="#{bindings.ModePaiements.validator}"/>
+          </af:selectOneChoice>
+          <af:inputText label="Numéro Chèque" id="it7" contentStyle="margin-bottom:10px;"
+                        value="#{EncaisseEtudBean.num_cheque}" partialTriggers="soc1"
+                        binding="#{EncaisseEtudBean.inputNumChq}"
+                        disabled="#{sessionScope.mode_paie_var == '1'  or sessionScope.mode_paie_var_virment == '1' ? true : false}"
+                        autoSubmit="true"/>
+          <af:inputText label="Numéro Virement" id="it8"
+                        value="#{EncaisseEtudBean.num_virment}" partialTriggers="soc1"
+                        binding="#{EncaisseEtudBean.inputNumVir}" autoSubmit="true"
+                        disabled="#{sessionScope.mode_paie_var == '1' or sessionScope.mode_paie_var_cheq == '1' ? true : false}"/>
+          <af:inputText label="Banque" id="it9"
+                        value="#{EncaisseEtudBean.banque}" partialTriggers="soc1"
+                        binding="#{EncaisseEtudBean.inputBanq}"
+                        disabled="#{sessionScope.mode_paie_var == '1' ? true : false}" autoSubmit="true"/>
+        </af:panelFormLayout>
+        <af:panelGroupLayout id="pgl12" inlineStyle="margin-top:20px;margin-left:300px;" halign="center" layout="horizontal">
+          <af:button text="Enregistrer" id="b7"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                     actionListener="#{EncaisseEtudBean.onEnregistrerPaiement}"
+                     disabled="#{sessionScope.paie_auto_var == '1' ? false : true}"/>
+          <af:button text="Reçu" id="b8"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;" binding="#{EncaisseEtudBean.boutton1}"
+                     immediate="true" clientComponent="true" actionListener="#{EncaisseEtudBean.onImprimerToutRecu}">
+            <!--<af:fileDownloadActionListener contentType="application/pdf" filename="test.pdf"
+                                           method="#{EncaisseEtudBean.onImprimeRecu}"/>!-->
+          </af:button>
+          <af:button text="Etat Paiements" id="b9"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;"
+                     actionListener="#{EncaisseEtudBean.onEtatPaiement}"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </af:showDetailItem>
+    <af:showDetailItem text="LES OPERATIONS" id="sdi1">
+    <af:iterator value="#{EncaisseEtudBean.refresh_situation()}"  
+         id="i2" />
+      <af:panelGroupLayout id="pgl23" layout="horizontal" halign="end" valign="bottom">
+        <af:panelGroupLayout id="pgl22" layout="vertical">
+          <af:button text="Opérations" id="b15"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+          <af:panelGroupLayout id="pgl18" layout="horizontal">
+            <af:table value="#{bindings.lesOperationsEtudRO.collectionModel}" var="row"
+                      rows="#{bindings.lesOperationsEtudRO.rangeSize}"
+                      emptyText="#{bindings.lesOperationsEtudRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.lesOperationsEtudRO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.lesOperationsEtudRO.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.lesOperationsEtudRO.rangeSize}"
+                      filterModel="#{bindings.lesOperationsEtudROQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.lesOperationsEtudROQuery.processQuery}" varStatus="vs" id="t6"
+                      scrollPolicy="page">
+              <af:column sortProperty="#{bindings.lesOperationsEtudRO.hints.Motif.name}" filterable="true"
+                         sortable="true" headerText="Motif" id="c30" width="200">
+                <af:outputText value="#{row.Motif}" shortDesc="#{bindings.lesOperationsEtudRO.hints.Motif.tooltip}"
+                               id="ot29"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.lesOperationsEtudRO.hints.Montant.name}" filterable="true"
+                         sortable="true" headerText="#{bindings.lesOperationsEtudRO.hints.Montant.label}" id="c31"
+                         width="150">
+                <af:outputText value="#{row.Montant}" shortDesc="#{bindings.lesOperationsEtudRO.hints.Montant.tooltip}"
+                               id="ot30">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.lesOperationsEtudRO.hints.Montant.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.lesOperationsEtudRO.hints.NumeroRecu.name}" filterable="true"
+                         sortable="true" headerText="Reçu" id="c32">
+                <af:outputText value="#{row.NumeroRecu}"
+                               shortDesc="#{bindings.lesOperationsEtudRO.hints.NumeroRecu.tooltip}" id="ot31"/>
+              </af:column>
+              <af:column headerText="Dépôt" id="c44" width="80">
+                <af:outputText value="#{row.Depot}" shortDesc="#{bindings.lesOperationsEtudRO.hints.Depot.tooltip}"
+                               id="ot41"/>
+              </af:column>
+              <af:column headerText="#{bindings.lesOperationsEtudRO.hints.Retrait.label}" id="c45" width="80">
+                <af:outputText value="#{row.Retrait}" shortDesc="#{bindings.lesOperationsEtudRO.hints.Retrait.tooltip}"
+                               id="ot42"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.lesOperationsEtudRO.hints.IdModePaiement.name}" filterable="true"
+                         sortable="true" headerText="Mode Paiement" id="c34">
+                <af:selectOneChoice value="#{row.bindings.IdModePaiement.inputValue}"
+                                    label="#{row.bindings.IdModePaiement.label}"
+                                    required="#{bindings.lesOperationsEtudRO.hints.IdModePaiement.mandatory}"
+                                    shortDesc="#{bindings.lesOperationsEtudRO.hints.IdModePaiement.tooltip}"
+                                    readOnly="true" id="soc3">
+                  <f:selectItems value="#{row.bindings.IdModePaiement.items}" id="si3"/>
+                  <f:validator binding="#{row.bindings.IdModePaiement.validator}"/>
+                </af:selectOneChoice>
+              </af:column>
+              <af:column sortProperty="#{bindings.lesOperationsEtudRO.hints.NumChqVir.name}" filterable="true"
+                         sortable="true" headerText="N° Chèque (Virement)" id="c35">
+                <af:outputText value="#{row.NumChqVir}"
+                               shortDesc="#{bindings.lesOperationsEtudRO.hints.NumChqVir.tooltip}" id="ot32"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.lesOperationsEtudRO.hints.Banque.name}" filterable="true"
+                         sortable="true" headerText="Banque" id="c36">
+                <af:outputText value="#{row.Banque}" shortDesc="#{bindings.lesOperationsEtudRO.hints.Banque.tooltip}"
+                               id="ot33"/>
+              </af:column>
+              <af:column headerText="Annuler" id="c37" width="50">
+                <af:selectBooleanCheckbox value="#{row.bindings.Annule1.inputValue}"
+                                          label="#{row.bindings.Annule.label}"
+                                          shortDesc="#{bindings.lesOperationsEtudRO.hints.Annule.tooltip}" id="sbc6"
+                                          binding="#{EncaisseEtudBean.check}"/>
+              </af:column>
+            </af:table>
+            <af:button text="Annuler Opérations" id="b16"
+                       inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                       actionListener="#{EncaisseEtudBean.onAnnulerOperations}"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+                            <af:panelGroupLayout id="pgl24" layout="vertical"
+                                                 inlineStyle="margin-top:20px;">
+            <af:button text="Etat financier " id="b18"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px; margin-bottom:10px;"
+                     partialSubmit="false" disabled="true"/>
+            <af:panelFormLayout id="pfl7"
+                                inlineStyle="border:solid  2px #2897e8;margin-top:0px;width:300px;margin-left:10px;margin-bottom:10px;">
+              <f:facet name="footer"/>
+              <af:inputText label="Avoir" id="it16" value="#{EncaisseEtudBean.avoir}" disabled="true"
+                          partialTriggers="b2 b6" binding="#{EncaisseEtudBean.inputAvoirOper}"/>
+            <af:inputText label="Reste à Payer" id="it17" value="#{EncaisseEtudBean.reste_a_payer}" disabled="true"
+                          partialTriggers="b2 b6" contentStyle="margin-bottom:5px;"
+                          binding="#{EncaisseEtudBean.inputRestePayerOper}"/>
+            </af:panelFormLayout>
+            
+          </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </af:showDetailItem>
+  </af:panelTabbed>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p11"
+                  contentDelivery="lazyUncached" binding="#{EncaisseEtudBean.popEtudNotInsc}">
+    <af:dialog id="d11" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+        <af:outputFormatted value="L'étudiant n'est pas inscrit !"
+                            id="of13"
+                            inlineStyle="font-size:x-large; color:red;"/>
+
+    </af:dialog>
+    </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+                  contentDelivery="lazyUncached" binding="#{EncaisseEtudBean.popCmptEtdNot}">
+    <af:dialog id="d1" type="ok" title="Information !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+        <af:outputFormatted value="Le Compte de l'étudiant n'est pas encore généré !"
+                            id="of1"
+                            inlineStyle="font-size:x-large; color:#008400;"/>
+
+    </af:dialog>
+    </af:popup>
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+                  contentDelivery="lazyUncached" binding="#{EncaisseEtudBean.popEtatPaie}">
+    <af:dialog id="d2" type="none" title="Etat de Paiement">
+      <f:facet name="buttonBar">
+        <af:button text="Imprimer" id="b14">
+          <af:fileDownloadActionListener filename="recouvrement ecolage #{sessionScope.prenom_etud_etat} #{sessionScope.nom_etud_etat} (#{sessionScope.num_etud_etat}).pdf" contentType="application/pdf"
+                                         method="#{EncaisseEtudBean.onImprimeEtatPaie}"/>
+        </af:button>
+        <af:button text="Fermer" id="b22" actionListener="#{EncaisseEtudBean.onFermerEtatPaie}"/>
+      </f:facet>
+      <af:panelGroupLayout id="pgl13" layout="vertical">
+        <af:button text="Etat de Paiements" id="b11"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;width:130px;"
+                   partialSubmit="false" disabled="true"/>
+        <af:table value="#{bindings.InscPedPaieEcolRO.collectionModel}" var="row"
+                  rows="#{bindings.InscPedPaieEcolRO.rangeSize}"
+                  emptyText="#{bindings.InscPedPaieEcolRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.InscPedPaieEcolRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.InscPedPaieEcolRO.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.InscPedPaieEcolRO.rangeSize}"
+                  filterModel="#{bindings.InscPedPaieEcolROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.InscPedPaieEcolROQuery.processQuery}" varStatus="vs" id="t5"
+                  scrollPolicy="page">
+          <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.LibTypePaie.name}" filterable="true"
+                     sortable="true" headerText="Type Paiement" id="c22" width="250">
+            <af:outputText value="#{row.LibTypePaie}"
+                           shortDesc="#{bindings.InscPedPaieEcolRO.hints.LibTypePaie.tooltip}" id="ot19"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.LibelleEchelon.name}" filterable="true"
+                     sortable="true" headerText="Echéance" id="c23">
+            <af:outputText value="#{row.LibelleEchelon}"
+                           shortDesc="#{bindings.InscPedPaieEcolRO.hints.LibelleEchelon.tooltip}" id="ot20"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.DatePaiement.name}" filterable="true"
+                     sortable="true" headerText="Date Paiement" id="c24">
+            <f:facet name="filter">
+              <af:inputDate value="#{bindings.InscPedPaieEcolROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DatePaiement.value}"
+                            id="id4">
+                <af:convertDateTime pattern="#{bindings.InscPedPaieEcolRO.hints.DatePaiement.format}"/>
+              </af:inputDate>
+            </f:facet>
+            <af:outputText value="#{row.DatePaiement}"
+                           shortDesc="#{bindings.InscPedPaieEcolRO.hints.DatePaiement.tooltip}" id="ot21">
+              <af:convertDateTime pattern="#{bindings.InscPedPaieEcolRO.hints.DatePaiement.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.Montant.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.InscPedPaieEcolRO.hints.Montant.label}" id="c25">
+            <af:outputText value="#{row.Montant}" shortDesc="#{bindings.InscPedPaieEcolRO.hints.Montant.tooltip}"
+                           id="ot22">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.InscPedPaieEcolRO.hints.Montant.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.MontantExoneration.name}" filterable="true"
+                     sortable="true" headerText="Montant Exoneration" id="c26">
+            <af:outputText value="#{row.MontantExoneration}"
+                           shortDesc="#{bindings.InscPedPaieEcolRO.hints.MontantExoneration.tooltip}" id="ot23">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.InscPedPaieEcolRO.hints.MontantExoneration.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedPaieEcolRO.hints.NetAPayer.name}" filterable="true" sortable="true"
+                     headerText="Net A Payer" id="c27">
+            <af:outputText value="#{row.NetAPayer}" shortDesc="#{bindings.InscPedPaieEcolRO.hints.NetAPayer.tooltip}"
+                           id="ot24">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.InscPedPaieEcolRO.hints.NetAPayer.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="Valider" id="c28" width="50">
+            <af:selectBooleanCheckbox value="#{row.bindings.Paye.inputValue}" label="#{row.bindings.Paye.label}"
+                                      shortDesc="#{bindings.InscPedPaieEcolRO.hints.Paye.tooltip}" id="sbc4"
+                                      disabled="true"/>
+          </af:column>
+          <af:column headerText="Annuler" id="c29" width="50">
+            <af:selectBooleanCheckbox value="#{row.bindings.Annule.inputValue}" label="#{row.bindings.Annule.label}"
+                                      shortDesc="#{bindings.InscPedPaieEcolRO.hints.Annule.tooltip}" id="sbc5"
+                                      disabled="true"/>
+          </af:column>
+        </af:table>
+                  <af:panelFormLayout id="pfl6"
+                                      inlineStyle="border:solid  2px #2897e8;margin-top:20px;width:300px;margin-left:270px;">
+            <f:facet name="footer"/>
+            <af:inputText label="Mensualité" id="it3"
+                          disabled="true" partialTriggers="b7" binding="#{EncaisseEtudBean.inputAvoir}"
+                          value="#{EncaisseEtudBean.etat}"/>
+            <af:inputText label="Reste à Payer" id="it12" value="#{EncaisseEtudBean.reste_a_payer}" disabled="true"
+                          partialTriggers="b7" contentStyle="margin-bottom:5px;"/>
+          </af:panelFormLayout>
+      </af:panelGroupLayout>
+    </af:dialog>
+    </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p3"
+                  contentDelivery="lazyUncached" binding="#{EncaisseEtudBean.popEtudNotMont}">
+    <af:dialog id="d3" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+        <af:outputFormatted value="Veuillez saisir le montant encaissé !"
+                            id="of2"
+                            inlineStyle="font-size:x-large; color:red;"/>
+
+    </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{EncaisseEtudBean.popRepExisteCle}">
+    <af:dialog id="d4" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+        <af:outputFormatted value="Veuillez vérifier la définition des clés de Répartition  !" id="of5"
+                            inlineStyle="font-size:x-large; color:red;"/>
+
+    </af:dialog>
+  </af:popup>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="p9" binding="#{EncaisseEtudBean.popRepVide}">
+    <af:dialog id="d9" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Veuillez définir une répartition "
+                          id="of3"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p5" binding="#{EncaisseEtudBean.popConfPaie}">
+    <af:dialog id="d5" title="Confirmation !" inlineStyle="text-align:center;"
+               dialogListener="#{EncaisseEtudBean.onDialogEnc}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous confirmer le(s) paiement(s) suivant(s) : " id="ot25" inlineStyle="font-size:large;" />
+      <af:forEach items="#{EncaisseEtudBean.reslists}" var="res">
+        <af:forEach items="#{res}" var="r" >
+          <af:panelGroupLayout id="pgl17" layout="horizontal" halign="center">
+            <af:outputFormatted value="=> #{r.key} : " id="of4" inlineStyle="font-size:large;  color:#008400;"/>
+            <af:outputFormatted value=" #{r.value} FCFA" id="of7" inlineStyle="font-size:large;  color:#008400;"/>
+          </af:panelGroupLayout>
+        </af:forEach>
+    </af:forEach>
+      <af:serverListener type="onDialogEvent" method="#{EncaisseEtudBean.onDialogCan}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+    </af:dialog>
+  </af:popup>
+        <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+ 
+          <af:popup childCreation="deferred" autoCancel="enabled" id="p6" binding="#{EncaisseEtudBean.popConfImpPay}">
+    <af:dialog id="d6" title="Impression du reçu de paiement !" inlineStyle="text-align:center;"
+               dialogListener="#{EncaisseEtudBean.onDialogImpRcu}" type="none">
+      <f:facet name="buttonBar">
+        <af:button text="Imprimer" id="b19"
+                   returnListener="#{EncaisseEtudBean.onReturnConfImp}">
+          <af:fileDownloadActionListener contentType="application/pdf"
+                                         filename="Reçu paiement #{sessionScope.num_recu_paie} #{sessionScope.prenom_etud_paie} &amp; #{sessionScope.nom_etud_paie} ( #{sessionScope.num_etud_paie} ).pdf"
+                                         method="#{EncaisseEtudBean.onImprimeRecu}"/>
+        </af:button>
+        <af:button text="Fermer" id="b20" actionListener="#{EncaisseEtudBean.onCancelConfImp}"/>
+      </f:facet>
+      <af:outputText value="Voulez-vous imprimer le reçu de paiement " id="ot26" inlineStyle="font-size:large;" />
+      <!--<af:serverListener type="onDialogEvent" method="#{EncaisseEtudBean.onDialogCanImpRcu}"/>
+      <af:clientListener method="onDialog" type="dialog"/>!-->
+    </af:dialog>
+  </af:popup>
+          <af:popup childCreation="deferred" autoCancel="disabled" id="p7" binding="#{EncaisseEtudBean.popConfAnnPaie}">
+    <af:dialog id="d7" title="Confirmation !" inlineStyle="text-align:center;"
+               dialogListener="#{EncaisseEtudBean.onDialogAnnPaie}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous annuler ( #{EncaisseEtudBean.nombre_case} ) paiement(s) ?" id="ot27" inlineStyle="font-size:large;" />
+      <af:serverListener type="onDialogEvent" method="#{EncaisseEtudBean.onDialogAnnPaieCan}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+    </af:dialog>
+  </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p8" binding="#{EncaisseEtudBean.popAnnPaieNot}">
+    <af:dialog id="d8" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Veuillez sélectionner le(s) paiements à annuler "
+                          id="of6"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+  
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p10"
+                      binding="#{EncaisseEtudBean.popConfAjoutSolde}">
+    <af:dialog id="d10" title="Ajouter une somme dans un compte !" inlineStyle="text-align:center;"
+               dialogListener="#{EncaisseEtudBean.onDialogAjoutSolde}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous confirmer l'ajout #{EncaisseEtudBean.montant}  FCFA dans le compte de l'Etudiant  " id="ot28" inlineStyle="font-size:large;" />
+      <af:serverListener type="onDialogEvent" method="#{EncaisseEtudBean.onDialogCanAjoutSolde}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+
+    </af:dialog>
+  </af:popup>
+  
+          <af:popup childCreation="deferred" autoCancel="disabled" id="p12" binding="#{EncaisseEtudBean.popSoldInsu}">
+    <af:dialog id="d12" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value=" Le solde disponible dans le compte est insuffisant "
+                          id="of8"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p13"
+                      binding="#{EncaisseEtudBean.popConfAnnOper}">
+    <af:dialog id="d13" title="Confirmation !" inlineStyle="text-align:center;"
+               dialogListener="#{EncaisseEtudBean.onDialogConfAnnOper}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous annuler ( #{EncaisseEtudBean.nombre_case} ) opération(s) ?" id="ot34" inlineStyle="font-size:large;" />
+      <af:serverListener type="onDialogEvent" method="#{EncaisseEtudBean.onDialogConfAnnOperCan}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+    </af:dialog>
+  </af:popup>
+  
+          <af:popup childCreation="deferred" autoCancel="disabled" id="p14"
+                    binding="#{EncaisseEtudBean.popConfAnnOperNot}">
+    <af:dialog id="d14" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Veuillez sélectionner le(s) opération(s) de dépôt à annuler "
+                          id="of9"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+  
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p15"
+                      binding="#{EncaisseEtudBean.popConfAnnOperNotPaie}">
+    <af:dialog id="d15" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl21" layout="vertical">
+        <af:outputFormatted value="Veuillez sélectionner le(s) opération(s) de dépôt à annuler " id="of10"
+                            inlineStyle="font-size:large; color:Red;"/>
+        <af:outputFormatted value="Veuillez aller dans l'onglet Paiement pour annuler ( #{EncaisseEtudBean.nombre_case} ) paiement(s)"
+                            id="of11" inlineStyle="font-size:large; color:Red;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p16"
+                      binding="#{EncaisseEtudBean.popPaieTsMois}">
+    <af:dialog id="d16" type="ok" title="Impossible !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value=" L'étudiant a déjà payé toutes les mensualités "
+                          id="of12"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+  
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p17" binding="#{EncaisseEtudBean.popImpToutOp}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d17" title="Imprimer une opération " inlineStyle="text-align:center;"
+               dialogListener="#{EncaisseEtudBean.onDialogConfImpToutOp}" type="none">
+      <f:facet name="buttonBar">
+        <af:button text="Imprimer" id="b21" actionListener="#{EncaisseEtudBean.onListenImp}"/>
+        <af:button text="Fermer" id="b23" actionListener="#{EncaisseEtudBean.onFermerConfToutOp}"/>
+      </f:facet>
+      <af:outputFormatted value="La liste des opérations effectuées par l'étudiant "
+                          id="of14"
+                                inlineStyle="font-size:large;"/>
+      <af:table value="#{bindings.LesOperationsDepotCmptEtudRO.collectionModel}" var="row"
+                rows="#{bindings.LesOperationsDepotCmptEtudRO.rangeSize}"
+                emptyText="#{bindings.LesOperationsDepotCmptEtudRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0"
+                selectedRowKeys="#{bindings.LesOperationsDepotCmptEtudRO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.LesOperationsDepotCmptEtudRO.collectionModel.makeCurrent}"
+                rowSelection="single" fetchSize="#{bindings.LesOperationsDepotCmptEtudRO.rangeSize}"
+                filterModel="#{bindings.LesOperationsDepotCmptEtudROQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.LesOperationsDepotCmptEtudROQuery.processQuery}" varStatus="vs" id="t7"
+                scrollPolicy="page">
+        <af:column sortProperty="#{bindings.LesOperationsDepotCmptEtudRO.hints.DateOperation.name}" filterable="true"
+                   sortable="true" headerText="Date Operation"
+                   id="c38">
+          <f:facet name="filter">
+            <af:inputDate value="#{bindings.LesOperationsDepotCmptEtudROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateOperation.value}"
+                          id="id3">
+              <af:convertDateTime pattern="#{bindings.LesOperationsDepotCmptEtudRO.hints.DateOperation.format}"/>
+            </af:inputDate>
+          </f:facet>
+          <af:outputText value="#{row.DateOperation}"
+                         shortDesc="#{bindings.LesOperationsDepotCmptEtudRO.hints.DateOperation.tooltip}" id="ot35">
+            <af:convertDateTime pattern="#{bindings.LesOperationsDepotCmptEtudRO.hints.DateOperation.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.LesOperationsDepotCmptEtudRO.hints.Montant.name}" filterable="true"
+                   sortable="true" headerText="#{bindings.LesOperationsDepotCmptEtudRO.hints.Montant.label}" id="c39"
+                   width="120">
+          <af:outputText value="#{row.Montant}"
+                         shortDesc="#{bindings.LesOperationsDepotCmptEtudRO.hints.Montant.tooltip}" id="ot36">
+            <af:convertNumber groupingUsed="false"
+                              pattern="#{bindings.LesOperationsDepotCmptEtudRO.hints.Montant.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.LesOperationsDepotCmptEtudRO.hints.NumeroRecu.name}" filterable="true"
+                   sortable="true" headerText="Numéro Reçu"
+                   id="c40" width="120">
+          <af:outputText value="#{row.NumeroRecu}"
+                         shortDesc="#{bindings.LesOperationsDepotCmptEtudRO.hints.NumeroRecu.tooltip}" id="ot37"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.LesOperationsDepotCmptEtudRO.hints.LibModePaie.name}" filterable="true"
+                   sortable="true" headerText="Mode"
+                   id="c41" width="200">
+          <af:outputText value="#{row.LibModePaie}"
+                         shortDesc="#{bindings.LesOperationsDepotCmptEtudRO.hints.LibModePaie.tooltip}" id="ot38"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.LesOperationsDepotCmptEtudRO.hints.Banque.name}" filterable="true"
+                   sortable="true" headerText="#{bindings.LesOperationsDepotCmptEtudRO.hints.Banque.label}" id="c42"
+                   width="200">
+          <af:outputText value="#{row.Banque}" shortDesc="#{bindings.LesOperationsDepotCmptEtudRO.hints.Banque.tooltip}"
+                         id="ot39"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.LesOperationsDepotCmptEtudRO.hints.NumChqVir.name}" filterable="true"
+                   sortable="true" headerText="N° Chèque (Virement)" id="c43" width="200">
+          <af:outputText value="#{row.NumChqVir}"
+                         shortDesc="#{bindings.LesOperationsDepotCmptEtudRO.hints.NumChqVir.tooltip}" id="ot40"/>
+        </af:column>
+      </af:table>
+    </af:dialog>
+  </af:popup>
+         <af:resource type="javascript">
+function customHandler(event) {
+                var exportCmd = AdfPage.PAGE.findComponentByAbsoluteId("cb1");
+                var actionEvent = new AdfActionEvent(exportCmd);
+                actionEvent.forceFullSubmit();
+                actionEvent.noResponseExpected();
+                actionEvent.queue();
+            }
+  </af:resource>
+          <af:popup childCreation="deferred" autoCancel="disabled" id="p18" contentDelivery="lazyUncached"
+                    binding="#{EncaisseEtudBean.popEtatInscNotVal}">
+        <af:dialog id="d18" type="ok" title="Impossible d'encaisser le paiement!" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Impossible d'encaisser le paiement de l'étudiant(e) ( #{sessionScope.etud_num_etud_caisse} )"
+                                id="of22" inlineStyle="font-size:large;"/>
+            <af:panelGroupLayout id="pgl25" layout="vertical" inlineStyle="margin-top:10px;" halign="center">
+                <af:panelFormLayout id="pfl8">
+                    <f:facet name="footer"/>
+                    <af:outputFormatted value="#{sessionScope.etud_bu_enRegle_caisse}" id="of23"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="#{sessionScope.etud_enLigne_caisse}" id="of24"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="#{sessionScope.etud_Apte_caisse}" id="of25"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="#{sessionScope.etud_Respnsable_caisse}" id="of26"
+                                        inlineStyle="font-size:large;color:red;"/>
+                </af:panelFormLayout>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    
+              <af:popup childCreation="deferred" autoCancel="disabled" id="p19" contentDelivery="lazyUncached"
+                        binding="#{EncaisseEtudBean.popInfPersAuc}">
+        <af:dialog id="d19" type="ok" title="Veuillez saisir les informations personnelles!" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Veuillez saisir soit :"
+                                id="of15" inlineStyle="font-size:large;"/>
+            <af:panelGroupLayout id="pgl26" layout="vertical" inlineStyle="margin-top:10px;" halign="center">
+                <af:panelFormLayout id="pfl9">
+                    <f:facet name="footer"/>
+                    <af:outputFormatted value="==> Un numéro de Table" id="of16"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="==> Un numéro Etudiant" id="of17"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="==> Un numéro d'Identification Nationale (CIN)" id="of18"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="==> Les informations personnelles" id="of19"
+                                        inlineStyle="font-size:large;color:red;"/>
+                </af:panelFormLayout>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+          <af:popup childCreation="deferred" autoCancel="disabled" id="p20" contentDelivery="lazyUncached"
+                    binding="#{EncaisseEtudBean.popEtudRechNotExist}">
+        <af:dialog id="d20" type="ok" title="Veuillez saisir les informations personnelles !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="L'étudiant(e) du :"
+                                id="of20" inlineStyle="font-size:large;"/>
+            <af:panelGroupLayout id="pgl27" layout="vertical" inlineStyle="margin-top:10px;" halign="center">
+                <af:panelFormLayout id="pfl10">
+                    <f:facet name="footer"/>
+                    <af:outputFormatted value="Prénom : #{EncaisseEtudBean.prenom}" id="of21"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="Nom : #{EncaisseEtudBean.nom}" id="of27"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="Date de Naissance : #{EncaisseEtudBean.date_naiss}" id="of28"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="n'existe pas" id="of29"
+                                        inlineStyle="font-size:large;"/>                    
+                </af:panelFormLayout>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup> 
+    
+             <af:popup childCreation="deferred" autoCancel="disabled" id="p21" contentDelivery="lazyUncached"
+                       binding="#{EncaisseEtudBean.popEtdChpObli}">
+        <af:dialog id="d21" type="ok" title="Veuillez saisir les informations personnelles !" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Les champs suivants sont obligatoires : "
+                                id="of31" inlineStyle="font-size:large;"/>
+            <af:panelGroupLayout id="pgl28" layout="vertical" inlineStyle="margin-top:10px;" halign="center">
+                <af:panelFormLayout id="pfl11">
+                    <f:facet name="footer"/>
+                    <af:outputFormatted value="#{sessionScope.etd_prenom_rech_enc}" id="of33"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="#{sessionScope.etd_nom_rech_enc}" id="of30"
+                                        inlineStyle="font-size:large;color:red;"/>
+                    <af:outputFormatted value="#{sessionScope.etd_date_naiss_rech_enc}" id="of32"
+                                        inlineStyle="font-size:large;color:red;"/>
+
+                </af:panelFormLayout>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+      
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p22"
+                      binding="#{EncaisseEtudBean.popNumTabNotExist}">
+    <af:dialog id="d22" type="ok" title="Veuillez saisir un numéro de table !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted id="of34" inlineStyle="font-size:x-large; color:Red;"
+                          value="Le numéro de table : ( #{EncaisseEtudBean.numero_table} ) n'existe pas"/>
+      
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p23" binding="#{EncaisseEtudBean.popNumEtdNotExist}">
+    <af:dialog id="d23" type="ok" title="Veuillez saisir un numéro de l'étudiant !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted id="of35" inlineStyle="font-size:x-large; color:Red;"
+                          value="Le numéro de l'étudiant ': (#{EncaisseEtudBean.numero_etud} ) n'existe pas"/>
+      
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p24" binding="#{EncaisseEtudBean.popNumCinNotExist}">
+    <af:dialog id="d24" type="ok" title="Veuillez saisir un numéro d'identification' !" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted id="of36" inlineStyle="font-size:x-large; color:Red;"
+                          value="Le numéro d'identification : ( #{EncaisseEtudBean.numero_cin} ) n'existe pas"/>
+      
+    </af:dialog>
+  </af:popup>
+</ui:composition>

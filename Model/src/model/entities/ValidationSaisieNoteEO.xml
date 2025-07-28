@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ValidationSaisieNoteEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="VALIDATION_SAISIE_NOTE"
+  AliasName="ValidationSaisieNoteEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdValidationSaisieNote"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_VALIDATION_SAISIE_NOTE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="VALIDATION_SAISIE_NOTE"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdCalendrierDeliberation"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_CALENDRIER_DELIBERATION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="VALIDATION_SAISIE_NOTE"/>
+  <Attribute
+    Name="SaisieValidee"
+    Precision="1"
+    ColumnName="SAISIE_VALIDEE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="VALIDATION_SAISIE_NOTE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="VALIDATION_SAISIE_NOTE"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="VALIDATION_SAISIE_NOTE"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="VALIDATION_SAISIE_NOTE"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="VALIDATION_SAISIE_NOTE"/>
+  <Attribute
+    Name="IdTypeControle"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_TYPE_CONTROLE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="VALIDATION_SAISIE_NOTE"/>
+  <Attribute
+    Name="IdFiliereUeSemstreEc"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_FILIERE_UE_SEMSTRE_EC"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="VALIDATION_SAISIE_NOTE"/>
+  <Key
+    Name="PkValidationSaisieNote"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_VALIDATION_SAISIE_NOTE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ValidationSaisieNoteEO.IdValidationSaisieNote"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkValidSaisiNotFilSemEc">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_FILIERE_UE_SEMSTRE_EC"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_VALID_SAISI_NOT_FIL_SEM_EC"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ValidationSaisieNoteEO.IdFiliereUeSemstreEc"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkValidSaisiNotTypControl">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_TYPE_CONTROLE"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_VALID_SAISI_NOT_TYP_CONTROL"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ValidationSaisieNoteEO.IdTypeControle"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkValidsaisinoteCalendrier">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_CALENDRIER_DELIBERATION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_VALIDSAISINOTE_CALENDRIER"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ValidationSaisieNoteEO.IdCalendrierDeliberation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkValidsaisinoteUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_VALIDSAISINOTE_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ValidationSaisieNoteEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkValidsaisinoteUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_VALIDSAISINOTE_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ValidationSaisieNoteEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

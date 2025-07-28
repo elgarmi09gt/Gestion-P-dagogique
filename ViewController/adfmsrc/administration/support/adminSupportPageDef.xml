@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="adminSupportPageDef"
+                Package="administration.support">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="HistoriqueStructureByUserName" RangeSize="-1" DataControl="gestdapAppDataControl"
+              id="HistoriqueStructureByUserNameIterator"/>
+    <iterator Binds="ParcoursRespFrImpMaqEtd" RangeSize="-1" DataControl="gestdapAppDataControl"
+              id="ParcoursRespFrImpMaqEtdIterator"/>
+    <iterator Binds="MaquetteParcoursAnnee" RangeSize="-1" DataControl="gestdapAppDataControl"
+              id="MaquetteParcoursAnneeIterator"/>
+    <iterator Binds="isEtudiantNumeroValide" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="isEtudiantNumeroValideIterator"/>
+    <iterator Binds="InscriptionRef" RangeSize="10" DataControl="gestdapAppDataControl" id="InscriptionRefIterator"/>
+    <searchRegion Binds="InscriptionRefIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="InscriptionRefQuery"/>
+    <iterator Binds="EtudiantScolRef" RangeSize="10" DataControl="gestdapAppDataControl" id="EtudiantScolRefIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="HistoriqueStructureByUserNameIterator" ListOperMode="navigation"
+          ListIter="HistoriqueStructureByUserNameIterator" id="HistoriqueStructureByUserName" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="ParcoursRespFrImpMaqEtdIterator" ListOperMode="navigation"
+          ListIter="ParcoursRespFrImpMaqEtdIterator" id="ParcoursRespFrImpMaqEtd" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="MaquetteParcoursAnneeIterator" ListOperMode="navigation" ListIter="MaquetteParcoursAnneeIterator"
+          id="MaquetteParcoursAnnee" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <methodAction id="ImportEtudiantsSup" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="ImportEtudiantsSup" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.ImportEtudiantsSup.dataControl.dataProvider">
+      <NamedData NDName="prcrs" NDType="java.lang.Long"/>
+      <NamedData NDName="code_niv_s" NDType="java.lang.String"/>
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="code_op" NDType="java.lang.String"/>
+      <NamedData NDName="code_fr" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="InscriptionRefIterator" id="ExecuteWithParams"
+            InstanceName="gestdapAppDataControl.InscriptionRef" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+      <NamedData NDName="numero_etu" NDType="java.lang.String"/>
+      <NamedData NDName="str_id" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="InscriptionRefIterator" id="InscriptionRef">
+      <nodeDefinition DefName="model.readOnlyView.InscriptionRefROVO" Name="InscriptionRef0">
+        <AttrNames>
+          <Item Value="LibParcours"/>
+          <Item Value="Enjambiste"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="InscriptionRefIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionRefIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionRefIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="EtudiantScolRefIterator" id="getEtudiantScolRef"
+            InstanceName="gestdapAppDataControl.EtudiantScolRef" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="p_numero" NDType="java.lang.String"/>
+    </action>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Prenomscol">
+      <AttrNames>
+        <Item Value="Prenomscol"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Prenomref">
+      <AttrNames>
+        <Item Value="Prenomref"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Nomscol">
+      <AttrNames>
+        <Item Value="Nomscol"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Nomref">
+      <AttrNames>
+        <Item Value="Nomref"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Civscol">
+      <AttrNames>
+        <Item Value="Civscol"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Civref">
+      <AttrNames>
+        <Item Value="Civref"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Sexscol">
+      <AttrNames>
+        <Item Value="Sexscol"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Sexref">
+      <AttrNames>
+        <Item Value="Sexref"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Datenaisscol">
+      <AttrNames>
+        <Item Value="Datenaisscol"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Datenaisref">
+      <AttrNames>
+        <Item Value="Datenaisref"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Lieunaisscol">
+      <AttrNames>
+        <Item Value="Lieunaisscol"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Lieunaisref">
+      <AttrNames>
+        <Item Value="Lieunaisref"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Emailscol">
+      <AttrNames>
+        <Item Value="Emailscol"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Emailref">
+      <AttrNames>
+        <Item Value="Emailref"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantScolRefIterator" id="Numero1">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="synchWithScol" RequiresUpdateModel="true" Action="invokeMethod" MethodName="synchWithScol"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.synchWithScol.dataControl.dataProvider">
+      <NamedData NDName="numEtu" NDType="java.lang.String"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

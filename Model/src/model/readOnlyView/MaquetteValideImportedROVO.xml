@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="MaquetteValideImportedROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.MaquetteValideImportedROVORowImpl"
+  ComponentClass="model.readOnlyView.MaquetteValideImportedROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.MaquetteValideImportedROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="an_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="str_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <ViewAccessor
+    Name="AnneeUniverROVO1"
+    ViewObjectName="model.readOnlyView.AnneeUniverROVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_IdAnneesUnivers"
+    ListVOName="AnneeUniverROVO1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdAnneesUnivers"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdAnneesUnivers"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[Select DISTINCT mv.ID_MAQUETTE_VALIDE,nfp.ID_NIVEAU_FORMATION_PARCOURS,                            
+  mv.ID_ANNEE ID_ANNEES_UNIVERS,mq.ID_MAQUETTE,mq.LIBELLE_LONG,decode(oRef.OUVERT,null,1,oRef.OUVERT) InscriptionOuverte                               
+from MAQUETTES mq  
+JOIN MAQUETTEVALIDEE mv on mq.ID_MAQUETTE=mv.ID_MAQUETTE                                    
+JOIN NIVEAUX_FORMATION_PARCOURS nfp on mv.ID_NIVEAU_FORMATION_PARCOURS=nfp.ID_NIVEAU_FORMATION_PARCOURS               
+Join NIVEAU_FORMATION_COHORTES nfc on nfp.ID_NIVEAU_FORMATION_COHORTE=nfc.ID_NIVEAU_FORMATION_COHORTE               
+Join NIVEAUX_FORMATIONS nf on nfc.ID_NIVEAU_FORMATION=nf.ID_NIVEAU_FORMATION               
+left join (               
+  Select distinct o.ID_OUVERTURE_NIV_SEC,o.ID_NIVEAU_FORMATION, o.ID_ANNEES_UNIVERS, o.OUVERT               
+  from OUVERTURE_NIV_SEC o               
+  join TYPE_OUVERTURE t on o.ID_TYPE_OUVERTURE=t.ID_TYPE_OUVERTURE               
+  where t.LIBELLE_COURT='I'     
+) oRef on nf.ID_NIVEAU_FORMATION=oRef.ID_NIVEAU_FORMATION and oRef.ID_ANNEES_UNIVERS=mv.ID_ANNEE               
+WHERE mv.ID_ANNEE=:an_id and mq.ID_STRUCTURE=:str_id]]></SQLQuery>
+  <ViewAttribute
+    Name="IdMaquetteValide"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_MAQUETTE_VALIDE"
+    Expression="ID_MAQUETTE_VALIDE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"
+    LOVName="LOV_IdAnneesUnivers">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdMaquette"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_MAQUETTE"
+    Expression="ID_MAQUETTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Inscriptionouverte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="INSCRIPTIONOUVERTE"
+    Expression="INSCRIPTIONOUVERTE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdMaquetteValide"/>
+    <Item Value="IdNiveauFormationParcours"/>
+    <Item Value="IdAnneesUnivers"/>
+    <Item Value="IdMaquette"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="ParcoursRespFrImpMaqEtdROVO"
+    ViewLink="model.readOnlyView.PrcrsRespToMaqValidImportedROVO"
+    Type="model.readOnlyView.ParcoursRespFrImpMaqEtdROVORowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="MaquetteIntegratedNivSecROVO"
+    ViewLink="model.readOnlyView.MaqValidToMaqIntagratedVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="EtatDeliberationAnROVO"
+    ViewLink="model.viewlink.MaquetteValidatedToEtatDelibVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="EtatDeliberationSemROVO"
+    ViewLink="model.viewlink.MaquetteImportedToEtatDelibSemVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

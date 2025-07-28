@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="export_tf_export_tf_ExecuteWithParams1PageDef" Package="evaluation.export" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="UeEvalExportListEtd" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="UeEvalExportListEtdIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="UeEvalExportListEtdIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="id_sem" NDValue="#{sessionScope.id_smstre}" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDValue="#{sessionScope.id_niv_form_parcours}" NDType="java.lang.Long"/>
+      <NamedData NDName="maquette" NDValue="#{sessionScope.id_maquette}" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sess" NDValue="#{sessionScope.id_session}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

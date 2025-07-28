@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelSplitter id="ps1" splitterPosition="373" inlineStyle="width:750px;" disabled="true" firstBorder="all"
+                      secondBorder="all">
+      <f:facet name="first">
+        <af:panelHeader text="Liste des Groupes Lingustiques" id="ph1" inlineStyle="margin-right:20px;">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelCollection id="pc1" binding="#{GroupeLingbean.tableCollection}"
+                              inlineStyle="margin-bottom:10px;">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar">
+              <af:toolbar id="t4">
+                <af:button id="b1" icon="/images/new_icon.png" actionListener="#{GroupeLingbean.onNewGroupeLing}"/>
+                <af:button id="b2" icon="/images/edit_icon.png" actionListener="#{GroupeLingbean.onEdit}"/>
+                <af:button id="b3" icon="/images/delete_icon.png"/>
+              </af:toolbar>
+            </f:facet>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.GroupeLinguistique.collectionModel}" var="row"
+                      rows="#{bindings.GroupeLinguistique.rangeSize}"
+                      emptyText="#{bindings.GroupeLinguistique.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.GroupeLinguistique.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.GroupeLinguistique.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.GroupeLinguistique.rangeSize}"
+                      filterModel="#{bindings.GroupeLinguistiqueQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.GroupeLinguistiqueQuery.processQuery}" varStatus="vs" id="t1"
+                      scrollPolicy="scroll">
+              <af:column sortProperty="#{bindings.GroupeLinguistique.hints.LibelleLong.name}" filterable="true"
+                         sortable="true" headerText="Libelle Groupe" id="c1"
+                         width="170">
+                <af:outputText value="#{row.LibelleLong}"
+                               shortDesc="#{bindings.GroupeLinguistique.hints.LibelleLong.tooltip}" id="ot1"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.GroupeLinguistique.hints.LibelleCourt.name}" filterable="true"
+                         sortable="true" headerText="#{bindings.GroupeLinguistique.hints.LibelleCourt.label}" id="c2"
+                         width="150">
+                <af:outputText value="#{row.LibelleCourt}"
+                               shortDesc="#{bindings.GroupeLinguistique.hints.LibelleCourt.tooltip}" id="ot2"/>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelHeader>
+      </f:facet>
+      <f:facet name="second">
+        <af:panelGroupLayout id="pgl2" layout="vertical">
+          <af:panelHeader text="Liste des Langues" id="ph2" inlineStyle="margin-left:20px;">
+            <f:facet name="context"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="menuBar"/>
+            <f:facet name="legend"/>
+            <f:facet name="info"/>
+            <af:table value="#{bindings.LanguesROVO2.collectionModel}" var="row"
+                      rows="#{bindings.LanguesROVO2.rangeSize}"
+                      emptyText="#{bindings.LanguesROVO2.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.LanguesROVO2.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.LanguesROVO2.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.LanguesROVO2.rangeSize}"
+                      filterModel="#{bindings.LanguesROVO2Query.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.LanguesROVO2Query.processQuery}" varStatus="vs" id="t2"
+                      scrollPolicy="scroll">
+              <af:column sortProperty="#{bindings.LanguesROVO2.hints.LibelleLong.name}" filterable="true"
+                         sortable="true" headerText="#{bindings.LanguesROVO2.hints.LibelleLong.label}" id="c3">
+                <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.LanguesROVO2.hints.LibelleLong.tooltip}"
+                               id="ot3"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.LanguesROVO2.hints.LibelleCourt.name}" filterable="true"
+                         sortable="true" headerText="#{bindings.LanguesROVO2.hints.LibelleCourt.label}" id="c4">
+                <af:outputText value="#{row.LibelleCourt}"
+                               shortDesc="#{bindings.LanguesROVO2.hints.LibelleCourt.tooltip}" id="ot4"/>
+              </af:column>
+              <af:column headerText="#{bindings.LanguesROVO2.hints.case_cocher.label}" id="c6">
+                <af:selectBooleanCheckbox value="#{row.bindings.case_cocher.inputValue}"
+                                          label="#{row.bindings.case_cocher.label}"
+                                          shortDesc="#{bindings.LanguesROVO2.hints.case_cocher.tooltip}" id="sbc1"/>
+                <f:facet name="header">
+                  <af:selectBooleanCheckbox text="Select All" id="sbc2" autoSubmit="true"
+                                            valueChangeListener="#{GroupeLingbean.onSelectAllGrpLang}"
+                                            binding="#{GroupeLingbean.checkGrpLang}"/>
+                </f:facet>
+              </af:column>
+            </af:table>
+          </af:panelHeader>
+          <af:button text="Valider" id="b4"
+                     inlineStyle="margin-left:20px;margin-top:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#ffffff;margin-bottom:15px;" action="#{GroupeLingbean.onValiderGrpLang}"
+                     icon="/images/commit.png"/>
+        </af:panelGroupLayout>
+      </f:facet>
+    </af:panelSplitter>
+    <af:panelHeader text="La liste des Langues du groupe Lingustique : #{bindings.LibelleLong}" id="ph3"
+                    inlineStyle="margin-top:10px;">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:table value="#{bindings.GroupeLingLangueRO.collectionModel}" var="row"
+                rows="#{bindings.GroupeLingLangueRO.rangeSize}"
+                emptyText="#{bindings.GroupeLingLangueRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.GroupeLingLangueRO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.GroupeLingLangueRO.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.GroupeLingLangueRO.rangeSize}"
+                filterModel="#{bindings.GroupeLingLangueROQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.GroupeLingLangueROQuery.processQuery}" varStatus="vs" id="t3" width="400"
+                inlineStyle="margin-top:20px;">
+        <af:column sortProperty="#{bindings.GroupeLingLangueRO.hints.LibelleLong.name}" filterable="true"
+                   sortable="true" headerText="#{bindings.GroupeLingLangueRO.hints.LibelleLong.label}" id="c5"
+                   width="220">
+          <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.GroupeLingLangueRO.hints.LibelleLong.tooltip}"
+                         id="ot5"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.GroupeLingLangueRO.hints.LibelleCourt.name}" filterable="true"
+                   sortable="true" headerText="#{bindings.GroupeLingLangueRO.hints.LibelleCourt.label}" id="c7"
+                   width="150">
+          <af:outputText value="#{row.LibelleCourt}"
+                         shortDesc="#{bindings.GroupeLingLangueRO.hints.LibelleCourt.tooltip}" id="ot6"/>
+        </af:column>
+      </af:table>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+            binding="#{GroupeLingbean.popNew}">
+    <af:dialog id="d1" title="Formualire d'Ajout" dialogListener="#{GroupeLingbean.onDialog}">
+      <af:panelFormLayout id="pfl1">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{GroupeLingbean.onDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="pEdit" contentDelivery="lazyUncached"
+            binding="#{GroupeLingbean.popEdit}">
+    <af:dialog id="d2" title="Formulaire de modifications" dialogListener="#{GroupeLingbean.onDialog}">
+      <af:panelFormLayout id="pfl2">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it3">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it4">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:serverListener type="onDialogEvent" method="#{GroupeLingbean.onDialogCanGrp}"/>
+    </af:dialog>
+  </af:popup>
+
+</ui:composition>

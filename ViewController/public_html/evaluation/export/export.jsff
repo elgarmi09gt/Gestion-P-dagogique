@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl12" layout="scroll">
+    <af:panelGroupLayout id="pgl20" layout="vertical" halign="end">
+                <af:selectOneChoice value="#{bindings.IdNiveauFormationParcours.inputValue}"
+                                    required="#{bindings.IdNiveauFormationParcours.hints.mandatory}"
+                                    shortDesc="#{bindings.IdNiveauFormationParcours.hints.tooltip}" id="soc4"
+                                    readOnly="true" contentStyle="font-style:italic; font-size:large;margin-top:-5px">
+                    <f:selectItems value="#{bindings.IdNiveauFormationParcours.items}" id="si4"/>
+                    <f:validator binding="#{bindings.IdNiveauFormationParcours.validator}"/>
+                </af:selectOneChoice>
+            </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelGroupLayout id="pgl15" layout="vertical" styleClass="AFStretchWidth"
+                                 inlineStyle='line-height:30px;border: solid 2px #2898e8;background-repeat: repeat; background-image:url("images/logo_tr.jpg");'>
+                <af:outputText value="Choix critères de saisies" id="ot1"
+                               inlineStyle="font-size:medium; font-weight:bolder;margin-left:10px;"/>
+                <af:panelGroupLayout id="pgl7" layout="horizontal" styleClass="AFStretchWidth">
+                    <af:panelGroupLayout id="pgl2" layout="vertical" inlineStyle="line-height:0px;"
+                                         styleClass="AFStretchWidth" halign="center">
+                        <af:outputFormatted value="Unité d'enseignement" id="of2" styleUsage="instruction"
+                                            inlineStyle="font-size:medium;"/>
+                        <af:selectOneChoice value="#{bindings.UeEvalRO.inputValue}"
+                                            required="#{bindings.UeEvalRO.hints.mandatory}"
+                                            shortDesc="#{bindings.UeEvalRO.hints.tooltip}" id="soc1" autoSubmit="true"
+                                            inlineStyle="margin-top:5px;"
+                                            contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                                            valueChangeListener="#{DeliberatioUeBean.onChanged}">
+                            <f:selectItems value="#{bindings.UeEvalRO.items}" id="si1"/>
+                            <f:validator binding="#{bindings.UeEvalRO.validator}"/>
+                        </af:selectOneChoice>
+                    </af:panelGroupLayout>
+                    <af:panelGroupLayout id="pgl3" halign="center" layout="vertical" inlineStyle="line-height:1px;"
+                                         styleClass="AFStretchWidth">
+                        <af:outputFormatted value="Eléments constitutifs" id="of3" styleUsage="instruction"
+                                            inlineStyle="font-size:medium;"/>
+                        <af:selectOneChoice value="#{bindings.EcEvalRO.inputValue}"
+                                            required="#{bindings.EcEvalRO.hints.mandatory}"
+                                            shortDesc="#{bindings.EcEvalRO.hints.tooltip}" id="soc2"
+                                            partialTriggers="soc1" autoSubmit="true"
+                                            inlineStyle="text-align:center;margin-top:5px;"
+                                            contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                                            valueChangeListener="#{DeliberatioUeBean.onChanged}">
+                            <f:selectItems value="#{bindings.EcEvalRO.items}" id="si2"/>
+                            <f:validator binding="#{bindings.EcEvalRO.validator}"/>
+                        </af:selectOneChoice>
+                    </af:panelGroupLayout>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl10" layout="horizontal" styleClass="AFStretchWidth"
+                                     inlineStyle="margin: 8px 0px 8px 0px;">
+                    <af:panelGroupLayout id="pgl4" layout="vertical" halign="center" styleClass="AFStretchWidth"
+                                         inlineStyle="line-height:0px;">
+                        <af:outputFormatted value="Type de contrôle" id="of4" styleUsage="instruction"
+                                            inlineStyle="font-size:medium;"/>
+                        <af:selectOneChoice value="#{bindings.EcEvalTypeCtrlRO.inputValue}"
+                                            required="#{bindings.EcEvalTypeCtrlRO.hints.mandatory}"
+                                            shortDesc="#{bindings.EcEvalTypeCtrlRO.hints.tooltip}" id="soc7"
+                                            inlineStyle="text-align:center;margin-top:5px;"
+                                            contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                                            autoSubmit="true">
+                            <f:selectItems value="#{bindings.EcEvalTypeCtrlRO.items}" id="si8"/>
+                            <f:validator binding="#{bindings.EcEvalTypeCtrlRO.validator}"/>
+                        </af:selectOneChoice>
+                    </af:panelGroupLayout>
+                    <af:panelGroupLayout id="pgl5" layout="vertical" halign="center" valign="middle"
+                                         inlineStyle="line-height:1px;" styleClass="AFStretchWidth">
+                        <af:outputFormatted value="Mode évaluation" id="of1" inlineStyle="font-size:medium;"
+                                            styleUsage="instruction"/>
+                        <af:selectOneChoice value="#{bindings.EcEvalTypeCtrlModeCtrlRO.inputValue}"
+                                            required="#{bindings.EcEvalTypeCtrlModeCtrlRO.hints.mandatory}"
+                                            shortDesc="#{bindings.EcEvalTypeCtrlModeCtrlRO.hints.tooltip}" id="soc8"
+                                            inlineStyle="text-align:center;margin-top:5px;"
+                                            contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                                            autoSubmit="true">
+                            <f:selectItems value="#{bindings.EcEvalTypeCtrlModeCtrlRO.items}" id="si9"/>
+                            <f:validator binding="#{bindings.EcEvalTypeCtrlModeCtrlRO.validator}"/>
+                        </af:selectOneChoice>
+                    </af:panelGroupLayout>
+                </af:panelGroupLayout>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl17" layout="horizontal" halign="center" valign="middle"
+                                 binding="#{SaisieNotesInterBean.panelbtngroupe}"
+                                 inlineStyle="margin-top:5px; line-height:20px;">
+                <af:button text="Exporter" id="b7" icon="/images/excel-24.png"
+                           inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                           actionListener="#{SaisieNotesInterBean.onExportClicked}" useWindow="true">
+                    <af:fileDownloadActionListener contentType="application/vnd.ms-excel"
+                                                   filename="#{bindings.CodificationUE}_#{bindings.LibelleLong}_#{bindings.LibelleCourtCtrl}_#{bindings.LibModeCtrl}.xlsx"
+                                                   method="#{SaisieNotesInterBean.exportToExcel}"/>
+                    <af:setPropertyListener from="#{'1'}" to="#{requestScope.refc}" type="action"/>
+                    <!--af:setPropertyListener from="#{'1'}" to="#{sessionScope.refc}" type="action"/-->
+                </af:button>
+            </af:panelGroupLayout>
+            <af:iterator id="i1"
+                         value="#{DeliberatioUeBean.getEtudiantNoteModeInter(bindings.IdTypeControle.inputValue,bindings.IdModeControleEc2.inputValue, sessionScope.id_calendrier)}"/>
+            <!--af:table value="#{bindings.EtudiantSaisieNoteInter1.collectionModel}" var="row"
+                      rows="#{bindings.EtudiantSaisieNoteInter1.rangeSize}"
+                      emptyText="#{bindings.EtudiantSaisieNoteInter1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.EtudiantSaisieNoteInter1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.EtudiantSaisieNoteInter1.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.EtudiantSaisieNoteInter1.rangeSize}"
+                      filterModel="#{bindings.EtudiantSaisieNoteInter1Query.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.EtudiantSaisieNoteInter1Query.processQuery}" varStatus="vs" id="t1"
+                      scrollPolicy="page">
+                <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter1.hints.Numero.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.EtudiantSaisieNoteInter1.hints.Numero.label}" id="c1">
+                    <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of11"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter1.hints.Prenom.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.EtudiantSaisieNoteInter1.hints.Prenom.label}" id="c2">
+                    <af:outputFormatted value="#{row.bindings.Prenom.inputValue}" id="of12"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter1.hints.Nom.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.EtudiantSaisieNoteInter1.hints.Nom.label}" id="c3">
+                    <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of7"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter1.hints.DateNaissance.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.EtudiantSaisieNoteInter1.hints.DateNaissance.label}" id="c4">
+                    <af:outputFormatted value="#{row.bindings.DateNaissance.inputValue}" id="of8"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter1.hints.LieuNaissance.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.EtudiantSaisieNoteInter1.hints.LieuNaissance.label}" id="c5">
+                    <af:outputFormatted value="#{row.bindings.LieuNaissance.inputValue}" id="of9"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter1.hints.NoteModeEnsInterVO.Note.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.EtudiantSaisieNoteInter1.hints.NoteModeEnsInterVO.Note.label}"
+                           id="c7">
+                    <af:inputText value="#{row.NoteModeEnsInterVO.bindings.Note.inputValue}"
+                                  label="#{bindings.EtudiantSaisieNoteInter1.hints.NoteModeEnsInterVO.Note.label}"
+                                  required="#{bindings.EtudiantSaisieNoteInter1.hints.NoteModeEnsInterVO.Note.mandatory}"
+                                  columns="#{bindings.EtudiantSaisieNoteInter1.hints.NoteModeEnsInterVO.Note.displayWidth}"
+                                  maximumLength="#{bindings.EtudiantSaisieNoteInter1.hints.NoteModeEnsInterVO.Note.precision}"
+                                  shortDesc="#{bindings.EtudiantSaisieNoteInter1.hints.NoteModeEnsInterVO.Note.tooltip}"
+                                  rendered="#{row.NoteModeEnsInterVO != null}" id="it2" contentStyle="font-size:large;">
+                        <f:validator binding="#{row.NoteModeEnsInterVO.bindings.Note.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.EtudiantSaisieNoteInter1.hints.NoteModeEnsInterVO.Note.format}"/>
+                    </af:inputText>
+                </af:column>
+            </af:table-->
+        </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</ui:composition>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ExonerationEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="EXONERATION"
+  AliasName="ExonerationEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdExoneration"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_EXONERATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="EXONERATION"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="IdTypeExoneration"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_TYPE_EXONERATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="EXONERATION"/>
+  <Attribute
+    Name="IdNatureExoneration"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NATURE_EXONERATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="EXONERATION"/>
+  <Attribute
+    Name="IdMotifExoneration"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_MOTIF_EXONERATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="EXONERATION"/>
+  <Attribute
+    Name="IdAnneesUnivers"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="EXONERATION"/>
+  <Attribute
+    Name="Taux"
+    Precision="5"
+    Scale="2"
+    ColumnName="TAUX"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="EXONERATION"/>
+  <Attribute
+    Name="Montant"
+    Precision="10"
+    Scale="0"
+    ColumnName="MONTANT"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="EXONERATION"/>
+  <Attribute
+    Name="RefExo"
+    Precision="250"
+    ColumnName="REF_EXO"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="EXONERATION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="EXONERATION"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="EXONERATION"/>
+  <Attribute
+    Name="UtiCree"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="EXONERATION"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="EXONERATION"/>
+  <Attribute
+    Name="IdInscriptionPedagogique"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="EXONERATION"/>
+  <ViewLinkAccessor
+    Name="ListeInsPedExonerationROVO"
+    ViewLink="model.viewlink.ListeInsPedExonerationROToExonerationVL"
+    ViewLinkEnd="model.viewlink.ListeInsPedExonerationROToExonerationVL.ListeInsPedExonerationROVO"
+    ViewLinkOtherEnd="model.viewlink.ListeInsPedExonerationROToExonerationVL.ExonerationVO"
+    Type="model.readOnlyView.ListeInsPedExonerationROVORowImpl"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkExoneration"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_EXONERATION"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ExonerationEO.IdExoneration"/>
+      <Item Value="model.entities.ExonerationEO.IdTypeExoneration"/>
+      <Item Value="model.entities.ExonerationEO.IdNatureExoneration"/>
+      <Item Value="model.entities.ExonerationEO.IdMotifExoneration"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkExoAnnee">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ANNEES_UNIVERS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_EXO_ANNEE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ExonerationEO.IdAnneesUnivers"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkExoInscped">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_INSCRIPTIONS_PEDAGOGIQUES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_EXO_INSCPED"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ExonerationEO.IdInscriptionPedagogique"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkExoMotifExo">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_MOTIF_EXONERATION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_EXO_MOTIF_EXO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ExonerationEO.IdMotifExoneration"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkExoNatureExo">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NATURE_EXONERATION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_EXO_NATURE_EXO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ExonerationEO.IdNatureExoneration"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkExoTypeExo">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_TYPE_EXONERATION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_EXO_TYPE_EXO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ExonerationEO.IdTypeExoneration"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkExonerationUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_EXONERATION_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ExonerationEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkExonerationUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_EXONERATION_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ExonerationEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

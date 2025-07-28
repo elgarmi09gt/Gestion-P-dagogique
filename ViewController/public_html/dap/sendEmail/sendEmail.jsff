@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1">
+    <af:button text="Envoyer" id="b1" actionListener="#{SendMailBean.OnSendMailAction}"/>
+  </af:panelGroupLayout>
+  <af:panelFormLayout id="pfl1">
+    <af:inputText value="#{bindings.username.inputValue}" label="#{bindings.username.hints.label}"
+                  required="#{bindings.username.hints.mandatory}" columns="#{bindings.username.hints.displayWidth}"
+                  maximumLength="#{bindings.username.hints.precision}" shortDesc="#{bindings.username.hints.tooltip}"
+                  id="it1">
+      <f:validator binding="#{bindings.username.validator}"/>
+    </af:inputText>
+    <af:button actionListener="#{bindings.genererJetonEtEnvoyerEmail.execute}" text="genererJetonEtEnvoyerEmail"
+               disabled="#{!bindings.genererJetonEtEnvoyerEmail.enabled}" id="b2"/>
+  </af:panelFormLayout>
+</ui:composition>

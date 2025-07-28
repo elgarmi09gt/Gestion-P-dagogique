@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="groupe_td_tpPageDef"
+                Package="inscription.Groupe_TD_TP">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="GroupeTdTpParcours" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="GroupeTdTpParcoursIterator"/>
+    <iterator Binds="GroupeParcSemestre" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="GroupeParcSemestreIterator"/>
+    <iterator Binds="AttrParcours" RangeSize="25" DataControl="inscriptionAppDataControl" id="AttrParcoursIterator"/>
+    <iterator Binds="ListeGroupeTdTpRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="ListeGroupeTdTpROIterator"/>
+    <iterator id="ListeEtudPasGroupeTdROIterator" Binds="ListeEtudPasGroupeTdRO" DataControl="inscriptionAppDataControl"
+              RangeSize="-1"/>
+    <taskFlow id="dynamicRegion1" taskFlowId="${GroupeTdTpbean.dynamicTaskFlowId}" activation="immediate"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding" Refresh="ifNeeded">
+      <parameters>
+        <parameter id="url" value="#{sessionScope.TfGrpTDID}"/>
+      </parameters>
+    </taskFlow>
+    <iterator Binds="ListeEtudiantGroupeTdRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="ListeEtudiantGroupeTdROIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="GroupeTdTpParcoursIterator" ListOperMode="navigation" ListIter="GroupeTdTpParcoursIterator"
+          id="GroupeTdTpParcours" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="GroupeTdTpParcoursIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTdTpParcoursIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTdTpParcoursIterator" id="IdMaquette">
+      <AttrNames>
+        <Item Value="IdMaquette"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTdTpParcoursIterator" id="IdParcoursMaquetAnnee">
+      <AttrNames>
+        <Item Value="IdParcoursMaquetAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="GroupeParcSemestreIterator" ListOperMode="navigation" ListIter="GroupeParcSemestreIterator"
+          id="GroupeParcSemestre" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="IdSemestre"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="AttrParcoursIterator" StaticList="false" Uses="LOV_Parcours" id="Parcours"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="AttrParcoursIterator" StaticList="false" Uses="LOV_Idmode" id="Idmode" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject"/>
+    <action IterBinding="ListeGroupeTdTpROIterator" id="ExecuteWithParams"
+            InstanceName="inscriptionAppDataControl.ListeGroupeTdTpRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDValue="" NDType="java.lang.Long"/>
+      <NamedData NDName="id_horaire" NDType="java.lang.Long"/>
+      <NamedData NDName="id_mode" NDType="java.lang.Long"/>
+      <NamedData NDName="id_parc" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="ListeEtudPasGroupeTdROIterator" id="ExecuteWithParams1"
+            InstanceName="inscriptionAppDataControl.ListeEtudPasGroupeTdRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_sem" NDType="java.lang.Long"/>
+      <NamedData NDName="id_horaire_td" NDType="java.lang.Long"/>
+      <NamedData NDName="id_niv_form_parc" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDValue="85" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="filterEtudiantsTd" RequiresUpdateModel="true" Action="invokeMethod" MethodName="filterEtudiantsTd"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.filterEtudiantsTd.dataControl.dataProvider">
+      <NamedData NDName="searchString" NDType="java.lang.String"/>
+      <NamedData NDName="selectedList" NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="ListeGroupeTdTpROIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListeGroupeTdTpROIterator" id="IdGroupeTpTd">
+      <AttrNames>
+        <Item Value="IdGroupeTpTd"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTdTpParcoursIterator" id="IdUtilisateur">
+      <AttrNames>
+        <Item Value="IdUtilisateur"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ListeEtudiantGroupeTdROIterator" id="ExecuteWithParams2"
+            InstanceName="inscriptionAppDataControl.ListeEtudiantGroupeTdRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_groupe" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

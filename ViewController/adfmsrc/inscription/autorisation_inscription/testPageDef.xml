@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="testPageDef"
+                Package="inscription.autorisation_inscription">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AttributSearchRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="AttributSearchROIterator"/>
+    <iterator Binds="NivFormAutoriseRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="NivFormAutoriseROIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="AttributSearchROIterator" id="NivFormParcours">
+      <AttrNames>
+        <Item Value="NivFormParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttributSearchROIterator" id="IdForm">
+      <AttrNames>
+        <Item Value="IdForm"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttributSearchROIterator" id="Niveau">
+      <AttrNames>
+        <Item Value="Niveau"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="NivFormAutoriseROIterator" id="NivFormAutoriseRO">
+      <nodeDefinition DefName="model.readOnlyView.NivFormAutoriseROVO" Name="NivFormAutoriseRO0">
+        <AttrNames>
+          <Item Value="Diplome"/>
+          <Item Value="Libform"/>
+          <Item Value="LibNiveau"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

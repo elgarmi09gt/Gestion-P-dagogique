@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="DelibResEc"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.DelibResEc_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="annee"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="sem"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="sess"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="inspedsemue"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="fil_ec"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT  distinct trunc(nc.NOTE,2) NOTE, fec.COEFFICIENT    
+FROM  NOTES_EC nc    
+join INSCRIPTION_PED_SEM_UE iue on nc.ID_INSCRIPTION_PED_SEM_UE=iue.ID_INSCRIPTION_PED_SEM_UE    
+join INSCRIPTION_PED_SEMESTRE ips on iue.ID_INSCRIPTION_PED_SEMESTRE=ips.ID_INSCRIPTION_PED_SEMESTRE    
+join INSCRIPTIONS_PEDAGOGIQUES ip on ips.ID_INSCRIPTION_PEDAGOGIQUE=ip.ID_INSCRIPTION_PEDAGOGIQUE    
+join PARCOURS_MAQUETTE_ANNEE pma on ip.ID_PARCOURS_MAQUET_ANNEE=pma.ID_PARCOURS_MAQUET_ANNEE    
+join MODE_CONTROLE_EC mec on pma.ID_PARCOURS_MAQUET_ANNEE=pma.ID_PARCOURS_MAQUET_ANNEE    
+and nc.ID_FILIERE_UE_SEMSTRE_EC=mec.ID_FILIERE_UE_SEMSTRE_EC    
+join FILIERE_UE_SEMSTRE_EC fec on mec.ID_FILIERE_UE_SEMSTRE_EC=fec.ID_FILIERE_UE_SEMSTRE_EC    
+and nc.ID_FILIERE_UE_SEMSTRE_EC=fec.ID_FILIERE_UE_SEMSTRE_EC    
+join CALENDRIER_DELIBERATION cd on nc.ID_CALENDRIER_DELIBERATION=cd.ID_CALENDRIER_DELIBERATION    
+and cd.ID_SEMESTRE=ips.ID_SEMESTRE and cd.ID_ANNEES_UNIVERS=pma.ID_ANNEES_UNIVERS  
+WHERE pma.ID_PARCOURS_MAQUET_ANNEE=:parcours AND pma.ID_ANNEES_UNIVERS=:annee AND ips.ID_SEMESTRE=:sem     
+AND cd.ID_SESSION=:sess AND iue.ID_INSCRIPTION_PED_SEM_UE=:inspedsemue AND mec.ID_FILIERE_UE_SEMSTRE_EC=:fil_ec]]></SQLQuery>
+  <ViewAttribute
+    Name="Note"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="NOTE"
+    Expression="NOTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Coefficient"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="COEFFICIENT"
+    Expression="COEFFICIENT"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

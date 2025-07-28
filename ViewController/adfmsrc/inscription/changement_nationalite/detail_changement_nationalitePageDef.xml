@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="detail_changement_nationalitePageDef" Package="inscription.changement_nationalite">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="InscPedChangeNationaliteRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="InscPedChangeNationaliteROIterator"/>
+    <searchRegion Binds="InscPedChangeNationaliteROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="InscPedChangeNationaliteROQuery"/>
+    <iterator Binds="Pays" RangeSize="25" DataControl="inscriptionAppDataControl" id="PaysIterator"/>
+    <iterator Binds="DroitNiveauPaysRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="DroitNiveauPaysROIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="InscPedChangeNationaliteROIterator" id="InscPedChangeNationaliteRO">
+      <nodeDefinition DefName="model.readOnlyView.InscPedChangeNationaliteROVO" Name="InscPedChangeNationaliteRO0">
+        <AttrNames>
+          <Item Value="LibNivForm"/>
+          <Item Value="DroitInsAdm"/>
+          <Item Value="DroitInsPed"/>
+          <Item Value="CoutFormation"/>
+          <Item Value="EtatInscrEtatInscrId"/>
+          <Item Value="IdPaysNationalite"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="InscPedChangeNationaliteROIterator" StaticList="false" Uses="LOV_IdPaysNationalite"
+          id="IdPaysNationalite" DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <list IterBinding="PaysIterator" ListOperMode="navigation" ListIter="PaysIterator" id="Pays" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Nationalite"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="PaysIterator" id="IdPays">
+      <AttrNames>
+        <Item Value="IdPays"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="findAndUpdateNationalite" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findAndUpdateNationalite" IsViewObjectMethod="false"
+                  DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.findAndUpdateNationalite.dataControl.dataProvider">
+      <NamedData NDName="id_pers" NDType="java.lang.Long"/>
+      <NamedData NDName="id_nouv_nat" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="InscPedChangeNationaliteROIterator" id="getListeInscPed"
+            InstanceName="inscriptionAppDataControl.InscPedChangeNationaliteRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="DroitNiveauPaysROIterator" id="getDroitNiveauPays"
+            InstanceName="inscriptionAppDataControl.DroitNiveauPaysRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_niveau" NDType="java.lang.Long"/>
+      <NamedData NDName="id_pays_nation" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="findAndPaieExoneration" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findAndPaieExoneration" IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.findAndPaieExoneration.dataControl.dataProvider">
+      <NamedData NDName="id_insc_ped" NDType="java.lang.Long"/>
+      <NamedData NDName="droit_insc_adm" NDType="java.lang.Long"/>
+      <NamedData NDName="droit_insc_ped" NDType="java.lang.Long"/>
+      <NamedData NDName="cout_form" NDType="java.lang.Long"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

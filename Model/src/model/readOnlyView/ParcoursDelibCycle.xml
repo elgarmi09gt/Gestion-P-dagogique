@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ParcoursDelibCycle"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ParcoursDelibCycleRowImpl"
+  ComponentClass="model.readOnlyView.ParcoursDelibCycleImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ParcoursDelibCycle_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_user"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="idDept"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[SELECT  DISTINCT                                                       
+    nf.ID_FORMATION,    
+    nfp.ID_NIVEAU_FORMATION_PARCOURS,     
+    crt.ID_NIVEAU_FORMATION_COHORTE,     
+    crt.ID_NIVEAU_FORMATION,     
+    f.ID_HISTORIQUES_STRUCTURE,  f.ID_GRADES_FORMATION,   
+    nf.ID_NIVEAU,nf.LIBELLE_LONG || Decode(nf.IDENTITE,null,'',' ('||nf.IDENTITE||')') || ' ' || DECODE(crt.lib_cohorte,'COHORTE A','',crt.lib_cohorte) || DECODE(nfp.ID_NIVFORM_OPTION, NULL, '', ' Option : ' || op.lib_option|| DECODE(nfp.ID_NIVFORM_SPECIALITE, NULL, '', ' Spécialité : ' || sp.lib_specialite)) lib_parcours,                                                                     
+    nf.LIBELLE_LONG niveauFormation, crt.lib_cohorte cohorte, sp.lib_specialite specialite,op.lib_option opt                                                                       
+FROM                                                   
+    (((((NIVEAUX_FORMATION_PARCOURS nfp JOIN (                                                                                                    
+        SELECT                                                                                                     
+            nfc.ID_NIVEAU_FORMATION_COHORTE,                                                                                                     
+            ct.LIBELLE lib_cohorte,                                                                                                     
+            nfc.ID_NIVEAU_FORMATION                                                                                                     
+        FROM                                                                                                     
+            NIVEAU_FORMATION_COHORTES nfc                                                                    
+            JOIN COHORTES ct ON nfc.ID_COHORTE = ct.ID_COHORTE                                                                                                    
+    ) crt ON crt.ID_NIVEAU_FORMATION_COHORTE = nfp.ID_NIVEAU_FORMATION_COHORTE)                                                                    
+    JOIN NIVEAUX_FORMATIONS nf ON crt.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION)                                                                    
+    JOIN FORMATIONS f ON nf.ID_FORMATION = f.ID_FORMATION)                                                                    
+    --LEFT                                                                  
+    JOIN UTILISATEUR_FORMATIONS uf on f.ID_FORMATION = uf.ID_FORMATION                                                                   
+    --LEFT                                                                  
+    --JOIN UTILISATEUR_NIVEAUX_FORMATIONS unf ON unf.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION AND unf.ID_UTILISATEUR = uf.ID_UTILISATEUR                                                                   
+    ) )                                                                   
+    LEFT JOIN (                               
+    SELECT  nfs.CODESPECSCOL ,sp.LIBELLE_LONG lib_specialite, nfs.ID_NIVEAU_FORMATION_SPECIALITE                                                                                                                         
+    FROM NIVEAUX_FORMATIONS_SPECIALITES nfs                                
+    JOIN SPECNIVSECSCOL sp ON nfs.CODESPECSCOL = sp.CODE                                                                                                                        
+    ) sp ON sp.ID_NIVEAU_FORMATION_SPECIALITE = nfp.ID_NIVFORM_SPECIALITE                               
+LEFT JOIN (                               
+    SELECT nfo.CODEOPTIONSCOL,op.LIBELLE lib_option,nfo.ID_NIV_FORM_SPEC_OPTION                               
+    FROM NIV_FORM_SPECIALITE_OPTION nfo               
+    JOIN OPTIONNIVSECSCOL op ON nfo.CODEOPTIONSCOL = op.CODE                 
+    ) op ON op.ID_NIV_FORM_SPEC_OPTION = nfp.ID_NIVFORM_OPTION                 
+    WHERE uf.ID_UTILISATEUR =:id_user    AND   
+    f.ID_HISTORIQUES_STRUCTURE =:idDept AND nf.DIPLOMANTE=1                    
+ORDER BY lib_parcours]]></SQLQuery>
+  <ViewAttribute
+    Name="IdFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_FORMATION"
+    Expression="ID_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormationCohorte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_COHORTE"
+    Expression="ID_NIVEAU_FORMATION_COHORTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION"
+    Expression="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdHistoriquesStructure"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="ID_HISTORIQUES_STRUCTURE"
+    Expression="ID_HISTORIQUES_STRUCTURE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdGradesFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_GRADES_FORMATION"
+    Expression="ID_GRADES_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveau"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU"
+    Expression="ID_NIVEAU"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1793"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_PARCOURS"
+    Expression="LIB_PARCOURS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1793"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Niveauformation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="500"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NIVEAUFORMATION"
+    Expression="NIVEAUFORMATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Cohorte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="COHORTE"
+    Expression="COHORTE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Specialite"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="765"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SPECIALITE"
+    Expression="SPECIALITE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="765"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Opt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="300"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="OPT"
+    Expression="OPT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="300"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewLinkAccessor
+    Name="ResultatCycleROVO"
+    ViewLink="model.viewlink.PrcrsDelibCycleToResultCycleVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

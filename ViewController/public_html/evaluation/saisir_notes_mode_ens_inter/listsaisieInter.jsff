@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <!--af:iterator id="i1" value="#{DeliberatioUeBean.getEtudiantNoteModeInter(bindings.IdFiliereUeSemstreEc.inputValue,bindings.IdTypeControle.inputValue,bindings.IdModeControleEc2.inputValue,sessionScope.id_calendrier)}"/-->
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:table value="#{bindings.EtudiantSaisieNoteInter.collectionModel}" var="row"
+              rows="#{bindings.EtudiantSaisieNoteInter.rangeSize}"
+              emptyText="#{bindings.EtudiantSaisieNoteInter.viewable ? 'No data to display.' : 'Access Denied.'}"
+              rowBandingInterval="0" selectedRowKeys="#{bindings.EtudiantSaisieNoteInter.collectionModel.selectedRow}"
+              selectionListener="#{bindings.EtudiantSaisieNoteInter.collectionModel.makeCurrent}" rowSelection="single"
+              fetchSize="#{bindings.EtudiantSaisieNoteInter.rangeSize}"
+              filterModel="#{bindings.EtudiantSaisieNoteInterQuery.queryDescriptor}" filterVisible="true"
+              queryListener="#{bindings.EtudiantSaisieNoteInterQuery.processQuery}" varStatus="vs" id="t1">
+      <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter.hints.IdNoteModeEnsInter.name}" filterable="true"
+                 sortable="true" headerText="#{bindings.EtudiantSaisieNoteInter.hints.IdNoteModeEnsInter.label}"
+                 id="c1">
+        <af:outputFormatted value="#{row.bindings.IdNoteModeEnsInter.inputValue}" id="of1">
+          <af:convertNumber groupingUsed="false"
+                            pattern="#{bindings.EtudiantSaisieNoteInter.hints.IdNoteModeEnsInter.format}"/>
+        </af:outputFormatted>
+      </af:column>
+      <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter.hints.Numero.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.EtudiantSaisieNoteInter.hints.Numero.label}" id="c2">
+        <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of2"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter.hints.Prenom.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.EtudiantSaisieNoteInter.hints.Prenom.label}" id="c3">
+        <af:outputFormatted value="#{row.bindings.Prenom.inputValue}" id="of3"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter.hints.Nom.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.EtudiantSaisieNoteInter.hints.Nom.label}" id="c4">
+        <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of4"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter.hints.DateNaissance.name}" filterable="true"
+                 sortable="true" headerText="#{bindings.EtudiantSaisieNoteInter.hints.DateNaissance.label}" id="c5">
+        <f:facet name="filter">
+          <af:inputDate value="#{bindings.EtudiantSaisieNoteInterQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                        id="id1">
+            <af:convertDateTime pattern="#{bindings.EtudiantSaisieNoteInter.hints.DateNaissance.format}"/>
+          </af:inputDate>
+        </f:facet>
+        <af:outputFormatted value="#{row.bindings.DateNaissance.inputValue}" id="of5">
+          <af:convertDateTime pattern="#{bindings.EtudiantSaisieNoteInter.hints.DateNaissance.format}"/>
+        </af:outputFormatted>
+      </af:column>
+      <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter.hints.LieuNaissance.name}" filterable="true"
+                 sortable="true" headerText="#{bindings.EtudiantSaisieNoteInter.hints.LieuNaissance.label}" id="c6">
+        <af:outputFormatted value="#{row.bindings.LieuNaissance.inputValue}" id="of6"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter.hints.IdInscriptionPedSemUe.name}" filterable="true"
+                 sortable="true" headerText="#{bindings.EtudiantSaisieNoteInter.hints.IdInscriptionPedSemUe.label}"
+                 id="c7">
+        <af:outputFormatted value="#{row.bindings.IdInscriptionPedSemUe.inputValue}" id="of7">
+          <af:convertNumber groupingUsed="false"
+                            pattern="#{bindings.EtudiantSaisieNoteInter.hints.IdInscriptionPedSemUe.format}"/>
+        </af:outputFormatted>
+      </af:column>
+      <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter.hints.IdEtudiant.name}" filterable="true"
+                 sortable="true" headerText="#{bindings.EtudiantSaisieNoteInter.hints.IdEtudiant.label}" id="c8">
+        <af:outputFormatted value="#{row.bindings.IdEtudiant.inputValue}" id="of8">
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.EtudiantSaisieNoteInter.hints.IdEtudiant.format}"/>
+        </af:outputFormatted>
+      </af:column>
+      <af:column sortProperty="#{bindings.EtudiantSaisieNoteInter.hints.Note.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.EtudiantSaisieNoteInter.hints.Note.label}" id="c9">
+        <af:inputText value="#{row.bindings.Note.inputValue}"
+                      label="#{bindings.EtudiantSaisieNoteInter.hints.Note.label}"
+                      required="#{bindings.EtudiantSaisieNoteInter.hints.Note.mandatory}"
+                      columns="#{bindings.EtudiantSaisieNoteInter.hints.Note.displayWidth}"
+                      maximumLength="#{bindings.EtudiantSaisieNoteInter.hints.Note.precision}"
+                      shortDesc="#{bindings.EtudiantSaisieNoteInter.hints.Note.tooltip}" id="it1">
+          <f:validator binding="#{row.bindings.Note.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.EtudiantSaisieNoteInter.hints.Note.format}"/>
+        </af:inputText>
+      </af:column>
+    </af:table>
+  </af:panelGroupLayout>
+</ui:composition>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="inscriptionPedSemUePageDef"
+                Package="inscription.processus_inscription">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="InscPedSemUe" RangeSize="25" DataControl="inscriptionAppDataControl" id="InscPedSemUeIterator"/>
+    <searchRegion Binds="InscPedSemUeIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="InscPedSemUeQuery"/>
+    <iterator Binds="InscriptionPedSemUe" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptionPedSemUeIterator"/>
+    <iterator Binds="reInsResultUe" RangeSize="25" DataControl="inscriptionAppDataControl" id="reInsResultUeIterator"/>
+    <searchRegion Binds="reInsResultUeIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="reInsResultUeQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="InscPedSemUeIterator" id="InscPedSemUe">
+      <nodeDefinition DefName="model.readOnlyView.InscPedSemUe" Name="InscPedSemUe0">
+        <AttrNames>
+          <Item Value="Codification"/>
+          <Item Value="case_cocher" Binds="case_cocher"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="InscPedSemUeIterator" id="IdFiliereUeSemstre">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscPedSemUeIterator" id="IdSemestre">
+      <AttrNames>
+        <Item Value="IdSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscPedSemUeIterator" id="Codification">
+      <AttrNames>
+        <Item Value="Codification"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="InscriptionPedSemUeIterator" id="CreateInsert"
+            InstanceName="inscriptionAppDataControl.InscriptionPedSemUe" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="InscriptionPedSemUeIterator" id="IdInscriptionPedSemUe">
+      <AttrNames>
+        <Item Value="IdInscriptionPedSemUe"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemUeIterator" id="IdInscriptionPedSemestre">
+      <AttrNames>
+        <Item Value="IdInscriptionPedSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemUeIterator" id="IdFiliereUeSemstre1">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemUeIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="InscPedSemUeIterator" id="case_cocher" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="case_cocher"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="True"/>
+        <Item Value="False"/>
+      </ValueList>
+    </button>
+    <action IterBinding="InscPedSemUeIterator" id="ExecuteWithParams"
+            InstanceName="inscriptionAppDataControl.InscPedSemUe" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_parcours" NDValue="42" NDType="java.lang.Long"/>
+      <NamedData NDName="id_utilis" NDValue="85" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDValue="1" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sem" NDValue="1" NDType="java.lang.Long"/>
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="reInsResultUeIterator" id="reInsResultUe">
+      <nodeDefinition DefName="model.readOnlyView.reInsResultUe" Name="reInsResultUe0">
+        <AttrNames>
+          <Item Value="IdInscriptionAdmin"/>
+          <Item Value="Codification"/>
+          <Item Value="IdFiliereUeSemstre"/>
+          <Item Value="case_cocher" Binds="case_cocher1"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="reInsResultUeIterator" id="case_cocher1" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="case_cocher"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="True"/>
+        <Item Value="False"/>
+      </ValueList>
+    </button>
+  </bindings>
+</pageDefinition>

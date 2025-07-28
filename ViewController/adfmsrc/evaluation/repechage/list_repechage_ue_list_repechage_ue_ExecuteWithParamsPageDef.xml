@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="list_repechage_ue_list_repechage_ue_ExecuteWithParamsPageDef" Package="evaluation.repechage"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="RepecheFilUe" RangeSize="25" DataControl="evaluationAppDataControl" id="RepecheFilUeIterator"
+              Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="RepecheFilUeIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="anne" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Long"/>
+      <NamedData NDName="sem" NDValue="#{sessionScope.id_smstre}" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDValue="#{sessionScope.prcrs_maq_an}" NDType="java.lang.Long"/>
+      <NamedData NDName="sess" NDValue="#{sessionScope.id_session}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

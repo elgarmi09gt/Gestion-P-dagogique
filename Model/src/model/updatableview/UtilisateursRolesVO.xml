@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="UtilisateursRolesVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  SelectListFlags="1"
+  FromListFlags="1"
+  WhereFlags="1"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  SelectAllAttributes="false"
+  PageIterMode="Full">
+  <ViewAccessor
+    Name="RolesVO1"
+    ViewObjectName="model.updatableview.RolesVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_IdRole"
+    ListVOName="RolesVO1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdRole"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdRole"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage
+    Name="UtilisateursRolesEO"
+    Entity="model.entities.UtilisateursRolesEO"/>
+  <ViewAttribute
+    Name="IdUtilisateur"
+    IsUnique="true"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IdUtilisateur"
+    EntityUsage="UtilisateursRolesEO"
+    AliasName="ID_UTILISATEUR"/>
+  <ViewAttribute
+    Name="IdRole"
+    IsUnique="true"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IdRole"
+    EntityUsage="UtilisateursRolesEO"
+    AliasName="ID_ROLE"
+    LOVName="LOV_IdRole">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateCreation"
+    PrecisionRule="true"
+    EntityAttrName="DateCreation"
+    EntityUsage="UtilisateursRolesEO"
+    AliasName="DATE_CREATION"/>
+  <ViewAttribute
+    Name="DateModification"
+    PrecisionRule="true"
+    EntityAttrName="DateModification"
+    EntityUsage="UtilisateursRolesEO"
+    AliasName="DATE_MODIFICATION"/>
+  <ViewAttribute
+    Name="UtiCree"
+    PrecisionRule="true"
+    EntityAttrName="UtiCree"
+    EntityUsage="UtilisateursRolesEO"
+    AliasName="UTI_CREE"/>
+  <ViewAttribute
+    Name="UtiModifie"
+    PrecisionRule="true"
+    EntityAttrName="UtiModifie"
+    EntityUsage="UtilisateursRolesEO"
+    AliasName="UTI_MODIFIE"/>
+  <ViewAttribute
+    Name="IdUtilisateurRole"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IdUtilisateurRole"
+    EntityUsage="UtilisateursRolesEO"
+    AliasName="ID_UTILISATEUR_ROLE"
+    IsUpdateable="while_insert"/>
+  <ViewLinkAccessor
+    Name="UtilisateurStructureVO"
+    ViewLink="model.viewlink.UtiStructureToUtiRole"
+    Type="oracle.jbo.server.ViewRowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="UtilisateurStructureVO1"
+    ViewLink="model.viewlink.UtilisateurStructureToUtilsateurRoleVL"
+    Type="oracle.jbo.server.ViewRowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+</ViewObject>

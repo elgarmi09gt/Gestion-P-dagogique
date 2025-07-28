@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelSplitter id="ps1" orientation="vertical" splitterPosition="187" firstBorder="all" secondBorder="all"
+                    disabled="true">
+    <f:facet name="first">
+      <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="background-color:#2897e8;">
+        <af:panelGroupLayout id="pgl5" layout="horizontal" halign="center">
+          <af:outputText id="ot3"
+                         inlineStyle="font-size:medium; font-weight:bolder; line-height:50px; text-align:center; font-style:italic; color:White;"
+                         value="Saisissez le numéro étudiant ou numéro table ou CIN"/>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl6" layout="vertical"
+                             inlineStyle="background-color:White; border-collapse:collapse; border-left-style:solid; border-right-style:solid; border-top-style:solid; border-bottom-style:solid;">
+          <af:panelGroupLayout id="pgl7" layout="horizontal">
+            <af:inputText label="Numéro Carte Etudiant :" id="it1" value="#{Recherchebean.num_etud}"
+                          inlineStyle="margin-top:10px;margin-left:5px;"/>
+            <af:outputText value="OU" id="ot1" inlineStyle="margin-left:30px;margin-right:30px;"/>
+            <af:inputText label="Numéro Table :" id="it2" value="#{Recherchebean.num_table}"
+                          inlineStyle="margin-top:10px;" converter="javax.faces.Long"/>
+            <af:outputText value="OU" id="ot2" inlineStyle="margin-left:30px;margin-right:30px;"/>
+            <af:inputText label="CIN : " id="it3" value="#{Recherchebean.num_cin}" inlineStyle="margin-top:10px;"/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl8" layout="horizontal">
+            <af:button id="b1"
+                       inlineStyle="margin-top:30px;margin-left:450px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#f5e6e6;margin-bottom:15px;"
+                       actionListener="#{Recherchebean.onValiderRecherche}" icon="/images/rechercher.PNG"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </f:facet>
+    <f:facet name="second">
+      <af:region value="#{bindings.dynamicRegion1.regionModel}" id="r1" partialTriggers="::b1"/>
+    </f:facet>
+  </af:panelSplitter>
+</ui:composition>

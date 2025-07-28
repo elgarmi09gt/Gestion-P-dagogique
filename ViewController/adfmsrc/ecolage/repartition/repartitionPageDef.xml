@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="repartitionPageDef"
+                Package="ecolage.repartition">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="StructFormPayRO" RangeSize="25" DataControl="ecolageAppDataControl" id="StructFormPayROIterator"/>
+    
+    <iterator Binds="Repartition" RangeSize="25" DataControl="ecolageAppDataControl" id="RepartitionIterator"/>
+    <iterator Binds="FormationRepartitionRechRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="FormationRepartitionRechROIterator"/>
+    <iterator Binds="RepartitionStructRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="RepartitionStructROIterator"/>
+    <searchRegion Binds="RepartitionStructROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="RepartitionStructROQuery"/>
+    <iterator Binds="CleRepartition1" RangeSize="25" DataControl="ecolageAppDataControl" id="CleRepartition1Iterator"/>
+    <searchRegion Binds="CleRepartition1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="CleRepartition1Query"/>
+    <iterator Binds="CleRepAllPourcentageRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="CleRepAllPourcentageROIterator"/>
+    <iterator id="TypeCmpteRepROIterator" Binds="TypeCmpteRepRO" DataControl="ecolageAppDataControl" RangeSize="25"/>
+    <iterator Binds="CleRepartitionRechRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="CleRepartitionRechROIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="StructFormPayROIterator" ListOperMode="navigation" ListIter="StructFormPayROIterator"
+          id="StructFormPayRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+        
+    
+    <attributeValues IterBinding="RepartitionIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="RepartitionIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="RepartitionIterator" id="DateDebut">
+      <AttrNames>
+        <Item Value="DateDebut"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="RepartitionIterator" id="DateFin">
+      <AttrNames>
+        <Item Value="DateFin"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="RepartitionIterator" id="CreateInsertRep" InstanceName="ecolageAppDataControl.Repartition"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Commit" DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    
+        <attributeValues IterBinding="RepartitionIterator" id="IdStructureRep">
+      <AttrNames>
+        <Item Value="IdStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="RepartitionIterator" id="UtiCreeRep">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="RepartitionIterator" id="UtiModifieRep">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="RepartitionIterator" id="Actif">
+      <AttrNames>
+        <Item Value="Actif"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="RepartitionIterator" id="getRepartitionCurrent" InstanceName="ecolageAppDataControl.Repartition"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_rep" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="FormationRepartitionRechROIterator" id="getRechFormRep"
+            InstanceName="ecolageAppDataControl.FormationRepartitionRechRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_rep" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="RepartitionStructROIterator" id="RepartitionStructRO">
+      <nodeDefinition DefName="model.readOnlyView.RepartitionStructROVO" Name="RepartitionStructRO0">
+        <AttrNames>
+          <Item Value="LibRep"/>
+          <Item Value="LibCourtRep"/>
+          <Item Value="DateDebut"/>
+          <Item Value="DateFin"/>
+          <Item Value="Actif"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="RepartitionIterator" id="DeleteRep" InstanceName="ecolageAppDataControl.Repartition"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="StructFormPayROIterator" id="IdStructure">
+      <AttrNames>
+        <Item Value="IdStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="RepartitionIterator" StaticList="false" Uses="LOV_Actif" id="Actif1" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <action IterBinding="RepartitionStructROIterator" id="refreshTableRep"
+            InstanceName="ecolageAppDataControl.RepartitionStructRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_struct" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="CleRepartition1Iterator" id="CleRepartition1">
+      <nodeDefinition DefName="model.updatableview.CleRepartitionVO" Name="CleRepartition10">
+        <AttrNames>
+          <Item Value="IdTypeCompte"/>
+          <Item Value="Pourcentage"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="CleRepartition1Iterator" id="CreateInsertCleRep" InstanceName="ecolageAppDataControl.CleRepartition1"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="CleRepAllPourcentageROIterator" id="getSommePourcentage"
+            InstanceName="ecolageAppDataControl.CleRepAllPourcentageRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_rep" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="RepartitionStructROIterator" id="IdRepartition">
+      <AttrNames>
+        <Item Value="IdRepartition"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CleRepartition1Iterator" id="IdRepartitionCleRep">
+      <AttrNames>
+        <Item Value="IdRepartition"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CleRepartition1Iterator" id="UtiCreeCleRep">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CleRepartition1Iterator" id="UtiModifieCleRep">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <list ListOperMode="navigation" IterBinding="TypeCmpteRepROIterator" id="LibelleLong1">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <methodAction id="deleteClesRep" RequiresUpdateModel="true" Action="invokeMethod" MethodName="deleteClesRep"
+                  IsViewObjectMethod="false" DataControl="ecolageAppDataControl"
+                  InstanceName="bindings.deleteClesRep.dataControl.dataProvider">
+      <NamedData NDName="id_rep" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="RepartitionStructROIterator" id="LibRep">
+      <AttrNames>
+        <Item Value="LibRep"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="CleRepartitionRechROIterator" id="getCleRepRecherche"
+            InstanceName="ecolageAppDataControl.CleRepartitionRechRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_rep" NDType="java.lang.Long"/>
+      <NamedData NDName="id_type" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="CleRepartition1Iterator" id="getCleCurrente"
+            InstanceName="ecolageAppDataControl.CleRepartition1" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_rep" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

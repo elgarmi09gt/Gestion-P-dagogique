@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="inscriptionDeliberationPageDef"
+                Package="dap.inscriptiondeliberation">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ParcoursInscriptionDeliberation" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ParcoursInscriptionDeliberationIterator"/>
+    <iterator Binds="StudentInsDeliberation" RangeSize="15" DataControl="evaluationAppDataControl"
+              id="StudentInsDeliberationIterator"/>
+    <searchRegion Binds="StudentInsDeliberationIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="StudentInsDeliberationQuery"/>
+  </executables>
+  <bindings>
+    <list IterBinding="ParcoursInscriptionDeliberationIterator" ListOperMode="navigation"
+          ListIter="ParcoursInscriptionDeliberationIterator" id="ParcoursInscriptionDeliberation" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="StudentInsDeliberationIterator" id="StudentInsDeliberation">
+      <nodeDefinition DefName="model.readOnlyView.StudentInsDelibROVO" Name="StudentInsDeliberation0">
+        <AttrNames>
+          <Item Value="isDlbrleStd"/>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="InscriptionsPedagogiquesVO"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="model.updatableview.InscriptionsPedagogiquesVO">
+        <AttrNames>
+          <Item Value="NbInsc"/>
+          <Item Value="IsDelibarable"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="StudentInsDeliberationIterator" id="isDlbrleStd" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isDlbrleStd"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <action id="Commit" RequiresUpdateModel="true" Action="commitTransaction" DataControl="evaluationAppDataControl"/>
+    <methodAction id="UpdateInscription" RequiresUpdateModel="true" Action="invokeMethod" MethodName="UpdateInscription"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.UpdateInscription.dataControl.dataProvider">
+      <NamedData NDName="prcrs" NDType="java.lang.Long"/>
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

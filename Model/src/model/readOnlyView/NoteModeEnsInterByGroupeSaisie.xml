@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NoteModeEnsInterByGroupeSaisie"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.NoteModeEnsInterByGroupeSaisieRowImpl"
+  ComponentClass="model.readOnlyView.NoteModeEnsInterByGroupeSaisieImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.NoteModeEnsInterByGroupeSaisie_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_cal_delib_var"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_mode_ctrl_ec_var"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_type_ctrl_var"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_gs_var"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[Select pers.PRENOMS, pers.NOM, pers.DATE_NAISSANCE,nmei.ID_NOTE_MODE_ENS_INTER,nmei.NOTE           
+from NOTES_MODE_ENSEIGNEMENT_INTER nmei           
+JOIN CALENDRIER_DELIBERATION cd on nmei.ID_CALENDRIER_DELIBERATION=cd.ID_CALENDRIER_DELIBERATION           
+JOIN NIVEAUX_FORMATION_PARCOURS nfp on cd.ID_NIVEAU_FORMATION_COHORTE=nfp.ID_NIVEAU_FORMATION_COHORTE           
+JOIN GROUPE_SAISIE gs on nfp.ID_NIVEAU_FORMATION_PARCOURS=gs.ID_NIVEAU_FORMATION_PARCOURS and cd.ID_ANNEES_UNIVERS=gs.ID_ANNEE_UNIVERS           
+JOIN GROUPE_SAISIE_ETUDIANT gse on gs.ID_GROUPE_SAISIE=gse.ID_GROUPE_SAISIE           
+JOIN ETUDIANTS etd on gse.ID_ETUDIANT=etd.ID_ETUDIANT           
+JOIN PERSONNES pers on etd.ID_PERSONNE=pers.ID_PERSONNE           
+where cd.ID_CALENDRIER_DELIBERATION=:id_cal_delib_var            
+and nmei.ID_MODE_CONTROLE_EC=:id_mode_ctrl_ec_var            
+and nmei.ID_TYPE_CONTROLE=:id_type_ctrl_var  
+and gs.ID_GROUPE_SAISIE=:id_gs_var]]></SQLQuery>
+  <ViewAttribute
+    Name="Prenoms"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMS"
+    Expression="PRENOMS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_NAISSANCE"
+    Expression="DATE_NAISSANCE"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="IdNoteModeEnsInter"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NOTE_MODE_ENS_INTER"
+    Expression="ID_NOTE_MODE_ENS_INTER"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Note"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="NOTE"
+    Expression="NOTE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNoteModeEnsInter"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

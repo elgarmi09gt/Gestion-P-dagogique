@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listtypesectionPageDef"
+                Package="dap.typesection">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="TypeSections" RangeSize="20" DataControl="gestdapAppDataControl" id="TypeSectionsIterator"/>
+    <searchRegion Binds="TypeSectionsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="TypeSectionsQuery"/>
+    <iterator Binds="IsEtabTypeSectExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsEtabTypeSectExistIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="TypeSectionsIterator" id="TypeSections">
+      <nodeDefinition DefName="model.updatableview.TypeSectionsVO" Name="TypeSections0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="TypeSectionsIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeSectionsIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeSectionsIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="TypeSectionsIterator" id="CreateInsert" InstanceName="gestdapAppDataControl.TypeSections"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="TypeSectionsIterator" id="Delete" InstanceName="gestdapAppDataControl.TypeSections"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="TypeSectionsIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeSectionsIterator" id="DateModification">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeSectionsIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeSectionsIterator" id="IdTypeSection">
+      <AttrNames>
+        <Item Value="IdTypeSection"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="IsEtabTypeSectExistIterator" id="IsEtabTypeSectExist"
+            InstanceName="gestdapAppDataControl.IsEtabTypeSectExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="ts_id" NDType="java.lang.Integer"/>
+    </action>
+  </bindings>
+</pageDefinition>

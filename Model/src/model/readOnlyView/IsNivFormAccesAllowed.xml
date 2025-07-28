@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="IsNivFormAccesAllowed"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.IsNivFormAccesAllowed_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="uti"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="niv"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT DISTINCT unf.ID_UTILIS_NIVEAU_FORMATION          
+FROM          
+--UTILISATEURS u            
+--JOIN          
+UTILISATEUR_NIVEAUX_FORMATIONS unf          
+--ON u.ID_UTILISATEUR = unf.ID_UTILISATEUR           
+--JOIN NIVEAUX_FORMATIONS nf on nf.ID_NIVEAU_FORMATION =          
+JOIN NIVEAU_FORMATION_MAQUETTE_ANNE nfma ON unf.ID_NIVEAU_FORMATION = nfma.ID_NIVEAU_FORMATION           
+WHERE          
+--nfma.ID_ANNEES_UNIVERS =:annee          
+--AND          
+--u.ID_STRUCTURE =:s            
+--AND         
+unf.ID_UTILISATEUR =:uti   
+AND unf.ID_NIVEAU_FORMATION =:niv]]></SQLQuery>
+  <ViewAttribute
+    Name="IdUtilisNiveauFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_UTILIS_NIVEAU_FORMATION"
+    Expression="ID_UTILIS_NIVEAU_FORMATION"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdUtilisNiveauFormation"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

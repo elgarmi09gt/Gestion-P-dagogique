@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="InformationDeliberationEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="INFORMATION_DELIBERATION"
+  AliasName="InformationDeliberationEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdInformationDeliberation"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_INFORMATION_DELIBERATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INFORMATION_DELIBERATION"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="IdSession"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_SESSION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="INFORMATION_DELIBERATION"/>
+  <Attribute
+    Name="IdAnneesUnivers"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="INFORMATION_DELIBERATION"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="INFORMATION_DELIBERATION"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="INFORMATION_DELIBERATION"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="INFORMATION_DELIBERATION"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="INFORMATION_DELIBERATION"/>
+  <Attribute
+    Name="IdNiveauFormationParcours"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="INFORMATION_DELIBERATION"/>
+  <Key
+    Name="PkInformationDeliberation"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_INFORMATION_DELIBERATION"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InformationDeliberationEO.IdInformationDeliberation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInfoDelibNivFormParc">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAU_FORMATION_PARCOURS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INFO_DELIB_NIV_FORM_PARC"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InformationDeliberationEO.IdNiveauFormationParcours"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInfoDellibAnUniv">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ANNEES_UNIVERS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INFO_DELLIB_AN_UNIV"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InformationDeliberationEO.IdAnneesUnivers"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInfoDellibSessio">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_SESSIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INFO_DELLIB_SESSIO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InformationDeliberationEO.IdSession"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInfoDellibUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INFO_DELLIB_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InformationDeliberationEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInfoDellibUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INFO_DELLIB_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InformationDeliberationEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

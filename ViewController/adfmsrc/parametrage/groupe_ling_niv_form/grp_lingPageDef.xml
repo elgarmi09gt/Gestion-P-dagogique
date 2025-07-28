@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="grp_lingPageDef"
+                Package="parametrage.groupe_ling_niv_form">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="GroupeLinguistique" RangeSize="25" DataControl="parametrageAppDataControl"
+              id="GroupeLinguistiqueIterator"/>
+    <searchRegion Binds="GroupeLinguistiqueIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="GroupeLinguistiqueQuery"/>
+    <iterator Binds="LanguesROVO2" RangeSize="25" DataControl="parametrageAppDataControl" id="LanguesROVO2Iterator"/>
+    <searchRegion Binds="LanguesROVO2Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="LanguesROVO2Query"/>
+    <iterator Binds="GroupeLingLangueRO" RangeSize="25" DataControl="parametrageAppDataControl"
+              id="GroupeLingLangueROIterator"/>
+    <searchRegion Binds="GroupeLingLangueROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="GroupeLingLangueROQuery"/>
+    <iterator Binds="GroupeLinguistiqueLangues" RangeSize="10" DataControl="parametrageAppDataControl"
+              id="GroupeLinguistiqueLanguesIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="GroupeLinguistiqueIterator" id="GroupeLinguistique">
+      <nodeDefinition DefName="model.updatableview.GroupeLinguistiqueVO" Name="GroupeLinguistique0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="GroupeLinguistiqueIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeLinguistiqueIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="GroupeLinguistiqueIterator" id="CreateInsert"
+            InstanceName="parametrageAppDataControl.GroupeLinguistique" DataControl="parametrageAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="GroupeLinguistiqueIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="LanguesROVO2Iterator" id="LanguesROVO2">
+      <nodeDefinition DefName="model.readOnlyView.LanguesROVO" Name="LanguesROVO20">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="case_cocher" Binds="case_cocher"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="LanguesROVO2Iterator" id="case_cocher" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="case_cocher"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="True"/>
+        <Item Value="False"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="GroupeLingLangueROIterator" id="GroupeLingLangueRO">
+      <nodeDefinition DefName="model.readOnlyView.GroupeLingLangueROVO" Name="GroupeLingLangueRO0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="GroupeLinguistiqueLanguesIterator" id="CreateInsertGrpLingLang"
+            InstanceName="parametrageAppDataControl.GroupeLinguistiqueLangues" DataControl="parametrageAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="GroupeLinguistiqueLanguesIterator" id="IdGrpLing">
+      <AttrNames>
+        <Item Value="IdGrpLing"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeLinguistiqueLanguesIterator" id="IdLangue">
+      <AttrNames>
+        <Item Value="IdLangue"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeLinguistiqueLanguesIterator" id="UtiCree1">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="LanguesROVO2Iterator" id="ExecuteLang" InstanceName="parametrageAppDataControl.LanguesROVO2"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="iteratorExecute"/>
+    <action IterBinding="GroupeLingLangueROIterator" id="ExecuteGrpLingLang"
+            InstanceName="parametrageAppDataControl.GroupeLingLangueRO" DataControl="parametrageAppDataControl"
+            RequiresUpdateModel="true" Action="iteratorExecute"/>
+  </bindings>
+</pageDefinition>

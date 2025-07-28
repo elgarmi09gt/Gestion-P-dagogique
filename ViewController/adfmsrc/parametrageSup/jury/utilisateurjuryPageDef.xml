@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="utilisateurjuryPageDef"
+                Package="parametrageSup.jury">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UtilisateurStructure" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="UtilisateurStructureIterator"/>
+    <searchRegion Binds="UtilisateurStructureIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UtilisateurStructureQuery"/>
+    <iterator Binds="JuryROVO" RangeSize="25" DataControl="evaluationAppDataControl" id="JuryROVOIterator"/>
+    <searchRegion Binds="JuryROVOIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="JuryROVOQuery"/>
+    <iterator Binds="UtilisateursJuryVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="UtilisateursJuryVOIterator"/>
+    <iterator Binds="IsJuryAffectedROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsJuryAffectedROVOIterator"/>
+    <iterator Binds="JuryRoleROVO" RangeSize="25" DataControl="evaluationAppDataControl" id="JuryRoleROVOIterator"/>
+    <iterator Binds="IsJuryPresidentExist" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsJuryPresidentExistIterator"/>
+    <iterator Binds="UtilisateurJuryROVO2" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="UtilisateurJuryROVO2Iterator"/>
+    <searchRegion Binds="UtilisateurJuryROVO2Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UtilisateurJuryROVO2Query"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="UtilisateurStructureIterator" id="UtilisateurStructure">
+      <nodeDefinition DefName="model.readOnlyView.UtilisateurStructureVO" Name="UtilisateurStructure0">
+        <AttrNames>
+          <Item Value="isUserSelected"/>
+          <Item Value="Prenomnom"/>
+          <Item Value="AdressMail"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="UtilisateurStructureIterator" id="isUserSelected" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="isUserSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="JuryROVOIterator" id="JuryROVO">
+      <nodeDefinition DefName="model.readOnlyView.JuryROVO" Name="JuryROVO0">
+        <AttrNames>
+          <Item Value="IsJurySelected"/>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="Semestre"/>
+          <Item Value="Sess"/>
+          <Item Value="AnneUnivers"/>
+          <Item Value="LibParcours"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="JuryROVOIterator" id="IsJurySelected" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="IsJurySelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <action IterBinding="JuryROVOIterator" id="GetJury" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDValue="2" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDValue="2" NDType="java.lang.Integer"/>
+    </action>
+    <attributeValues IterBinding="UtilisateurStructureIterator" id="IdUtilisateur">
+      <AttrNames>
+        <Item Value="IdUtilisateur"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JuryROVOIterator" id="IdJury">
+      <AttrNames>
+        <Item Value="IdJury"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="UtilisateursJuryVOIterator" id="AffectedJuryTo"
+            InstanceName="evaluationAppDataControl.UtilisateursJuryVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdUtilisateur" NDType="java.lang.String"/>
+      <NamedData NDName="IdJury" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+      <NamedData NDName="Role" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="IsJuryAffectedROVOIterator" id="IsJuryAffected"
+            InstanceName="evaluationAppDataControl.IsJuryAffectedROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="uti" NDType="java.lang.Integer"/>
+      <NamedData NDName="j" NDType="java.lang.Integer"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="UtilisateurStructureIterator" id="GetUtilisateur"
+            InstanceName="evaluationAppDataControl.UtilisateurStructure" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="s_id" NDType="java.lang.Integer"/>
+    </action>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <methodAction id="getSelectedJury" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getSelectedJury"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getSelectedJury.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getSelectedJury_getSelectedJury_dataControl_dataProvider_getSelectedJury_result"/>
+    <methodAction id="getSelectedUsers" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getSelectedUsers"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getSelectedUsers.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getSelectedUsers_getSelectedUsers_dataControl_dataProvider_getSelectedUsers_result"/>
+    <list IterBinding="JuryRoleROVOIterator" ListOperMode="navigation" ListIter="JuryRoleROVOIterator"
+          id="JuryRoleROVO" DTSupportsMRU="false" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="libelle"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="IsJuryPresidentExistIterator" id="IsJuryPresiExist"
+            InstanceName="evaluationAppDataControl.IsJuryPresidentExist" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="s_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="j" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="UpdateRole" RequiresUpdateModel="true" Action="invokeMethod" MethodName="UpdateRole"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.UpdateRole.dataControl.dataProvider">
+      <NamedData NDName="idUser" NDType="java.lang.Integer"/>
+      <NamedData NDName="idJury" NDType="java.lang.Integer"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="utimodif" NDType="java.lang.Integer"/>
+    </methodAction>
+    <tree IterBinding="UtilisateurJuryROVO2Iterator" id="UtilisateurJuryROVO2">
+      <nodeDefinition DefName="model.readOnlyView.UtilisateurJuryROVO" Name="UtilisateurJuryROVO20">
+        <AttrNames>
+          <Item Value="Prenomnom"/>
+          <Item Value="Role"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="getMatricule" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getMatricule"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getMatricule.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getMatricule_getMatricule_dataControl_dataProvider_getMatricule_result">
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

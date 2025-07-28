@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:table value="#{bindings.FormationByStructure.collectionModel}" var="row"
+            rows="#{bindings.FormationByStructure.rangeSize}"
+            emptyText="#{bindings.FormationByStructure.viewable ? 'No data to display.' : 'Access Denied.'}"
+            rowBandingInterval="0" selectedRowKeys="#{bindings.FormationByStructure.collectionModel.selectedRow}"
+            selectionListener="#{bindings.FormationByStructure.collectionModel.makeCurrent}" rowSelection="single"
+            fetchSize="#{bindings.FormationByStructure.rangeSize}"
+            filterModel="#{bindings.FormationByStructureQuery.queryDescriptor}" filterVisible="true"
+            queryListener="#{bindings.FormationByStructureQuery.processQuery}" varStatus="vs" id="t1"
+            columnStretching="last">
+    <af:column sortProperty="#{bindings.FormationByStructure.hints.isSelectedStructure.name}" filterable="true"
+               sortable="true" headerText="#{bindings.FormationByStructure.hints.isSelectedStructure.label}" id="c1">
+      <af:selectBooleanCheckbox value="#{row.bindings.isSelectedStructure.inputValue}"
+                                label="#{row.bindings.isSelectedStructure.label}"
+                                shortDesc="#{bindings.FormationByStructure.hints.isSelectedStructure.tooltip}"
+                                id="sbc1"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.FormationByStructure.hints.LibelleLong.name}" filterable="true" sortable="true"
+               headerText="#{bindings.FormationByStructure.hints.LibelleLong.label}" id="c2">
+      <af:outputFormatted value="#{row.bindings.LibelleLong.inputValue}" id="of1"/>
+    </af:column>
+  </af:table>
+</ui:composition>

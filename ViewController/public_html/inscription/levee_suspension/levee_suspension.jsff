@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  
+    <af:button text="Liste des Etudiants suspendus" id="b1"
+             inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:20px;"
+             partialSubmit="false" disabled="true"/>
+  <af:table value="#{bindings.LesSuspenduRO.collectionModel}" var="row" rows="#{bindings.LesSuspenduRO.rangeSize}"
+            emptyText="#{bindings.LesSuspenduRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+            rowBandingInterval="0" selectedRowKeys="#{bindings.LesSuspenduRO.collectionModel.selectedRow}"
+            selectionListener="#{bindings.LesSuspenduRO.collectionModel.makeCurrent}" rowSelection="single"
+            fetchSize="#{bindings.LesSuspenduRO.rangeSize}" filterModel="#{bindings.LesSuspenduROQuery.queryDescriptor}"
+            filterVisible="true" queryListener="#{bindings.LesSuspenduROQuery.processQuery}" varStatus="vs" id="t1">
+    <af:column sortProperty="#{bindings.LesSuspenduRO.hints.Numero.name}" filterable="true" sortable="true"
+               headerText="#{bindings.LesSuspenduRO.hints.Numero.label}" id="c1">
+      <af:outputText value="#{row.Numero}" shortDesc="#{bindings.LesSuspenduRO.hints.Numero.tooltip}" id="ot1"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.LesSuspenduRO.hints.Nom.name}" filterable="true" sortable="true"
+               headerText="#{bindings.LesSuspenduRO.hints.Nom.label}" id="c2" width="150">
+      <af:outputText value="#{row.Nom}" shortDesc="#{bindings.LesSuspenduRO.hints.Nom.tooltip}" id="ot2"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.LesSuspenduRO.hints.Prenoms.name}" filterable="true" sortable="true"
+               headerText="#{bindings.LesSuspenduRO.hints.Prenoms.label}" id="c3" width="250">
+      <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.LesSuspenduRO.hints.Prenoms.tooltip}" id="ot3"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.LesSuspenduRO.hints.DateNaissance.name}" filterable="true" sortable="true"
+               headerText="#{bindings.LesSuspenduRO.hints.DateNaissance.label}" id="c4">
+      <f:facet name="filter">
+        <af:inputDate value="#{bindings.LesSuspenduROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                      id="id1">
+          <af:convertDateTime pattern="#{bindings.LesSuspenduRO.hints.DateNaissance.format}"/>
+        </af:inputDate>
+      </f:facet>
+      <af:outputText value="#{row.DateNaissance}" shortDesc="#{bindings.LesSuspenduRO.hints.DateNaissance.tooltip}"
+                     id="ot4">
+        <af:convertDateTime pattern="#{bindings.LesSuspenduRO.hints.DateNaissance.format}"/>
+      </af:outputText>
+    </af:column>
+    <af:column sortProperty="#{bindings.LesSuspenduRO.hints.Nationalite.name}" filterable="true" sortable="true"
+               headerText="#{bindings.LesSuspenduRO.hints.Nationalite.label}" id="c5">
+      <af:outputText value="#{row.Nationalite}" shortDesc="#{bindings.LesSuspenduRO.hints.Nationalite.tooltip}"
+                     id="ot5"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.LesSuspenduRO.hints.DateDebut.name}" filterable="true" sortable="true"
+               headerText="Date Debut" id="c8">
+      <f:facet name="filter">
+        <af:inputDate value="#{bindings.LesSuspenduROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateDebut.value}"
+                      id="id3">
+          <af:convertDateTime pattern="#{bindings.LesSuspenduRO.hints.DateDebut.format}"/>
+        </af:inputDate>
+      </f:facet>
+      <af:outputText value="#{row.DateDebut}" shortDesc="#{bindings.LesSuspenduRO.hints.DateDebut.tooltip}" id="ot8">
+        <af:convertDateTime pattern="#{bindings.LesSuspenduRO.hints.DateDebut.format}"/>
+      </af:outputText>
+    </af:column>
+    <af:column sortProperty="#{bindings.LesSuspenduRO.hints.Duree.name}" filterable="true" sortable="true"
+               headerText="Durée" id="c6" width="70">
+      <af:outputText value="#{row.Duree}" shortDesc="#{bindings.LesSuspenduRO.hints.Duree.tooltip}" id="ot6">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.LesSuspenduRO.hints.Duree.format}"/>
+      </af:outputText>
+    </af:column>
+    <af:column sortProperty="#{bindings.LesSuspenduRO.hints.DateFin.name}" filterable="true" sortable="true"
+               headerText="Date Fin" id="c7">
+      <f:facet name="filter">
+        <af:inputDate value="#{bindings.LesSuspenduROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateFin.value}"
+                      id="id2">
+          <af:convertDateTime pattern="#{bindings.LesSuspenduRO.hints.DateFin.format}"/>
+        </af:inputDate>
+      </f:facet>
+      <af:outputText value="#{row.DateFin}" shortDesc="#{bindings.LesSuspenduRO.hints.DateFin.tooltip}" id="ot7">
+        <af:convertDateTime pattern="#{bindings.LesSuspenduRO.hints.DateFin.format}"/>
+      </af:outputText>
+    </af:column>
+    <af:column sortProperty="#{bindings.LesSuspenduRO.hints.MotifSuspension.name}" filterable="true" sortable="true"
+               headerText="Motif Suspension" id="c9" width="300">
+      <af:outputText value="#{row.MotifSuspension}" shortDesc="#{bindings.LesSuspenduRO.hints.MotifSuspension.tooltip}"
+                     id="ot9"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.LesSuspenduRO.hints.LibAnnee.name}" filterable="true" sortable="true"
+               headerText="Année Universitaire" id="c10">
+      <af:outputText value="#{row.LibAnnee}" shortDesc="#{bindings.LesSuspenduRO.hints.LibAnnee.tooltip}" id="ot10"/>
+    </af:column>
+    <af:column headerText="#{bindings.LesSuspenduRO.hints.case_cocher.label}" id="c11">
+      <af:selectBooleanCheckbox value="#{row.bindings.case_cocher.inputValue}" label="#{row.bindings.case_cocher.label}"
+                                shortDesc="#{bindings.LesSuspenduRO.hints.case_cocher.tooltip}" id="sbc1"/>
+      <f:facet name="header">
+        <af:selectBooleanCheckbox text="Tout" id="sbc2" autoSubmit="true"
+                                  valueChangeListener="#{LeveeSuspenduBean.onSelectAll}"
+                                  binding="#{LeveeSuspenduBean.check}"/>
+      </f:facet>
+    </af:column>
+  </af:table>
+  <af:button text="Annuler Suspension" id="b2"
+             inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:20px;"
+             action="#{LeveeSuspenduBean.onLeveeSuspension}"/>
+             
+      <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" contentDelivery="lazyUncached"
+            binding="#{LeveeSuspenduBean.pop}">
+    <af:dialog id="d2" title="Confirmation la levée de suspension" dialogListener="#{LeveeSuspenduBean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous lever la suspension de ces (#{LeveeSuspenduBean.nombreInsc}) étudiant(s)"
+                     id="ot11"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{LeveeSuspenduBean.onCancel}"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

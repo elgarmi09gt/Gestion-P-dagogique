@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="comptesPageDef"
+                Package="ecolage.comptes">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="StructFormPayRO" RangeSize="25" DataControl="ecolageAppDataControl" id="StructFormPayROIterator"/>
+    <iterator Binds="FormPayCompteEtabRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="FormPayCompteEtabROIterator"/>
+    <searchRegion Binds="FormPayCompteEtabROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormPayCompteEtabROQuery"/>
+    <iterator Binds="RepRechStrcAnnRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="RepRechStrcAnnROIterator"/>
+    <iterator Binds="RepExisteCleRepRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="RepExisteCleRepROIterator"/>
+    <iterator Binds="AnneeUniversPasseeRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="AnneeUniversPasseeROIterator"/>
+    <iterator Binds="SoldeAnneeAncRO" RangeSize="10" DataControl="ecolageAppDataControl" id="SoldeAnneeAncROIterator"/>
+
+    <iterator Binds="Comptes" RangeSize="10" DataControl="ecolageAppDataControl" id="ComptesIterator"/>
+    <iterator Binds="SoldesComptes" RangeSize="10" DataControl="ecolageAppDataControl" id="SoldesComptesIterator"/>
+    <iterator Binds="SoldeAnneeAncStrcRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="SoldeAnneeAncStrcROIterator"/>
+    <iterator Binds="SoldeCompteGlobRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="SoldeCompteGlobROIterator"/>
+    <iterator Binds="FormPayCompteDeptRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="FormPayCompteDeptROIterator"/>
+    <searchRegion Binds="FormPayCompteDeptROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormPayCompteDeptROQuery"/>
+    <iterator Binds="FormPayCompteFormRO" RangeSize="-1" DataControl="ecolageAppDataControl"
+              id="FormPayCompteFormROIterator"/>
+    <searchRegion Binds="FormPayCompteFormROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormPayCompteFormROQuery"/>
+    <iterator Binds="LesComptesFormRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="LesComptesFormROIterator"/>
+    <searchRegion Binds="LesComptesFormROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="LesComptesFormROQuery"/>
+    <iterator Binds="CompteFormDjaGenererRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="CompteFormDjaGenererROIterator"/>
+    <iterator Binds="Personnes" RangeSize="25" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="PersonneSearchSimple" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="PersonneSearchSimpleIterator"/>
+    <iterator Binds="ListeInscPedEcolRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="ListeInscPedEcolROIterator"/>
+    <iterator Binds="FormPayCompteEtudRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="FormPayCompteEtudROIterator"/>
+    <searchRegion Binds="FormPayCompteEtudROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormPayCompteEtudROQuery"/>
+    <iterator Binds="FormPayHstFormParcRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="FormPayHstFormParcROIterator"/>
+    <iterator Binds="InsCompteEtudGenAllRO" RangeSize="-1" DataControl="ecolageAppDataControl"
+              id="InsCompteEtudGenAllROIterator"/>
+    <iterator Binds="PaieEchelonEcolModFormRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="PaieEchelonEcolModFormROIterator"/>
+    <iterator Binds="InscPedFormPayEcolRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="InscPedFormPayEcolROIterator"/>
+    <iterator Binds="ExonerationEcolageRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="ExonerationEcolageROIterator"/>
+    <iterator Binds="Paiements" RangeSize="10" DataControl="ecolageAppDataControl" id="PaiementsIterator"/>
+    <iterator Binds="PaieEtudGenRO" RangeSize="10" DataControl="ecolageAppDataControl" id="PaieEtudGenROIterator"/>
+    <iterator Binds="EtudBuRechRO" RangeSize="10" DataControl="ecolageAppDataControl" id="EtudBuRechROIterator"/>
+    <iterator Binds="EtudApteRechRO" RangeSize="10" DataControl="ecolageAppDataControl" id="EtudApteRechROIterator"/>
+    <iterator Binds="ResponsableRO" RangeSize="10" DataControl="ecolageAppDataControl" id="ResponsableROIterator"/>
+    <iterator Binds="InscPedagogiqueRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="InscPedagogiqueROIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="StructFormPayROIterator" ListOperMode="navigation" ListIter="StructFormPayROIterator"
+          id="StructFormPayRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="FormPayCompteEtabROIterator" id="FormPayCompteEtabRO">
+      <nodeDefinition DefName="model.readOnlyView.FormPayCompteEtabROVO" Name="FormPayCompteEtabRO0">
+        <AttrNames>
+          <Item Value="LibCompte"/>
+          <Item Value="Proprietaire"/>
+          <Item Value="SoldeInitial"/>
+          <Item Value="SoldeActuel"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="FormPayCompteEtabROIterator" id="getCmpteEtabGen"
+            InstanceName="ecolageAppDataControl.FormPayCompteEtabRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_type" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_strc" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="StructFormPayROIterator" id="IdStructure">
+      <AttrNames>
+        <Item Value="IdStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="RepRechStrcAnnROIterator" id="getRepRechStrAnn"
+            InstanceName="ecolageAppDataControl.RepRechStrcAnnRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_strc" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="RepExisteCleRepROIterator" id="getRepExisteCleRep"
+            InstanceName="ecolageAppDataControl.RepExisteCleRepRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_rep" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="RepRechStrcAnnROIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    
+    	<action IterBinding="AnneeUniversPasseeROIterator" id="getAnneeUniversPassee"
+            InstanceName="ecolageAppDataControl.AnneeUniversPasseeRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+	
+	<action IterBinding="SoldeAnneeAncROIterator" id="getSoldeAncien"
+            InstanceName="ecolageAppDataControl.SoldeAnneeAncRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_strc" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_type_cmpt" NDType="java.lang.Long"/>
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+    </action>
+	
+	    <action IterBinding="ComptesIterator" id="CreateInsertCompte" InstanceName="ecolageAppDataControl.Comptes"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="SoldesComptesIterator" id="CreateInsertSoldeCmpte" InstanceName="ecolageAppDataControl.SoldesComptes"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="ComptesIterator" id="IdCompte">
+      <AttrNames>
+        <Item Value="IdCompte"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ComptesIterator" id="NumeroCompte">
+      <AttrNames>
+        <Item Value="NumeroCompte"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ComptesIterator" id="IdTypeCompte">
+      <AttrNames>
+        <Item Value="IdTypeCompte"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ComptesIterator" id="ProprietaireCmpte">
+      <AttrNames>
+        <Item Value="Proprietaire"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ComptesIterator" id="IdStructureCmpte">
+      <AttrNames>
+        <Item Value="IdStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ComptesIterator" id="IdHistoriquesStructureCmpte">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ComptesIterator" id="IdFormationCmpte">
+      <AttrNames>
+        <Item Value="IdFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ComptesIterator" id="IdEtudiantCmpte">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ComptesIterator" id="IdFournisseurCmpte">
+      <AttrNames>
+        <Item Value="IdFournisseur"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ComptesIterator" id="IdAnneesUniversCmpte">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ComptesIterator" id="UtiCreeCmpte">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SoldesComptesIterator" id="IdCompteTypeCmpt">
+      <AttrNames>
+        <Item Value="IdCompte"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SoldesComptesIterator" id="SoldeInitial">
+      <AttrNames>
+        <Item Value="SoldeInitial"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SoldesComptesIterator" id="SoldeActuel">
+      <AttrNames>
+        <Item Value="SoldeActuel"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SoldesComptesIterator" id="IdAnneesUniversTypeCmpt">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SoldesComptesIterator" id="IdAnneesDernTypeCmpt">
+      <AttrNames>
+        <Item Value="IdAnneesDern"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SoldesComptesIterator" id="UtiCreeTypeCmpt">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+	    <methodAction id="next_seq" RequiresUpdateModel="true" Action="invokeMethod" MethodName="next_seq"
+                  IsViewObjectMethod="false" DataControl="ecolageAppDataControl"
+                  InstanceName="bindings.next_seq.dataControl.dataProvider"
+                  ReturnName="data.ecolageAppDataControl.methodResults.next_seq_next_seq_dataControl_dataProvider_next_seq_result"/>
+
+    <action IterBinding="SoldeAnneeAncStrcROIterator" id="getSoldeAnneeAncStrc"
+            InstanceName="ecolageAppDataControl.SoldeAnneeAncStrcRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_strc" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_type_cmpt" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="SoldeCompteGlobROIterator" id="getSoldeCompteGlob"
+            InstanceName="ecolageAppDataControl.SoldeCompteGlobRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_strc" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="StructFormPayROIterator" id="LibelleStrct">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StructFormPayROIterator" id="LibHisto">
+      <AttrNames>
+        <Item Value="LibHisto"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="FormPayCompteDeptROIterator" id="getCmpteDeptGen"
+            InstanceName="ecolageAppDataControl.FormPayCompteDeptRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_type" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_strc" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="FormPayCompteDeptROIterator" id="FormPayCompteDeptRO">
+      <nodeDefinition DefName="model.readOnlyView.FormPayCompteDeptROVO" Name="FormPayCompteDeptRO0">
+        <AttrNames>
+          <Item Value="LibCompte"/>
+          <Item Value="Proprietaire"/>
+          <Item Value="SoldeActuel"/>
+          <Item Value="SoldeInitial"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FormPayCompteFormROIterator" id="FormPayCompteFormRO">
+      <nodeDefinition DefName="model.readOnlyView.FormPayCompteFormROVO" Name="FormPayCompteFormRO0">
+        <AttrNames>
+          <Item Value="LibForm"/>
+          <Item Value="LibCourtForm"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="LesComptesFormROIterator" id="LesComptesFormRO">
+      <nodeDefinition DefName="model.readOnlyView.LesComptesFormROVO" Name="LesComptesFormRO0">
+        <AttrNames>
+          <Item Value="LibCompte"/>
+          <Item Value="Proprietaire"/>
+          <Item Value="SoldeActuel"/>
+          <Item Value="SoldeInitial"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="FormPayCompteFormROIterator" id="getCmpteFormGen"
+            InstanceName="ecolageAppDataControl.FormPayCompteFormRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_strc" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="CompteFormDjaGenererROIterator" id="getCompteFormDejaGen"
+            InstanceName="ecolageAppDataControl.CompteFormDjaGenererRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_strct" NDType="java.lang.Long"/>
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="StructFormPayROIterator" id="IdHistoriquesStructure">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="PersonnesIterator" id="getDetailPers" InstanceName="inscriptionAppDataControl.Personnes"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers_var" NDType="java.lang.Long"/>
+    </action>
+        <action IterBinding="PersonneSearchSimpleIterator" id="getPersonneSearch"
+            InstanceName="inscriptionAppDataControl.PersonneSearchSimple" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="prenom_pers" NDType="java.lang.String"/>
+      <NamedData NDName="nom_pers" NDType="java.lang.String"/>
+      <NamedData NDName="date_naiss" NDType="java.lang.String"/>
+    </action>
+    <methodAction id="isNumNouvBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumNouvBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumNouvBac.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumNouvBac_isNumNouvBac_dataControl_dataProvider_isNumNouvBac_result">
+      <NamedData NDName="num_table" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getIdPersBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersBac.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersBac_getIdPersBac_dataControl_dataProvider_getIdPersBac_result">
+      <NamedData NDName="num_table" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isNumEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumEtudiant_isNumEtudiant_dataControl_dataProvider_isNumEtudiant_result">
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getIdPersEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersEtudiant_getIdPersEtudiant_dataControl_dataProvider_getIdPersEtudiant_result">
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="isNumCin" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumCin"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumCin.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumCin_isNumCin_dataControl_dataProvider_isNumCin_result">
+      <NamedData NDName="num_cin" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getIdPersCin" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersCin"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersCin.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersCin_getIdPersCin_dataControl_dataProvider_getIdPersCin_result">
+      <NamedData NDName="cin" NDType="java.lang.String"/>
+    </methodAction>
+    <action IterBinding="ListeInscPedEcolROIterator" id="getListeInscPed"
+            InstanceName="ecolageAppDataControl.ListeInscPedEcolRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="FormPayCompteEtudROIterator" id="getCompteEtudGen"
+            InstanceName="ecolageAppDataControl.FormPayCompteEtudRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_strct" NDType="java.lang.Long"/>
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="FormPayCompteEtudROIterator" id="FormPayCompteEtudRO">
+      <nodeDefinition DefName="model.readOnlyView.FormPayCompteEtudROVO" Name="FormPayCompteEtudRO0">
+        <AttrNames>
+          <Item Value="LibCompte"/>
+          <Item Value="Proprietaire"/>
+          <Item Value="SoldeInitial"/>
+          <Item Value="SoldeActuel"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="FormPayHstFormParcROIterator" id="getFormHist"
+            InstanceName="ecolageAppDataControl.FormPayHstFormParcRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="niv_form_parc" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="InsCompteEtudGenAllROIterator" id="getTousEtudInscParcAnn"
+            InstanceName="ecolageAppDataControl.InsCompteEtudGenAllRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_parc" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+	
+	    <action IterBinding="PaieEchelonEcolModFormROIterator" id="getPaieEchelonModForm"
+            InstanceName="inscriptionAppDataControl.PaieEchelonEcolModFormRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_niv_form" NDType="java.lang.Long"/>
+    </action>
+	
+	    <action IterBinding="InscPedFormPayEcolROIterator" id="getInscPedFormPay"
+            InstanceName="inscriptionAppDataControl.InscPedFormPayEcolRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_ped" NDType="java.lang.Long"/>
+    </action>
+	
+	    <action IterBinding="ExonerationEcolageROIterator" id="getExoEcolage"
+            InstanceName="inscriptionAppDataControl.ExonerationEcolageRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_ped" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="PaiementsIterator" id="IdEtudiantPaie">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="IdFormationPaie">
+      <AttrNames>
+        <Item Value="IdFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="IdTypePaiement">
+      <AttrNames>
+        <Item Value="IdTypePaiement"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="IdAnneesUniversPaie">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="IdEchelonPaiement">
+      <AttrNames>
+        <Item Value="IdEchelonPaiement"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="MontantPaie">
+      <AttrNames>
+        <Item Value="Montant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="NetAPayer">
+      <AttrNames>
+        <Item Value="NetAPayer"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="MontantExonerationPaie">
+      <AttrNames>
+        <Item Value="MontantExoneration"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="RefExoPaie">
+      <AttrNames>
+        <Item Value="RefExo"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="IdInscriptionPedagogiquePaie">
+      <AttrNames>
+        <Item Value="IdInscriptionPedagogique"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="UtiCreePaie">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="AnnulePaie">
+      <AttrNames>
+        <Item Value="Annule"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="RepartiPaie">
+      <AttrNames>
+        <Item Value="Reparti"/>
+      </AttrNames>
+    </attributeValues>
+
+    <attributeValues IterBinding="PaiementsIterator" id="Complet">
+      <AttrNames>
+        <Item Value="Complet"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="Etat">
+      <AttrNames>
+        <Item Value="Etat"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementsIterator" id="Paye">
+      <AttrNames>
+        <Item Value="Paye"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="PaieEtudGenROIterator" id="getPaieEtudGene"
+            InstanceName="ecolageAppDataControl.PaieEtudGenRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="id_insc_ped" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="PaiementsIterator" id="CreateInsertPaie" InstanceName="ecolageAppDataControl.Paiements"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="FormPayHstFormParcROIterator" id="LibForm">
+      <AttrNames>
+        <Item Value="LibForm"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormPayHstFormParcROIterator" id="LibNivForm">
+      <AttrNames>
+        <Item Value="LibNivForm"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="EtudBuRechROIterator" id="getEtudBuRech" InstanceName="ecolageAppDataControl.EtudBuRechRO"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_struct" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="EtudApteRechROIterator" id="getEtudApteRech"
+            InstanceName="ecolageAppDataControl.EtudApteRechRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="ResponsableROIterator" id="getResponsableEtud"
+            InstanceName="ecolageAppDataControl.ResponsableRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="InscPedagogiqueROIterator" id="getDetailIncPedEtud"
+            InstanceName="ecolageAppDataControl.InscPedagogiqueRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_insc_ped" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

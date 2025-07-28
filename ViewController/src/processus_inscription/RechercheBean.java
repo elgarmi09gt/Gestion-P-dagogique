@@ -1,0 +1,710 @@
+package processus_inscription;
+
+import java.io.Serializable;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
+import java.util.Map;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import oracle.adf.controller.TaskFlowId;
+import oracle.adf.model.BindingContext;
+
+import oracle.adf.model.binding.DCIteratorBinding;
+import oracle.adf.share.ADFContext;
+
+import oracle.binding.AttributeBinding;
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+import oracle.jbo.RowSetIterator;
+
+public class RechercheBean implements Serializable{
+    
+    private String num_etud;
+    private String num_table;
+    private String num_cin;
+    private String taskFlowId = "/inscription/processus_inscription/dynamic-tk.xml#dynamic-tk";
+    Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    private String parcours = sessionScope.get("id_niv_form_parcours").toString();
+    private String anne_univers = sessionScope.get("id_annee").toString();
+    private String session = sessionScope.get("id_session").toString();
+    private String utilisateur = sessionScope.get("id_user").toString();
+    private String calendrier = sessionScope.get("id_calendrier").toString();
+    private String historique = sessionScope.get("id_hs").toString();
+    private String id_niv_form = sessionScope.get("id_niv_form").toString();
+    private String semestre = sessionScope.get("id_smstre").toString();
+    
+
+
+    public RechercheBean() {
+    }
+
+    public void setParcours(String parcours) {
+        this.parcours = parcours;
+    }
+
+    public String getParcours() {
+        return parcours;
+    }
+
+    public void setSemestre(String semestre) {
+        this.semestre = semestre;
+    }
+
+    public String getSemestre() {
+        return semestre;
+    }
+
+    public void setId_niv_form(String id_niv_form) {
+        this.id_niv_form = id_niv_form;
+    }
+
+    public String getId_niv_form() {
+        return id_niv_form;
+    }
+
+    public void setAnne_univers(String anne_univers) {
+        this.anne_univers = anne_univers;
+    }
+
+    public String getAnne_univers() {
+        return anne_univers;
+    }
+
+    public void setHistorique(String historique) {
+        this.historique = historique;
+    }
+
+    public String getHistorique() {
+        return historique;
+    }
+
+    public void setNum_etud(String num_etud) {
+        this.num_etud = num_etud;
+    }
+
+    public String getNum_etud() {
+        return num_etud;
+    }
+
+    public void setNum_table(String num_table) {
+        this.num_table = num_table;
+    }
+
+    public String getNum_table() {
+        return num_table;
+    }
+
+    public void setNum_cin(String num_cin) {
+        this.num_cin = num_cin;
+    }
+
+    public String getNum_cin() {
+        return num_cin;
+    }
+
+    public BindingContainer getBindings() {
+        return (BindingContainer) BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    @SuppressWarnings("oracle.jdeveloper.java.unchecked-conversion-or-cast")
+    public void onValiderRecherche(ActionEvent actionEvent) {
+        // Add event code here...
+        System.out.println("getId_niv_form() "+getId_niv_form());
+        ADFContext adfCtx = ADFContext.getCurrent();
+        Map sessionScope = adfCtx.getSessionScope();
+        sessionScope.put("is_en_regle",0);
+        sessionScope.put("is_en_regle_paie",0);
+        sessionScope.put("utilis", 85);        // utilisateur connecté
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        
+        
+        if(((String)this.getNum_etud() == null)&&((String)this.getNum_table() == null)&&((String)this.getNum_cin() == null)){
+            sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");            
+            FacesMessage msg = new FacesMessage(" Veuillez saisir au moins un numéro ");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+        else 
+            if(((String)this.getNum_etud() != null)&&((String)this.getNum_table()!= null)&&((String)this.getNum_cin() != null)){
+                sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");
+                FacesMessage msg = new FacesMessage(" Veuillez saisir soit numéro étudiant, soit numéro table, soit la CIN ");
+                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+        else 
+            if((((String)this.getNum_etud() != null)&&((String)this.getNum_table()!= null))||(((String)this.getNum_cin() != null)&&((String)this.getNum_table()!= null))||(((String)this.getNum_etud() != null)&&((String)this.getNum_cin()!= null))){
+                sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");
+                FacesMessage msg = new FacesMessage(" Veuillez saisir soit numéro étudiant, soit numéro table, soit la CIN ");
+                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+        else{
+            if((String)this.getNum_etud() != null){
+                // verifier si numéro étudiant est valide 
+                OperationBinding isEtudiant = getBindings().getOperationBinding("isNumEtudiant");
+                isEtudiant.getParamsMap().put("num_etud",  num_etud);
+                
+                Integer result = (Integer)isEtudiant.execute();
+                //numéro étudiant non valide
+                if(result == 0){
+                    System.out.println("num no valide");
+                    sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");
+                    FacesMessage msg = new FacesMessage("Le numéro étudiant: "+num_etud+" n'existe pas");
+                    msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                }
+                else{
+                    //numéro étudiant valide
+                    // recuperer id personn de l etudiant
+                    OperationBinding getIdPersEtudiant = getBindings().getOperationBinding("getIdPersEtudiant");
+                    getIdPersEtudiant.getParamsMap().put("num_etud",  num_etud);                            
+                    String result_getid = (String)getIdPersEtudiant.execute();
+                    
+                    OperationBinding op_insc_ped = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getListeInscPed");
+                    op_insc_ped.getParamsMap().put("idpers", Long.parseLong(result_getid));
+                    op_insc_ped.getParamsMap().put("annee", Long.parseLong(getAnne_univers()));
+                    op_insc_ped.execute();
+                    DCIteratorBinding iter_insc_ped = (DCIteratorBinding) getBindings().get("listeInsPedIterator");
+                    
+                    Row currentRow_insc_ped = iter_insc_ped.getCurrentRow();
+                    //System.out.println(" h124f h124f "+currentRow_insc_ped.getAttribute("IdInscriptionPedagogique"));
+                    if(currentRow_insc_ped != null){                    
+                        System.out.println("row insc ped "+currentRow_insc_ped.getAttribute("IdOption"));
+                        //getOptionForm
+                        OperationBinding op_option_form = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getOption");
+                        op_option_form.getParamsMap().put("id_option", currentRow_insc_ped.getAttribute("IdOption"));
+                        op_option_form.execute();
+
+                        OperationBinding detpers = getBindings().getOperationBinding("ExecuteWithParamsDetPers");
+                        detpers.getParamsMap().put("idpers_var",  Long.parseLong(result_getid));
+                        detpers.execute();
+                        
+                        DCIteratorBinding iter_det_pers = (DCIteratorBinding)getBindings().get("PersonnesIterator");
+                        RowSetIterator rsi_det_pers = iter_det_pers.getViewObject().createRowSetIterator(null);
+                        Row row_det_pers = rsi_det_pers.first();
+                        
+                        OperationBinding etatEtudExcluSuspendu = getBindings().getOperationBinding("etatEtudExcluSuspendu");
+                        etatEtudExcluSuspendu.getParamsMap().put("id_pers",  Long.parseLong(result_getid));
+                        etatEtudExcluSuspendu.getParamsMap().put("id_exclu",  Long.parseLong("61"));    // si l'etudiant est exclu
+                        etatEtudExcluSuspendu.execute();
+                        DCIteratorBinding iter_exclu_suspendu = (DCIteratorBinding) BindingContext.getCurrent().getCurrentBindingsEntry().get("EtudiantExcluSuspenduROIterator");
+                        Row row_exclu_suspendu = iter_exclu_suspendu.getCurrentRow();
+                        if (row_exclu_suspendu != null) {
+                            sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");
+                            FacesMessage msg = new FacesMessage( " Impossible d'inscrire l'étudiant "+ row_det_pers.getAttribute("Nom")+" "+row_det_pers.getAttribute("Prenoms"));
+                            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                            FacesContext.getCurrentInstance().addMessage(null, msg);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( " L'étudiant"+row_det_pers.getAttribute("Nom")+" "+row_det_pers.getAttribute("Prenoms")+" est "+row_exclu_suspendu.getAttribute("Libelle")+" depuis l'année universitaire: "+row_exclu_suspendu.getAttribute("LibelleLong")));
+                        }
+                        else{
+                            
+                            OperationBinding list_susp = getBindings().getOperationBinding("getListeSuspension");
+                            list_susp.getParamsMap().put("idpers",  Long.parseLong(result_getid));
+                            list_susp.execute();
+                            DCIteratorBinding iter_list_susp = (DCIteratorBinding)getBindings().get("ListeSuspensioneEtudROIterator");
+                            RowSetIterator rsi_list_susp = iter_list_susp.getViewObject().createRowSetIterator(null);
+                            Row row_susp = rsi_list_susp.last();
+                            
+                            //if( row_susp != null && is_suspendu(row_susp) > 0 ){
+                            if( row_susp != null ){
+                                SimpleDateFormat date_format_annee = new SimpleDateFormat("yyyy");
+                                Date date_fin_susp = (Date)row_susp.getAttribute("DateFin");
+                                FacesMessage msg = new FacesMessage( " Impossible d'inscrire l'étudiant du nom & prénom : "+ row_det_pers.getAttribute("Nom").toString()+" "+row_det_pers.getAttribute("Prenoms").toString());
+                                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                                FacesContext.getCurrentInstance().addMessage(null, msg);
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("L'étudiant est suspendu jusqu'au "+dateFormat.format(date_fin_susp)+" ("+date_format_annee.format(date_fin_susp)+"-"+(Integer.parseInt(date_format_annee.format(date_fin_susp)) + 1)+" )"));
+                            }
+                            else{
+                                getDetailEtud(result_getid);
+                            }
+                        }
+                        
+                    }
+                    else{                    
+                        sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");
+                        FacesMessage msg = new FacesMessage("L'étudiant ("+num_etud+") n'est pas autorisé(e) à s'inscrire pour l'année universitaire encours");
+                        msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                    }
+                }
+
+            }
+            else{
+                if((String)this.getNum_table() != null){
+                    // vérifier le numéro table                                       
+                    OperationBinding is_nouv_bac = getBindings().getOperationBinding("isNumNouvBac");
+                    is_nouv_bac.getParamsMap().put("num_table",  Long.parseLong(num_table));
+                    is_nouv_bac.getParamsMap().put("id_annee",  Long.parseLong(getAnne_univers()));
+                    
+                    Integer result = (Integer)is_nouv_bac.execute();
+                    //numéro table non valide
+                    if(result == 0){
+                        sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");
+                        FacesMessage msg = new FacesMessage("Le numéro table: "+num_table+" n'existe pas");
+                        msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                    }
+                    else{
+                        //numéro table valide
+                        // recuperer id personn de l etudiant
+                        OperationBinding getIdPersEtudiant = getBindings().getOperationBinding("getIdPersBac");
+                        getIdPersEtudiant.getParamsMap().put("num_table",  num_table); 
+                        getIdPersEtudiant.getParamsMap().put("id_annee",  Long.parseLong(getAnne_univers()));
+                        String result_getid = (String)getIdPersEtudiant.execute();   
+
+                        OperationBinding op_insc_ped = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getListeInscPed");
+                        op_insc_ped.getParamsMap().put("idpers", Long.parseLong(result_getid));
+                        op_insc_ped.getParamsMap().put("annee", Long.parseLong(getAnne_univers()));
+                        op_insc_ped.execute();
+                        DCIteratorBinding iter_insc_ped = (DCIteratorBinding) getBindings().get("listeInsPedIterator");
+                        
+                        Row currentRow_insc_ped = iter_insc_ped.getCurrentRow();
+                        if(currentRow_insc_ped != null){                    
+
+                            OperationBinding detpers = getBindings().getOperationBinding("ExecuteWithParamsDetPers");
+                            detpers.getParamsMap().put("idpers_var",  Long.parseLong(result_getid));
+                            detpers.execute();
+                            
+                            DCIteratorBinding iter_det_pers = (DCIteratorBinding)getBindings().get("PersonnesIterator");
+                            RowSetIterator rsi_det_pers = iter_det_pers.getViewObject().createRowSetIterator(null);
+                            Row row_det_pers = rsi_det_pers.first();
+                            
+                            OperationBinding etatEtudExcluSuspendu = getBindings().getOperationBinding("etatEtudExcluSuspendu");
+                            etatEtudExcluSuspendu.getParamsMap().put("id_pers",  Long.parseLong(result_getid));
+                            etatEtudExcluSuspendu.getParamsMap().put("id_exclu",  Long.parseLong("61"));    // si l'etudiant est exclu
+                            etatEtudExcluSuspendu.execute();
+                            DCIteratorBinding iter_exclu_suspendu = (DCIteratorBinding) BindingContext.getCurrent().getCurrentBindingsEntry().get("EtudiantExcluSuspenduROIterator");
+                            Row row_exclu_suspendu = iter_exclu_suspendu.getCurrentRow();
+                            if (row_exclu_suspendu != null) {
+                                sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");
+                                FacesMessage msg = new FacesMessage( " Impossible d'inscrire l'étudiant "+ row_det_pers.getAttribute("Nom").toString()+" "+row_det_pers.getAttribute("Prenoms").toString());
+                                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                                FacesContext.getCurrentInstance().addMessage(null, msg);
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( " L'étudiant est "+row_exclu_suspendu.getAttribute("Libelle")+" depuis l'année universitaire: "+row_exclu_suspendu.getAttribute("LibelleLong")));
+                            }
+                            else{
+                                
+                                OperationBinding list_susp = getBindings().getOperationBinding("getListeSuspension");
+                                list_susp.getParamsMap().put("idpers",  Long.parseLong(result_getid));
+                                list_susp.execute();
+                                DCIteratorBinding iter_list_susp = (DCIteratorBinding)getBindings().get("ListeSuspensioneEtudROIterator");
+                                RowSetIterator rsi_list_susp = iter_list_susp.getViewObject().createRowSetIterator(null);
+                                Row row_susp = rsi_list_susp.last();
+                                
+                                //if( row_susp != null && is_suspendu(row_susp) > 0 ){
+                                if( row_susp != null){
+                                    SimpleDateFormat date_format_annee = new SimpleDateFormat("yyyy");
+                                    Date date_fin_susp = (Date)row_susp.getAttribute("DateFin");
+                                    FacesMessage msg = new FacesMessage( " Impossible d'inscrire l'étudiant du nom & prénom : "+ row_det_pers.getAttribute("Nom").toString()+" "+row_det_pers.getAttribute("Prenoms").toString());
+                                    msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("L'étudiant est suspendu jusqu'au "+dateFormat.format(date_fin_susp)+" ("+date_format_annee.format(date_fin_susp)+"-"+(Integer.parseInt(date_format_annee.format(date_fin_susp)) + 1)+" )"));
+                                }
+                                else{
+                                    getDetailEtud(result_getid);
+                                }
+                            }
+                            
+                        }
+                        else{                    
+                            sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");
+                            FacesMessage msg = new FacesMessage("L'étudiant ("+num_etud+") n'est pas autorisé(e) à s'inscrire pour l'année universitaire encours");
+                            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                            FacesContext.getCurrentInstance().addMessage(null, msg);
+                        }
+                    }
+                }
+                else{
+                    //vérifier le numéro d'identification
+                    OperationBinding isEtudiant = getBindings().getOperationBinding("isNumCin");
+                    isEtudiant.getParamsMap().put("num_cin",  num_cin);
+                    
+                    Integer result = (Integer)isEtudiant.execute();
+                    // le numéro d'identification non valide            
+                    if(result == 0){
+                        sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");
+                        FacesMessage msg = new FacesMessage("Le numéro d'identification : "+num_cin+" n'existe pas");
+                        msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                        FacesContext.getCurrentInstance().addMessage(null, msg);
+                    }
+                    else{
+                        // le numéro d'identification valide
+                        // recuperer id personn de l etudiant
+                        OperationBinding getIdPersEtudiant = getBindings().getOperationBinding("getIdPersCin");
+                        getIdPersEtudiant.getParamsMap().put("cin",  num_cin);  
+                        String result_getid = (String)getIdPersEtudiant.execute();   
+                        
+                        OperationBinding op_insc_ped = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getListeInscPed");
+                        op_insc_ped.getParamsMap().put("idpers", Long.parseLong(result_getid));
+                        op_insc_ped.getParamsMap().put("annee", Long.parseLong(getAnne_univers()));
+                        op_insc_ped.execute();
+                        DCIteratorBinding iter_insc_ped = (DCIteratorBinding) getBindings().get("listeInsPedIterator");
+                        
+                        Row currentRow_insc_ped = iter_insc_ped.getCurrentRow();
+                        System.out.println(" h124f h124f "+currentRow_insc_ped.getAttribute("IdInscriptionPedagogique"));
+                        if(currentRow_insc_ped != null){                    
+
+                            OperationBinding detpers = getBindings().getOperationBinding("ExecuteWithParamsDetPers");
+                            detpers.getParamsMap().put("idpers_var",  Long.parseLong(result_getid));
+                            detpers.execute();
+                            
+                            DCIteratorBinding iter_det_pers = (DCIteratorBinding)getBindings().get("PersonnesIterator");
+                            RowSetIterator rsi_det_pers = iter_det_pers.getViewObject().createRowSetIterator(null);
+                            Row row_det_pers = rsi_det_pers.first();
+                            
+                            OperationBinding etatEtudExcluSuspendu = getBindings().getOperationBinding("etatEtudExcluSuspendu");
+                            etatEtudExcluSuspendu.getParamsMap().put("id_pers",  Long.parseLong(result_getid));
+                            etatEtudExcluSuspendu.getParamsMap().put("id_exclu",  Long.parseLong("61"));    // si l'etudiant est exclu
+                            etatEtudExcluSuspendu.execute();
+                            DCIteratorBinding iter_exclu_suspendu = (DCIteratorBinding) BindingContext.getCurrent().getCurrentBindingsEntry().get("EtudiantExcluSuspenduROIterator");
+                            Row row_exclu_suspendu = iter_exclu_suspendu.getCurrentRow();
+                            if (row_exclu_suspendu != null) {
+                                sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");
+                                FacesMessage msg = new FacesMessage( " Impossible d'inscrire l'étudiant "+ row_det_pers.getAttribute("Nom").toString()+" "+row_det_pers.getAttribute("Prenoms").toString());
+                                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                                FacesContext.getCurrentInstance().addMessage(null, msg);
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( " L'étudiant est "+row_exclu_suspendu.getAttribute("Libelle")+" depuis l'année universitaire: "+row_exclu_suspendu.getAttribute("LibelleLong")));
+                            }
+                            else{
+                                
+                                OperationBinding list_susp = getBindings().getOperationBinding("getListeSuspension");
+                                list_susp.getParamsMap().put("idpers",  Long.parseLong(result_getid));
+                                list_susp.execute();
+                                DCIteratorBinding iter_list_susp = (DCIteratorBinding)getBindings().get("ListeSuspensioneEtudROIterator");
+                                RowSetIterator rsi_list_susp = iter_list_susp.getViewObject().createRowSetIterator(null);
+                                Row row_susp = rsi_list_susp.last();
+                                
+                                //if( row_susp != null && is_suspendu(row_susp) > 0 ){
+                                if( row_susp != null ){
+                                    SimpleDateFormat date_format_annee = new SimpleDateFormat("yyyy");
+                                    Date date_fin_susp = (Date)row_susp.getAttribute("DateFin");
+                                    FacesMessage msg = new FacesMessage( " Impossible d'inscrire l'étudiant du nom & prénom : "+ row_det_pers.getAttribute("Nom").toString()+" "+row_det_pers.getAttribute("Prenoms").toString());
+                                    msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("L'étudiant est suspendu jusqu'au "+dateFormat.format(date_fin_susp)+" ("+date_format_annee.format(date_fin_susp)+"-"+(Integer.parseInt(date_format_annee.format(date_fin_susp)) + 1)+" )"));
+                                }
+                                else{
+                                    getDetailEtud(result_getid);
+                                }
+                            }
+                            
+                        }
+                        else{                    
+                            sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-default.xml#task-flow-default");
+                            FacesMessage msg = new FacesMessage("L'étudiant ("+num_etud+") n'est pas autorisé(e) à s'inscrire pour l'année universitaire encours");
+                            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                            FacesContext.getCurrentInstance().addMessage(null, msg);
+                        }
+                    }
+                }
+            }  
+        }  
+    }
+    public static String getRandomNomber(int n) 
+    {
+        //choisissez un caractére au hasard à partir de cette chaîne
+        String str = "abcdefghijklmnopqrstuvwxyz"; 
+    
+        StringBuilder s = new StringBuilder(n); 
+    
+        for (int i = 0; i < n; i++) { 
+            int index = (int)(str.length() * Math.random()); 
+            s.append(str.charAt(index)); 
+        } 
+        return s.toString(); 
+    }
+    public TaskFlowId getDynamicTaskFlowId() {
+        return TaskFlowId.parse(taskFlowId);
+    }
+
+    public void setDynamicTaskFlowId(String taskFlowId) {
+        this.taskFlowId = taskFlowId;
+    }
+
+    public void setUtilisateur(String utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public String getUtilisateur() {
+        return utilisateur;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void getDetailEtud(String result_getid){        
+        sessionScope.put("idpers", Long.parseLong(result_getid));       
+        /* bac nouv bac*/
+        OperationBinding is_nouv_bac = getBindings().getOperationBinding("getNouvBachelier");
+        is_nouv_bac.getParamsMap().put("idpers",  Long.parseLong(result_getid));
+        is_nouv_bac.getParamsMap().put("id_annee",  Long.parseLong(getAnne_univers()));
+        is_nouv_bac.execute();
+        DCIteratorBinding iter_nouv_bac = (DCIteratorBinding)getBindings().get("NouveauxBacheliersIterator");
+        Row rw_nouv_bac = iter_nouv_bac.getCurrentRow();
+        if(rw_nouv_bac != null){
+            System.out.println("good " +rw_nouv_bac.getAttribute("AnneBac").toString()+ " IdSerieBac "+rw_nouv_bac.getAttribute("IdSerieBac"));
+    
+            sessionScope.put("annee_bac_val", rw_nouv_bac.getAttribute("AnneBac"));
+            OperationBinding op_serie_bac = getBindings().getOperationBinding("getSerieBachelier");
+            op_serie_bac.getParamsMap().put("id_serie_bac",  rw_nouv_bac.getAttribute("IdSerieBac"));
+            op_serie_bac.execute();
+            DCIteratorBinding iter_serie_bac = (DCIteratorBinding)getBindings().get("SerieBacIterator");
+            Row rw_op_serie_bac = iter_serie_bac.getCurrentRow();
+            System.out.println("rw_op_serie_bac " +rw_op_serie_bac.getAttribute("Serie").toString());
+    
+    
+            OperationBinding op_type_mention = getBindings().getOperationBinding("getTypeMent");
+            op_type_mention.getParamsMap().put("id_type_mention",  rw_nouv_bac.getAttribute("IdTypeMention"));
+            op_type_mention.execute();
+            DCIteratorBinding iter_type_mention = (DCIteratorBinding)getBindings().get("TypeMentionIterator");
+            Row rw_type_mention = iter_type_mention.getCurrentRow();
+            System.out.println("IdTypeMention " +rw_type_mention.getAttribute("IdTypeMention").toString());            
+            
+            //getLyceeEtab id_lycee
+            //getTypeMent id_type_mention
+            OperationBinding op_lycee = getBindings().getOperationBinding("getLyceeEtab");
+            op_lycee.getParamsMap().put("id_lycee",  rw_nouv_bac.getAttribute("IdLycee"));
+            op_lycee.execute();
+            
+            DCIteratorBinding iter_lycee = (DCIteratorBinding)getBindings().get("LyceeIterator");
+            Row rw_lycee = iter_lycee.getCurrentRow();
+            System.out.println("IdTypeMention " +rw_lycee.getAttribute("IdLycee").toString());  
+            
+        }
+        else{
+            OperationBinding op_serie_bac = getBindings().getOperationBinding("getSerieBachelier");
+            op_serie_bac.getParamsMap().put("id_serie_bac",  0);
+            op_serie_bac.execute();
+            OperationBinding op_type_mention = getBindings().getOperationBinding("getTypeMent");
+            op_type_mention.getParamsMap().put("id_type_mention",  0);
+            op_type_mention.execute();
+            OperationBinding op_lycee = getBindings().getOperationBinding("getLyceeEtab");
+            op_lycee.getParamsMap().put("id_lycee",  0);
+            op_lycee.execute();
+        }
+        /* fin nouv bac*/
+        
+        
+        OperationBinding detpers = getBindings().getOperationBinding("ExecuteWithParamsDetPers");
+        detpers.getParamsMap().put("idpers_var",  Long.parseLong(result_getid));
+        detpers.execute();
+        
+        DCIteratorBinding iter_det_pers = (DCIteratorBinding)getBindings().get("PersonnesIterator");
+            //Create RowSetIterato iterate over viewObject
+        RowSetIterator rsi_det_pers = iter_det_pers.getViewObject().createRowSetIterator(null);
+        Row row_det_pers = rsi_det_pers.first();
+        
+        //details étudiant
+        OperationBinding det_etud = getBindings().getOperationBinding("ExecuteWithParamsEtudiant");
+        det_etud.getParamsMap().put("idpers",  Long.parseLong(result_getid));
+        det_etud.execute(); 
+        
+        AttributeBinding id_etud_resp = (AttributeBinding) getBindings().getControlBinding("IdEtudiant_Etud");
+        sessionScope.put("id_etud_resp", id_etud_resp.getInputValue());
+        OperationBinding responsable_etud = getBindings().getOperationBinding("getResponsableEtud");
+        responsable_etud.getParamsMap().put("id_etudiant",  Long.parseLong(id_etud_resp.getInputValue().toString()));
+        responsable_etud.execute();
+        
+        OperationBinding responsable_etud_ = getBindings().getOperationBinding("getResponsableEtudRO");
+        responsable_etud_.getParamsMap().put("id_etud",  Long.parseLong(id_etud_resp.getInputValue().toString()));
+        responsable_etud_.execute();
+        
+        DCIteratorBinding iter_etud_resp = (DCIteratorBinding)getBindings().get("ResponsableROIterator");
+        Row row_etud_resp = iter_etud_resp.getCurrentRow();
+        if(row_etud_resp == null){
+            sessionScope.put("resp_non_renseigner", 1);
+        }
+    
+        
+        // pour le cursus de l'étudiant
+        OperationBinding cursus_etud = getBindings().getOperationBinding("ExecuteWithParamsCursus");
+        cursus_etud.getParamsMap().put("idpers",  Long.parseLong(result_getid));
+        cursus_etud.execute();
+    
+        // pour l'historique des inscriptions de l'étudiant
+        OperationBinding cursus_histo = getBindings().getOperationBinding("ExecuteWithParamsHistoInsc");
+        cursus_histo.getParamsMap().put("idpers",  Long.parseLong(result_getid));
+        cursus_histo.execute();
+        // pour réglementation avec la Bu
+        
+        OperationBinding en_regle_bu = getBindings().getOperationBinding("ExecuteWithParamsEtudBu");
+        en_regle_bu.getParamsMap().put("idpers",  Long.parseLong(result_getid));
+        en_regle_bu.getParamsMap().put("id_annee",  Long.parseLong(getAnne_univers()));
+        en_regle_bu.execute();
+        
+        //getHistoStrc
+        OperationBinding getHistoStrc = getBindings().getOperationBinding("getHistoStrc");
+        getHistoStrc.getParamsMap().put("id_historique_strc",  Long.parseLong(getHistorique()));
+        getHistoStrc.execute();
+        
+        DCIteratorBinding iter_histo = (DCIteratorBinding)getBindings().get("HistoriquesStructuresIterator");
+        Row row_histo = iter_histo.getCurrentRow();
+        
+        if(row_histo != null){
+            System.out.println(" histo "+row_histo.getAttribute("IdStructures"));
+            //getStruct
+            OperationBinding getStruct = getBindings().getOperationBinding("getStruct");
+            getStruct.getParamsMap().put("id_struct",  Long.parseLong(row_histo.getAttribute("IdStructures").toString()));
+            getStruct.execute();
+            
+            DCIteratorBinding iter_struct_histo = (DCIteratorBinding)getBindings().get("StructuresIterator");
+            
+            Row row_struct = iter_struct_histo.getCurrentRow();
+            sessionScope.put("lib_struct", row_struct.getAttribute("LibelleLong"));
+            sessionScope.put("id_struct_bu", Long.parseLong(row_histo.getAttribute("IdStructures").toString()));
+            //isEtudEnRegleBu
+            OperationBinding isEtudEnRegleBu = getBindings().getOperationBinding("getEtudBuEnRegle");
+            isEtudEnRegleBu.getParamsMap().put("id_struct",  Long.parseLong(row_histo.getAttribute("IdStructures").toString()));  
+            isEtudEnRegleBu.getParamsMap().put("id_annee",  Long.parseLong(getAnne_univers()));  
+            isEtudEnRegleBu.getParamsMap().put("id_etud",  Long.parseLong(id_etud_resp.getInputValue().toString())); 
+            isEtudEnRegleBu.execute();
+            DCIteratorBinding iter_etud_bu = (DCIteratorBinding)getBindings().get("EtudEnRegleBuROIterator");
+            Row row_etud_bu = iter_etud_bu.getCurrentRow();
+            if(row_etud_bu != null){
+                if(Integer.parseInt(row_etud_bu.getAttribute("EnRegle").toString()) == 1){
+                    sessionScope.put("is_en_regle", 1);
+                    sessionScope.put("is_not_en_regle", 0);
+                }
+                else{
+                    sessionScope.put("is_not_en_regle", 1);
+                    sessionScope.put("is_en_regle", 0);
+                }
+            }
+            else{
+                sessionScope.put("is_not_en_regle", 1);
+                sessionScope.put("is_en_regle", 0);
+            }
+        }
+        // pas dans la structure
+        else{
+            sessionScope.put("is_not_en_regle", 1);
+            sessionScope.put("is_en_regle", 0);
+        }
+        
+        // paiement Etudiant
+        
+        OperationBinding op_insc_ped = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getListeInscPed");
+        op_insc_ped.getParamsMap().put("idpers", Long.parseLong(result_getid));
+        op_insc_ped.getParamsMap().put("annee", Long.parseLong(getAnne_univers()));
+        op_insc_ped.execute();
+        DCIteratorBinding iter_insc_ped = (DCIteratorBinding) getBindings().get("listeInsPedIterator");
+    
+        Row currentRow_insc_ped = iter_insc_ped.getCurrentRow();
+        
+        if(currentRow_insc_ped != null){
+            OperationBinding op_paie_etud = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getIsPaiementEtud");
+            op_paie_etud.getParamsMap().put("id_insc_ped", Long.parseLong(currentRow_insc_ped.getAttribute("IdInscriptionPedagogique").toString()));
+            op_paie_etud.getParamsMap().put("niv_form_parcours", Long.parseLong(currentRow_insc_ped.getAttribute("IdNiveauFormationParcours").toString()));
+            //IdNiveauFormationParcours
+            op_paie_etud.getParamsMap().put("id_histo_struct", Long.parseLong(getHistorique()));
+            op_paie_etud.getParamsMap().put("id_etud", Long.parseLong(id_etud_resp.getInputValue().toString()));
+            op_paie_etud.getParamsMap().put("id_annee", Long.parseLong(getAnne_univers()));
+            op_paie_etud.execute();
+            DCIteratorBinding iter_paie_etud = (DCIteratorBinding) getBindings().get("EtudPaiementROIterator");
+            
+            Row currentRow_paie_etud = iter_paie_etud.getCurrentRow();
+            System.out.println("id_histo_struct "+getHistorique()+" niv_form_parcours "+currentRow_insc_ped.getAttribute("IdNiveauFormationParcours"));
+            System.out.println("currentRow_paie_etud "+currentRow_paie_etud);
+            if (currentRow_paie_etud == null) {
+                sessionScope.put("is_not_en_regle_paie", 1);
+                sessionScope.put("is_en_regle_paie", 0);
+            }
+            else{
+                if(Integer.parseInt(currentRow_paie_etud.getAttribute("Valider").toString()) == 1){
+                    //Editer avec message
+                    sessionScope.put("is_en_regle_paie", 1);
+                     sessionScope.put("is_not_en_regle_paie", 0);
+                 }
+                 else{
+                     sessionScope.put("is_not_en_regle_paie", 1);
+                     sessionScope.put("is_en_regle_paie", 0);
+                 }
+            }
+        } 
+        else{
+            sessionScope.put("is_not_en_regle_paie", 1);
+            sessionScope.put("is_en_regle_paie", 0);
+        }
+    
+        // Etudiant TIC
+        
+        OperationBinding etud_tic = getBindings().getOperationBinding("getEtudiantTic");
+        etud_tic.getParamsMap().put("id_etud",  Long.parseLong(id_etud_resp.getInputValue().toString()));
+        etud_tic.getParamsMap().put("id_annee",  Long.parseLong(getAnne_univers()));
+        etud_tic.execute();
+        
+        DCIteratorBinding iter_etud_tic = (DCIteratorBinding) getBindings().get("EtudiantTicROIterator");
+        
+        Row currentRow_etud_tic = iter_etud_tic.getCurrentRow();
+        
+        if(currentRow_etud_tic != null){
+            sessionScope.put("is_etud_tic", 1);
+            sessionScope.put("is_not_etud_tic", 0);
+        }
+        else{
+            sessionScope.put("is_not_etud_tic", 1);
+            sessionScope.put("is_etud_tic", 0);
+        }
+        
+        // Edition du certificat d'inscription
+        
+        System.out.println("is_etud_tic "+sessionScope.get("is_etud_tic"));
+        System.out.println("is_en_regle_paie "+sessionScope.get("is_en_regle_paie"));
+        System.out.println("is_en_regle "+sessionScope.get("is_en_regle"));
+        System.out.println("resp_non_renseigner "+sessionScope.get("resp_non_renseigner"));
+        
+        
+        OperationBinding op_ue_insc = getBindings().getOperationBinding("getUeInscEnCours");
+      
+        op_ue_insc.getParamsMap().put("id_parcours_maq",  Long.parseLong(getParcours()));
+        op_ue_insc.getParamsMap().put("id_sem",  Long.parseLong(getSemestre()));
+        op_ue_insc.getParamsMap().put("id_annee",  Long.parseLong(getAnne_univers()));
+        op_ue_insc.getParamsMap().put("id_pers",  Long.parseLong(sessionScope.get("idpers").toString()));        
+        op_ue_insc.execute();
+        
+        DCIteratorBinding iter_ue_insc = (DCIteratorBinding) BindingContext.getCurrent().getCurrentBindingsEntry().get("lesUeInscPedSemUeROIterator");        
+        RowSetIterator rsi_ue_insc = iter_ue_insc.getViewObject().createRowSetIterator(null);
+        
+        if(currentRow_insc_ped != null){
+            
+            if(rsi_ue_insc.getRowCount()!=0){
+                sessionScope.put("id_insc_certificat_insc" ,Long.parseLong(currentRow_insc_ped.getAttribute("IdInscriptionPedagogique").toString()));
+                sessionScope.put("is_down_certificat_insc", 0);
+            }
+            else{
+                sessionScope.put("is_down_certificat_insc", 1);                
+            }
+        }
+        else{
+            sessionScope.put("is_down_certificat_insc", 1);
+        }
+    
+        sessionScope.put("TfInsID", "/inscription/processus_inscription/task-flow-train.xml#task-flow-train");
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Integer is_suspendu(Row row){
+        Date date_fin_susp = (Date)row.getAttribute("DateFin");
+        Integer val_ret = 0;
+        SimpleDateFormat date_format_annee = new SimpleDateFormat("yyyy");
+        
+        //getAnneeEnCours
+        OperationBinding getAnneeEnCours = getBindings().getOperationBinding("getAnneeEnCours");
+        getAnneeEnCours.getParamsMap().put("id_annee",  Long.parseLong(getAnne_univers()));
+        getAnneeEnCours.execute();
+        DCIteratorBinding iter_annee_cours = (DCIteratorBinding)getBindings().get("AnneeUniversEnCoursROIterator");
+        String annee_cours = iter_annee_cours.getCurrentRow().getAttribute("AnneeCours").toString();
+
+        Integer annee_date_fin = Integer.parseInt(date_format_annee.format(date_fin_susp));
+        Integer annee_currente = Integer.parseInt(annee_cours);
+        if(annee_date_fin > annee_currente)
+            val_ret = 1;
+        return val_ret;
+    }
+}

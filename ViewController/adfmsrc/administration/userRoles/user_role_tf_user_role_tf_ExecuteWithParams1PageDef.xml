@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="user_role_tf_user_role_tf_ExecuteWithParams1PageDef" Package="administration.userRoles"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="RoleAAssignerVO" RangeSize="25" DataControl="gestdapAppDataControl" id="RoleAAssignerVOIterator"
+              Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="RoleAAssignerVOIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="role_id" NDValue="#{sessionScope.id_user}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

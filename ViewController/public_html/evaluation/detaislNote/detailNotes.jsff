@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:iterator id="i6" value="#{DetailNoteBean.opPdtJury()}"/>
+  <af:panelGroupLayout id="pgl11" layout="scroll">
+    <af:panelGroupLayout id="pgl12" layout="vertical" valign="middle" halign="center"
+                         visible="#{pageFlowScope.isDeliberatedSemestre != 0 ? (sessionScope.ispdtjury ? false : securityContext.userInRole['Admin'] ? false : true) : false}">
+      <af:outputFormatted value="Vous ne disposez pas des autorisations nécessaires pour traiter les réclamations liées à ce parcours." id="of14"
+                          inlineStyle="font-style:italic; font-size:large;color : orange"/>
+    <af:outputFormatted value="#{bindings.ParcoursInfo.inputValue}(SEMESTRE #{sessionScope.id_smstre} -- #{sessionScope.id_session != '1' ? 'SESSION DE RATTRAPAGE' : 'SESSION NORMALE'})"
+                          id="of15" inlineStyle="font-style:italic; font-size:large;color : #2898e8"/>
+      <af:outputFormatted value="Seul le président du jury est habilité à le faire." id="of16"
+                          inlineStyle="font-style:italic; font-size:large;color : orange"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl2" layout="scroll" halign="center"
+                         visible="#{pageFlowScope.isDeliberatedSemestre != 0 ? (sessionScope.ispdtjury ? true : securityContext.userInRole['Admin'] ? true : false) : false}">
+      <af:outputFormatted value="#{bindings.ParcoursInfo.inputValue}(SEMESTRE #{sessionScope.id_smstre} -- #{sessionScope.id_session != '1' ? 'SESSION DE RATTRAPAGE' : 'SESSION NORMALE'})"
+                          id="of4" inlineStyle="font-style:italic; font-size:large;color : #2898e8"/>
+      <af:outputFormatted value="etat deliberation : #{pageFlowScope.etatDeliberation}" id="of10" visible="false"/>
+      <af:panelGroupLayout id="pgl4" layout="scroll" visible="#{pageFlowScope.etatDeliberation == 9 ? false : true}"
+                           inlineStyle="margin : 10px 0" binding="#{DetailNoteBean.panGrpDetails}">
+        <af:button text="Clôturer Réclammation" id="b4"
+                   inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;margin-left:5px"
+                   icon="/images/closed-24.png" visible="false">
+          <af:showPopupBehavior popupId="p2"/>
+        </af:button>
+        <af:panelGroupLayout id="pgl1" layout="horizontal">
+          <af:outputFormatted value="Numéro étudiant" id="of3"
+                              inlineStyle="font-size:large; font-family:cursive;margin:10px; font-weight:bold"
+                              styleUsage="instruction"/>
+          <af:inputText id="it1"
+                        contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                        binding="#{DetailNoteBean.inputEtudiant}" autoSubmit="true"/>
+          <af:button text="Rechercher" id="b1" actionListener="#{DetailNoteBean.OnSearchEtudiant}"
+                     inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;margin-left:5px"/>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl3" layout="scroll" inlineStyle="margin : 10px 0 0 0"
+                             visible="#{bindings.DetailNoteIterator.estimatedRowCount == 0 ? false : true }">
+          <af:outputFormatted value="#{bindings.Numero.inputValue} -- #{bindings.Datelieunaiss.inputValue}" id="of2"
+                              inlineStyle="font-style:italic; font-size:large; color:#2898e8; margin:10px 0; font-weight:bold;"/>
+          <af:panelGroupLayout id="pgl6" layout="horizontal" inlineStyle="margin:5px">
+            <af:button text="Enregistrer" id="b2"
+                       inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;margin-left:5px"
+                       icon="/images/save-24.png" actionListener="#{DetailNoteBean.onSaveDetails}"/>
+          </af:panelGroupLayout>
+          <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{DetailNoteBean.panCollectDetails}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <af:table value="#{bindings.DetailNote.collectionModel}" var="row" rows="#{bindings.DetailNote.rangeSize}"
+                      emptyText="#{bindings.DetailNote.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.DetailNote.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.DetailNote.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.DetailNote.rangeSize}"
+                      filterModel="#{bindings.DetailNoteQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.DetailNoteQuery.processQuery}" varStatus="vs" id="t1"
+                      columnStretching="column:c2" binding="#{DetailNoteBean.tableDetails}">
+              <af:column sortProperty="#{bindings.DetailNote.hints.Elementconst.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle.ELEMENTS_CONSTITUTIFS}" id="c2">
+                <af:outputFormatted value="#{row.bindings.Elementconst.inputValue}" id="of5"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.DetailNote.hints.Typecntrl.name}" filterable="true" sortable="true"
+                         headerText="#{viewcontrollerBundle1.TYPE_CONTROLE}" id="c3" width="150">
+                <af:outputFormatted value="#{row.bindings.Typecntrl.inputValue}" id="of6"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.DetailNote.hints.NotesModeEnseignementInterNewVO.Note.name}"
+                         filterable="true" sortable="true" headerText="#{viewcontrollerBundle.NOTE}" id="c4">
+                <af:inputText value="#{row.NotesModeEnseignementInterNewVO.bindings.Note.inputValue}"
+                              label="#{bindings.DetailNote.hints.NotesModeEnseignementInterNewVO.Note.label}"
+                              required="#{bindings.DetailNote.hints.NotesModeEnseignementInterNewVO.Note.mandatory}"
+                              columns="#{bindings.DetailNote.hints.NotesModeEnseignementInterNewVO.Note.displayWidth}"
+                              maximumLength="#{bindings.DetailNote.hints.NotesModeEnseignementInterNewVO.Note.precision}"
+                              shortDesc="#{bindings.DetailNote.hints.NotesModeEnseignementInterNewVO.Note.tooltip}"
+                              rendered="#{row.NotesModeEnseignementInterNewVO != null}" id="it2" autoSubmit="true"
+                              disabled="#{row.bindings.IdTypeVerrou.inputValue == 1 ? false : true}">
+                  <f:validator binding="#{row.NotesModeEnseignementInterNewVO.bindings.Note.validator}"/>
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.DetailNote.hints.NotesModeEnseignementInterNewVO.Note.format}"/>
+                </af:inputText>
+              </af:column>
+            </af:table>
+            <f:facet name="statusbar"/>
+          </af:panelCollection>
+          <af:button text="Enregistrer" id="b3"
+                     inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;margin-left:5px"
+                     icon="/images/save-24.png" actionListener="#{DetailNoteBean.onSaveDetails}"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:outputFormatted value="Les réclamations ne sont plus recevables, la période étant arrivée à son terme." id="of7"
+                          visible="#{pageFlowScope.etatDeliberation == 9 ? true : false}"
+                          inlineStyle="font-style:italic; font-size:large; color:red; margin:10px 0; font-weight:bold; font-family:Georgia;"/>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{DetailNoteBean.popupNotStudent}"
+                contentDelivery="lazyUncached">
+        <af:dialog id="d1" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+          <f:facet name="buttonBar"/>
+          <af:panelGroupLayout id="pgl5" layout="vertical" halign="center">
+            <af:icon name="info" id="i1"/>
+            <af:outputFormatted value="Aucun étudiant trouvé !!!" id="of1"
+                                inlineStyle="color:Orange; font-size:large;"/>
+          </af:panelGroupLayout>
+        </af:dialog>
+      </af:popup>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="p2">
+        <af:dialog id="d2" affirmativeTextAndAccessKey="Continuer" cancelTextAndAccessKey="Annuler"
+                   title="Confirmer clôture réclamation !!!"
+                   dialogListener="#{DetailNoteBean.onCloseReclamationConfirm}">
+          <f:facet name="buttonBar"/>
+          <af:panelGroupLayout id="pgl7" layout="vertical" halign="center" inlineStyle="line-height:30px;">
+            <af:icon name="info" id="i2"/>
+            <af:outputFormatted value="Voulez-vous vraiment clôture les réclamation (Semestre #{sessionScope.id_semestre} -- #{sessionScope.id_session == 1 ? 'Première ' : 'Deuxième '} Session)"
+                                id="of8" inlineStyle="color:#2898e8; font-size:large; font-weight:bold;"/>
+            <af:outputFormatted value="Attention !!! Si vous confirmez aucunes modifications de note ne sera possible !!!"
+                                id="of9" inlineStyle="color:red; font-size:large; font-weight:bold;" visible="false"/>
+          </af:panelGroupLayout>
+        </af:dialog>
+      </af:popup>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{DetailNoteBean.popupRecClosed}">
+        <af:dialog id="d4" affirmativeTextAndAccessKey="Continuer" cancelTextAndAccessKey="Fermer" title="Info !!!"
+                   dialogListener="#{DetailNoteBean.onCloseReclamationConfirm}" type="cancel">
+          <f:facet name="buttonBar"/>
+          <af:panelGroupLayout id="pgl8" layout="vertical" halign="center" inlineStyle="line-height:30px;">
+            <af:icon name="info" id="i3"/>
+            <af:outputFormatted value="Réclamation clôturée avec success" id="of11"
+                                inlineStyle="color:#2898e8; font-size:large; font-weight:bold;"/>
+          </af:panelGroupLayout>
+        </af:dialog>
+      </af:popup>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="p5" binding="#{DetailNoteBean.popupRecNotClosed}">
+        <af:dialog id="d3" affirmativeTextAndAccessKey="Continuer" cancelTextAndAccessKey="Fermer" title="Info !!!"
+                   dialogListener="#{DetailNoteBean.onCloseReclamationConfirm}" type="cancel">
+          <f:facet name="buttonBar"/>
+          <af:panelGroupLayout id="pgl9" layout="vertical" halign="center" inlineStyle="line-height:30px;">
+            <af:icon name="info" id="i4"/>
+            <af:outputFormatted value="Erreur lors de la clôture des réclamations !! Veuillez ressayer !!!" id="of13"
+                                inlineStyle="color:red; font-size:large; font-weight:bold;"/>
+          </af:panelGroupLayout>
+        </af:dialog>
+      </af:popup>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{DetailNoteBean.popupSavedSuccess}">
+        <af:dialog id="d5" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+          <f:facet name="buttonBar"/>
+          <af:panelGroupLayout id="pgl10" layout="vertical" halign="center">
+            <af:icon name="info" id="i5"/>
+            <af:outputFormatted value="Réclamation bien enregistrée !!!" id="of12"
+                                inlineStyle="font-size:large; color:#2898e8; font-weight:bold;"/>
+          </af:panelGroupLayout>
+        </af:dialog>
+      </af:popup>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl13" visible="#{pageFlowScope.isDeliberatedSemestre == 0 ? true : false}"
+                         layout="vertical" valign="middle" halign="center">
+      <af:outputFormatted value="#{bindings.ParcoursInfo.inputValue}(SEMESTRE #{sessionScope.id_smstre} -- #{sessionScope.id_session != '1' ? 'SESSION DE RATTRAPAGE' : 'SESSION NORMALE'})"
+                          id="of18" inlineStyle="font-style:italic; font-size:large;color : #2898e8"/>
+      <af:outputFormatted value="Le traitement des réclamations ne peut être effectué pour le moment, la délibération n’ayant pas encore eu lieu." id="of17"
+                          inlineStyle="font-style:italic; font-size:large;color : orange"/>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</ui:composition>

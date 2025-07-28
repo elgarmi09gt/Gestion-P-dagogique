@@ -1,0 +1,263 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar">
+        <af:toolbar id="t2">
+          <af:button id="b1" icon="/images/new_icon.png" actionListener="#{AdministrationBean.onCreateUserAction}"/>
+        </af:toolbar>
+      </f:facet>
+      <f:facet name="statusbar"/>
+      <af:table value="#{bindings.UtilisateursROVO.collectionModel}" var="row"
+                rows="#{bindings.UtilisateursROVO.rangeSize}"
+                emptyText="#{bindings.UtilisateursROVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.UtilisateursROVO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.UtilisateursROVO.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.UtilisateursROVO.rangeSize}"
+                filterModel="#{bindings.UtilisateursROVOQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.UtilisateursROVOQuery.processQuery}" varStatus="vs" id="t1"
+                scrollPolicy="page" columnStretching="last">
+        <af:column sortProperty="#{bindings.UtilisateursROVO.hints.Prenom.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.PRENOMS}" id="c1" width="250">
+          <af:outputText value="#{row.Prenom}" shortDesc="#{bindings.UtilisateursROVO.hints.Prenom.tooltip}" id="ot1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.UtilisateursROVO.hints.Nom.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.NOM}" id="c2" width="200">
+          <af:outputText value="#{row.Nom}" shortDesc="#{bindings.UtilisateursROVO.hints.Nom.tooltip}" id="ot2"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.UtilisateursROVO.hints.Etablissement.name}" filterable="true"
+                   sortable="true" headerText="#{viewcontrollerBundle.STRUCTURE}" id="c3"
+                   width="150">
+          <af:outputText value="#{row.Etablissement}"
+                         shortDesc="#{bindings.UtilisateursROVO.hints.Etablissement.tooltip}" id="ot3"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.UtilisateursROVO.hints.Email.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.EMAIL}" id="c4">
+          <af:outputText value="#{row.Email}" shortDesc="#{bindings.UtilisateursROVO.hints.Email.tooltip}" id="ot4"/>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{AdministrationBean.popAddUser}"
+              contentDelivery="lazyUncached">
+      <af:dialog id="d1" affirmativeTextAndAccessKey="Enregistrer" cancelTextAndAccessKey="Annuler"
+                 title="Ajouter Utilisateur" dialogListener="#{AdministrationBean.onConfirmAddUser}">
+        <f:facet name="buttonBar"/>
+        <af:panelFormLayout id="pfl1">
+        <af:panelGroupLayout id="pgl120">
+                <af:outputFormatted value="#{sessionScope.err_email_exist}" id="of160" inlineStyle="color:Red;"
+                                    visible="#{sessionScope.err_email_exist eq null ? false : true}"/>
+              </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl2" layout="horizontal" inlineStyle="margin-bottom : 10px">
+            <af:panelGroupLayout id="pgl19" layout="horizontal" inlineStyle="width : 300px">
+              <af:outputFormatted id="of1" value="Prénoms"/>
+              <af:inputText value="#{bindings.Prenoms.inputValue}" required="true"
+                            columns="#{bindings.Prenoms.hints.displayWidth}"
+                            maximumLength="#{bindings.Prenoms.hints.precision}"
+                            shortDesc="#{bindings.Prenoms.hints.tooltip}" id="it3"
+                            contentStyle="width:200px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:validator binding="#{bindings.Prenoms.validator}"/>
+              </af:inputText>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl3" layout="horizontal" inlineStyle="width : 325px">
+              <af:outputFormatted value="Nom" id="of2"/>
+              <af:inputText value="#{bindings.Nom.inputValue}" required="true"
+                            columns="#{bindings.Nom.hints.displayWidth}" maximumLength="#{bindings.Nom.hints.precision}"
+                            shortDesc="#{bindings.Nom.hints.tooltip}" id="it1"
+                            contentStyle="width:250px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:validator binding="#{bindings.Nom.validator}"/>
+              </af:inputText>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl4" layout="horizontal" inlineStyle="width : 250px">
+              <af:outputFormatted value="Nom Marital" id="of3"/>
+              <af:inputText value="#{bindings.NomMarital.inputValue}" required="false"
+                            columns="#{bindings.NomMarital.hints.displayWidth}"
+                            maximumLength="#{bindings.NomMarital.hints.precision}"
+                            shortDesc="#{bindings.NomMarital.hints.tooltip}" id="it2"
+                            contentStyle="width:150px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:validator binding="#{bindings.NomMarital.validator}"/>
+              </af:inputText>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl5" layout="horizontal" inlineStyle="margin : 10px">
+            <af:panelGroupLayout id="pgl14" layout="horizontal" inlineStyle="width : 250px">
+              <af:outputFormatted value="Civilité" id="of13"/>
+              <af:selectOneChoice value="#{bindings.IdCivilite.inputValue}"
+                                  required="true"
+                                  shortDesc="#{bindings.IdCivilite.hints.tooltip}" id="soc3"
+                                  contentStyle="width:150px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:selectItems value="#{bindings.IdCivilite.items}" id="si3"/>
+                <f:validator binding="#{bindings.IdCivilite.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl20" layout="horizontal" inlineStyle="width : 300px">
+              <af:outputFormatted value="Date de Naissance" id="of4"/>
+              <af:inputDate value="#{bindings.DateNaissance.inputValue}" required="true"
+                            columns="#{bindings.DateNaissance.hints.displayWidth}"
+                            shortDesc="#{bindings.DateNaissance.hints.tooltip}" id="id1"
+                            contentStyle="width:150px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:validator binding="#{bindings.DateNaissance.validator}"/>
+                <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+              </af:inputDate>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl6" layout="horizontal" inlineStyle="width : 350px">
+              <af:outputFormatted value="Lieu de naissance" id="of5"/>
+              <af:inputText value="#{bindings.LieuNaissance.inputValue}" required="true"
+                            columns="#{bindings.LieuNaissance.hints.displayWidth}"
+                            maximumLength="#{bindings.LieuNaissance.hints.precision}"
+                            shortDesc="#{bindings.LieuNaissance.hints.tooltip}" id="it4"
+                            contentStyle="width:200px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:validator binding="#{bindings.LieuNaissance.validator}"/>
+              </af:inputText>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl17" layout="horizontal" inlineStyle="margin : 10px">
+            <af:panelGroupLayout id="pgl16" layout="horizontal" inlineStyle="width : 230px">
+              <af:outputFormatted value="Sexe" id="of15"/>
+              <af:selectOneChoice value="#{bindings.IdSexe.inputValue}" required="true"
+                                  shortDesc="#{bindings.IdSexe.hints.tooltip}" id="soc4"
+                                  contentStyle="width:150px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:selectItems value="#{bindings.IdSexe.items}" id="si4"/>
+                <f:validator binding="#{bindings.IdSexe.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl23" layout="vertical" inlineStyle="width : 350px">
+              <af:panelGroupLayout id="pgl7" layout="horizontal" inlineStyle="width : 350px">
+                <af:outputFormatted value="Email institutionel" id="of6"/>
+                <af:inputText value="#{bindings.EmailInstitutionnel.inputValue}" required="true"
+                              columns="#{bindings.EmailInstitutionnel.hints.displayWidth}"
+                              maximumLength="#{bindings.EmailInstitutionnel.hints.precision}"
+                              shortDesc="#{bindings.EmailInstitutionnel.hints.tooltip}" id="it5"
+                              contentStyle="width:200px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                  <f:validator binding="#{bindings.EmailInstitutionnel.validator}"/>
+                </af:inputText>
+              </af:panelGroupLayout>
+              <af:panelGroupLayout id="pgl22">
+                <af:outputFormatted value="#{sessionScope.err_email}" id="of16" inlineStyle="color:Red;"
+                                    visible="#{sessionScope.err_email eq null ? false : true}"/>
+              </af:panelGroupLayout>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl8" layout="horizontal">
+              <af:outputFormatted value="Email personnel" id="of7"/>
+              <af:inputText value="#{bindings.EmailPersonnel.inputValue}" required="true"
+                            columns="#{bindings.EmailPersonnel.hints.displayWidth}"
+                            maximumLength="#{bindings.EmailPersonnel.hints.precision}"
+                            shortDesc="#{bindings.EmailPersonnel.hints.tooltip}" id="it6"
+                            contentStyle="width:200px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:validator binding="#{bindings.EmailPersonnel.validator}"/>
+              </af:inputText>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl9" layout="horizontal" inlineStyle="margin : 10px">
+            <af:panelGroupLayout id="pgl21" layout="horizontal" inlineStyle="width : 275px">
+              <af:outputFormatted value="Addresse" id="of8"/>
+              <af:inputText value="#{bindings.Adresse.inputValue}" required="#{bindings.Adresse.hints.mandatory}"
+                            columns="#{bindings.Adresse.hints.displayWidth}"
+                            maximumLength="#{bindings.Adresse.hints.precision}"
+                            shortDesc="#{bindings.Adresse.hints.tooltip}" id="it7"
+                            contentStyle="width:200px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:validator binding="#{bindings.Adresse.validator}"/>
+              </af:inputText>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl10" layout="horizontal" inlineStyle="width : 275px">
+              <af:outputFormatted value="Téléphone" id="of9"/>
+              <af:inputText value="#{bindings.Telephone.inputValue}" required="#{bindings.Telephone.hints.mandatory}"
+                            columns="#{bindings.Telephone.hints.displayWidth}"
+                            maximumLength="#{bindings.Telephone.hints.precision}"
+                            shortDesc="#{bindings.Telephone.hints.tooltip}" id="it8"
+                            contentStyle="width:200px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:validator binding="#{bindings.Telephone.validator}"/>
+              </af:inputText>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl11" layout="horizontal">
+              <af:outputFormatted value="Portable" id="of10"/>
+              <af:inputText value="#{bindings.Portable.inputValue}" required="#{bindings.Portable.hints.mandatory}"
+                            columns="#{bindings.Portable.hints.displayWidth}"
+                            maximumLength="#{bindings.Portable.hints.precision}"
+                            shortDesc="#{bindings.Portable.hints.tooltip}" id="it9"
+                            contentStyle="width:200px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:validator binding="#{bindings.Portable.validator}"/>
+              </af:inputText>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl18" layout="horizontal" inlineStyle="margin : 10px">
+            <af:panelGroupLayout id="pgl12" layout="horizontal">
+              <af:outputFormatted value="Pays" id="of11"/>
+              <af:selectOneChoice value="#{bindings.IdPays.inputValue}" required="#{bindings.IdPays.hints.mandatory}"
+                                  shortDesc="#{bindings.IdPays.hints.tooltip}" id="soc1"
+                                  contentStyle="width:200px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:selectItems value="#{bindings.IdPays.items}" id="si1"/>
+                <f:validator binding="#{bindings.IdPays.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl13" layout="horizontal">
+              <af:outputFormatted value="Nationalité" id="of12"/>
+              <af:selectOneChoice value="#{bindings.IdPaysNationalite.inputValue}"
+                                  required="#{bindings.IdPaysNationalite.hints.mandatory}"
+                                  shortDesc="#{bindings.IdPaysNationalite.hints.tooltip}" id="soc2"
+                                  contentStyle="width:250px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:selectItems value="#{bindings.IdPaysNationalite.items}" id="si2"/>
+                <f:validator binding="#{bindings.IdPaysNationalite.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl15" layout="horizontal">
+              <af:outputFormatted value="N° identification" id="of14"/>
+              <af:inputText value="#{bindings.PieceIdentification.inputValue}"
+                            required="#{bindings.PieceIdentification.hints.mandatory}"
+                            columns="#{bindings.PieceIdentification.hints.displayWidth}"
+                            maximumLength="#{bindings.PieceIdentification.hints.precision}"
+                            shortDesc="#{bindings.PieceIdentification.hints.tooltip}" id="it10"
+                            contentStyle="width:200px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+                <f:validator binding="#{bindings.PieceIdentification.validator}"/>
+              </af:inputText>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+        </af:panelFormLayout>
+        <af:clientListener type="dialog" method="onDialogCancel"/>
+        <af:serverListener type="onDialogEvent" method="#{AdministrationBean.onCancelUserAdd}"/>
+      </af:dialog>
+    </af:popup>
+    <af:resource type="javascript">
+      function onDialogCancel(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{AdministrationBean.popupAddUserOk}">
+      <af:dialog id="d2" type="cancel" cancelTextAndAccessKey="Fermer" title="Detail">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl24">
+          <af:icon name="info" id="i1"/>
+          <af:outputFormatted value="Itilisateur bien ajouté !" id="of18"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{AdministrationBean.popupAddUserErr}"
+              contentDelivery="lazyUncached">
+      <af:dialog id="d3" type="cancel" cancelTextAndAccessKey="Fermer" title="Detail">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl25">
+          <af:icon name="error" id="i2"/>
+          <af:outputFormatted value="Utilisateur non ajouté ! reessayer" id="of17"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{AdministrationBean.popupUserExiste}">
+      <af:dialog id="d4" type="cancel" title="Detail" cancelTextAndAccessKey="Fermer">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl26">
+          <af:icon name="warning" id="i3"/>
+          <af:outputFormatted value="Cet utilisateur existe déja !" id="of19"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</ui:composition>

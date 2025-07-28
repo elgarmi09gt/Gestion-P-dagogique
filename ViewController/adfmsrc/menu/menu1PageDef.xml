@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="menu1PageDef" Package="menu">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ModuleUsers" RangeSize="-1" DataControl="menuAppDataControl" id="ModuleUsersIterator"/>
+    <iterator Binds="FontionalitesUsers" RangeSize="-1" DataControl="menuAppDataControl"
+              id="FontionalitesUsersIterator"/>
+    <taskFlow id="dynamictf1" taskFlowId="/menu/dynamic-tf.xml#dynamic-tf" activation="deferred"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding" Refresh="ifNeeded">
+      <parameters>
+        <parameter id="urlinput" value="#{sessionScope.TfID}"/>
+      </parameters>
+    </taskFlow>
+    <iterator Binds="FonctionnalitesUsers" RangeSize="25" DataControl="menuAppDataControl"
+              id="FonctionnalitesUsersIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ModuleUsersIterator" id="ModuleUsers">
+      <nodeDefinition DefName="model.readOnlyView.ModuleUserROVO" Name="ModuleUsers0"
+                      TargetIterator="${bindings.ModuleUsersIterator}">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="CheminImage"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="FontionalitesUserROVO"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="model.readOnlyView.FontionalitesUserROVO" Name="ModuleUsers1"
+                      TargetIterator="${bindings.FontionalitesUsersIterator}">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="UrlAction"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="FontionalitesUsersIterator" id="UrlAction">
+      <AttrNames>
+        <Item Value="UrlAction"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="FonctionnalitesUsersIterator" id="FonctionnalitesUsers">
+      <nodeDefinition DefName="model.readOnlyView.FonctionnalitesUsersROVO" Name="FonctionnalitesUsers0">
+        <AttrNames>
+          <Item Value="UrlAction"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FonctionnalitesUsersIterator" id="FonctionnalitesUsers1">
+      <nodeDefinition DefName="model.readOnlyView.FonctionnalitesUsersROVO" Name="FonctionnalitesUsers10">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="UrlAction"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="connect_eval_params_enter_params_ExecuteWithParams5PageDef" Package="evaluation.connection"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="DepartementUser" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DepartementUserIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="DepartementUserIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="log" NDValue="#{sessionScope.userName}" NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

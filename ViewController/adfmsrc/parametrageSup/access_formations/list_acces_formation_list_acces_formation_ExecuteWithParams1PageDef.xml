@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="list_acces_formation_list_acces_formation_ExecuteWithParams1PageDef"
+                Package="parametrageSup.access_formations" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="FormationByStructure" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="FormationByStructureIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="FormationByStructureIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="id_hs" NDValue="#{requestScope.id_str}" NDType="java.lang.Integer"/>
+    </action>
+  </bindings>
+</pageDefinition>

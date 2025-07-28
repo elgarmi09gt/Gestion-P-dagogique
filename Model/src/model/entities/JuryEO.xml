@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity 
+        xmlns="http://xmlns.oracle.com/bc4j" 
+        Name="JuryEO" 
+        Version="12.2.1.12.24" 
+        InheritPersonalization="merge"
+        DBObjectType="table" 
+        DBObjectName="JURY" 
+        AliasName="JuryEO" 
+        BindingStyle="OracleName">
+    <Attribute Name="IdJury" Precision="10" Scale="0" ColumnName="ID_JURY" SQLType="NUMERIC"
+               Type="oracle.jbo.domain.DBSequence" ColumnType="NUMBER" TableName="JURY" PrimaryKey="true"
+               IsUpdateable="while_insert" DefaultValue="@0" Domain="oracle.jbo.domain.DBSequence"
+               RetrievedOnInsert="true" ChangeIndicator="true"/>
+    <Attribute Name="LibelleLong" Precision="200" ColumnName="LIBELLE_LONG" SQLType="VARCHAR" Type="java.lang.String"
+               ColumnType="VARCHAR2" TableName="JURY">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="200"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute Name="LibelleCourt" Precision="75" ColumnName="LIBELLE_COURT" SQLType="VARCHAR" Type="java.lang.String"
+               ColumnType="VARCHAR2" TableName="JURY">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="75"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute Name="IdNiveauFormationParcours" IsNotNull="true" Precision="10" Scale="0"
+               ColumnName="ID_NIVEAU_FORMATION_PARCOURS" SQLType="NUMERIC" Type="java.lang.Long" ColumnType="NUMBER"
+               TableName="JURY"/>
+    <Attribute Name="IdAnneesUnivers" Precision="10" Scale="0" ColumnName="ID_ANNEES_UNIVERS" SQLType="NUMERIC"
+               Type="java.lang.Long" ColumnType="NUMBER" IsNotNull="true" TableName="JURY"/>
+    <Attribute Name="IdSession" Precision="10" Scale="0" ColumnName="ID_SESSION" SQLType="NUMERIC"
+               Type="java.lang.Long" ColumnType="NUMBER" TableName="JURY"/>
+    <Attribute Name="IdSemestre" IsNotNull="true" Precision="10" Scale="0" ColumnName="ID_SEMESTRE" SQLType="NUMERIC"
+               Type="java.lang.Long" ColumnType="NUMBER" TableName="JURY"/>
+    <Attribute Name="DateCreation" ColumnName="DATE_CREATION" SQLType="DATE" Type="java.sql.Timestamp" ColumnType="DATE"
+               TableName="JURY"/>
+    <Attribute Name="DateModification" ColumnName="DATE_MODIFICATION" SQLType="DATE" Type="java.sql.Timestamp"
+               ColumnType="DATE" TableName="JURY"/>
+    <Attribute Name="UtiCree" Precision="10" Scale="0" ColumnName="UTI_CREE" SQLType="NUMERIC" Type="java.lang.Long"
+               ColumnType="NUMBER" IsNotNull="true" TableName="JURY"/>
+    <Attribute Name="UtiModifie" Precision="5" Scale="0" ColumnName="UTI_MODIFIE" SQLType="NUMERIC"
+               Type="java.lang.Integer" ColumnType="NUMBER" TableName="JURY"/>
+    <ViewLinkAccessor
+        Name="ParcoursROVO"
+        ViewLink="model.viewlink.ParcoursToJury"
+        ViewLinkEnd="model.viewlink.ParcoursToJury.ParcoursROVO"
+        ViewLinkOtherEnd="model.viewlink.ParcoursToJury.JuryVO"
+        Type="oracle.jbo.server.ViewRowImpl"
+        IsUpdateable="false"/>
+    <ViewLinkAccessor
+        Name="UtilisateursJuryVO"
+        ViewLink="model.viewlink.JuryToMembre"
+        ViewLinkEnd="model.viewlink.JuryToMembre.UtilisateursJuryVO"
+        ViewLinkOtherEnd="model.viewlink.JuryToMembre.JuryVO"
+        Type="oracle.jbo.RowIterator"
+        IsUpdateable="false"/>
+    <Key
+        Name="JuryIdJuryCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_checkCondition" Value='"ID_JURY" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+            <Attr Name="_DBObjectName" Value="JURY_ID_JURY_CHECK"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.JuryEO.IdJury"/>
+        </AttrArray>
+    </Key>
+    <Key Name="PkJury" PrimaryKey="true">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="PK_JURY"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.JuryEO.IdJury"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkJuryAnUnivers">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_ANNEES_UNIVERS"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_JURY_AN_UNIVERS"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.JuryEO.IdAnneesUnivers"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkJuryNivFormParc">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_NIVEAU_FORMATION_PARCOURS"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_JURY_NIV_FORM_PARC"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.JuryEO.IdNiveauFormationParcours"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkJurySemestre">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_SEMESTRES"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_JURY_SEMESTRE"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.JuryEO.IdSemestre"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkJurySession">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_SESSIONS"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_JURY_SESSION"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.JuryEO.IdSession"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkJuryUtiCree">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_JURY_UTI_CREE"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.JuryEO.UtiCree"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkJuryUtiModif">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_JURY_UTI_MODIF"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.JuryEO.UtiModifie"/>
+        </AttrArray>
+    </Key>
+</Entity>

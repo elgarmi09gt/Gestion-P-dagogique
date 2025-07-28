@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll" halign="center">
+    <af:panelGroupLayout id="pgl2" layout="vertical"
+                         inlineStyle="width:400px;margin:50px 0;border: solid 3px  #2897e8; border-radius:8px ;">
+      <af:selectOneChoice value="#{bindings.ApplicationsROVO1.inputValue}"
+                          required="#{bindings.ApplicationsROVO1.hints.mandatory}"
+                          shortDesc="#{bindings.ApplicationsROVO1.hints.tooltip}" id="soc1" autoSubmit="true"
+                          contentStyle="font-size:large;  border-radius: 8px;border:solid 1px #2898e8;"
+                          inlineStyle="margin:5px; font-size:large;">
+        <f:selectItems value="#{bindings.ApplicationsROVO1.items}" id="si1"/>
+        <f:validator binding="#{bindings.ApplicationsROVO1.validator}"/>
+      </af:selectOneChoice>
+      <af:table value="#{bindings.ModulesROVO1.collectionModel}" var="row" rows="#{bindings.ModulesROVO1.rangeSize}"
+                emptyText="#{bindings.ModulesROVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.ModulesROVO1.collectionModel.selectedRow}"
+                selectionListener="#{bindings.ModulesROVO1.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.ModulesROVO1.rangeSize}" id="t1" partialTriggers="::soc1" scrollPolicy="page"
+                columnStretching="column:c2" inlineStyle="width:350px;margin:20px">
+        <!--af:column id="c1">
+      <af:outputText value="#{row.CheminImage}" shortDesc="#{bindings.ModulesROVO1.hints.CheminImage.tooltip}"
+                     id="ot1"/>
+    </af:column-->
+        <af:column id="c2">
+          <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.ModulesROVO1.hints.LibelleLong.tooltip}"
+                         id="ot2"/>
+        </af:column>
+        <!--af:column id="c3">
+      <af:outputText value="#{row.UrlConnection}" shortDesc="#{bindings.ModulesROVO1.hints.UrlConnection.tooltip}"
+                     id="ot3"/>
+    </af:column-->
+        <af:column id="c4">
+          <af:link id="l2" icon="/images/continue-24.png" actionListener="#{ConnectionEvalBean.AfterModuleSpecify}"
+                   disabledIcon="/images/disable-24.png" disabled="#{row.UrlConnection == null ? true : false}">
+            <af:setPropertyListener from="#{sessionScope.to}" to="#{sessionScope.TfID}" type="action"/>
+          </af:link>
+        </af:column>
+      </af:table>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</ui:composition>

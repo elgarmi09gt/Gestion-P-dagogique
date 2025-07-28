@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="GroupeSaisieEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="GROUPE_SAISIE"
+  AliasName="GroupeSaisieEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdGroupeSaisie"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_GROUPE_SAISIE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="GROUPE_SAISIE"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdCohorte"
+    Precision="5"
+    Scale="0"
+    ColumnName="ID_COHORTE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="GROUPE_SAISIE"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="LibelleLong"
+    IsNotNull="true"
+    Precision="200"
+    ColumnName="LIBELLE_LONG"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="GROUPE_SAISIE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="LibelleCourt"
+    IsNotNull="true"
+    Precision="75"
+    ColumnName="LIBELLE_COURT"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="GROUPE_SAISIE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="GROUPE_SAISIE"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="GROUPE_SAISIE"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="GROUPE_SAISIE"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="GROUPE_SAISIE"/>
+  <Attribute
+    Name="IdNiveauFormationParcours"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="GROUPE_SAISIE"
+    IsNotNull="true"/>
+  <Attribute
+    Name="IdAnneeUnivers"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ANNEE_UNIVERS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="GROUPE_SAISIE"/>
+  <Key
+    Name="GroupeSaisieIdGroupeSaisieCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"ID_GROUPE_SAISIE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="GROUPE_SAISIE_ID_GROUPE_SAISIE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.GroupeSaisieEO.IdGroupeSaisie"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="GroupeSaisieIdNiveauFormationParcoursCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"ID_NIVEAU_FORMATION_PARCOURS" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="GROUPE_SAISIE_ID_NIVEAU_FORMAT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.GroupeSaisieEO.IdNiveauFormationParcours"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="PkGroupeSaisie"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_GROUPE_SAISIE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.GroupeSaisieEO.IdGroupeSaisie"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkGroupSaiNivForParc">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAU_FORMATION_PARCOURS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_GROUP_SAI_NIV_FOR_PARC"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.GroupeSaisieEO.IdNiveauFormationParcours"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkGroupSaisiCohorte">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_COHORTES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_GROUP_SAISI_COHORTE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.GroupeSaisieEO.IdCohorte"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkGroupSaisieAnUniv">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ANNEES_UNIVERS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_GROUP_SAISIE_AN_UNIV"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.GroupeSaisieEO.IdAnneeUnivers"/>
+    </AttrArray>
+  </Key>
+</Entity>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="lesAvoirsEtudiantsROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.lesAvoirsEtudiantsROVORowImpl"
+  ComponentClass="model.readOnlyView.lesAvoirsEtudiantsROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.lesAvoirsEtudiantsROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_form"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_niv_form"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select     
+e.numero, pe.prenoms ||'   '||pe.nom as prenom_nom ,    
+a.id_annees_univers ,        
+sold.id_compte ,        
+sold.id_solde_compte ,   
+pe.date_naissance,  
+sold.solde_actuel , DECODE(sold.solde_actuel, NULL, '0',sold.solde_actuel) as solde_act_cmpt,    
+e.id_etudiant,       
+sold.solde_initial , DECODE(sold.solde_initial, NULL, '0',sold.solde_initial) as solde_init_cmpt    
+from  inscriptions_admin a                           
+join inscriptions_pedagogiques ip on ip.id_inscription_admin = a.id_inscription_admin                     
+join parcours_maquette_annee pma on pma.id_parcours_maquet_annee = ip.id_parcours_maquet_annee                                         
+JOIN niveaux_formation_parcours nfp on nfp.id_niveau_formation_parcours = pma.id_niveau_formation_parcours                                            
+JOIN niveau_formation_cohortes nfc on nfc.id_niveau_formation_cohorte = nfp.id_niveau_formation_cohorte                                            
+JOIN niveaux_formations nf on nfc.id_niveau_formation = nf.id_niveau_formation                       
+JOIN formations f on f.id_formation = nf.id_formation            
+                   
+JOIN etudiants e on e.id_etudiant = a.id_etudiant                    
+JOIN personnes pe on pe.id_personne = e.id_personne      
+left join (    
+        select sc.id_annees_univers ,        
+        sc.id_compte ,        
+        sc.id_solde_compte ,        
+        sc.solde_actuel , c.id_etudiant,       
+        sc.solde_initial    
+        from comptes c        
+        join soldes_comptes sc on sc.id_compte = c.id_compte and sc.id_annees_univers = c.id_annees_univers    
+    ) sold on sold.id_etudiant = a.id_etudiant and sold.id_annees_univers = a.id_annees_univers     
+      
+where f.id_formation=:id_form      
+and nf.id_niveau_formation=:id_niv_form      
+and a.id_annees_univers=:id_annee]]></SQLQuery>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PrenomNom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="303"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOM_NOM"
+    Expression="PRENOM_NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="303"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdCompte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_COMPTE"
+    Expression="ID_COMPTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdSoldeCompte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SOLDE_COMPTE"
+    Expression="ID_SOLDE_COMPTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="DateNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_NAISSANCE"
+    Expression="DATE_NAISSANCE"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="SoldeActuel"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="SOLDE_ACTUEL"
+    Expression="SOLDE_ACTUEL"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="SoldeActCmpt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="40"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SOLDE_ACT_CMPT"
+    Expression="SOLDE_ACT_CMPT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="40"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="SoldeInitial"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="SOLDE_INITIAL"
+    Expression="SOLDE_INITIAL"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="SoldeInitCmpt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="40"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SOLDE_INIT_CMPT"
+    Expression="SOLDE_INIT_CMPT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="40"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

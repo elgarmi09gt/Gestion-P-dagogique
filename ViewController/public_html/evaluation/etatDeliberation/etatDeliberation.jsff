@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <af:panelGroupLayout id="pgl2" layout="scroll" inlineStyle="line-height:50px;">
+    <af:panelGroupLayout id="pgl3" layout="horizontal">
+      <af:panelGroupLayout id="pgl5" layout="horizontal">
+        <af:outputFormatted value="Departement" id="of2" inlineStyle="font-size:medium; font-weight:bolder; "
+                            styleUsage="instruction"/>
+        <af:selectOneChoice value="#{bindings.HistoriqueStructureByUserName.inputValue}"
+                            required="#{bindings.HistoriqueStructureByUserName.hints.mandatory}"
+                            shortDesc="#{bindings.HistoriqueStructureByUserName.hints.tooltip}" id="soc1"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                            autoSubmit="true">
+          <f:selectItems value="#{bindings.HistoriqueStructureByUserName.items}" id="si1"/>
+          <f:validator binding="#{bindings.HistoriqueStructureByUserName.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+      <af:spacer width="10" height="10" id="s1"/>
+      <af:panelGroupLayout id="pgl4" layout="horizontal">
+        <af:outputFormatted value="Parcours" id="of3" styleUsage="instruction"
+                            inlineStyle="font-size:medium; font-weight:bolder; "/>
+        <af:selectOneChoice value="#{bindings.ParcoursRespFrImpMaqEtd.inputValue}"
+                            required="#{bindings.ParcoursRespFrImpMaqEtd.hints.mandatory}"
+                            shortDesc="#{bindings.ParcoursRespFrImpMaqEtd.hints.tooltip}" id="soc2"
+                            contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                            autoSubmit="true" partialTriggers="soc1">
+          <f:selectItems value="#{bindings.ParcoursRespFrImpMaqEtd.items}" id="si2"/>
+          <f:validator binding="#{bindings.ParcoursRespFrImpMaqEtd.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl1" layout="scroll" halign="center">
+      <af:selectOneChoice value="#{bindings.MaquetteValideImported.inputValue}"
+                          required="#{bindings.MaquetteValideImported.hints.mandatory}"
+                          shortDesc="#{bindings.MaquetteValideImported.hints.tooltip}" id="soc11" autoSubmit="true"
+                          visible="#{bindings.MaquetteValideImportedIterator.estimatedRowCount gt 1}"
+                          contentStyle="font-size:medium;  border-radius: 8px;border:solid 1px #2898e8;width:450px;"
+                          binding="#{MaquetteBean.maqimported}">
+        <f:selectItems value="#{bindings.MaquetteValideImported.items}" id="si11"/>
+        <f:validator binding="#{bindings.MaquetteValideImported.validator}"/>
+      </af:selectOneChoice>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl6" layout="horizontal">
+      <af:panelGroupLayout id="pgl7" layout="scroll">
+        <af:outputFormatted value="Annuelle (#{bindings.Annee.inputValue})" id="of1"
+                            inlineStyle="font-size:large; font-weight:bold;"/>
+        <af:panelCollection id="pc1">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <af:table value="#{bindings.EtatDeliberationAn.collectionModel}" var="row"
+                    rows="#{bindings.EtatDeliberationAn.rangeSize}"
+                    emptyText="#{bindings.EtatDeliberationAn.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.EtatDeliberationAn.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.EtatDeliberationAn.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.EtatDeliberationAn.rangeSize}"
+                    filterModel="#{bindings.EtatDeliberationAnQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.EtatDeliberationAnQuery.processQuery}" varStatus="vs" id="t1"
+                    scrollPolicy="page" partialTriggers=":::soc11">
+            <af:column sortProperty="#{bindings.EtatDeliberationAn.hints.Sess.name}" filterable="true" sortable="true"
+                       headerText="#{viewcontrollerBundle.SESSION}" id="c1" width="125">
+              <af:outputText value="#{row.Sess}" shortDesc="#{bindings.EtatDeliberationAn.hints.Sess.tooltip}"
+                             id="ot1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtatDeliberationAn.hints.AnneeDeliberee.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle.ANNEE_DELIBEREE}" id="c2" width="150">
+              <af:outputText value="#{row.AnneeDeliberee}"
+                             shortDesc="#{bindings.EtatDeliberationAn.hints.AnneeDeliberee.tooltip}" id="ot2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtatDeliberationAn.hints.AnneeCloturee.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle.ANNEE_CLOTUREE}" id="c3" width="150">
+              <af:outputText value="#{row.AnneeCloturee}"
+                             shortDesc="#{bindings.EtatDeliberationAn.hints.AnneeCloturee.tooltip}" id="ot3"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:panelGroupLayout>
+      <af:panelCollection id="pc2" inlineStyle="margin : 0px 0px 0px 10px" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <af:table value="#{bindings.EtatDeliberationSem.collectionModel}" var="row"
+                  rows="#{bindings.EtatDeliberationSem.rangeSize}"
+                  emptyText="#{bindings.EtatDeliberationSem.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.EtatDeliberationSem.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.EtatDeliberationSem.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.EtatDeliberationSem.rangeSize}"
+                  filterModel="#{bindings.EtatDeliberationSemQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.EtatDeliberationSemQuery.processQuery}" varStatus="vs" id="t2"
+                  scrollPolicy="page" partialTriggers=":::pc1:t1">
+          <af:column sortProperty="#{bindings.EtatDeliberationSem.hints.Semestre.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.SEMESTRE}" id="c4" width="125">
+            <af:outputText value="#{row.Semestre}" shortDesc="#{bindings.EtatDeliberationSem.hints.Semestre.tooltip}"
+                           id="ot4"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtatDeliberationSem.hints.Sessio.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.SESSION}" id="c5" width="125">
+            <af:outputText value="#{row.Sessio}" shortDesc="#{bindings.EtatDeliberationSem.hints.Sessio.tooltip}"
+                           id="ot5"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtatDeliberationSem.hints.EtatDeliberation.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.ETAT_DELIBERATION}" id="c6" width="150">
+            <af:selectOneChoice value="#{row.bindings.EtatDeliberation.inputValue}"
+                                label="#{row.bindings.EtatDeliberation.label}"
+                                required="#{bindings.EtatDeliberationSem.hints.EtatDeliberation.mandatory}"
+                                shortDesc="#{bindings.EtatDeliberationSem.hints.EtatDeliberation.tooltip}"
+                                readOnly="true" id="soc3">
+              <f:selectItems value="#{row.bindings.EtatDeliberation.items}" id="si3"/>
+              <f:validator binding="#{row.bindings.EtatDeliberation.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column headerText="#{viewcontrollerBundle1.VALIDEE}" id="c13">
+            <af:outputText value="#{row.Validee}" shortDesc="#{bindings.EtatDeliberationSem.hints.Validee.tooltip}"
+                           id="ot12">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.EtatDeliberationSem.hints.Validee.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{viewcontrollerBundle1.NON_VALIDEE}" id="c14">
+            <af:outputText value="#{row.NonValidee}"
+                           shortDesc="#{bindings.EtatDeliberationSem.hints.NonValidee.tooltip}" id="ot13">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.EtatDeliberationSem.hints.NonValidee.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{viewcontrollerBundle1.ABSENT}" id="c15">
+            <af:outputText value="#{row.Absent}" shortDesc="#{bindings.EtatDeliberationSem.hints.Absent.tooltip}"
+                           id="ot14">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.EtatDeliberationSem.hints.Absent.format}"/>
+            </af:outputText>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+    <af:outputFormatted value="Unités d'Enseignements (#{bindings.Semstre.inputValue} == #{bindings.Sessio.inputValue})" id="of4"
+                        inlineStyle="font-weight:bold; font-size:large;"/>
+    <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="statusbar"/>
+      <af:table value="#{bindings.EtatDelibUE.collectionModel}" var="row" rows="#{bindings.EtatDelibUE.rangeSize}"
+                emptyText="#{bindings.EtatDelibUE.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.EtatDelibUE.collectionModel.selectedRow}"
+                selectionListener="#{bindings.EtatDelibUE.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.EtatDelibUE.rangeSize}" filterModel="#{bindings.EtatDelibUEQuery.queryDescriptor}"
+                filterVisible="true" queryListener="#{bindings.EtatDelibUEQuery.processQuery}" varStatus="vs" id="t3"
+                columnStretching="column:c9" partialTriggers=":::pc2:t2">
+        <af:column sortProperty="#{bindings.EtatDelibUE.hints.LibelleLong.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle1.UNITE_ENSEIGNEMENT}" id="c9" width="200">
+          <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.EtatDelibUE.hints.LibelleLong.tooltip}"
+                         id="ot8"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.EtatDelibUE.hints.UeDeliberee.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle1.DELIBEREE}" id="c10" width="125">
+          <af:outputText value="#{row.UeDeliberee}" shortDesc="#{bindings.EtatDelibUE.hints.UeDeliberee.tooltip}"
+                         id="ot9"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.EtatDelibUE.hints.UeCloturee.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.CLOTUREE}" id="c11">
+          <af:outputText value="#{row.UeCloturee}" shortDesc="#{bindings.EtatDelibUE.hints.UeCloturee.tooltip}"
+                         id="ot10"/>
+        </af:column>
+        <af:column headerText="#{viewcontrollerBundle1.VALIDEE}" id="c7">
+          <af:outputText value="#{row.Validee}" shortDesc="#{bindings.EtatDelibUE.hints.Validee.tooltip}" id="ot6">
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.EtatDelibUE.hints.Validee.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{viewcontrollerBundle1.NON_VALIDEE}" id="c8">
+          <af:outputText value="#{row.NonValidee}" shortDesc="#{bindings.EtatDelibUE.hints.NonValidee.tooltip}"
+                         id="ot7">
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.EtatDelibUE.hints.NonValidee.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{viewcontrollerBundle1.ABSENT}" id="c12">
+          <af:outputText value="#{row.Absent}" shortDesc="#{bindings.EtatDelibUE.hints.Absent.tooltip}" id="ot11">
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.EtatDelibUE.hints.Absent.format}"/>
+          </af:outputText>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+  </af:panelGroupLayout>
+  <!--af:selectOneChoice value="#{bindings.HistoriqueStructureByUserName.inputValue}"
+                      label="#{bindings.HistoriqueStructureByUserName.label}"
+                      required="#{bindings.HistoriqueStructureByUserName.hints.mandatory}"
+                      shortDesc="#{bindings.HistoriqueStructureByUserName.hints.tooltip}" id="soc1">
+    <f:selectItems value="#{bindings.HistoriqueStructureByUserName.items}" id="si1"/>
+    <f:validator binding="#{bindings.HistoriqueStructureByUserName.validator}"/>
+  </af:selectOneChoice>
+  <af:selectOneChoice value="#{bindings.ParcoursRespFrImpMaqEtd.inputValue}"
+                      label="#{bindings.ParcoursRespFrImpMaqEtd.label}"
+                      required="#{bindings.ParcoursRespFrImpMaqEtd.hints.mandatory}"
+                      shortDesc="#{bindings.ParcoursRespFrImpMaqEtd.hints.tooltip}" id="soc2">
+    <f:selectItems value="#{bindings.ParcoursRespFrImpMaqEtd.items}" id="si2"/>
+    <f:validator binding="#{bindings.ParcoursRespFrImpMaqEtd.validator}"/>
+  </af:selectOneChoice-->
+  <!--af:selectOneChoice value="#{bindings.MaquetteValideImported.inputValue}"
+                      label="#{bindings.MaquetteValideImported.label}"
+                      required="#{bindings.MaquetteValideImported.hints.mandatory}"
+                      shortDesc="#{bindings.MaquetteValideImported.hints.tooltip}" id="soc3">
+    <f:selectItems value="#{bindings.MaquetteValideImported.items}" id="si3"/>
+    <f:validator binding="#{bindings.MaquetteValideImported.validator}"/>
+  </af:selectOneChoice-->
+</ui:composition>

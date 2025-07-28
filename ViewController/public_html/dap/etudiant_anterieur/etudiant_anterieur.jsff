@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+      <c:set var="viewcontrollerBundle1" value="#{adfBundle['view.ViewControllerBundle']}"/>
+      <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+      <af:panelGroupLayout id="pgl4" layout="scroll" inlineStyle="line-height:20px;"
+                           binding="#{InscriptionAnterieurBean.inscriptionsPanGrp}">
+            <af:panelGroupLayout id="pgl1" layout="horizontal" inlineStyle="line-height:30px;" valign="middle"
+                                 halign="center">
+                  <af:panelGroupLayout id="pgl2" layout="vertical">
+                        <af:outputFormatted value="Numéro étudiant" id="of3"
+                                            inlineStyle="font-size:large; font-family:cursive;margin:10px; font-weight:bold"
+                                            styleUsage="instruction"/>
+                        <af:inputText id="it1"
+                                      contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                                      binding="#{InscriptionAnterieurBean.inputEtudiant}" autoSubmit="true"/>
+                  </af:panelGroupLayout>
+                  <af:panelGroupLayout id="pgl3" layout="vertical">
+                        <af:outputFormatted value="Année Universitaire" id="of1"
+                                            inlineStyle="font-size:large; font-family:cursive;margin:10px; font-weight:bold"
+                                            styleUsage="instruction"/>
+                        <af:selectOneChoice value="#{bindings.AnneeUniverROVO.inputValue}"
+                                            required="#{bindings.AnneeUniverROVO.hints.mandatory}"
+                                            shortDesc="#{bindings.AnneeUniverROVO.hints.tooltip}" id="soc1"
+                                            contentStyle="width:300px; border-radius:4px;font-size:medium;border:solid 2px #2898e8;height:30px"
+                                            valueChangeListener="#{InscriptionAnterieurBean.OnAnChanged}">
+                              <f:selectItems value="#{bindings.AnneeUniverROVO.items}" id="si1"/>
+                              <f:validator binding="#{bindings.AnneeUniverROVO.validator}"/>
+                        </af:selectOneChoice>
+                  </af:panelGroupLayout>
+                  <af:button text="Rechercher" id="b1" actionListener="#{InscriptionAnterieurBean.OnSearchAction}"
+                             inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;margin-left:5px"/>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl6" layout="vertical" halign="center">
+                  <af:outputFormatted value="#{bindings.Numero.inputValue} -- #{bindings.Prenom.inputValue}  #{bindings.Nom.inputValue} Né(e) le  #{bindings.DateNaissance.inputValue} à #{bindings.LieuNaissance.inputValue}"
+                                      id="of2"
+                                      inlineStyle="font-style:italic; font-size:large; color:#2898e8; margin:10px 0; font-weight:bold;"
+                                      visible="#{bindings.Numero.inputValue eq null ? false : true}"/>
+            </af:panelGroupLayout>
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                binding="#{InscriptionAnterieurBean.inscriptionPanCollect}">
+                  <f:facet name="menus"/>
+                  <f:facet name="toolbar"/>
+                  <f:facet name="statusbar"/>
+                  <af:table value="#{bindings.InscriptionsAntEtd.collectionModel}" var="row"
+                            rows="#{bindings.InscriptionsAntEtd.rangeSize}"
+                            emptyText="#{bindings.InscriptionsAntEtd.viewable ? 'No data to display.' : 'Access Denied.'}"
+                            rowBandingInterval="0"
+                            selectedRowKeys="#{bindings.InscriptionsAntEtd.collectionModel.selectedRow}"
+                            selectionListener="#{bindings.InscriptionsAntEtd.collectionModel.makeCurrent}"
+                            rowSelection="single" fetchSize="#{bindings.InscriptionsAntEtd.rangeSize}"
+                            filterModel="#{bindings.InscriptionsAntEtdQuery.queryDescriptor}" filterVisible="true"
+                            queryListener="#{bindings.InscriptionsAntEtdQuery.processQuery}" varStatus="vs" id="t1"
+                            binding="#{InscriptionAnterieurBean.inscriptionsTab}" columnStretching="column:c1">
+                        <af:column sortProperty="#{bindings.InscriptionsAntEtd.hints.Niveauformation.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{viewcontrollerBundle1.PARCOURS}" id="c1"
+                                   noWrap="false">
+                              <af:outputText value="#{row.Niveauformation}"
+                                             shortDesc="#{bindings.InscriptionsAntEtd.hints.Niveauformation.tooltip}"
+                                             id="ot1"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.InscriptionsAntEtd.hints.Anneeunivers.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{viewcontrollerBundle.ANNEE_UNIVERSITAIRE}" id="c2" width="150">
+                              <af:outputText value="#{row.Anneeunivers}"
+                                             shortDesc="#{bindings.InscriptionsAntEtd.hints.Anneeunivers.tooltip}"
+                                             id="ot2"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.InscriptionsAntEtd.hints.Liboption.name}" filterable="true"
+                                   sortable="true" headerText="#{viewcontrollerBundle1.OPTION}"
+                                   id="c3" width="250" noWrap="false">
+                              <af:outputText value="#{row.Liboption}"
+                                             shortDesc="#{bindings.InscriptionsAntEtd.hints.Liboption.tooltip}"
+                                             id="ot3"/>
+                        </af:column>
+                        <af:column headerText="#{bindings.InscriptionsAntEtd.hints.Resultat.label}" id="c4" width="250"
+                                   align="center">
+                              <af:selectOneChoice value="#{row.bindings.Resultat.inputValue}"
+                                                  label="#{row.bindings.Resultat.label}"
+                                                  required="#{bindings.InscriptionsAntEtd.hints.Resultat.mandatory}"
+                                                  shortDesc="#{bindings.InscriptionsAntEtd.hints.Resultat.tooltip}"
+                                                  readOnly="true" id="soc2">
+                                    <f:selectItems value="#{row.bindings.Resultat.items}" id="si2"/>
+                                    <f:validator binding="#{row.bindings.Resultat.validator}"/>
+                              </af:selectOneChoice>
+                        </af:column>
+                        <af:column id="c5" headerText="Actions" align="center" width="300">
+                              <af:panelGroupLayout id="pgl7">
+                                    <af:button text="Import Etudiant" id="b2"
+                                               disabled="#{row.bindings.Resultat.inputValue == 2 ? false : (row.bindings.Resultat.inputValue == 4 ? false : true )}"
+                                               icon="/images/import24.png"
+                                               inlineStyle="font-size:medium; font-family:cursive; border:none ;"
+                                               disabledIcon="/images/disable-24.png"
+                                               actionListener="#{InscriptionAnterieurBean.onImportAction}"/>
+                                    <af:button text="Import Notes" id="b3" icon="/images/import24.png"
+                                               disabledIcon="/images/disable-24.png"
+                                               inlineStyle="margin-left : 5px;font-size:medium; font-family:cursive; border:none ;"/>
+                              </af:panelGroupLayout>
+                        </af:column>
+                  </af:table>
+            </af:panelCollection>
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+                      binding="#{InscriptionAnterieurBean.popNoStudent}"
+              contentDelivery="lazyUncached">
+      <af:dialog id="d1" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl5" layout="vertical" halign="center">
+          <af:icon name="info" id="i1"/>
+          <af:outputFormatted value="Aucun étudiant trouvé !!!" id="of4" inlineStyle="color:Orange; font-size:large;"/>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+      </af:panelGroupLayout>
+</ui:composition>

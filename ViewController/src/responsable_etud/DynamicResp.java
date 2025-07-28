@@ -1,0 +1,33 @@
+package responsable_etud;
+
+import oracle.adf.controller.TaskFlowId;
+import oracle.adf.share.ADFContext;
+
+public class DynamicResp {
+    public DynamicResp() {
+    }
+    private static final String defaultTF="/inscription/responsable/responsable-insert-tk.xml#responsable-insert-tk";
+      boolean flag =true;
+     
+      public TaskFlowId getDynamictaskFlow(){
+          //System.out.println("Inside TF");
+          try {
+              if (ADFContext.getCurrent().getSessionScope().get("TfRespEtudID") != null) {
+                  //System.out.println("Inside methode AdfFacesContext.getCurrentInstance().getPageFlowScope().get(\"TfRespEtudID\").toString()");
+                  return TaskFlowId.parse(ADFContext.getCurrent().getSessionScope()
+                                                         .get("TfRespEtudID")
+                                                         .toString());
+              }
+          } catch (Exception e) {
+          }
+          return  TaskFlowId.parse(defaultTF);
+      }
+
+      public void setFlag(boolean flag) {
+          this.flag = flag;
+      }
+
+      public boolean isFlag() {
+          return flag;
+      }
+}

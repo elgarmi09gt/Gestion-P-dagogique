@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NiveauFormationRO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.NiveauFormationRORowImpl"
+  ComponentClass="model.readOnlyView.NiveauFormationROImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.NiveauFormationRO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="hs_id"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[Select distinct nf.ID_NIVEAU_FORMATION,nf.LIBELLE_LONG       
+from NIVEAUX_FORMATIONS nf       
+Join FORMATIONS fr on nf.ID_FORMATION=fr.ID_FORMATION       
+join HISTORIQUES_STRUCTURES hs on fr.ID_HISTORIQUES_STRUCTURE=hs.ID_HISTORIQUES_STRUCTURE       
+where hs.ID_HISTORIQUES_STRUCTURE=:hs_id  
+ORDER BY nf.LIBELLE_LONG]]></SQLQuery>
+  <ViewAttribute
+    Name="IdNiveauFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_NIVEAU_FORMATION"
+    Expression="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNiveauFormation"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="NivFormParcoursRO"
+    ViewLink="model.viewlink.NivFormRoToNivFormPrcrsRoVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="NiveauFormationMqAnHistROVO"
+    ViewLink="model.viewlink.NiveauFormationRoTONivFrMaqAnHistVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

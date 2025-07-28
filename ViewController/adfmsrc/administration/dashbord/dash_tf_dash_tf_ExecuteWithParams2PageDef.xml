@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="dash_tf_dash_tf_ExecuteWithParams2PageDef" Package="administration.dashbord" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="StatistiquesNiveauxFormation" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="StatistiquesNiveauxFormationIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="StatistiquesNiveauxFormationIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="p_annee" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

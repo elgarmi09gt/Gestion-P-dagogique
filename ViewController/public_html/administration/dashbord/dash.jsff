@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelGroupLayout id="pgl2" layout="horizontal" styleClass="AFStretchWidth" valign="middle" halign="left">
+      <af:outputFormatted value="Département" id="of1"
+                          inlineStyle="font-size:large; color:#2898e8; font-weight:bolder; width: 200px;"/>
+      <af:selectOneChoice value="#{bindings.DepartementsStructure.inputValue}"
+                          required="#{bindings.DepartementsStructure.hints.mandatory}"
+                          shortDesc="#{bindings.DepartementsStructure.hints.tooltip}" id="soc1"
+                          contentStyle=" border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                          autoSubmit="true">
+        <f:selectItems value="#{bindings.DepartementsStructure.items}" id="si1"/>
+        <f:validator binding="#{bindings.DepartementsStructure.validator}"/>
+      </af:selectOneChoice>
+    </af:panelGroupLayout>
+    <af:panelHeader text="Statistiques : #{bindings.DepartementsStructure.inputValue}" id="ph1"
+                    styleClass="AFStretchWidth">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.StatistiquesDepartement.collectionModel}" var="row"
+                  rows="#{bindings.StatistiquesDepartement.rangeSize}"
+                  emptyText="#{bindings.StatistiquesDepartement.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.StatistiquesDepartement.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.StatistiquesDepartement.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.StatistiquesDepartement.rangeSize}"
+                  filterModel="#{bindings.StatistiquesDepartementQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.StatistiquesDepartementQuery.processQuery}" varStatus="vs" id="t1"
+                  partialTriggers=":::soc1">
+          <af:column sortProperty="#{bindings.StatistiquesDepartement.hints.Sessions.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.SESSION}" id="c1"
+                     width="150">
+            <af:selectOneChoice value="#{row.bindings.Sessions.inputValue}" label="#{row.bindings.Sessions.label}"
+                                required="#{bindings.StatistiquesDepartement.hints.Sessions.mandatory}"
+                                shortDesc="#{bindings.StatistiquesDepartement.hints.Sessions.tooltip}" readOnly="true"
+                                id="soc2">
+              <f:selectItems value="#{row.bindings.Sessions.items}" id="si2"/>
+              <f:validator binding="#{row.bindings.Sessions.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesDepartement.hints['ObtientLeDiplôme'].name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.DIPLOMES}" id="c2" width="100">
+            <af:outputText value="#{row['ObtientLeDiplôme']}"
+                           shortDesc="#{bindings.StatistiquesDepartement.hints['ObtientLeDiplôme'].tooltip}" id="ot1">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesDepartement.hints['ObtientLeDiplôme'].format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesDepartement.hints.PasseEnClasseSuperieure.name}"
+                     filterable="true" sortable="true" headerText="#{viewcontrollerBundle.ADMIS}" id="c3">
+            <af:outputText value="#{row.PasseEnClasseSuperieure}"
+                           shortDesc="#{bindings.StatistiquesDepartement.hints.PasseEnClasseSuperieure.tooltip}"
+                           id="ot2">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesDepartement.hints.PasseEnClasseSuperieure.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesDepartement.hints.AnneeValidee.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.ANNEE_VALIDEE}" id="c4" width="125">
+            <af:outputText value="#{row.AnneeValidee}"
+                           shortDesc="#{bindings.StatistiquesDepartement.hints.AnneeValidee.tooltip}" id="ot3">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesDepartement.hints.AnneeValidee.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesDepartement.hints.AutoriseAPasser.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.ADMISSIBLE}" id="c5" width="100">
+            <af:outputText value="#{row.AutoriseAPasser}"
+                           shortDesc="#{bindings.StatistiquesDepartement.hints.AutoriseAPasser.tooltip}" id="ot4">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesDepartement.hints.AutoriseAPasser.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesDepartement.hints.Redouble.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.REDOUBLANT}" id="c6">
+            <af:outputText value="#{row.Redouble}"
+                           shortDesc="#{bindings.StatistiquesDepartement.hints.Redouble.tooltip}" id="ot5">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesDepartement.hints.Redouble.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesDepartement.hints.AnneeNonValidee.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.ANEE_NON_VALIDEE}" id="c7" width="150">
+            <af:outputText value="#{row.AnneeNonValidee}"
+                           shortDesc="#{bindings.StatistiquesDepartement.hints.AnneeNonValidee.tooltip}" id="ot6">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesDepartement.hints.AnneeNonValidee.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesDepartement.hints.Exclu.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.EXCLUSION}" id="c8">
+            <af:outputText value="#{row.Exclu}" shortDesc="#{bindings.StatistiquesDepartement.hints.Exclu.tooltip}"
+                           id="ot7">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.StatistiquesDepartement.hints.Exclu.format}"/>
+            </af:outputText>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelHeader>
+    <af:panelHeader text="Statistiques Détails #{bindings.Sessions1.inputValue eq 1 ?  ' Session Normale' :  bindings.Sessions1.inputValue eq 21 ? ' Session de Rattrapage' : ''}" id="ph2" styleClass="AFStretchWidth">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.StatistiquesNiveauxFormation.collectionModel}" var="row"
+                  rows="#{bindings.StatistiquesNiveauxFormation.rangeSize}"
+                  emptyText="#{bindings.StatistiquesNiveauxFormation.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.StatistiquesNiveauxFormation.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.StatistiquesNiveauxFormation.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.StatistiquesNiveauxFormation.rangeSize}"
+                  filterModel="#{bindings.StatistiquesNiveauxFormationQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.StatistiquesNiveauxFormationQuery.processQuery}" varStatus="vs" id="t2"
+                  columnStretching="column:c9" partialTriggers=":::pc1:t1" scrollPolicy="page">
+          <af:column sortProperty="#{bindings.StatistiquesNiveauxFormation.hints.LibelleLong.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.NIVEAU_FORMATION_MAQUETTE_ANNEE}"
+                     id="c9" noWrap="false" headerNoWrap="true">
+            <af:outputText value="#{row.LibelleLong}"
+                           shortDesc="#{bindings.StatistiquesNiveauxFormation.hints.LibelleLong.tooltip}" id="ot8"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesNiveauxFormation.hints['ObtientLeDiplôme'].name}"
+                     filterable="true" sortable="true" headerText="#{viewcontrollerBundle.DIPLOMES}" id="c16">
+            <af:outputText value="#{row['ObtientLeDiplôme']}"
+                           shortDesc="#{bindings.StatistiquesNiveauxFormation.hints['ObtientLeDiplôme'].tooltip}"
+                           id="ot15">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesNiveauxFormation.hints['ObtientLeDiplôme'].format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesNiveauxFormation.hints.PasseEnClasseSuperieure.name}"
+                     filterable="true" sortable="true" headerText="#{viewcontrollerBundle.ADMIS}" id="c12"
+                     headerNoWrap="false" noWrap="false">
+            <af:outputText value="#{row.PasseEnClasseSuperieure}"
+                           shortDesc="#{bindings.StatistiquesNiveauxFormation.hints.PasseEnClasseSuperieure.tooltip}"
+                           id="ot11">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesNiveauxFormation.hints.PasseEnClasseSuperieure.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesNiveauxFormation.hints.Redouble.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.REDOUBLANT}" id="c11">
+            <af:outputText value="#{row.Redouble}"
+                           shortDesc="#{bindings.StatistiquesNiveauxFormation.hints.Redouble.tooltip}" id="ot10">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesNiveauxFormation.hints.Redouble.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesNiveauxFormation.hints.Exclu.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.EXCLUSION}" id="c18">
+            <af:outputText value="#{row.Exclu}" shortDesc="#{bindings.StatistiquesNiveauxFormation.hints.Exclu.tooltip}"
+                           id="ot17">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesNiveauxFormation.hints.Exclu.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesNiveauxFormation.hints.AutoriseAPasser.name}"
+                     filterable="true" sortable="true" headerText="#{viewcontrollerBundle.ADMISSIBLE}" id="c13">
+            <af:outputText value="#{row.AutoriseAPasser}"
+                           shortDesc="#{bindings.StatistiquesNiveauxFormation.hints.AutoriseAPasser.tooltip}" id="ot12">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesNiveauxFormation.hints.AutoriseAPasser.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesNiveauxFormation.hints.AnneeValidee.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.ANNEE_VALIDEE_ENJ}" id="c14" width="125">
+            <af:outputText value="#{row.AnneeValidee}"
+                           shortDesc="#{bindings.StatistiquesNiveauxFormation.hints.AnneeValidee.tooltip}" id="ot13">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesNiveauxFormation.hints.AnneeValidee.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.StatistiquesNiveauxFormation.hints.AnneeNonValidee.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.ANEE_NON_VALIDEE_ENJ}" id="c15" width="150">
+            <af:outputText value="#{row.AnneeNonValidee}"
+                           shortDesc="#{bindings.StatistiquesNiveauxFormation.hints.AnneeNonValidee.tooltip}" id="ot14">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.StatistiquesNiveauxFormation.hints.AnneeNonValidee.format}"/>
+            </af:outputText>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+</ui:composition>

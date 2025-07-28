@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="list-formations">
+    <default-activity>router1</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__1">
+      <managed-bean-name>Formationsbean</managed-bean-name>
+      <managed-bean-class>view.bean.formations.FormationsBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="listformations">
+      <page>/formations/listformations.jsff</page>
+    </view>
+    <method-call id="ExecuteWithParams">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="ExecuteWithParams1">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <router id="router1">
+      <case id="__6">
+        <expression>#{securityContext.userInRole['Dap,Admin']}</expression>
+        <outcome>adminDap</outcome>
+      </case>
+      <case id="__7">
+        <expression>#{!securityContext.userInRole['Dap,Admin']}</expression>
+        <outcome>others</outcome>
+      </case>
+      <default-outcome>others</default-outcome>
+    </router>
+    <view id="listsformations">
+      <page>/formations/listsformations.jsff</page>
+    </view>
+    <view id="frlisteTest">
+      <page>/formations/frlisteTest.jsff</page>
+    </view>
+    <control-flow-rule id="__2">
+      <from-activity-id>ExecuteWithParams</from-activity-id>
+      <control-flow-case id="__3">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>ExecuteWithParams1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__4">
+      <from-activity-id>ExecuteWithParams1</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>listformations</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__8">
+      <from-activity-id>router1</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome>others</from-outcome>
+        <to-activity-id>ExecuteWithParams</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__10">
+        <from-outcome>adminDap</from-outcome>
+        <to-activity-id>listsformations</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

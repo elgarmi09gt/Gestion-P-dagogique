@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ScolFilUeOptionsANCNOROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ScolFilUeOptionsANCNOROVORowImpl"
+  ComponentClass="model.readOnlyView.ScolFilUeOptionsANCNOROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ScolFilUeOptionsANCNOROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewAccessor
+    Name="ScolProfesseur1"
+    ViewObjectName="model.readOnlyView.ScolProfesseur"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_ResponsableId"
+    ListVOName="ScolProfesseur1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ResponsableId"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProfId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Prenomnom"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[SELECT count(fec.code_filiere_ue_semestre_ec) nbre_ec,fue.CODIFICATION_UE,fue.CODE_FILIERE_UE_SEMESTRE,fue.CODE_SEMESTRE,           
+fue.CREDIT_UE,fue.COEFFICIENT COEFUE,fue.code_ue,fue.responsable Responsable_id,ue.LIB_LONG_UE,cat.LIB_CATEGORIE_UE,           
+lib_court_ue,cat.code_categorie_ue,ue.prefixe,ue.commentaire,Decode(fue.fondamental,null,2,Decode(fue.fondamental,0,3,1)) fondamental,     
+Decode(fue.fondamental,null,'Tranversale',Decode(fue.fondamental,0,'Non Fondamentale','Fondamentale')) Lib_nature ,    
+fue.compensable,fue.moyenne_validation,fue.moyenne_eliminatoire, fue.AN_UNIVERS_ID,fue.CODE_NIV_SEC,         
+nso.option_1_code code_option,resp.code_matricule,resp.emailucad,resp.code_etablissement           
+from NIVEAUX_SECTIONS@scolProdref ns             
+JOIN NIVEAUX_SECTIONS_OPTIONS@scolProdref nso on ns.CODE_NIV_SEC=nso.CODE_NIV_SEC                
+JOIN NIVEAUX_SECTIONS_OPTIONS_UE@scolProdref nsoue ON nso.CODE_NIV_SEC_OPT=nsoue.CODE_NIV_SEC_OPT              
+JOIN SCOL_FILIERE_UE_SEMESTRE@scolProdref fue ON nsoue.CODE_FILIERE_UE_SEMESTRE=fue.CODE_FILIERE_UE_SEMESTRE              
+AND nso.CODE_SEMESTRE = fue.CODE_SEMESTRE AND nso.ANNEE_UNIV = fue.AN_UNIVERS_ID              
+JOIN scol_ue@scolProdref ue ON fue.code_ue=ue.code_ue                  
+JOIN SCOL_CATEGORIE_UE@scolProdref cat ON cat.CODE_CATEGORIE_UE=fue.CODE_CATEGORIE_UE                    
+JOIN SCOL_FILIERE_UE_SEMESTRE_EC@scolProdref fec  ON fue.CODE_FILIERE_UE_SEMESTRE=fec.code_filiere_ue_semestre                                             
+Left JOIN (                                           
+  Select distinct prf.code_matricule,ag.emailucad, prf.prenoms, prf.nom, code_etablissement, prof_id FROM PROFESSEURS@scolProdref prf                                            
+  JOIN PROFESSEURS_ETABLISSEMENTS@scolProdref prfe On prf.prof_id=prfe.no_emp                                          
+  JOIN v_agents@GRH_PAIE_LINK ag ON prf.code_matricule=ag.code_matricule                                         
+  where prf.code_matricule is not null          
+  )resp ON resp.prof_id=fue.responsable           
+group by (fue.CODIFICATION_UE,fue.CODE_FILIERE_UE_SEMESTRE,fue.CODE_SEMESTRE,fue.CREDIT_UE,fue.COEFFICIENT, fue.code_ue,           
+fue.responsable ,ue.LIB_LONG_UE, resp.code_matricule,resp.emailucad,cat.LIB_CATEGORIE_UE,lib_court_ue,cat.code_categorie_ue,           
+ue.prefixe,ue.commentaire, fue.fondamental, fue.compensable,fue.moyenne_validation,fue.moyenne_eliminatoire,           
+nso.option_1_code,resp.code_etablissement, fue.AN_UNIVERS_ID,fue.CODE_NIV_SEC)           
+order by fue.CODE_SEMESTRE,fue.CODIFICATION_UE]]></SQLQuery>
+  <ViewAttribute
+    Name="NbreEc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="NBRE_EC"
+    Expression="NBRE_EC"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="CodificationUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODIFICATION_UE"
+    Expression="CODIFICATION_UE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CodeFiliereUeSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="CODE_FILIERE_UE_SEMESTRE"
+    Expression="CODE_FILIERE_UE_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="CodeSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="CODE_SEMESTRE"
+    Expression="CODE_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="CreditUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="CREDIT_UE"
+    Expression="CREDIT_UE"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="Coefue"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="COEFUE"
+    Expression="COEFUE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="CodeUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="CODE_UE"
+    Expression="CODE_UE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="ResponsableId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="RESPONSABLE_ID"
+    Expression="RESPONSABLE_ID"
+    SQLType="NUMERIC"
+    LOVName="LOV_ResponsableId">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibLongUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_LONG_UE"
+    Expression="LIB_LONG_UE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="255"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="100"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibCategorieUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_CATEGORIE_UE"
+    Expression="LIB_CATEGORIE_UE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibCourtUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_COURT_UE"
+    Expression="LIB_COURT_UE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CodeCategorieUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="CODE_CATEGORIE_UE"
+    Expression="CODE_CATEGORIE_UE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Prefixe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="15"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PREFIXE"
+    Expression="PREFIXE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="15"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Commentaire"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="COMMENTAIRE"
+    Expression="COMMENTAIRE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Fondamental"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="FONDAMENTAL"
+    Expression="FONDAMENTAL"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibNature"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="16"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_NATURE"
+    Expression="LIB_NATURE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="16"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Compensable"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="COMPENSABLE"
+    Expression="COMPENSABLE"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="MoyenneValidation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="MOYENNE_VALIDATION"
+    Expression="MOYENNE_VALIDATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="MoyenneEliminatoire"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="MOYENNE_ELIMINATOIRE"
+    Expression="MOYENNE_ELIMINATOIRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="AnUniversId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="AN_UNIVERS_ID"
+    Expression="AN_UNIVERS_ID"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="CodeNivSec"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="CODE_NIV_SEC"
+    Expression="CODE_NIV_SEC"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="CodeOption"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODE_OPTION"
+    Expression="CODE_OPTION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CodeMatricule"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODE_MATRICULE"
+    Expression="CODE_MATRICULE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Emailucad"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EMAILUCAD"
+    Expression="EMAILUCAD"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CodeEtablissement"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODE_ETABLISSEMENT"
+    Expression="CODE_ETABLISSEMENT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewLinkAccessor
+    Name="OptionANCNOParcoursROVO"
+    ViewLink="model.viewlink.OptionsANCNOToFilUeOtionsANCNOVL"
+    Type="model.readOnlyView.OptionANCNOParcoursROVORowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ScolFilEc"
+    ViewLink="model.viewlink.ScolFilUeOptionANCNOToScolEcVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ParcoursInfoROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ParcoursInfoROVORowImpl"
+  ComponentClass="model.readOnlyView.ParcoursInfoROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ParcoursInfoROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[SELECT  DISTINCT                                               
+    nfp.ID_NIVEAU_FORMATION_PARCOURS,         
+    nf.LIBELLE_LONG || Decode(nf.IDENTITE,null,'',' ('||nf.IDENTITE||')') || '' || Decode(crt.lib_cohorte,'COHORTE A',null,' '||crt.lib_cohorte) ||  
+    Decode(lib_option, null ,'',' (option : '||lib_option||')') lib_parcours,lib_option    
+FROM                                              
+    (((              
+    NIVEAUX_FORMATION_PARCOURS nfp JOIN (                                             
+        SELECT                                              
+            nfc.ID_NIVEAU_FORMATION_COHORTE,                                              
+            ct.LIBELLE lib_cohorte,                                              
+            nfc.ID_NIVEAU_FORMATION                                              
+        FROM                                              
+            NIVEAU_FORMATION_COHORTES nfc               
+        JOIN COHORTES ct ON nfc.ID_COHORTE = ct.ID_COHORTE                                             
+    ) crt ON crt.ID_NIVEAU_FORMATION_COHORTE = nfp.ID_NIVEAU_FORMATION_COHORTE)                     
+    JOIN NIVEAUX_FORMATIONS nf ON crt.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION) JOIN FORMATIONS f ON nf.ID_FORMATION = f.ID_FORMATION)               
+    LEFT JOIN (  
+      SELECT nfo.CODEOPTIONSCOL,op.LIBELLE lib_option,nfo.ID_NIV_FORM_SPEC_OPTION,op.CODE  
+      FROM NIV_FORM_SPECIALITE_OPTION nfo  
+      JOIN OPTIONNIVSECSCOL op ON nfo.CODEOPTIONSCOL = op.CODE  
+    ) op ON op.ID_NIV_FORM_SPEC_OPTION = nfp.ID_NIVFORM_OPTION  
+    WHERE nfp.ID_NIVEAU_FORMATION_PARCOURS=:parcours]]></SQLQuery>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="301"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_PARCOURS"
+    Expression="LIB_PARCOURS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="301"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibOption"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_OPTION"
+    Expression="LIB_OPTION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNiveauFormationParcours"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

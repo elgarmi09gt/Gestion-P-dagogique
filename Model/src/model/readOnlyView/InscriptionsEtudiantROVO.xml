@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="InscriptionsEtudiantROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.InscriptionsEtudiantROVORowImpl"
+  ComponentClass="model.readOnlyView.InscriptionsEtudiantROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.InscriptionsEtudiantROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="p_numero"
+    Kind="where"
+    Type="java.lang.String"/>
+  <SQLQuery><![CDATA[Select distinct etd.NUMERO, etd.ID_ETUDIANT, pers.PRENOMS||' '||pers.NOM||' '||Decode(pers.ID_SEXE,1,'Né le ', 'Née le ') || TO_CHAR(DATE_NAISSANCE, 'DD-MM-YYYY')||' à '||pers.LIEU_NAISSANCE DateLieuNaiss, ip.ID_INSCRIPTION_PEDAGOGIQUE, pma.ID_PARCOURS_MAQUET_ANNEE, au.ID_ANNEES_UNIVERS, au.LIBELLE_LONG Annee, nf.LIBELLE_LONG, Decode(resAn.CREDIT,null,'NA',resAn.CREDIT) CREDIT, Decode(resAn.RESULTAT,null,'RESULTAT INDISPONIBLE',resAn.RESULTAT) RESULTAT,                                                       
+nf.LIBELLE_LONG || Decode(nf.IDENTITE,null,'',' ('||nf.IDENTITE||')') || ' ' || DECODE(crt.LIBELLE,'COHORTE A','',crt.LIBELLE) || DECODE(nfp.ID_NIVFORM_OPTION, NULL, '', ' Option : ' || op.lib_option) lib_parcours, nf.id_niveau                                                  
+from PERSONNES pers               
+join ETUDIANTS etd on pers.ID_PERSONNE=etd.ID_PERSONNE                 
+join INSCRIPTIONS_ADMIN ia on etd.ID_ETUDIANT=ia.ID_ETUDIANT                        
+join INSCRIPTIONS_PEDAGOGIQUES ip on ia.ID_INSCRIPTION_ADMIN=ip.ID_INSCRIPTION_ADMIN                      
+join INSCRIPTION_PED_SEMESTRE ips on ip.ID_INSCRIPTION_PEDAGOGIQUE=ips.ID_INSCRIPTION_PEDAGOGIQUE                                                       
+join PARCOURS_MAQUETTE_ANNEE pma on ip.ID_PARCOURS_MAQUET_ANNEE=pma.ID_PARCOURS_MAQUET_ANNEE                                                       
+and ia.ID_ANNEES_UNIVERS=pma.ID_ANNEES_UNIVERS                                                       
+join MAQUETTES mq on pma.ID_MAQUETTE=mq.ID_MAQUETTE                                                       
+join NIVEAUX_FORMATION_PARCOURS nfp on pma.ID_NIVEAU_FORMATION_PARCOURS=nfp.ID_NIVEAU_FORMATION_PARCOURS                                                       
+join NIVEAU_FORMATION_COHORTES nfc on nfp.ID_NIVEAU_FORMATION_COHORTE=nfc.ID_NIVEAU_FORMATION_COHORTE                                                       
+join NIVEAUX_FORMATIONS nf on nfc.ID_NIVEAU_FORMATION=nf.ID_NIVEAU_FORMATION                                                       
+join COHORTES crt on nfc.ID_COHORTE=crt.ID_COHORTE                                                       
+join ANNEES_UNIVERS au on pma.ID_ANNEES_UNIVERS=au.ID_ANNEES_UNIVERS                                                       
+LEFT JOIN (                                                       
+  SELECT nfo.CODEOPTIONSCOL,op.LIBELLE lib_option,nfo.ID_NIV_FORM_SPEC_OPTION,op.CODE                                                       
+  FROM NIV_FORM_SPECIALITE_OPTION nfo                                               
+  JOIN OPTIONNIVSECSCOL op ON nfo.CODEOPTIONSCOL = op.CODE                                           
+) op ON op.ID_NIV_FORM_SPEC_OPTION = nfp.ID_NIVFORM_OPTION                                           
+Left JOIN (                                     
+  Select ra.ID_INSCRIPTION_PEDAGOGIQUE,ra.CREDIT, re.LIBELLE_LONG RESULTAT                                     
+  from RESULTATS_ANNUELS ra                                     
+  join RESULTAT_EVALUATIONS re on ra.RESULTAT=re.ID_RESULTAT                                     
+) resAn on ip.ID_INSCRIPTION_PEDAGOGIQUE=resAn.ID_INSCRIPTION_PEDAGOGIQUE                                     
+where etd.NUMERO = upper(:p_numero)   
+order by  au.ID_ANNEES_UNIVERS DESC, nf.id_niveau desc]]></SQLQuery>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Datelieunaiss"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="522"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="DATELIEUNAISS"
+    Expression="DATELIEUNAISS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="522"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdInscriptionPedagogique"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PEDAGOGIQUE"
+    Expression="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdParcoursMaquetAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PARCOURS_MAQUET_ANNEE"
+    Expression="ID_PARCOURS_MAQUET_ANNEE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Annee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ANNEE"
+    Expression="ANNEE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="500"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Credit"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.lang.String"
+    ColumnType="NUMBER"
+    AliasName="CREDIT"
+    Expression="CREDIT"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="Resultat"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="RESULTAT"
+    Expression="RESULTAT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1014"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_PARCOURS"
+    Expression="LIB_PARCOURS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1014"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdNiveau"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU"
+    Expression="ID_NIVEAU"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdInscriptionPedagogique"/>
+    <Item Value="IdParcoursMaquetAnnee"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="ResultatSemestreEtudiantROVO"
+    ViewLink="model.viewlink.InscEtudiantToResSemEtdVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

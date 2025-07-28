@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <af:document title="login.jsf" id="d1" theme="dark">
+        <af:form id="f1"
+                 inlineStyle="background-repeat: repeat; background-image:url(&quot;images/logo_tr.jpg&quot;);">
+            <af:panelFormLayout id="pfl1" labelAlignment="top">
+                <f:facet name="footer"/>
+                <af:panelGroupLayout id="pgl1" layout="vertical" halign="center" styleClass="AFStretchWidth"
+                                     inlineStyle="margin:300px;">
+                    <af:panelGroupLayout id="pgl3" layout="vertical" valign="middle" halign="center">
+                        <af:panelGroupLayout id="pgl4" layout="horizontal"
+                                             inlineStyle="height:80px; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8; width:340px;border-radius:4px;margin:10px">
+                            <af:inputText id="it1" value="#{LoginBean.username}"
+                                          requiredMessageDetail="Entrer votre Login !!!" required="true" placeholder="Tapez votre login"
+                                          contentStyle="width:320px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:50px" labelStyle="font-size:x-large"
+                                          />
+                        </af:panelGroupLayout>
+                        <af:panelGroupLayout id="pgl5" layout="horizontal"
+                                             inlineStyle="height:80px; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8; width:340px;border-radius:4px;margin:10px">
+                            <af:inputText id="it2" value="#{LoginBean.password}" secret="true" showRequired="false" 
+                                          requiredMessageDetail="Entrer votre mot de pass !!!" required="true" placeholder="Tapez votre mot de pass"
+                                          contentStyle="width:320px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:50px" labelStyle="font-size:x-large"/>
+                        </af:panelGroupLayout>
+                    </af:panelGroupLayout>
+                    <af:button text="Se connecter" id="b1" action="#{LoginBean.Login}"
+                               inlineStyle="border-radius:20px ; background: #2897e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;"
+                               /> <!--icon="/images/close_sess_icone_48px.png"/-->
+                    <af:link text="Mot de passe oublié" id="l1" destination="/faces/resetPasswordRequest.jsf"
+                             visible="false"/>
+                </af:panelGroupLayout>
+            </af:panelFormLayout>
+        </af:form>
+    </af:document>
+    <!--oracle-jdev-comment:preferred-managed-bean-name:LoginBean-->
+</f:view>

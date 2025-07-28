@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="resultat_ancienPageDef"
+                Package="inscription.resultat_ancien">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="HistResultAncienRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="HistResultAncienROIterator"/>
+    <iterator Binds="NivParcResultAncienRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="NivParcResultAncienROIterator"/>
+    <iterator Binds="AttrResulancienRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="AttrResulancienROIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="HistResultAncienROIterator" ListOperMode="navigation" ListIter="HistResultAncienROIterator"
+          id="HistResultAncienRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="NivParcResultAncienROIterator" ListOperMode="navigation" ListIter="NivParcResultAncienROIterator"
+          id="NivParcResultAncienRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Libform"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="AttrResulancienROIterator" id="EtudAnc">
+      <AttrNames>
+        <Item Value="EtudAnc"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="AttrResulancienROIterator" StaticList="false" Uses="LOV_IdAnnee" id="IdAnnee"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="AttrResulancienROIterator" StaticList="false" Uses="LOV_Valide" id="Valide"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="AttrResulancienROIterator" id="NumDiplome">
+      <AttrNames>
+        <Item Value="NumDiplome"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrResulancienROIterator" id="DateDelib">
+      <AttrNames>
+        <Item Value="DateDelib"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="AttrResulancienROIterator" StaticList="false" Uses="LOV_IdOption" id="IdOption"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="AttrResulancienROIterator" StaticList="false" Uses="LOV_IdSession" id="IdSession"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="AttrResulancienROIterator" id="DateDeliv">
+      <AttrNames>
+        <Item Value="DateDeliv"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrResulancienROIterator" id="NumIdentite">
+      <AttrNames>
+        <Item Value="NumIdentite"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="AttrResulancienROIterator" StaticList="false" Uses="LOV_IdTypeResulat" id="IdTypeResulat"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="AttrResulancienROIterator" StaticList="false" Uses="LOV_IdTypeMention" id="IdTypeMention"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+  </bindings>
+</pageDefinition>

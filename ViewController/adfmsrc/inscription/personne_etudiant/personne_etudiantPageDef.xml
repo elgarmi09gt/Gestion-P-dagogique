@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="personne_etudiantPageDef"
+                Package="inscription.personne_etudiant">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AttrSearchPers" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="AttrSearchPersIterator"/>
+    <iterator Binds="persEtudiantRO" RangeSize="7" DataControl="inscriptionAppDataControl"
+              id="persEtudiantROIterator"/>
+    <searchRegion Binds="persEtudiantROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="persEtudiantROQuery"/>
+    <iterator Binds="Etudiants" RangeSize="25" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="AnneeUniversEnCoursRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="AnneeUniversEnCoursROIterator"/>
+    <iterator Binds="PersNouvBachelierRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="PersNouvBachelierROIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="Adresse">
+      <AttrNames>
+        <Item Value="Adresse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="PieceIdentification">
+      <AttrNames>
+        <Item Value="PieceIdentification"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="persEtudiantROIterator" id="persEtudiantRO">
+      <nodeDefinition DefName="model.readOnlyView.persEtudiantROVO" Name="persEtudiantRO0">
+        <AttrNames>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Adresse"/>
+          <Item Value="Telephone"/>
+          <Item Value="PieceIdentification"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="EtudiantsIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="persEtudiantROIterator" id="PieceIdentification1">
+      <AttrNames>
+        <Item Value="PieceIdentification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantsIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantsIterator" id="IdPersonne">
+      <AttrNames>
+        <Item Value="IdPersonne"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="EtudiantsIterator" id="CreateInsert" InstanceName="inscriptionAppDataControl.Etudiants"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="AnneeUniversEnCoursROIterator" id="getAnneeEnCours"
+            InstanceName="inscriptionAppDataControl.AnneeUniversEnCoursRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="persEtudiantROIterator" id="Nom1">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="persEtudiantROIterator" id="Prenoms1">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="PersNouvBachelierROIterator" id="Execute"
+            InstanceName="inscriptionAppDataControl.PersNouvBachelierRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="iteratorExecute"/>
+  </bindings>
+</pageDefinition>

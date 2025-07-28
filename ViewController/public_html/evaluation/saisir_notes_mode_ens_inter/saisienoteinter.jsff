@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" inlineStyle="line-height:50px;">
+    <af:panelGroupLayout id="pgl2" layout="scroll">
+      <af:panelGroupLayout id="pgl3">
+        <af:selectOneChoice value="#{bindings.UeEvalNew.inputValue}" label="#{bindings.UeEvalNew.label}"
+                            required="#{bindings.UeEvalNew.hints.mandatory}"
+                            shortDesc="#{bindings.UeEvalNew.hints.tooltip}" id="soc1" autoSubmit="true">
+          <f:selectItems value="#{bindings.UeEvalNew.items}" id="si1"/>
+          <f:validator binding="#{bindings.UeEvalNew.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.EcEvalNew.inputValue}" label="#{bindings.EcEvalNew.label}"
+                            required="#{bindings.EcEvalNew.hints.mandatory}"
+                            shortDesc="#{bindings.EcEvalNew.hints.tooltip}" id="soc2" autoSubmit="true"
+                            partialTriggers="soc1">
+          <f:selectItems value="#{bindings.EcEvalNew.items}" id="si2"/>
+          <f:validator binding="#{bindings.EcEvalNew.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.EcEvalTypeCntrlNew.inputValue}"
+                            label="#{bindings.EcEvalTypeCntrlNew.label}"
+                            required="#{bindings.EcEvalTypeCntrlNew.hints.mandatory}"
+                            shortDesc="#{bindings.EcEvalTypeCntrlNew.hints.tooltip}" id="soc3" autoSubmit="true"
+                            partialTriggers="soc2">
+          <f:selectItems value="#{bindings.EcEvalTypeCntrlNew.items}" id="si3"/>
+          <f:validator binding="#{bindings.EcEvalTypeCntrlNew.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.EcEvalTypeCntrModeCntrllNew.inputValue}"
+                            label="#{bindings.EcEvalTypeCntrModeCntrllNew.label}"
+                            required="#{bindings.EcEvalTypeCntrModeCntrllNew.hints.mandatory}"
+                            shortDesc="#{bindings.EcEvalTypeCntrModeCntrllNew.hints.tooltip}" id="soc4"
+                            autoSubmit="true" partialTriggers="soc3">
+          <f:selectItems value="#{bindings.EcEvalTypeCntrModeCntrllNew.items}" id="si4"/>
+          <f:validator binding="#{bindings.EcEvalTypeCntrModeCntrllNew.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl17" layout="horizontal" halign="center" valign="middle"
+                                 inlineStyle="margin-top:5px; line-height:20px;">
+                <af:button text="Exporter" id="b7" icon="/images/excel-24.png"
+                           inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px" useWindow="true">
+                    <af:fileDownloadActionListener contentType="application/vnd.ms-excel"
+                                                   filename="#{bindings.CodificationUe}_#{bindings.LibelleLong}_#{bindings.LibelleCourtCtrl}_#{bindings.LibModeCtrl}.xlsx"
+                                                   method="#{SaisieNotesInterBean.exportToExcel1}"/>
+                    <af:setPropertyListener from="#{'1'}" to="#{requestScope.refc}" type="action"/>
+                    <!--af:setPropertyListener from="#{'1'}" to="#{sessionScope.refc}" type="action"/-->
+                </af:button>
+            </af:panelGroupLayout>
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</ui:composition>

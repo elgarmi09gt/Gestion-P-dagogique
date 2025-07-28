@@ -1,0 +1,337 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl2" layout="scroll"
+                       visible="#{pageFlowScope.etatDeliberation == 9 ? false : pageFlowScope.isAnClosed != 0 ?  false : true}">
+    <af:outputFormatted value="#{bindings.ParcoursInfo.inputValue}(SEMESTRE #{sessionScope.id_smstre} -- #{sessionScope.id_session != '1' ? 'SESSION DE RATTRAPAGE' : 'SESSION NORMALE'})"
+                          id="of14" inlineStyle="font-style:italic; font-size:large;color : #2898e8"/>
+    <af:panelGroupLayout id="pgl12" layout="vertical"
+                         inlineStyle="line-height:40px; border:solid solid solid solid 2px 2px 2px 2px #2898e8 #2898e8 #2898e8 #2898e8; border-radius:8px 8px 8px 8px / 8px 8px 8px 8px ;">
+      <af:iterator id="i4" value="#{DeliberatioUeBean.getRegleRepech()}"/>
+      <af:panelGroupLayout id="pgl1" layout="horizontal" valign="middle" halign="center" inlineStyle="border:none">
+        <af:panelGroupLayout id="pgl3" layout="vertical">
+          <af:inputNumberSpinbox label="De" id="ins1" labelStyle="font-weight: bold; font-size: 18px"
+                                 contentStyle="font-size: 18px; width:150px; border: solid 2px #2897e8; border-radius: 5px; height:30px"
+                                 binding="#{DeliberatioUeBean.noteInf}" autoSubmit="true"/>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="margin-left:50px">
+          <af:inputNumberSpinbox label="à" id="ins2" labelStyle="font-weight: bold; font-size: 18px"
+                                 contentStyle="font-size: 18px; width:150px; border: solid 2px #2897e8; border-radius: 5px; height:30px"
+                                 binding="#{DeliberatioUeBean.noteSup}" autoSubmit="true"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl5" layout="vertical" halign="center" inlineStyle="line-height:35px;">
+        <af:panelGroupLayout id="pgl11" layout="horizontal">
+          <af:panelGroupLayout id="pgl15" inlineStyle="width:180px;" halign="left">
+            <af:outputFormatted value="Unité d'Enseignement" id="of9" styleUsage="instruction"
+                                inlineStyle="font-size:large;"/>
+          </af:panelGroupLayout>
+          <af:selectOneChoice value="#{bindings.RepecheFilUe.inputValue}"
+                              required="#{bindings.RepecheFilUe.hints.mandatory}"
+                              shortDesc="#{bindings.RepecheFilUe.hints.tooltip}" id="soc1"
+                              contentStyle="font-size: 18px; width:300px; border: solid 2px #2897e8; border-radius: 5px; height:30px"
+                              autoSubmit="true" valueChangeListener="#{DeliberatioUeBean.onUeChanged}">
+            <f:selectItems value="#{bindings.RepecheFilUe.items}" id="si1"/>
+            <f:validator binding="#{bindings.RepecheFilUe.validator}"/>
+          </af:selectOneChoice>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl13" layout="horizontal"
+                             visible="#{sessionScope.regle_repeche !=  '2'  ?  false : true }">
+          <af:panelGroupLayout id="pgl14" inlineStyle="width:180px;" halign="left">
+            <af:outputFormatted value="Elément Constitutif" id="of12" inlineStyle="font-size:large;"/>
+          </af:panelGroupLayout>
+          <af:selectOneChoice value="#{bindings.FilEc.inputValue}" required="#{bindings.FilEc.hints.mandatory}"
+                              shortDesc="#{bindings.FilEc.hints.tooltip}" id="soc3"
+                              contentStyle="font-size: 18px; width:300px; border: solid 2px #2897e8; border-radius: 5px; height:30px"
+                              visible="#{sessionScope.regle_repeche !=  '2'  ?  false : true }"
+                              valueChangeListener="#{DeliberatioUeBean.onEcChanged}" autoSubmit="true">
+            <f:selectItems value="#{bindings.FilEc.items}" id="si3"/>
+            <f:validator binding="#{bindings.FilEc.validator}"/>
+          </af:selectOneChoice>
+        </af:panelGroupLayout>
+        <af:button text="Afficher la liste" id="b1"
+                   inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px;"
+                   icon="/images/icons8-search-24.png" actionListener="#{DeliberatioUeBean.OnSearchRepechableAction}"/>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl6" binding="#{DeliberatioUeBean.resultatPan}" layout="vertical" halign="center">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{DeliberatioUeBean.resultatPanCol}"
+                          visible="#{sessionScope.regle_repeche !=  '2'  ?  ( sessionScope.id_str_anc != '3' ? true : false) : false }"> <!--#{sessionScope.regle_repeche !=  '2'  ?  true : false }-->
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.ResultatFilUERepechable.collectionModel}" var="row"
+                  rows="#{bindings.ResultatFilUERepechable.rangeSize}"
+                  emptyText="#{bindings.ResultatFilUERepechable.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.ResultatFilUERepechable.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ResultatFilUERepechable.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.ResultatFilUERepechable.rangeSize}"
+                  filterModel="#{bindings.ResultatFilUERepechableQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.ResultatFilUERepechableQuery.processQuery}" varStatus="vs" id="t1"
+                  scrollPolicy="page" inlineStyle="font-size:large;" partialTriggers=":::soc3">
+          <af:column sortProperty="#{bindings.ResultatFilUERepechable.hints.Numero.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.NUMERO}" id="c1">
+            <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ResultatFilUERepechable.hints.Prenoms.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.PENOM}" id="c2"
+                     width="300">
+            <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ResultatFilUERepechable.hints.Nom.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle1.NOM}" id="c3" width="150">
+            <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of3"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ResultatFilUERepechable.hints.Note.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.NOTE}" id="c4">
+            <af:outputFormatted value="#{row.bindings.Note.inputValue}" id="of4">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.ResultatFilUERepechable.hints.Note.format}"/>
+            </af:outputFormatted>
+          </af:column>
+          <af:column sortProperty="#{bindings.ResultatFilUERepechable.hints.Resultat.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.RESULTAT}" id="c5">
+            <af:selectOneChoice value="#{row.bindings.Resultat.inputValue}" label="#{row.bindings.Resultat.label}"
+                                required="#{bindings.ResultatFilUERepechable.hints.Resultat.mandatory}"
+                                shortDesc="#{bindings.ResultatFilUERepechable.hints.Resultat.tooltip}" readOnly="true"
+                                id="soc2" contentStyle="font-size:large;">
+              <f:selectItems value="#{row.bindings.Resultat.items}" id="si2"/>
+              <f:validator binding="#{row.bindings.Resultat.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column id="c6" headerText="#{viewcontrollerBundle.DETAIL_NOTE}">
+            <af:button id="b2" icon="/images/details-24.png" actionListener="#{DeliberatioUeBean.OnDetailNoteAction}"
+                       disabled="#{row.bindings.Resultat.inputValue ne 1}" disabledIcon="/images/disable-24.png"/>
+          </af:column>
+          <af:column id="c7" headerText="#{viewcontrollerBundle.REPEACHER}">
+            <af:button id="b3" icon="/images/passed-24.png" actionListener="#{DeliberatioUeBean.OnRepechUeAction}"
+                       disabled="#{row.bindings.Resultat.inputValue ne 1}" disabledIcon="/images/disable-24.png">
+              <af:showPopupBehavior popupId=":::p1"/>
+            </af:button>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+      <af:panelCollection id="pc2" styleClass="AFStretchWidth"
+                          visible="#{sessionScope.regle_repeche !=  '2'  ?  false : true }"
+                          binding="#{DeliberatioUeBean.resultatPanColMed}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t4">
+            <af:button text="Repecher" id="b4"
+                       icon="/images/passed-24.png"
+                       inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px;"
+                       actionListener="#{DeliberatioUeBean.OnRepecheMedAction}"
+                       disabled="#{bindings.ResultFilUeRepechableMedIterator.estimatedRowCount eq 0}">
+              <af:showPopupBehavior popupId="::p5"/>
+            </af:button>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.ResultFilUeRepechableMed.collectionModel}" var="row"
+                  rows="#{bindings.ResultFilUeRepechableMed.rangeSize}"
+                  emptyText="#{bindings.ResultFilUeRepechableMed.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.ResultFilUeRepechableMed.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ResultFilUeRepechableMed.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.ResultFilUeRepechableMed.rangeSize}"
+                  filterModel="#{bindings.ResultFilUeRepechableMedQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.ResultFilUeRepechableMedQuery.processQuery}" varStatus="vs" id="t3"
+                  scrollPolicy="page">
+          <af:column sortProperty="#{bindings.ResultFilUeRepechableMed.hints.Numero.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.NUMERO}" id="c13">
+            <af:outputText value="#{row.Numero}" shortDesc="#{bindings.ResultFilUeRepechableMed.hints.Numero.tooltip}"
+                           id="ot4"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ResultFilUeRepechableMed.hints.Prenoms.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.PENOM}" id="c14"
+                     width="300">
+            <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.ResultFilUeRepechableMed.hints.Prenoms.tooltip}"
+                           id="ot5"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ResultFilUeRepechableMed.hints.Nom.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.NOM}" id="c15"
+                     width="150">
+            <af:outputText value="#{row.Nom}" shortDesc="#{bindings.ResultFilUeRepechableMed.hints.Nom.tooltip}"
+                           id="ot6"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ResultFilUeRepechableMed.hints.Moyenneue.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.MOYENNE_UE}" id="c16">
+            <af:outputText value="#{row.Moyenneue}"
+                           shortDesc="#{bindings.ResultFilUeRepechableMed.hints.Moyenneue.tooltip}" id="ot7">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.ResultFilUeRepechableMed.hints.Moyenneue.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ResultFilUeRepechableMed.hints.Note.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.NOTE_CT}" id="c17">
+            <af:outputText value="#{row.Note}" shortDesc="#{bindings.ResultFilUeRepechableMed.hints.Note.tooltip}"
+                           id="ot8">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.ResultFilUeRepechableMed.hints.Note.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column id="c18" headerText="#{viewcontrollerBundle.POINT_JURY}">
+            <af:outputText value="#{DeliberatioUeBean.getPointJury( row.IdInscriptionPedSemUe,row.IdFiliereUeSemstreEc,row.IdFiliereUeSemstre,row.IdParcoursMaquetAnnee)}" id="ot9"
+                           visible="false"/>
+          </af:column>
+          <af:column id="c19" headerText="#{viewcontrollerBundle.ACTIONS}" align="center" shortDesc="repêcher">
+            <af:button id="b5" icon="/images/passed-24.png" shortDesc="Repêcher" disabled="#{row.Moyenneue ge 10}"
+                       disabledIcon="/images/disable-24.png">
+              <af:showPopupBehavior popupId=":::p6"/>
+            </af:button>
+          </af:column>
+          <af:column headerText="#{bindings.ResultFilUeRepechableMed.hints.IdInscriptionPedSemUe.label}" id="c20"
+                     visible="false">
+            <af:outputText value="#{row.IdInscriptionPedSemUe}"
+                           shortDesc="#{bindings.ResultFilUeRepechableMed.hints.IdInscriptionPedSemUe.tooltip}"
+                           id="ot10">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.ResultFilUeRepechableMed.hints.IdInscriptionPedSemUe.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.ResultFilUeRepechableMed.hints.IdFiliereUeSemstreEc.label}" id="c21"
+                     visible="false">
+            <af:outputText value="#{row.IdFiliereUeSemstreEc}"
+                           shortDesc="#{bindings.ResultFilUeRepechableMed.hints.IdFiliereUeSemstreEc.tooltip}"
+                           id="ot11">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.ResultFilUeRepechableMed.hints.IdFiliereUeSemstreEc.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.ResultFilUeRepechableMed.hints.IdParcoursMaquetAnnee.label}" id="c22"
+                     visible="false">
+            <af:outputText value="#{row.IdParcoursMaquetAnnee}"
+                           shortDesc="#{bindings.ResultFilUeRepechableMed.hints.IdParcoursMaquetAnnee.tooltip}"
+                           id="ot12">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.ResultFilUeRepechableMed.hints.IdParcoursMaquetAnnee.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.ResultFilUeRepechableMed.hints.IdInscriptionPedSemestre.label}" id="c23"
+                     visible="false">
+            <af:outputText value="#{row.IdInscriptionPedSemestre}"
+                           shortDesc="#{bindings.ResultFilUeRepechableMed.hints.IdInscriptionPedSemestre.tooltip}"
+                           id="ot13">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.ResultFilUeRepechableMed.hints.IdInscriptionPedSemestre.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.ResultFilUeRepechableMed.hints.IdFiliereUeSemstre.label}" id="c24"
+                     visible="false">
+            <af:outputText value="#{row.IdFiliereUeSemstre}"
+                           shortDesc="#{bindings.ResultFilUeRepechableMed.hints.IdFiliereUeSemstre.tooltip}" id="ot14">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.ResultFilUeRepechableMed.hints.IdFiliereUeSemstre.format}"/>
+            </af:outputText>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:panelGroupLayout id="pgl18" layout="vertical"
+                       visible="#{pageFlowScope.etatDeliberation == 9 ? true : pageFlowScope.isAnClosed != 0 ?  true : false}" halign="center">
+    <af:outputFormatted value="#{bindings.ParcoursInfo.inputValue}(SEMESTRE #{sessionScope.id_smstre} -- #{sessionScope.id_session != '1' ? 'SESSION DE RATTRAPAGE' : 'SESSION NORMALE'})"
+                          id="of16" inlineStyle="font-style:italic; font-size:large;color : #2898e8"/>
+    <af:outputFormatted value="Les repêchages ne sont plus autorisés, La session est clôturée !!!" id="of13"
+                        inlineStyle="font-style:italic; font-size:large;color : orange"/>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{DeliberatioUeBean.popConfirmRepeche}">
+    <af:dialog id="d1" title="Confirmer repêchage" type="yesNo" affirmativeTextAndAccessKey="OUI"
+               noTextAndAccessKey="ANNULER" dialogListener="#{DeliberatioUeBean.OnRepechUeConfirmAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl7" layout="vertical" halign="center">
+        <af:icon name="info" id="i1"/>
+        <af:outputFormatted value="Voulez-vous repêcher cet étudiant ?" id="of5"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{DeliberatioUeBean.popIntervalNote}">
+    <af:dialog id="d2" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl8" halign="center" layout="vertical">
+        <af:icon name="warning" id="i2"/>
+        <af:outputFormatted value="Veuillez Entrer une Intervalle de Note !" id="of6"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{DeliberatioUeBean.popSuccessRep}">
+    <af:dialog id="d3" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl9" layout="vertical" halign="center">
+        <af:icon name="info" id="i3"/>
+        <af:outputFormatted value="Repêchage bien effectué !" id="of7" inlineStyle="color:#2898e8; font-size:large;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{DeliberatioUeBean.popDetailsRepech}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d4" title="#{viewcontrollerBundle.DETAIL_ATTRIBUTION_DE_POINT_JURY}" type="cancel" cancelTextAndAccessKey="Fermer" stretchChildren="none">
+      <af:panelGroupLayout id="pgl10" layout="vertical">
+        <af:outputFormatted value="NB : La répartition des points de jury se fait entre les éléments constitutifs dont la moyenne est inférieure à la moyenne de repêchage" id="of8"
+                            styleUsage="pageStamp"
+                            inlineStyle="font-size:large; font-weight:bold; font-style:italic; overflow-wrap:break-word;"/>
+        <af:table value="#{bindings.FilereEcInvalideRepech.collectionModel}" var="row"
+                  rows="#{bindings.FilereEcInvalideRepech.rangeSize}"
+                  emptyText="#{bindings.FilereEcInvalideRepech.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.FilereEcInvalideRepech.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.FilereEcInvalideRepech.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.FilereEcInvalideRepech.rangeSize}"
+                  filterModel="#{bindings.FilereEcInvalideRepechQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.FilereEcInvalideRepechQuery.processQuery}" varStatus="vs" id="t2"
+                  columnStretching="column:c8" scrollPolicy="page">
+          <af:column sortProperty="#{bindings.FilereEcInvalideRepech.hints.LibelleLong.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.LIBELLE}" id="c8">
+            <af:outputText value="#{row.LibelleLong}"
+                           shortDesc="#{bindings.FilereEcInvalideRepech.hints.LibelleLong.tooltip}" id="ot1"
+                           inlineStyle="overflow-wrap:break-word;"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.FilereEcInvalideRepech.hints.Coefficient.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle1.COEFICIENT}" id="c9">
+            <af:outputText value="#{row.Coefficient}"
+                           shortDesc="#{bindings.FilereEcInvalideRepech.hints.Coefficient.tooltip}" id="ot2">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.FilereEcInvalideRepech.hints.Coefficient.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.FilereEcInvalideRepech.hints.Note.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.FilereEcInvalideRepech.hints.Note.label}" id="c10">
+            <af:outputText value="#{row.Note}" shortDesc="#{bindings.FilereEcInvalideRepech.hints.Note.tooltip}"
+                           id="ot3">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.FilereEcInvalideRepech.hints.Note.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column id="c11" headerText="#{viewcontrollerBundle.POINT_JURY}">
+            <af:outputFormatted value="#{( sessionScope.moy_ref - bindings.Note.inputValue)*sessionScope.totalcoef/sessionScope.totalFilEcNV}"
+                                id="of10"/>
+          </af:column>
+          <af:column id="c12" headerText="#{viewcontrollerBundle.NOTE_FINAL}">
+            <af:outputFormatted value="#{row.Note + (sessionScope.moy_ref - bindings.Note.inputValue)*sessionScope.totalcoef/sessionScope.totalFilEcNV}"
+                                id="of11"/>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p5" binding="#{DeliberatioUeBean.popConfirmRepGrpMed}">
+    <af:dialog id="d5" title="Confirmer repêchage" type="yesNo" affirmativeTextAndAccessKey="OUI"
+               noTextAndAccessKey="ANNULER" dialogListener="#{DeliberatioUeBean.OnRepechGrpUeMedConfirm}">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl16" layout="vertical" halign="center">
+        <af:icon name="info" id="i5"/>
+        <af:outputFormatted value="Voulez-vous repêcher ces étudiants ?" id="of15"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p6" binding="#{DeliberatioUeBean.popConfirmRepIndivMed}">
+    <af:dialog id="d6" title="Confirmer repêchage" type="yesNo" affirmativeTextAndAccessKey="OUI"
+               noTextAndAccessKey="ANNULER" dialogListener="#{DeliberatioUeBean.OnRepechIndivUeMedConfirm}">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl17" layout="vertical" halign="center">
+        <af:icon name="info" id="i6"/>
+        <af:outputFormatted value="Voulez-vous repêcher ce étudiant ?" id="of14"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

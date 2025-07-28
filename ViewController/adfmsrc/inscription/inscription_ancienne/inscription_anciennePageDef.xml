@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="inscription_anciennePageDef"
+                Package="inscription.inscription_ancienne">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="HistStructAncInscRO" RangeSize="4" DataControl="inscriptionAppDataControl"
+              id="HistStructAncInscROIterator"/>
+    <iterator Binds="AnneeUnivAnscInscRO" RangeSize="4" DataControl="inscriptionAppDataControl"
+              id="AnneeUnivAnscInscROIterator"/>
+    <iterator Binds="NivFormAncInsRO" RangeSize="4" DataControl="inscriptionAppDataControl"
+              id="NivFormAncInsROIterator"/>
+    <iterator Binds="InscriptionAncienne" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptionAncienneIterator"/>
+    <iterator Binds="ListeInscAncRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="ListeInscAncROIterator"/>
+    <searchRegion Binds="ListeInscAncROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ListeInscAncROQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="HistStructAncInscROIterator" id="HistStructAncInscRO">
+      <nodeDefinition DefName="model.readOnlyView.HistStructAncInscROVO" Name="HistStructAncInscRO0">
+        <AttrNames>
+          <Item Value="LibStruct"/>
+          <Item Value="LibHistoriq"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="AnneeUnivAnscInscROIterator" id="AnneeUnivAnscInscRO">
+      <nodeDefinition DefName="model.readOnlyView.AnneeUnivAnscInscROVO" Name="AnneeUnivAnscInscRO0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="NivFormAncInsROIterator" id="NivFormAncInsRO">
+      <nodeDefinition DefName="model.readOnlyView.NivFormAncInsROVO" Name="NivFormAncInsRO0">
+        <AttrNames>
+          <Item Value="Libform"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="HistStructAncInscROIterator" id="IdHistoriquesStructure">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneeUnivAnscInscROIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormAncInsROIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="IdInscriptionAncienne">
+      <AttrNames>
+        <Item Value="IdInscriptionAncienne"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="IdHistoriqueStructure">
+      <AttrNames>
+        <Item Value="IdHistoriqueStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="IdNiveauFormationParcours1">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="IdAnneesUnivers1">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionAncienneIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="InscriptionAncienneIterator" id="CreateInsert"
+            InstanceName="inscriptionAppDataControl.InscriptionAncienne" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Rollback" DataControl="inscriptionAppDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <tree IterBinding="ListeInscAncROIterator" id="ListeInscAncRO">
+      <nodeDefinition DefName="model.readOnlyView.ListeInscAncROVO" Name="ListeInscAncRO0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Nom"/>
+          <Item Value="Prenom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="DateDeliberation"/>
+          <Item Value="DateDelivrance"/>
+          <Item Value="NumIdentite"/>
+          <Item Value="NumDiplome"/>
+          <Item Value="IdOption"/>
+          <Item Value="IdSession"/>
+          <Item Value="IdTypeMention"/>
+          <Item Value="IdTypeResultat"/>
+          <Item Value="Valide"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ListeInscAncROIterator" id="ExecuteWithParams"
+            InstanceName="inscriptionAppDataControl.ListeInscAncRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_struct" NDType="java.lang.Long"/>
+      <NamedData NDName="id_parc" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="ListeInscAncROIterator" id="ExecuteListeInsAnc" InstanceName="inscriptionAppDataControl.ListeInscAncRO"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="iteratorExecute"/>
+    <action IterBinding="InscriptionAncienneIterator" id="ExecuteWithParamsInsAncUp"
+            InstanceName="inscriptionAppDataControl.InscriptionAncienne" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_inscrp" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="acces_ecsPageDef"
+                Package="parametrageSup.acces_ecs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ParcoursParamSaisieNoteEc" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="ParcoursParamSaisieNoteEcIterator"/>
+    <searchRegion Binds="ParcoursParamSaisieNoteEcIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ParcoursParamSaisieNoteEcQuery"/>
+    <iterator Binds="FiliereUeSemestreEcPrcrs" RangeSize="12" DataControl="evaluationAppDataControl"
+              id="FiliereUeSemestreEcPrcrsIterator"/>
+    <searchRegion Binds="FiliereUeSemestreEcPrcrsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FiliereUeSemestreEcPrcrsQuery"/>
+    <iterator Binds="UtilisateursROVO" RangeSize="8" DataControl="gestdapAppDataControl"
+              id="UtilisateursROVOIterator"/>
+    <searchRegion Criteria="UtilisateursBy" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="UtilisateursROVOIterator" id="UtilisateursByQuery"/>
+    <iterator Binds="FormNivFormFilUe" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="FormNivFormFilUeIterator"/>
+    <iterator Binds="FormNivForm" RangeSize="10" DataControl="gestdapAppDataControl" id="FormNivFormIterator"/>
+    <iterator Binds="FiliereUeSemEcByResp" RangeSize="15" DataControl="evaluationAppDataControl"
+              id="FiliereUeSemEcByRespIterator"/>
+    <iterator Binds="UserAccesEc" RangeSize="10" DataControl="evaluationAppDataControl" id="UserAccesEcIterator"/>
+    <searchRegion Binds="UserAccesEcIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UserAccesEcQuery"/>
+    <searchRegion Binds="FiliereUeSemEcByRespIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FiliereUeSemEcByRespQuery"/>
+    <iterator Binds="PrcrsMaquette" RangeSize="25" DataControl="evaluationAppDataControl" id="PrcrsMaquetteIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ParcoursParamSaisieNoteEcIterator" id="ParcoursParamSaisieNoteEc">
+      <nodeDefinition DefName="model.readOnlyView.ParcoursParamSaisieNoteEc" Name="ParcoursParamSaisieNoteEc0">
+        <AttrNames>
+          <Item Value="Niveauformationparcours"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FiliereUeSemestreEcPrcrsIterator" id="FiliereUeSemestreEcPrcrs">
+      <nodeDefinition DefName="model.readOnlyView.FiliereUeSemestreEcROVO" Name="FiliereUeSemestreEcPrcrs0">
+        <AttrNames>
+          <Item Value="isSelected"/>
+          <Item Value="Codification"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="FiliereUeSemestreEcPrcrsIterator" id="isSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <methodAction id="getSelectedFilEcPrcrs" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getSelectedFilEcPrcrs" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getSelectedFilEcPrcrs.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getSelectedFilEcPrcrs_getSelectedFilEcPrcrs_dataControl_dataProvider_getSelectedFilEcPrcrs_result"/>
+    <methodAction id="getSelecteduser" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getSelecteduser"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getSelecteduser.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getSelecteduser_getSelecteduser_dataControl_dataProvider_getSelecteduser_result"/>
+    <action IterBinding="FormNivFormFilUeIterator" id="getFormNivFormFilUe"
+            InstanceName="gestdapAppDataControl.FormNivFormFilUe" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="pma_id" NDType="java.lang.Long"/>
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+      <NamedData NDName="fec_id" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="createOrUpdateUserFilEc" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUserFilEc" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUserFilEc.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUserFilEc_createOrUpdateUserFilEc_dataControl_dataProvider_createOrUpdateUserFilEc_result">
+      <NamedData NDName="user_" NDType="java.lang.Long"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="fil_ec_" NDType="java.lang.Long"/>
+      <NamedData NDName="pma_" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="createOrUpdateUserFilUe" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUserFilUe" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUserFilUe.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUserFilUe_createOrUpdateUserFilUe_dataControl_dataProvider_createOrUpdateUserFilUe_result">
+      <NamedData NDName="user_" NDType="java.lang.Long"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="fil_ue_" NDType="java.lang.Long"/>
+      <NamedData NDName="pma_" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="createOrUpdateUserForm" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUserForm" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUserForm.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUserForm_createOrUpdateUserForm_dataControl_dataProvider_createOrUpdateUserForm_result">
+      <NamedData NDName="user_" NDType="java.lang.Long"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="form_" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="createOrUpdateUserNivForm" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUserNivForm" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUserNivForm.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUserNivForm_createOrUpdateUserNivForm_dataControl_dataProvider_createOrUpdateUserNivForm_result">
+      <NamedData NDName="user_" NDType="java.lang.Long"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="niv_form_" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="FormNivFormIterator" id="getFormNivForm" InstanceName="gestdapAppDataControl.FormNivForm"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="pma_id" NDType="java.lang.Long"/>
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+      <NamedData NDName="fue_id" NDType="java.lang.Long"/>
+    </action>
+    <button IterBinding="FiliereUeSemEcByRespIterator" id="isSelected2" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="isSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <methodAction id="CreateOrUpdateUserRole" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CreateOrUpdateUserRole" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.CreateOrUpdateUserRole.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.CreateOrUpdateUserRole_CreateOrUpdateUserRole_dataControl_dataProvider_CreateOrUpdateUserRole_result">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="getrole" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getrole"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getrole.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getrole_getrole_dataControl_dataProvider_getrole_result">
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getusername" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getusername"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getusername.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getusername_getusername_dataControl_dataProvider_getusername_result">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="createOrUpdateUserFilEc1" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUserFilEc1" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUserFilEc1.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUserFilEc1_createOrUpdateUserFilEc1_dataControl_dataProvider_createOrUpdateUserFilEc1_result">
+      <NamedData NDName="user_" NDType="java.lang.Long"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="fil_ec_" NDType="java.lang.Long"/>
+      <NamedData NDName="pma_" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="createOrUpdateUserFilUe1" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createOrUpdateUserFilUe1" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.createOrUpdateUserFilUe1.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.createOrUpdateUserFilUe1_createOrUpdateUserFilUe1_dataControl_dataProvider_createOrUpdateUserFilUe1_result">
+      <NamedData NDName="user_" NDType="java.lang.Long"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="fil_ue_" NDType="java.lang.Long"/>
+      <NamedData NDName="pma_" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="getMatricule" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getMatricule"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getMatricule.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getMatricule_getMatricule_dataControl_dataProvider_getMatricule_result">
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <tree IterBinding="UserAccesEcIterator" id="UserAccesEc">
+      <nodeDefinition DefName="model.readOnlyView.UserAccesEcROVO" Name="UserAccesEc0">
+        <AttrNames>
+          <Item Value="Codification"/>
+          <Item Value="LibelleLong"/>
+          <Item Value="Utilisateur"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="UtilisateursROVOIterator" id="isSelected1" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isSelected"/>
+      </AttrNames>
+    </button>
+    <tree IterBinding="UtilisateursROVOIterator" id="UtilisateursROVO">
+      <nodeDefinition DefName="model.readOnlyView.UtilisateursROVO" Name="UtilisateursROVO0">
+        <AttrNames>
+          <Item Value="isUserSelected"/>
+          <Item Value="Prenom"/>
+          <Item Value="Nom"/>
+          <Item Value="Email"/>
+          <Item Value="Etablissement"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="UtilisateursROVOIterator" id="isUserSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isUserSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="FiliereUeSemEcByRespIterator" id="FiliereUeSemEcByResp">
+      <nodeDefinition DefName="model.readOnlyView.FiliereUeSemEcByRespROVO" Name="FiliereUeSemEcByResp0">
+        <AttrNames>
+          <Item Value="isEcSelected"/>
+          <Item Value="Codification"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="FiliereUeSemEcByRespIterator" id="isEcSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isEcSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <list IterBinding="PrcrsMaquetteIterator" ListOperMode="navigation" ListIter="PrcrsMaquetteIterator"
+          id="PrcrsMaquette" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+  </bindings>
+</pageDefinition>

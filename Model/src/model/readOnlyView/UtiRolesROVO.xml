@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="UtiRolesROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.UtiRolesROVORowImpl"
+  ComponentClass="model.readOnlyView.UtiRolesROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.UtiRolesROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="user_name"
+    Kind="where"
+    Type="java.lang.String"/>
+  <ViewAccessor
+    Name="RolesVO1"
+    ViewObjectName="model.updatableview.RolesVO"
+    RowLevelBinds="true"/>
+  <SQLQuery><![CDATA[Select  uti_rle.*,rl.LIBELLE_LONG from Roles rl   
+JOIN UTILISATEURS_ROLES uti_rle on rl.id_role=uti_rle.id_role  
+JOIN UTILISATEURS uti on uti_rle.ID_UTILISATEUR=uti.ID_UTILISATEUR    
+where uti.LOGIN=:user_name]]></SQLQuery>
+  <ViewAttribute
+    Name="IdUtilisateur"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_UTILISATEUR"
+    Expression="ID_UTILISATEUR"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdRole"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ROLE"
+    Expression="ID_ROLE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="DateCreation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_CREATION"
+    Expression="DATE_CREATION"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="DateModification"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_MODIFICATION"
+    Expression="DATE_MODIFICATION"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="UtiCree"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="UTI_CREE"
+    Expression="UTI_CREE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="UtiModifie"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="UTI_MODIFIE"
+    Expression="UTI_MODIFIE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdUtilisateurRole"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_UTILISATEUR_ROLE"
+    Expression="ID_UTILISATEUR_ROLE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdUtilisateurRole"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

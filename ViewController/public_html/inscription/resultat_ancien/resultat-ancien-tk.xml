@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="resultat-ancien-tk">
+    <default-activity>ExecuteWithParams</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__3">
+      <managed-bean-name>ResultatAncienEtudbean</managed-bean-name>
+      <managed-bean-class>resultat_ancien_etud.ResultatAncienEtudBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="resultat-ancien">
+      <page>/inscription/resultat_ancien/resultat-ancien.jsff</page>
+    </view>
+    <method-call id="ExecuteWithParams">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <task-flow-call id="search-anc-etud">
+      <task-flow-reference>
+        <document>/inscription/resultat_ancien/search-anc-etud.xml</document>
+        <id>search-anc-etud</id>
+      </task-flow-reference>
+      <return-value id="__8">
+        <name>submitOrcancelEtud</name>
+        <value>#{pageFlowScope.submitOrcancelEtud}</value>
+      </return-value>
+      <run-as-dialog>
+        <display-type>
+          <inline-popup/>
+        </display-type>
+        <dialog-return-value>id_etud</dialog-return-value>
+      </run-as-dialog>
+    </task-flow-call>
+    <task-flow-call id="recherche-num-diplome">
+      <task-flow-reference>
+        <document>/inscription/resultat_ancien/recherche-num-diplome.xml</document>
+        <id>recherche-num-diplome</id>
+      </task-flow-reference>
+      <return-value id="__10">
+        <name>submitOrCanDiplom</name>
+        <value>#{pageFlowScope.submitOrCanDiplom}</value>
+      </return-value>
+      <run-as-dialog>
+        <display-type>
+          <inline-popup/>
+        </display-type>
+        <dialog-return-value>id_diplome</dialog-return-value>
+      </run-as-dialog>
+    </task-flow-call>
+    <control-flow-rule id="__1">
+      <from-activity-id>ExecuteWithParams</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>resultat-ancien</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__6">
+      <from-activity-id>resultat-ancien</from-activity-id>
+      <control-flow-case id="__7">
+        <from-outcome>lov_etud</from-outcome>
+        <to-activity-id>search-anc-etud</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__9">
+        <from-outcome>lov_diplome</from-outcome>
+        <to-activity-id>recherche-num-diplome</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

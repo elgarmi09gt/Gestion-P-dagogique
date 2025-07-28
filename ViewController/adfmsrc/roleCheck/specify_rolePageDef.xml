@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="specify_rolePageDef"
+                Package="roleCheck">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UtiRolesROVO" RangeSize="25" DataControl="gestdapAppDataControl" id="UtiRolesROVOIterator"/>
+    <iterator Binds="ModuleUsers" RangeSize="-1" DataControl="menuAppDataControl" id="ModuleUsersIterator"/>
+    <iterator Binds="FontionalitesUsers" RangeSize="-1" DataControl="menuAppDataControl"
+              id="FontionalitesUsersIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="UtiRolesROVOIterator" ListOperMode="navigation" ListIter="UtiRolesROVOIterator"
+          id="UtiRolesROVO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="ModuleUsersIterator" id="getModuleUser" InstanceName="menuAppDataControl.ModuleUsers"
+            DataControl="menuAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="log" NDType="java.lang.String"/>
+      <NamedData NDName="role" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="FontionalitesUsersIterator" id="ExecuteWithParams"
+            InstanceName="menuAppDataControl.FontionalitesUsers" DataControl="menuAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="role" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

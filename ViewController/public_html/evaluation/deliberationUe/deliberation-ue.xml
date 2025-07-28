@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="deliberation-ue">
+    <default-activity>getEtudiantUeEc1</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__3">
+      <managed-bean-name>DeliberatioUeBean</managed-bean-name>
+      <managed-bean-class>view.beans.evaluation.deliberation_ue.DeliberatioUeBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="deliberationUe">
+      <page>/evaluation/deliberationUe/deliberationUe.jsff</page>
+    </view>
+    <method-call id="ExecuteWithParams">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="ExecuteWithParams1">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="ExecuteWithParams2">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="ExecuteWithParams3">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <return-value>#{pageFlowScope.listUE}</return-value>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="getEtudiantEc">
+      <method>#{bindings.getEtudiantEc.execute}</method>
+      <return-value>#{sessionScope.listEtudiansEcs}</return-value>
+      <outcome>
+        <fixed-outcome>getEtudiantEc</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="getEtudiantUeEc">
+      <method>#{bindings.getEtudiantUeEc.execute}</method>
+      <outcome>
+        <fixed-outcome>getEtudiantUeEc</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="getEtudiantUeEc1">
+      <method>#{bindings.getEtudiantUeEc.execute}</method>
+      <return-value>#{sessionScope.listEtudiansEcs}</return-value>
+      <outcome>
+        <fixed-outcome>getEtudiantUeEc</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="isClosedSemestre">
+      <method>#{bindings.isClosedSemestre.execute}</method>
+      <return-value>#{sessionScope.isCloseSem}</return-value>
+      <outcome>
+        <fixed-outcome>isClosedSemestre</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__1">
+      <from-activity-id>ExecuteWithParams3</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>getEtudiantEc</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__4">
+      <from-activity-id>getEtudiantUeEc1</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome>getEtudiantUeEc</from-outcome>
+        <to-activity-id>isClosedSemestre</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__6">
+      <from-activity-id>isClosedSemestre</from-activity-id>
+      <control-flow-case id="__7">
+        <from-outcome>isClosedSemestre</from-outcome>
+        <to-activity-id>deliberationUe</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

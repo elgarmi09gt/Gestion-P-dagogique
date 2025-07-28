@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="viewcontrollerBundle1" value="#{adfBundle['view.ViewControllerBundle']}"/>
+    <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+    <af:panelGroupLayout id="pgl1" layout="vertical">
+        <af:panelGroupLayout id="pgl3" layout="horizontal">
+            <af:outputFormatted value="Parcours" id="of3" inlineStyle="font-size:large;font-weight:bolder;"/>
+            <af:selectOneChoice value="#{bindings.ParcoursDelibCycle.inputValue}"
+                                required="#{bindings.ParcoursDelibCycle.hints.mandatory}"
+                                shortDesc="#{bindings.ParcoursDelibCycle.hints.tooltip}" id="soc1"
+                                contentStyle="font-size:large;  border-radius: 8px;" autoSubmit="true">
+                <f:selectItems value="#{bindings.ParcoursDelibCycle.items}" id="si1"/>
+                <f:validator binding="#{bindings.ParcoursDelibCycle.validator}"/>
+            </af:selectOneChoice>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl11" halign="center" layout="horizontal"
+                                         inlineStyle="margin-top : 10px; margin-bottom : 10px"
+                                         >
+            <af:button id="b1"
+                       inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                       partialSubmit="true" shortDesc="Délibèré"
+                       text="Délibèré" icon="/images/delib-24.png"
+                       actionListener="#{DeliberationSemestrielleBean.OnDeliberateCycleActionList}"/>
+            <af:button id="b2" inlineStyle="font-size:small; border-radius:10px  ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin : 0 5px"
+                                   shortDesc="PV Provisoire" disabled="#{sessionScope.isdelibsem == '0' ? true : false}"
+                                   text="Exporter le PV" icon="/images/excel-24.png"/>
+                    </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl2" layout="scroll">
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="statusbar"/>
+                <af:table value="#{bindings.ResultatCycle.collectionModel}" var="row"
+                          rows="#{bindings.ResultatCycle.rangeSize}"
+                          emptyText="#{bindings.ResultatCycle.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0" selectedRowKeys="#{bindings.ResultatCycle.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.ResultatCycle.collectionModel.makeCurrent}"
+                          rowSelection="single" fetchSize="#{bindings.ResultatCycle.rangeSize}"
+                          filterModel="#{bindings.ResultatCycleQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.ResultatCycleQuery.processQuery}" varStatus="vs" id="t1">
+                    <af:column sortProperty="#{bindings.ResultatCycle.hints.Prenoms.name}" filterable="true"
+                               sortable="true" headerText="#{viewcontrollerBundle.PENOM}" id="c1" width="250">
+                        <af:outputText value="#{row.Prenoms}"
+                                       shortDesc="#{bindings.ResultatCycle.hints.Prenoms.tooltip}" id="ot1"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ResultatCycle.hints.Nom.name}" filterable="true" sortable="true"
+                               headerText="#{viewcontrollerBundle.NOM}" id="c2" width="150">
+                        <af:outputText value="#{row.Nom}" shortDesc="#{bindings.ResultatCycle.hints.Nom.tooltip}"
+                                       id="ot2"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ResultatCycle.hints.Numero.name}" filterable="true"
+                               sortable="true" headerText="#{viewcontrollerBundle1.NUMERO}" id="c3" width="125">
+                        <af:outputText value="#{row.Numero}" shortDesc="#{bindings.ResultatCycle.hints.Numero.tooltip}"
+                                       id="ot3"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ResultatCycle.hints.Credit.name}" filterable="true"
+                               sortable="true" headerText="#{viewcontrollerBundle.CREDIT}" id="c4">
+                        <af:outputText value="#{row.Credit}" shortDesc="#{bindings.ResultatCycle.hints.Credit.tooltip}"
+                                       id="ot4">
+                            <af:convertNumber groupingUsed="false"
+                                              pattern="#{bindings.ResultatCycle.hints.Credit.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ResultatCycle.hints.Mention.name}" filterable="true"
+                               sortable="true" headerText="#{viewcontrollerBundle1.MENTION}" id="c5">
+                        <af:outputText value="#{row.Mention}"
+                                       shortDesc="#{bindings.ResultatCycle.hints.Mention.tooltip}" id="ot5"/>
+                    </af:column>
+                </af:table>
+            </af:panelCollection>
+        </af:panelGroupLayout>
+    </af:panelGroupLayout>
+</ui:composition>

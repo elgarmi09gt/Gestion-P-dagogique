@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="dynamic-tk">
+    <default-activity>dynamic-task-call</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <input-parameter-definition id="__2">
+      <name>url</name>
+      <value>#{pageFlowScope.url}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__1">
+      <managed-bean-name>RechercheBean</managed-bean-name>
+      <managed-bean-class>processus_inscription.DynamicRechercheBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <task-flow-call id="dynamic-task-call">
+      <dynamic-task-flow-reference>#{pageFlowScope.RechercheBean.dynamictaskFlow}</dynamic-task-flow-reference>
+    </task-flow-call>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

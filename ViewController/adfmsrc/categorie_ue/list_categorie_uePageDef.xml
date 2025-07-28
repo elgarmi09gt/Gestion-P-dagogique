@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="list_categorie_uePageDef"
+                Package="categorie_ue">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="CategorieUe" RangeSize="25" DataControl="parametrageAppDataControl"
+              id="CategorieUeVO1Iterator"/>
+    <searchRegion Binds="CategorieUeVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="CategorieUeVO1Query"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="CategorieUeVO1Iterator" id="CategorieUeVO1">
+      <nodeDefinition DefName="model.updatableview.CategorieUeVO" Name="CategorieUeVO10">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="CategorieUeVO1Iterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CategorieUeVO1Iterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+  </bindings>
+</pageDefinition>

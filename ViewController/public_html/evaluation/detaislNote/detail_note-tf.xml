@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="detail_note-tf">
+    <default-activity>getEtatDeliberation</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__1">
+      <managed-bean-name>DetailNoteBean</managed-bean-name>
+      <managed-bean-class>view.beans.detailNote.DetailNote</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="detailNotes">
+      <page>/evaluation/detaislNote/detailNotes.jsff</page>
+    </view>
+    <method-call id="ExecuteWithParams">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="getEtatDeliberation">
+      <method>#{bindings.getEtatDeliberation.execute}</method>
+      <return-value>#{pageFlowScope.etatDeliberation}</return-value>
+      <outcome>
+        <fixed-outcome>getEtatDeliberation</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="ParcoursInfo">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="ExecuteWithParams1">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="DelibererDefSemestre">
+      <method>#{bindings.DelibererDefSemestre.execute}</method>
+      <outcome>
+        <fixed-outcome>DelibererDefSemestre</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="isDelibratedSemestre">
+      <method>#{bindings.isDelibratedSemestre.execute}</method>
+      <return-value>#{pageFlowScope.isDeliberatedSemestre}</return-value>
+      <outcome>
+        <fixed-outcome>isDelibratedSemestre</fixed-outcome>
+      </outcome>
+    </method-call>
+    <router id="router1">
+      <case id="__15">
+        <expression>#{pageFlowScope.isDeliberatedSemestre == 0}</expression>
+        <outcome>1</outcome>
+      </case>
+      <case id="__16">
+        <expression>#{pageFlowScope.isDeliberatedSemestre != 0}</expression>
+        <outcome>2</outcome>
+      </case>
+      <default-outcome>2</default-outcome>
+    </router>
+    <control-flow-rule id="__2">
+      <from-activity-id>getEtatDeliberation</from-activity-id>
+      <control-flow-case id="__3">
+        <from-outcome>getEtatDeliberation</from-outcome>
+        <to-activity-id>ParcoursInfo</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__6">
+      <from-activity-id>ParcoursInfo</from-activity-id>
+      <control-flow-case id="__7">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>isDelibratedSemestre</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__4">
+      <from-activity-id>ExecuteWithParams1</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>detailNotes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__8">
+      <from-activity-id>DelibererDefSemestre</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome>DelibererDefSemestre</from-outcome>
+        <to-activity-id>ExecuteWithParams1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__10">
+      <from-activity-id>router1</from-activity-id>
+      <control-flow-case id="__11">
+        <from-outcome>2</from-outcome>
+        <to-activity-id>DelibererDefSemestre</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__12">
+        <from-outcome>1</from-outcome>
+        <to-activity-id>detailNotes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__13">
+      <from-activity-id>isDelibratedSemestre</from-activity-id>
+      <control-flow-case id="__14">
+        <from-outcome>isDelibratedSemestre</from-outcome>
+        <to-activity-id>router1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

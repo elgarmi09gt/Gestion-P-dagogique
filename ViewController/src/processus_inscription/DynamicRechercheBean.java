@@ -1,0 +1,33 @@
+package processus_inscription;
+
+import oracle.adf.controller.TaskFlowId;
+import oracle.adf.share.ADFContext;
+
+public class DynamicRechercheBean {
+    public DynamicRechercheBean() {
+    }
+    private static final String defaultTF="/inscription/processus_inscription/task-flow-default.xml#task-flow-default";
+      boolean flag =true;
+     
+      public TaskFlowId getDynamictaskFlow(){
+          //System.out.println("Inside TF");
+          try {
+              if (ADFContext.getCurrent().getSessionScope().get("TfInsID") != null) {
+                  //System.out.println("Inside methode AdfFacesContext.getCurrentInstance().getPageFlowScope().get(\"TfInsID\").toString()");
+                  return TaskFlowId.parse(ADFContext.getCurrent().getSessionScope()
+                                                         .get("TfInsID")
+                                                         .toString());
+              }
+          } catch (Exception e) {
+          }
+          return  TaskFlowId.parse(defaultTF);
+      }
+
+      public void setFlag(boolean flag) {
+          this.flag = flag;
+      }
+
+      public boolean isFlag() {
+          return flag;
+      }
+}

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ScolEtudiantInscritDef"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ScolEtudiantInscritDefRowImpl"
+  ComponentClass="model.readOnlyView.ScolEtudiantInscritDefImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ScolEtudiantInscritDef_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="niv_form"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="sem_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="an_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select distinct ins_adm.code,fa.code_formation  
+from etudiants@scolProdref etu ,scol_inscription_ped_sem@scolProdref ips,inscriptions@scolProdref ins_adm,        
+FORMATION_ACCREDITE@scolProdref fa,FORMATION_ACC_FORMATION@scolProdref faf, Formation@scolProdref fr,        
+NIVEAUX_SECTIONS@scolProdref ns, NIVEAUX_SECTION_FORMATIONS@scolProdref nsf        
+where   
+ins_adm.etudiant_numero=etu.numero    
+and ins_adm.code=ips.code_insc_adm and  
+ins_adm.code_niv_sec=ns.code_niv_sec  and  
+ns.code_niv_sec=nsf.code_niv_sec and   
+nsf.code_formation=fr.code_formation and  
+fr.code_formation=faf.id_formation and  
+fa.CODE_FORMATION=faf.ID_FORMATION_ACC  
+and ins_adm.code_niv_sec=:niv_form   
+and ips.code_semestre=:sem_id        
+and ins_adm.AN_UNIVERS_AN_UNIVERS_ID=:an_id   
+and ins_adm.ETAT_INSCR_ETAT_INSCR_ID=1   
+AND fa.code_formation=327]]></SQLQuery>
+  <ViewAttribute
+    Name="Code"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="CODE"
+    Expression="CODE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="CodeFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="CODE_FORMATION"
+    Expression="CODE_FORMATION"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

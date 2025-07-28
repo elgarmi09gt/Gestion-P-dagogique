@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listdomainesPageDef"
+                Package="dap">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Domaines" RangeSize="10" DataControl="gestdapAppDataControl" id="DomainesIterator"/>
+    <iterator id="MentionsDomainesIterator" Binds="MentionsDomaines" DataControl="gestdapAppDataControl"
+              RangeSize="10"/>
+    <iterator id="SpecialitesMentionsIterator" Binds="SpecialitesMentions" DataControl="gestdapAppDataControl"
+              RangeSize="10"/>
+    <iterator id="MentionsIterator" Binds="MentionsDomaines" DataControl="gestdapAppDataControl" RangeSize="10"/>
+    <iterator Binds="SpecialitesMentions" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="SpecialitesMentionsIterator1"/>
+    <searchRegion Binds="DomainesIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="DomainesQuery"/>
+    <searchRegion Binds="MentionsDomainesIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="MentionsDomainesQuery"/>
+    <searchRegion Binds="SpecialitesMentionsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="SpecialitesMentionsQuery"/>
+    <iterator Binds="IsMentionDomaineExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsMentionDomaineExistIterator"/>
+    <iterator Binds="IsFormationMentionExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsFormationMentionExistIterator"/>
+    <iterator Binds="IsSpectMentionExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsSpectMentionExistIterator"/>
+  </executables>
+  <bindings>
+    <action id="Commit" DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="DomainesIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="DomainesIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="DomainesIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MentionsDomainesIterator" id="LibelleLong1">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MentionsDomainesIterator" id="LibelleCourt1">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SpecialitesMentionsIterator" id="LibelleLong2">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="DomainesIterator" id="CreateDomaine" InstanceName="gestdapAppDataControl.Domaines"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="MentionsDomainesIterator" id="CreateMension"
+            InstanceName="gestdapAppDataControl.MentionsDomaines" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="SpecialitesMentionsIterator" id="CreateSpecialite" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="SpecialitesMentionsIterator" id="LibelleCourt2">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="SpecialitesMentionsIterator" StaticList="false" Uses="LOV_IdMention" id="IdMention1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="MentionsDomainesIterator" StaticList="false" Uses="LOV_IdDomaine" id="IdDomaine1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <action IterBinding="DomainesIterator" id="DeleteDomaine" InstanceName="gestdapAppDataControl.Domaines"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="MentionsDomainesIterator" id="DeleteMension" InstanceName="gestdapAppDataControl.MentionsDomaines"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="SpecialitesMentionsIterator" id="DeleteSpecialite"
+            InstanceName="gestdapAppDataControl.SpecialitesMention" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="SpecialitesMentionsIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MentionsDomainesIterator" id="DateCreation1">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SpecialitesMentionsIterator1" id="LibelleLong3">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SpecialitesMentionsIterator1" id="LibelleCourt3">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="SpecialitesMentionsIterator1" StaticList="false" Uses="LOV_IdMention" id="IdMention"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="SpecialitesMentionsIterator1" id="UtiCree3">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="DomainesIterator" id="Domaines">
+      <nodeDefinition DefName="model.updatableview.DomainesVO" Name="Domaines0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+          <Item Value="UtiCree"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="MentionsDomainesIterator" id="MentionsDomaines">
+      <nodeDefinition DefName="model.updatableview.MentionsVO" Name="MentionsDomaines0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+          <Item Value="UtiCree"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="SpecialitesMentionsIterator" id="SpecialitesMentions">
+      <nodeDefinition DefName="model.updatableview.SpecialitesVO" Name="SpecialitesMentions0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+          <Item Value="UtiCree"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="DomainesIterator" id="IdDomaine">
+      <AttrNames>
+        <Item Value="IdDomaine"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="DomainesIterator" id="DateCreation2">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="IsMentionDomaineExistIterator" id="IsMentionDomaineExist"
+            InstanceName="gestdapAppDataControl.IsMentionDomaineExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="dm_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsFormationMentionExistIterator" id="IsFormationMentionExist"
+            InstanceName="gestdapAppDataControl.IsFormationMentionExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="mt_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsSpectMentionExistIterator" id="IsSpectMentionExist"
+            InstanceName="gestdapAppDataControl.IsSpectMentionExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="mt_id" NDType="java.lang.Integer"/>
+    </action>
+    <attributeValues IterBinding="MentionsDomainesIterator" id="IdMention2">
+      <AttrNames>
+        <Item Value="IdMention"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MentionsDomainesIterator" id="UtiCree1">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SpecialitesMentionsIterator" id="UtiCree2">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SpecialitesMentionsIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MentionsDomainesIterator" id="UtiModifie1">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="DomainesIterator" id="UtiModifie2">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelHeader text="Validation du DAP" id="ph1" inlineStyle="margin-left:10px;">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:selectOneChoice value="#{bindings.NivFormAutoriseDapRO.inputValue}" label="Niveau Formation"
+                          required="#{bindings.NivFormAutoriseDapRO.hints.mandatory}"
+                          shortDesc="#{bindings.NivFormAutoriseDapRO.hints.tooltip}" id="soc1"
+                          contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                          labelStyle="font-size:large;" inlineStyle="margin-top:20px;" autoSubmit="true">
+        <f:selectItems value="#{bindings.NivFormAutoriseDapRO.items}" id="si1"/>
+        <f:validator binding="#{bindings.NivFormAutoriseDapRO.validator}"/>
+      </af:selectOneChoice>
+    </af:panelHeader>
+    <af:button text="Les autorisations validées par le Responsable" id="b3"
+               inlineStyle="font-size:small; border-radius:0px 0px 0px 0px / 0px 0px 0px 0px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:30px;"
+               partialSubmit="false" disabled="true"/>
+    <af:panelGroupLayout id="pgl3" layout="vertical"
+                         inlineStyle="border:solid  2px #2897e8;margin-top:20px;margin-left:10px;">
+      <af:table value="#{bindings.AutorisationValideDapRO.collectionModel}" var="row"
+                rows="#{bindings.AutorisationValideDapRO.rangeSize}"
+                emptyText="#{bindings.AutorisationValideDapRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.AutorisationValideDapRO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.AutorisationValideDapRO.collectionModel.makeCurrent}"
+                rowSelection="single" fetchSize="#{bindings.AutorisationValideDapRO.rangeSize}"
+                filterModel="#{bindings.AutorisationValideDapROQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.AutorisationValideDapROQuery.processQuery}" varStatus="vs" id="t1"
+                scrollPolicy="page">
+        <af:column headerText="Numéro" id="c1" sortable="true" filterable="true"
+                   sortProperty="#{bindings.AutorisationValideDapRO.hints.Numero.name}" frozen="true">
+          <af:outputText value="#{row.Numero}" shortDesc="#{bindings.AutorisationValideDapRO.hints.Numero.tooltip}"
+                         id="ot1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.AutorisationValideDapRO.hints.Nom.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.AutorisationValideDapRO.hints.Nom.label}" id="c2" width="180" frozen="true">
+          <af:outputText value="#{row.Nom}" shortDesc="#{bindings.AutorisationValideDapRO.hints.Nom.tooltip}" id="ot2"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.AutorisationValideDapRO.hints.Prenoms.name}" filterable="true"
+                   sortable="true" headerText="#{bindings.AutorisationValideDapRO.hints.Prenoms.label}" id="c3"
+                   width="300" frozen="true">
+          <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.AutorisationValideDapRO.hints.Prenoms.tooltip}"
+                         id="ot3"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.AutorisationValideDapRO.hints.DateNaissance.name}" filterable="true"
+                   sortable="true" headerText="Date Naissance" id="c4" width="100" frozen="true">
+          <f:facet name="filter">
+            <af:inputDate value="#{bindings.AutorisationValideDapROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                          id="id1">
+              <af:convertDateTime pattern="#{bindings.AutorisationValideDapRO.hints.DateNaissance.format}"/>
+            </af:inputDate>
+          </f:facet>
+          <af:outputText value="#{row.DateNaissance}"
+                         shortDesc="#{bindings.AutorisationValideDapRO.hints.DateNaissance.tooltip}" id="ot4">
+            <af:convertDateTime pattern="#{bindings.AutorisationValideDapRO.hints.DateNaissance.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="Lieu Naissance" id="c11" width="300" sortable="true" filterable="true"
+                   sortProperty="#{bindings.AutorisationValideDapRO.hints.LieuNaissance.name}">
+          <af:outputText value="#{row.LieuNaissance}"
+                         shortDesc="#{bindings.AutorisationValideDapRO.hints.LieuNaissance.tooltip}" id="ot11"/>
+        </af:column>
+        <af:column headerText="Nationalité" id="c12" width="150" sortable="true" filterable="true"
+                   sortProperty="#{bindings.AutorisationValideDapRO.hints.Nationalite.name}">
+          <af:outputText value="#{row.Nationalite}"
+                         shortDesc="#{bindings.AutorisationValideDapRO.hints.Nationalite.tooltip}" id="ot12"/>
+        </af:column>
+        <af:column headerText="Pièce d'Identification" id="c13" width="150" sortable="true" filterable="true"
+                   sortProperty="#{bindings.AutorisationValideDapRO.hints.PieceIdentification.name}">
+          <af:outputText value="#{row.PieceIdentification}"
+                         shortDesc="#{bindings.AutorisationValideDapRO.hints.PieceIdentification.tooltip}" id="ot13"/>
+        </af:column>
+        <af:column headerText="Année d'Obtention du Bac" id="c14" sortable="true" filterable="true"
+                   sortProperty="#{bindings.AutorisationValideDapRO.hints.AnneeBac.name}">
+          <af:outputText value="#{row.AnneeBac}" shortDesc="#{bindings.AutorisationValideDapRO.hints.AnneeBac.tooltip}"
+                         id="ot14">
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.AutorisationValideDapRO.hints.AnneeBac.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="Série Bac" id="c15" sortable="true" filterable="true"
+                   sortProperty="#{bindings.AutorisationValideDapRO.hints.IdSerieBac.name}">
+          <af:selectOneChoice value="#{row.bindings.IdSerieBac.inputValue}" label="#{row.bindings.IdSerieBac.label}"
+                              required="#{bindings.AutorisationValideDapRO.hints.IdSerieBac.mandatory}"
+                              shortDesc="#{bindings.AutorisationValideDapRO.hints.IdSerieBac.tooltip}" readOnly="true"
+                              id="soc2">
+            <f:selectItems value="#{row.bindings.IdSerieBac.items}" id="si2"/>
+            <f:validator binding="#{row.bindings.IdSerieBac.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column headerText="Mention" id="c16" sortable="true" filterable="true"
+                   sortProperty="#{bindings.AutorisationValideDapRO.hints.IdTypeMention.name}">
+          <af:selectOneChoice value="#{row.bindings.IdTypeMention.inputValue}"
+                              label="#{row.bindings.IdTypeMention.label}"
+                              required="#{bindings.AutorisationValideDapRO.hints.IdTypeMention.mandatory}"
+                              shortDesc="#{bindings.AutorisationValideDapRO.hints.IdTypeMention.tooltip}"
+                              readOnly="true" id="soc3">
+            <f:selectItems value="#{row.bindings.IdTypeMention.items}" id="si3"/>
+            <f:validator binding="#{row.bindings.IdTypeMention.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column headerText="Etablissement de Provenance" id="c17" width="300"
+                   sortProperty="#{bindings.AutorisationValideDapRO.hints.IdLycee.name}" sortable="true">
+          <af:selectOneChoice value="#{row.bindings.IdLycee.inputValue}" label="#{row.bindings.IdLycee.label}"
+                              required="#{bindings.AutorisationValideDapRO.hints.IdLycee.mandatory}"
+                              shortDesc="#{bindings.AutorisationValideDapRO.hints.IdLycee.tooltip}" readOnly="true"
+                              id="soc4">
+            <f:selectItems value="#{row.bindings.IdLycee.items}" id="si4"/>
+            <f:validator binding="#{row.bindings.IdLycee.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column headerText="Mode d'Entrée" id="c18" width="200" sortable="true" filterable="true"
+                   sortProperty="#{bindings.AutorisationValideDapRO.hints.IdModeEntree.name}">
+          <af:selectOneChoice value="#{row.bindings.IdModeEntree.inputValue}" label="#{row.bindings.IdModeEntree.label}"
+                              required="#{bindings.AutorisationValideDapRO.hints.IdModeEntree.mandatory}"
+                              shortDesc="#{bindings.AutorisationValideDapRO.hints.IdModeEntree.tooltip}" readOnly="true"
+                              id="soc5">
+            <f:selectItems value="#{row.bindings.IdModeEntree.items}" id="si5"/>
+            <f:validator binding="#{row.bindings.IdModeEntree.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column headerText="#{bindings.AutorisationValideDapRO.hints.case_cocher.label}" id="c9">
+          <af:selectBooleanCheckbox value="#{row.bindings.case_cocher.inputValue}"
+                                    label="#{row.bindings.case_cocher.label}"
+                                    shortDesc="#{bindings.AutorisationValideDapRO.hints.case_cocher.tooltip}"
+                                    id="sbc1"/>
+          <f:facet name="header">
+            <af:selectBooleanCheckbox text="Tout" id="sbc2" autoSubmit="true" binding="#{AutorisationValDapbean.check}"
+                                      valueChangeListener="#{AutorisationValDapbean.onSelectAll}"/>
+          </f:facet>
+        </af:column>
+      </af:table>
+      <af:button text="Valider" id="b1"
+                 inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                 icon="/images/commit.png" action="#{AutorisationValDapbean.onValideAutDap}"/>
+    </af:panelGroupLayout>
+    <af:button text="Les autorisations validées par le DAP" id="b4"
+               inlineStyle="font-size:small; border-radius:0px 0px 0px 0px / 0px 0px 0px 0px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:30px;"
+               partialSubmit="false" disabled="true"/>
+    <af:panelGroupLayout id="pgl2" layout="vertical"
+                         inlineStyle="border:solid  2px #2897e8;margin-top:20px;margin-left:10px;">
+      <af:table value="#{bindings.ListePersAutDapRO.collectionModel}" var="row"
+                rows="#{bindings.ListePersAutDapRO.rangeSize}"
+                emptyText="#{bindings.ListePersAutDapRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.ListePersAutDapRO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.ListePersAutDapRO.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.ListePersAutDapRO.rangeSize}"
+                filterModel="#{bindings.ListePersAutDapROQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.ListePersAutDapROQuery.processQuery}" varStatus="vs" id="t2"
+                scrollPolicy="page">
+        <af:column headerText="Numéro" id="c5" frozen="true" sortable="true" filterable="true"
+                   sortProperty="#{bindings.ListePersAutDapRO.hints.Numero.name}">
+          <af:outputText value="#{row.Numero}" shortDesc="#{bindings.ListePersAutDapRO.hints.Numero.tooltip}" id="ot5"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.ListePersAutDapRO.hints.Nom.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.ListePersAutDapRO.hints.Nom.label}" id="c6" width="190" frozen="true">
+          <af:outputText value="#{row.Nom}" shortDesc="#{bindings.ListePersAutDapRO.hints.Nom.tooltip}" id="ot6"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.ListePersAutDapRO.hints.Prenoms.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.ListePersAutDapRO.hints.Prenoms.label}" id="c7" width="280" frozen="true">
+          <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.ListePersAutDapRO.hints.Prenoms.tooltip}"
+                         id="ot7"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.ListePersAutDapRO.hints.DateNaissance.name}" filterable="true"
+                   sortable="true" headerText="Date Naissance" id="c8" width="100" frozen="true">
+          <f:facet name="filter">
+            <af:inputDate value="#{bindings.ListePersAutDapROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                          id="id2">
+              <af:convertDateTime pattern="#{bindings.ListePersAutDapRO.hints.DateNaissance.format}"/>
+            </af:inputDate>
+          </f:facet>
+          <af:outputText value="#{row.DateNaissance}"
+                         shortDesc="#{bindings.ListePersAutDapRO.hints.DateNaissance.tooltip}" id="ot8">
+            <af:convertDateTime pattern="#{bindings.ListePersAutDapRO.hints.DateNaissance.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="Lieu Naissance" id="c19" width="300" sortable="true" filterable="true"
+                   sortProperty="#{bindings.ListePersAutDapRO.hints.LieuNaissance.name}">
+          <af:outputText value="#{row.LieuNaissance}"
+                         shortDesc="#{bindings.ListePersAutDapRO.hints.LieuNaissance.tooltip}" id="ot15"/>
+        </af:column>
+        <af:column headerText="Nationalité" id="c20" width="150" sortable="true" filterable="true"
+                   sortProperty="#{bindings.ListePersAutDapRO.hints.Nationalite.name}">
+          <af:outputText value="#{row.Nationalite}" shortDesc="#{bindings.ListePersAutDapRO.hints.Nationalite.tooltip}"
+                         id="ot16"/>
+        </af:column>
+        <af:column headerText="Pièce d'Identification" id="c21" width="150" sortable="true" filterable="true"
+                   sortProperty="#{bindings.ListePersAutDapRO.hints.PieceIdentification.name}">
+          <af:outputText value="#{row.PieceIdentification}"
+                         shortDesc="#{bindings.ListePersAutDapRO.hints.PieceIdentification.tooltip}" id="ot17"/>
+        </af:column>
+        <af:column headerText="Année d'Obtention du Bac" id="c22" sortable="true" filterable="true"
+                   sortProperty="#{bindings.ListePersAutDapRO.hints.AnneeBac.name}">
+          <af:outputText value="#{row.AnneeBac}" shortDesc="#{bindings.ListePersAutDapRO.hints.AnneeBac.tooltip}"
+                         id="ot18">
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.ListePersAutDapRO.hints.AnneeBac.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="Série Bac" id="c23" sortable="true" filterable="true"
+                   sortProperty="#{bindings.ListePersAutDapRO.hints.IdSerieBac.name}">
+          <af:selectOneChoice value="#{row.bindings.IdSerieBac.inputValue}" label="#{row.bindings.IdSerieBac.label}"
+                              required="#{bindings.ListePersAutDapRO.hints.IdSerieBac.mandatory}"
+                              shortDesc="#{bindings.ListePersAutDapRO.hints.IdSerieBac.tooltip}" readOnly="true"
+                              id="soc6">
+            <f:selectItems value="#{row.bindings.IdSerieBac.items}" id="si6"/>
+            <f:validator binding="#{row.bindings.IdSerieBac.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column headerText="Mention" id="c24" sortable="true" filterable="true"
+                   sortProperty="#{bindings.ListePersAutDapRO.hints.IdTypeMention.name}">
+          <af:selectOneChoice value="#{row.bindings.IdTypeMention.inputValue}"
+                              label="#{row.bindings.IdTypeMention.label}"
+                              required="#{bindings.ListePersAutDapRO.hints.IdTypeMention.mandatory}"
+                              shortDesc="#{bindings.ListePersAutDapRO.hints.IdTypeMention.tooltip}" readOnly="true"
+                              id="soc7">
+            <f:selectItems value="#{row.bindings.IdTypeMention.items}" id="si7"/>
+            <f:validator binding="#{row.bindings.IdTypeMention.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column headerText="Etablissement de Provenance" id="c25" width="300" sortable="true"
+                   sortProperty="#{bindings.ListePersAutDapRO.hints.IdLycee.name}">
+          <af:selectOneChoice value="#{row.bindings.IdLycee.inputValue}" label="#{row.bindings.IdLycee.label}"
+                              required="#{bindings.ListePersAutDapRO.hints.IdLycee.mandatory}"
+                              shortDesc="#{bindings.ListePersAutDapRO.hints.IdLycee.tooltip}" readOnly="true" id="soc8">
+            <f:selectItems value="#{row.bindings.IdLycee.items}" id="si8"/>
+            <f:validator binding="#{row.bindings.IdLycee.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column headerText="Mode d'Entrée" id="c26" width="200" sortable="true" filterable="true"
+                   sortProperty="#{bindings.ListePersAutDapRO.hints.IdModeEntree.name}">
+          <af:selectOneChoice value="#{row.bindings.IdModeEntree.inputValue}" label="#{row.bindings.IdModeEntree.label}"
+                              required="#{bindings.ListePersAutDapRO.hints.IdModeEntree.mandatory}"
+                              shortDesc="#{bindings.ListePersAutDapRO.hints.IdModeEntree.tooltip}" readOnly="true"
+                              id="soc9">
+            <f:selectItems value="#{row.bindings.IdModeEntree.items}" id="si9"/>
+            <f:validator binding="#{row.bindings.IdModeEntree.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column id="c10" headerText="Retirer">
+          <af:button id="b2" icon="/images/delete_icon.png" action="#{AutorisationValDapbean.onRetirerAutorise}"/>
+        </af:column>
+      </af:table>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+            binding="#{AutorisationValDapbean.popup}">
+    <af:dialog id="d1" title="Formulaire de suppression" dialogListener="#{AutorisationValDapbean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{AutorisationValDapbean.onDialogCan}"/>
+      <af:outputText value="Voulez-vous annuler l'autorisation #{bindings.Prenoms}  #{bindings.Nom} (#{bindings.Numero}) pour la formation : #{bindings.Libform}" id="ot9" inlineStyle="font-size:large;"/>
+    </af:dialog>
+  </af:popup>
+      <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" contentDelivery="lazyUncached"
+            binding="#{AutorisationValDapbean.popDap}">
+    <af:dialog id="d2" title="Confirmation de l'inscription provisoire"
+               dialogListener="#{AutorisationValDapbean.onDialogDap}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous valider l'inscription provisoire de ces (#{AutorisationValDapbean.nombreInsc}) étudiant(s)" id="ot10"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{AutorisationValDapbean.onDialogCanDap}"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

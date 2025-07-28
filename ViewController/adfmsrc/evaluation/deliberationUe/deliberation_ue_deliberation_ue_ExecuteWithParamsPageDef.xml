@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="deliberation_ue_deliberation_ue_ExecuteWithParamsPageDef" Package="evaluation.deliberationUe"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="DelibSemFilUe" RangeSize="25" DataControl="evaluationAppDataControl" id="DelibSemFilUeIterator"
+              Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="DelibSemFilUeIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams" InstanceName="evaluationAppDataControl.DelibSemFilUe"
+            DataControl="evaluationAppDataControl">
+      <NamedData NDName="anne" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDValue="#{sessionScope.id_smstre}" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDValue="#{sessionScope.id_niv_form_parcours}" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDValue="#{sessionScope.id_session}" NDType="java.lang.Integer"/>
+      <NamedData NDName="user_id" NDValue="#{sessionScope.id_user}" NDType="java.lang.Integer"/>
+      <NamedData NDName="maquette" NDValue="#{sessionScope.id_maquette}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

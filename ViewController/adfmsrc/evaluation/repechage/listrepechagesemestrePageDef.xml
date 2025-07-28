@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listrepechagesemestrePageDef"
+                Package="evaluation.repechage">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="RepecheSemestre" RangeSize="12" DataControl="evaluationAppDataControl"
+              id="RepecheSemestreIterator"/>
+    <searchRegion Binds="RepecheSemestreIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="RepecheSemestreQuery"/>
+    <iterator Binds="ParcoursInfo" RangeSize="10" DataControl="evaluationAppDataControl" id="ParcoursInfoIterator"/>
+    <iterator Binds="UtilisateurPDTJury" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="UtilisateurPDTJuryIterator"/>
+    <iterator Binds="IsUserRespNivForm" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsUserRespNivFormIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="RepecheSemestreIterator" id="RepecheSemestre">
+      <nodeDefinition DefName="model.readOnlyView.RepecheSemROVO" Name="RepecheSemestre0">
+        <AttrNames>
+          <Item Value="isSelectedToRepeche"/>
+          <Item Value="Numero"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="Note"/>
+          <Item Value="Credit"/>
+          <Item Value="PointJury"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="RepecheSemestreIterator" id="isSelectedToRepeche" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isSelectedToRepeche"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <action IterBinding="RepecheSemestreIterator" id="getRepechable"
+            InstanceName="evaluationAppDataControl.RepecheSemestre" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="ref_note" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="RepecherSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="RepecherSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.RepecherSemestre.dataControl.dataProvider">
+      <NamedData NDName="result_sem" NDType="java.lang.Long"/>
+      <NamedData NDName="ref_moyenne" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="RepecherMention" RequiresUpdateModel="true" Action="invokeMethod" MethodName="RepecherMention"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.RepecherMention.dataControl.dataProvider">
+      <NamedData NDName="result_sem" NDType="java.lang.Long"/>
+      <NamedData NDName="ref_moyenne" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="repecherSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="repecherSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.repecherSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.repecherSemestre_repecherSemestre_dataControl_dataProvider_repecherSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="semestre" NDType="java.lang.Integer"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="isDelibratedSemestre" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isDelibratedSemestre" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isDelibratedSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isDelibratedSemestre_isDelibratedSemestre_dataControl_dataProvider_isDelibratedSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isCompensedSemestre" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isCompensedSemestre" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isCompensedSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isCompensedSemestre_isCompensedSemestre_dataControl_dataProvider_isCompensedSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="ParcoursInfoIterator" id="getParcoursInfo"
+            InstanceName="evaluationAppDataControl.ParcoursInfo" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDValue="#{sessionScope.id_niv_form_parcours}" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="isClosedSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isClosedSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isClosedSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isClosedSemestre_isClosedSemestre_dataControl_dataProvider_isClosedSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="UtilisateurPDTJuryIterator" id="getUtilisateurPdtJury"
+            InstanceName="evaluationAppDataControl.UtilisateurPDTJury" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="IsUserRespNivFormIterator" id="IsUserRespNivForm"
+            InstanceName="evaluationAppDataControl.IsUserRespNivForm" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

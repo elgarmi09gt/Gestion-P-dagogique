@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ScolFormationIntegrationROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ScolFormationIntegrationROVORowImpl"
+  ComponentClass="model.readOnlyView.ScolFormationIntegrationROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ScolFormationIntegrationROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[Select distinct  fa.code_formation,Decode(fa.horaire,0,fa.libelle_long,fa.libelle_long||'(Soir)') libelle_long,ns.section_code,        
+fr.code_departement        
+--,resp.emailucad,resp.code_etablissement etablissement,resp.code_matricule                                                             
+FROM NIVEAUX_SECTIONS@scolProdref ns                
+join  NIVEAUX_SECTION_FORMATIONS@scolProdref nsf ON ns.CODE_NIV_SEC = nsf.CODE_NIV_SEC                             
+join Formation@scolProdref fr ON nsf.CODE_FORMATION = fr.CODE_FORMATION                             
+join FORMATION_ACC_FORMATION@scolProdref faf ON faf.ID_FORMATION = fr.CODE_FORMATION                             
+join FORMATION_ACCREDITE@scolProdref fa ON faf.ID_FORMATION_ACC = fa.CODE_FORMATION            
+/*Left JOIN (                      
+  Select distinct prf.code_matricule,ag.emailucad, code_etablissement, prof_id FROM PROFESSEURS@scolProdref prf                                                                      
+  JOIN PROFESSEURS_ETABLISSEMENTS@scolProdref prfe On prf.prof_id=prfe.no_emp                      
+  JOIN v_agents@GRH_PAIE_LINK ag ON prf.code_matricule=ag.code_matricule                      
+  where prf.code_matricule is not null   
+  )resp ON resp.prof_id=fa.id_responsable */     
+ORDER BY libelle_long]]></SQLQuery>
+  <ViewAttribute
+    Name="CodeFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="CODE_FORMATION"
+    Expression="CODE_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="256"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="256"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SectionCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SECTION_CODE"
+    Expression="SECTION_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CodeDepartement"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODE_DEPARTEMENT"
+    Expression="CODE_DEPARTEMENT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewLinkAccessor
+    Name="ScolDeptIntegrationFrROVO"
+    ViewLink="model.viewlink.ScolDeptToScolFormIntegrationVL"
+    Type="model.readOnlyView.ScolDeptIntegrationFrROVORowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ScolNivFormIntegratedROVO"
+    ViewLink="model.viewlink.ScolFrToNivIntegratedVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ScolNivFormNotIntegratedROVO"
+    ViewLink="model.viewlink.ScolFrToNivFrNotIntegratedVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ScolNivFormPrcrsNotIntegratedROVO"
+    ViewLink="model.viewlink.ScolFrToScolNivFrPrcrsNotIntegratedVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ScolNivFormPrcrsIntegratedROVO"
+    ViewLink="model.viewlink.ScolFrToScolNivPrcrsIntegratedVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="NiveauxSectionDtailDAPROVO"
+    ViewLink="model.viewlink.ScolFrIntegrationToNivSecDetailDapVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

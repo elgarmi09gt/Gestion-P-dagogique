@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="InscriptionsAntEtdROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.InscriptionsAntEtdROVORowImpl"
+  ComponentClass="model.readOnlyView.InscriptionsAntEtdROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.InscriptionsAntEtdROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="etd_numero"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="p_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="etab_code"
+    Kind="where"
+    Type="java.lang.String"/>
+  <ViewAccessor
+    Name="ResultatEvaluationsVO1"
+    ViewObjectName="model.updatableview.ResultatEvaluationsVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_Resultat"
+    ListVOName="ResultatEvaluationsVO1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Resultat"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdResultat"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[Select distinct etu.numero, an_univers_an_univers_id, ns.code_niv_sec, etu.nom, etu.prenoms PRENOM, TO_CHAR(etu.date_de_naissance, 'DD-MM-YYYY') DATE_NAISSANCE,                       
+Decode(etu.pays_code,'SEN',trim(v.libelle),trim(etu.VILLE_DE_NAISSANCE_HORS_SENEGA)) LIEU_NAISSANCE, ns.libelle_long NiveauFormation, au.libelle AnneeUnivers, ips.code_option, op.libelle LibOption, to_number(rx.resultat) resultat--, sec.* --, re.LIBELLE_LONG                      
+from SCOL_INSCRIPTION_PED_SEM@scolprodref ips       
+join INSCRIPTIONS@scolprodref insc on ips.code_insc_adm=insc.code       
+join NIVEAUX_SECTIONS@scolprodref ns on insc.code_niv_sec=ns.code_niv_sec       
+join SECTIONS@scolprodref sec on ns.section_code = sec.code   
+join ETUDIANTS@scolprodref etu on insc.etudiant_numero=etu.numero       
+join ETATS_INSCRIPTION@scolprodref eti on insc.etat_inscr_etat_inscr_id=eti.etat_inscr_id       
+join ANNEES_UNIVERS@scolprodref au on an_univers_an_univers_id = au.AN_UNIVERS_ID       
+Left Join villes@scolProdref v On etu.ville_code = v.code       
+Join (       
+    Select distinct upper(convert(p.nationalite,'US7ASCII')) nation,p.libelle,p.code       
+    from PAYS@scolProdref p Join Etudiants@scolProdref et On p.code=et."PAYS_CODE_EST_DE_NATIONALITÉ"       
+) nat on etu."PAYS_CODE_EST_DE_NATIONALITÉ"=nat.code       
+Left join OPTIONS@scolprodref op on ips.code_option = op.code       
+join RESULTATEXAMEN@scolprodref rx on ns.code_niv_sec = rx.code_niv_sec and insc.etudiant_numero = rx.idetudiant and an_univers_an_univers_id = rx.anneeacademique       
+--join RESULTAT_EVALUATIONS re on rx.resultat = re.ID_RESULTAT     
+where insc.etudiant_numero = :etd_numero and an_univers_an_univers_id = :p_annee and sec.etablissem_code = :etab_code   
+order by an_univers_an_univers_id desc]]></SQLQuery>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="9"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="AnUniversAnUniversId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="AN_UNIVERS_AN_UNIVERS_ID"
+    Expression="AN_UNIVERS_AN_UNIVERS_ID"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="CodeNivSec"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="CODE_NIV_SEC"
+    Expression="CODE_NIV_SEC"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="70"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="70"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="60"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOM"
+    Expression="PRENOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="60"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="DATE"
+    AliasName="DATE_NAISSANCE"
+    Expression="DATE_NAISSANCE"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="LieuNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIEU_NAISSANCE"
+    Expression="LIEU_NAISSANCE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Niveauformation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="120"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NIVEAUFORMATION"
+    Expression="NIVEAUFORMATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="120"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Anneeunivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ANNEEUNIVERS"
+    Expression="ANNEEUNIVERS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CodeOption"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODE_OPTION"
+    Expression="CODE_OPTION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Liboption"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBOPTION"
+    Expression="LIBOPTION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Resultat"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.Integer"
+    ColumnType="VARCHAR2"
+    AliasName="RESULTAT"
+    Expression="RESULTAT"
+    SQLType="INTEGER"
+    LOVName="LOV_Resultat">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="Numero"/>
+    <Item Value="AnUniversAnUniversId"/>
+    <Item Value="CodeNivSec"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

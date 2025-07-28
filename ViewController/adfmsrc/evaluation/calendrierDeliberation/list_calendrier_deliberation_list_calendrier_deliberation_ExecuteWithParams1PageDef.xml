@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="list_calendrier_deliberation_list_calendrier_deliberation_ExecuteWithParams1PageDef"
+                Package="evaluation.calendrierDeliberation" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="NiveauFormationParcours" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="NiveauFormationParcoursIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="NiveauFormationParcoursIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="ida" NDValue="#{sessionScope.id_annee}" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="hs_id" NDValue="#{sessionScope.id_hs}" NDType="oracle.jbo.domain.Number"/>
+    </action>
+  </bindings>
+</pageDefinition>

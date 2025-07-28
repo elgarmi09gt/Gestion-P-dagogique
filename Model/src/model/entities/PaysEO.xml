@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="PaysEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="PAYS"
+  AliasName="PaysEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdPays"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_PAYS"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="PAYS"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="Libelle"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="100"
+    ColumnName="LIBELLE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PAYS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CodeIso"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="75"
+    ColumnName="CODE_ISO"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PAYS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Nationalite"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="100"
+    ColumnName="NATIONALITE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PAYS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IdZoneGeographiques"
+    Precision="5"
+    Scale="0"
+    ColumnName="ID_ZONE_GEOGRAPHIQUES"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="PAYS"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="PAYS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="PAYS"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="PAYS"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="PAYS"/>
+  <AccessorAttribute
+    Name="ZoneGeographiquesEO"
+    Association="model.assoc.ZoneGeographiquesToPaysAssoc"
+    AssociationEnd="model.assoc.ZoneGeographiquesToPaysAssoc.ZoneGeographiquesEO"
+    AssociationOtherEnd="model.assoc.ZoneGeographiquesToPaysAssoc.PaysEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <AccessorAttribute
+    Name="RegionsEO"
+    Association="model.assoc.PaysToRegionsAssoc"
+    AssociationEnd="model.assoc.PaysToRegionsAssoc.RegionsEO"
+    AssociationOtherEnd="model.assoc.PaysToRegionsAssoc.PaysEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <AccessorAttribute
+    Name="PaiementEtudiantEO"
+    Association="model.entities.FkPaiementEtudiantNatiAssoc"
+    AssociationEnd="model.entities.FkPaiementEtudiantNatiAssoc.PaiementEtudiantEO"
+    AssociationOtherEnd="model.entities.FkPaiementEtudiantNatiAssoc.PaysEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkPays"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_PAYS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.PaysEO.IdPays"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqPaysCodeIso">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_PAYS_CODE_ISO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.PaysEO.CodeIso"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqPaysLibelleLong">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_PAYS_LIBELLE_LONG"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.PaysEO.Libelle"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqPaysNationnalite">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_PAYS_NATIONNALITE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.PaysEO.Nationalite"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkPaysUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_PAYS_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.PaysEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkPaysUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_PAYS_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.PaysEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkPaysZoneGeographique">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ZONE_GEOGRAPHIQUES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_PAYS_ZONE_GEOGRAPHIQUE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.PaysEO.IdZoneGeographiques"/>
+    </AttrArray>
+  </Key>
+</Entity>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="reclamations-api-tf">
+    <default-activity>callApiWithUnnamedParams</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <method-call id="callApiWithUnnamedParams">
+      <method>#{bindings.callApiWithUnnamedParams.execute}</method>
+      <outcome>
+        <fixed-outcome>callApiWithUnnamedParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="reclamations">
+      <page>/evaluation/detaislNote/reclamations.jsff</page>
+    </view>
+    <control-flow-rule id="__1">
+      <from-activity-id>callApiWithUnnamedParams</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>callApiWithUnnamedParams</from-outcome>
+        <to-activity-id>reclamations</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

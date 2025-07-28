@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="userrolesPageDef"
+                Package="administration.userRoles">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UtilisateurStructure" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="UtilisateurStructureIterator"/>
+    <searchRegion Binds="UtilisateurStructureIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UtilisateurStructureQuery"/>
+    <iterator Binds="RolesVO" RangeSize="5" DataControl="evaluationAppDataControl" id="RolesVOIterator"/>
+    <searchRegion Binds="RolesVOIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="RolesVOQuery"/>
+    <iterator Binds="UtilisateursRolesVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="UtilisateursRolesVOIterator"/>
+    <iterator Binds="IsRoleUserExist" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsRoleUserExistIterator"/>
+    <iterator Binds="UtilisateursRoles" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="UtilisateursRolesIterator"/>
+    <iterator Binds="RoleAAssignerVO" RangeSize="25" DataControl="gestdapAppDataControl" id="RoleAAssignerVOIterator"/>
+    <searchRegion Binds="RoleAAssignerVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="RoleAAssignerVOQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="UtilisateurStructureIterator" id="UtilisateurStructure">
+      <nodeDefinition DefName="model.readOnlyView.UtilisateurStructureVO" Name="UtilisateurStructure0">
+        <AttrNames>
+          <Item Value="Prenomnom"/>
+          <Item Value="AdressMail"/>
+          <Item Value="isUserSelected"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="UtilisateurStructureIterator" id="isUserSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isUserSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="RolesVOIterator" id="RolesVO">
+      <nodeDefinition DefName="model.updatableview.RolesVO" Name="RolesVO0">
+        <AttrNames>
+          <Item Value="isRoleSeleced"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="RolesVOIterator" id="isRoleSeleced" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isRoleSeleced"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <methodAction id="getSelectedRole" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getSelectedRole"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getSelectedRole.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getSelectedRole_getSelectedRole_dataControl_dataProvider_getSelectedRole_result"/>
+    <methodAction id="getSelectedUsers" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getSelectedUsers"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getSelectedUsers.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getSelectedUsers_getSelectedUsers_dataControl_dataProvider_getSelectedUsers_result"/>
+    <action IterBinding="UtilisateursRolesIterator" id="AddUserRole"
+            InstanceName="evaluationAppDataControl.UtilisateursRoles" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdUtilisateur" NDType="java.lang.String"/>
+      <NamedData NDName="IdRole" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="IsRoleUserExistIterator" id="IsRoleUserExist"
+            InstanceName="evaluationAppDataControl.IsRoleUserExist" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+    </action>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="UtilisateurStructureIterator" id="First" RequiresUpdateModel="true" Action="first"/>
+    <action IterBinding="UtilisateurStructureIterator" id="Previous" RequiresUpdateModel="true" Action="previous"/>
+    <action IterBinding="UtilisateurStructureIterator" id="Next" RequiresUpdateModel="true" Action="next"/>
+    <action IterBinding="UtilisateurStructureIterator" id="Last" RequiresUpdateModel="true" Action="last"/>
+    <attributeValues IterBinding="UtilisateurStructureIterator" id="Prenomnom">
+      <AttrNames>
+        <Item Value="Prenomnom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UtilisateurStructureIterator" id="AdressMail">
+      <AttrNames>
+        <Item Value="AdressMail"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="UtilisateursRolesIterator" id="UtilisateursRoles">
+      <nodeDefinition DefName="model.updatableview.UtilisateursRolesVO" Name="UtilisateursRoles0">
+        <AttrNames>
+          <Item Value="IdUtilisateur"/>
+          <Item Value="IdRole"/>
+          <Item Value="DateCreation"/>
+          <Item Value="DateModification"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+          <Item Value="IdUtilisateurRole"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="UtilisateursRolesVOIterator" id="Delete"
+            InstanceName="evaluationAppDataControl.UtilisateursRolesVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="CreateOrUpdateUserRole" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CreateOrUpdateUserRole" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.CreateOrUpdateUserRole.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.CreateOrUpdateUserRole_CreateOrUpdateUserRole_dataControl_dataProvider_CreateOrUpdateUserRole_result">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="getrole" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getrole"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getrole.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getrole_getrole_dataControl_dataProvider_getrole_result">
+      <NamedData NDName="role_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getusername" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getusername"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getusername.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getusername_getusername_dataControl_dataProvider_getusername_result">
+      <NamedData NDName="user_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <tree IterBinding="UtilisateursRolesVOIterator" id="UtilisateursRolesVO">
+      <nodeDefinition DefName="model.updatableview.UtilisateursRolesVO" Name="UtilisateursRolesVO0">
+        <AttrNames>
+          <Item Value="IdUtilisateur"/>
+          <Item Value="IdRole"/>
+          <Item Value="DateCreation"/>
+          <Item Value="DateModification"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+          <Item Value="IdUtilisateurRole"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="getSelectedRoles" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getSelectedRole"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getSelectedRole.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getSelectedRole_getSelectedRole_dataControl_dataProvider_getSelectedRole_result"/>
+    <tree IterBinding="RoleAAssignerVOIterator" id="RoleAAssignerVO">
+      <nodeDefinition DefName="model.updatableview.RoleAAssignerVO" Name="RoleAAssignerVO0">
+        <AttrNames>
+          <Item Value="isRoleSelected"/>
+          <Item Value="IdRoles"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="RoleAAssignerVOIterator" id="isRoleSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isRoleSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <methodAction id="getMatricule" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getMatricule"
+                  IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getMatricule.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getMatricule_getMatricule_dataControl_dataProvider_getMatricule_result">
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

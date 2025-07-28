@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="deliberationSemestriellePageDef" Package="evaluation.deliberationSemestrielle">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="DelibSemEtudiant" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DelibSemEtudiantIterator"/>
+    <iterator Binds="DelibSemFilUe" RangeSize="25" DataControl="evaluationAppDataControl" id="DelibSemFilUeIterator"/>
+    <iterator Binds="DelibSemNoteEc" RangeSize="25" DataControl="evaluationAppDataControl" id="DelibSemNoteEcIterator"/>
+    <iterator Binds="DelibSemInsPedSemUe" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DelibSemInsPedSemUeIterator"/>
+    <iterator Binds="DelibSemFilEc" RangeSize="25" DataControl="evaluationAppDataControl" id="DelibSemFilEcIterator"/>
+    <iterator Binds="DelibResUe" RangeSize="25" DataControl="evaluationAppDataControl" id="DelibResUeIterator"/>
+    <iterator Binds="DelibSemInsPedSem" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="DelibSemInsPedSemIterator"/>
+    <iterator Binds="DelibSemResSem" RangeSize="10" DataControl="evaluationAppDataControl" id="DelibSemResSemIterator"/>
+    <iterator Binds="isSess1Closed1" RangeSize="10" DataControl="evaluationAppDataControl" id="isSess1Closed1Iterator"/>
+    <iterator Binds="UtilisateurPDTJury" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="UtilisateurPDTJuryIterator"/>
+    <iterator Binds="IsUserRespNivForm" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsUserRespNivFormIterator"/>
+    <iterator id="ParcoursInfoIterator" Binds="ParcoursInfo" DataControl="evaluationAppDataControl" RangeSize="25"/>
+    <iterator Binds="ListFilUeDeliSem" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="ListFilUeDeliSemIterator"/>
+    <iterator Binds="UeNoteClosedDelibSem" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="UeNoteClosedDelibSemIterator"/>
+    <iterator Binds="UtilisateursJuryVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="UtilisateursJuryVOIterator"/>
+    <iterator Binds="JuryMembrePresent" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="JuryMembrePresentIterator"/>
+    <searchRegion Binds="UtilisateursJuryVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UtilisateursJuryVOQuery"/>
+  </executables>
+  <bindings>
+    <action IterBinding="DelibSemEtudiantIterator" id="GetEtudiant"
+            InstanceName="evaluationAppDataControl.DelibSemEtudiant" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="DelibSemFilUeIterator" id="GetFilUeSem"
+            InstanceName="evaluationAppDataControl.DelibSemFilUe" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="anne" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="DelibSemFilEcIterator" id="GetEcsFilUeSem"
+            InstanceName="evaluationAppDataControl.DelibSemFilEc" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="anne" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+      <NamedData NDName="fil_ue" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="DelibSemInsPedSemUeIterator" id="GetInsPedSemUe"
+            InstanceName="evaluationAppDataControl.DelibSemInsPedSemUe" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+      <NamedData NDName="num" NDType="java.lang.String"/>
+      <NamedData NDName="fil_ue_sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="DelibSemNoteEcIterator" id="GetNoteEc"
+            InstanceName="evaluationAppDataControl.DelibSemNoteEc" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+      <NamedData NDName="fil_ue" NDType="java.lang.Integer"/>
+      <NamedData NDName="fil_ec" NDType="java.lang.Integer"/>
+      <NamedData NDName="insped" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="DelibResUeIterator" id="GetMoyCredResUe"
+            InstanceName="evaluationAppDataControl.DelibResUe" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+      <NamedData NDName="inspedsemue" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="isClosedAllUe" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isClosedAllUe"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isClosedAllUe.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isClosedAllUe_isClosedAllUe_dataControl_dataProvider_isClosedAllUe_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="semestre" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="isClosedAnnee" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isClosedAnnee"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isClosedAnnee.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isClosedAnnee_isClosedAnnee_dataControl_dataProvider_isClosedAnnee_result">
+      <NamedData NDName="parcours_pma" NDType="java.lang.Long"/>
+      <NamedData NDName="session_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="calculMoyenneSemestrielle" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="calculMoyenneSemestrielle" IsViewObjectMethod="false"
+                  DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.calculMoyenneSemestrielle.dataControl.dataProvider">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="delibererSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="delibererSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.delibererSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.delibererSemestre_delibererSemestre_dataControl_dataProvider_delibererSemestre_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="semestre" NDType="java.lang.Integer"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="isCompensedSemestre" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isCompensedSemestre" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isCompensedSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isCompensedSemestre_isCompensedSemestre_dataControl_dataProvider_isCompensedSemestre_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="DelibSemInsPedSemIterator" id="GetInsPedSem"
+            InstanceName="evaluationAppDataControl.DelibSemInsPedSem" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="num" NDType="java.lang.String"/>
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="DelibSemResSemIterator" id="GetMoyCredResSmstre"
+            InstanceName="evaluationAppDataControl.DelibSemResSem" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+      <NamedData NDName="inspedsem" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="closeSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="closeSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.closeSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.closeSemestre_closeSemestre_dataControl_dataProvider_closeSemestre_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="isDelibratedSemestre" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isDelibratedSemestre" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isDelibratedSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isDelibratedSemestre_isDelibratedSemestre_dataControl_dataProvider_isDelibratedSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="compenser" RequiresUpdateModel="true" Action="invokeMethod" MethodName="compenser"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.compenser.dataControl.dataProvider">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="anne" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="CompenserSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="CompenserSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CompenserSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.CompenserSemestre_CompenserSemestre_dataControl_dataProvider_CompenserSemestre_result">
+      <NamedData NDName="prcrs_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="isClosedSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isClosedSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isClosedSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isClosedSemestre_isClosedSemestre_dataControl_dataProvider_isClosedSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="publishSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="publishSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.publishSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.publishSemestre_publishSemestre_dataControl_dataProvider_publishSemestre_result">
+      <NamedData NDName="prcrs_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="reconduireToSess2" RequiresUpdateModel="true" Action="invokeMethod" MethodName="reconduireToSess2"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.reconduireToSess2.dataControl.dataProvider">
+      <NamedData NDName="anne_univers" NDType="java.lang.Integer"/>
+      <NamedData NDName="niv_fomr_parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="session_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="semestre_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="isSess1Closed1Iterator" id="IsSess1Closed"
+            InstanceName="evaluationAppDataControl.isSess1Closed1" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="semestre" NDType="java.lang.Integer"/>
+      <NamedData NDName="prcrs_maq_an" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="closeAllUe" RequiresUpdateModel="true" Action="invokeMethod" MethodName="closeAllUe"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.closeAllUe.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.closeAllUe_closeAllUe_dataControl_dataProvider_closeAllUe_result">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="semestre" NDType="java.lang.Integer"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="isCompensRuleDefined" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isCompensRuleDefined" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isCompensRuleDefined.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isCompensRuleDefined_isCompensRuleDefined_dataControl_dataProvider_isCompensRuleDefined_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="DelibererSemestre" RequiresUpdateModel="true" Action="invokeMethod" MethodName="DelibererSemestre"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.DelibererSemestre.dataControl.dataProvider">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="UtilisateurPDTJuryIterator" id="getUtilisateurPdtJury"
+            InstanceName="evaluationAppDataControl.UtilisateurPDTJury" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="IsUserRespNivFormIterator" id="IsUserRespNivForm"
+            InstanceName="evaluationAppDataControl.IsUserRespNivForm" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="getCalSess2" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getCalSess2"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getCalSess2.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getCalSess2_getCalSess2_dataControl_dataProvider_getCalSess2_result">
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="ReconduireToSession2" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="ReconduireToSession2" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.ReconduireToSession2.dataControl.dataProvider">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="Compenser" RequiresUpdateModel="true" Action="invokeMethod" MethodName="Compenser"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.Compenser.dataControl.dataProvider">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="prcrs_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="ParcoursInfoIterator" id="LibParcours">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ParcoursInfoIterator" id="getParcoursInfo"
+            InstanceName="evaluationAppDataControl.ParcoursInfo" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDValue="#{sessionScope.id_niv_form_parcours}" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="reouvrirPrcrsSem" RequiresUpdateModel="true" Action="invokeMethod" MethodName="reouvrirPrcrsSem"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.reouvrirPrcrsSem.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.reouvrirPrcrsSem_reouvrirPrcrsSem_dataControl_dataProvider_reouvrirPrcrsSem_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isAllUeClosed" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isAllUeClosed"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isAllUeClosed.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isAllUeClosed_isAllUeClosed_dataControl_dataProvider_isAllUeClosed_result">
+      <NamedData NDName="prcrs_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="semestre" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="CreateOrUpdateCalendar" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CreateOrUpdateCalendar" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.CreateOrUpdateCalendar.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.CreateOrUpdateCalendar_CreateOrUpdateCalendar_dataControl_dataProvider_CreateOrUpdateCalendar_result">
+      <NamedData NDName="niv_crt_id" NDType="java.lang.Long"/>
+      <NamedData NDName="sem_id" NDType="java.lang.Long"/>
+      <NamedData NDName="an_id" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess_id" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="UpdateResultatSemAdm" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="UpdateResultatSemAdm" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.UpdateResultatSemAdm.dataControl.dataProvider">
+      <NamedData NDName="prcrs_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="ListFilUeDeliSemIterator" id="ListFilUeDeliSem"
+            InstanceName="evaluationAppDataControl.ListFilUeDeliSem" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="anne" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="sem" NDType="java.lang.Long"/>
+      <NamedData NDName="sess" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="CloseSaisieCCSess2" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CloseSaisieCCSess2" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CloseSaisieCCSess2.dataControl.dataProvider">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="calsess2" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="IsDelibarateAn" RequiresUpdateModel="true" Action="invokeMethod" MethodName="IsDelibarateAn"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.IsDelibarateAn.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.IsDelibarateAn_IsDelibarateAn_dataControl_dataProvider_IsDelibarateAn_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="session_id" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="UeNoteClosedDelibSemIterator" id="getUeNotClosed"
+            InstanceName="evaluationAppDataControl.UeNoteClosedDelibSem" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="p_prcrs_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="p_calendrier" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="UeNoteClosedDelibSemIterator" id="UeNoteClosedDelibSem">
+      <nodeDefinition DefName="model.readOnlyView.UeNoteClosedDelibSemROVO" Name="UeNoteClosedDelibSem0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="UtilisateursJuryVOIterator" id="getUserJury"
+            InstanceName="evaluationAppDataControl.UtilisateursJuryVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="p_jury_id" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="JuryMembrePresentIterator" id="getJury"
+            InstanceName="evaluationAppDataControl.JuryMembrePresent" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="p_prcrs" NDType="java.lang.Long"/>
+      <NamedData NDName="p_an" NDType="java.lang.Long"/>
+      <NamedData NDName="p_sem" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="UtilisateursJuryVOIterator" id="UtilisateursJuryVO">
+      <nodeDefinition DefName="model.updatableview.UtilisateursJuryVO" Name="UtilisateursJuryVO0">
+        <AttrNames>
+          <Item Value="IsPresent" Binds="IsPresent"/>
+          <Item Value="IdUtilisateur"/>
+          <Item Value="Role"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="UtilisateursJuryVOIterator" id="IsPresent" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="IsPresent"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="1"/>
+        <Item Value="0"/>
+      </ValueList>
+    </button>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <methodAction id="getEtatDeliberation" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getEtatDeliberation" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getEtatDeliberation.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getEtatDeliberation_getEtatDeliberation_dataControl_dataProvider_getEtatDeliberation_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="getNoteEc" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getNoteEc"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getNoteEc.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getNoteEc_getNoteEc_dataControl_dataProvider_getNoteEc_result">
+      <NamedData NDName="p_num" NDType="java.lang.String"/>
+      <NamedData NDName="p_fil_ue" NDType="java.lang.Long"/>
+      <NamedData NDName="p_calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="p_fec" NDType="java.lang.Long"/>
+      <NamedData NDName="p_prcrs_maq" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getUeParcousAnSemSess" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getUeParcousAnSemSess" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getUeParcousAnSemSess.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getUeParcousAnSemSess_getUeParcousAnSemSess_dataControl_dataProvider_getUeParcousAnSemSess_result">
+      <NamedData NDName="an_id" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Long"/>
+      <NamedData NDName="sem_id" NDValue="#{sessionScope.id_smstre}" NDType="java.lang.Long"/>
+      <NamedData NDName="prcrs_maq_id" NDValue="#{sessionScope.prcrs_maq_an}" NDType="java.lang.Long"/>
+      <NamedData NDName="sess_id" NDValue="#{sessionScope.id_session}" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getEtudiantUe" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getEtudiantUe"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getEtudiantUe.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getEtudiantUe_getEtudiantUe_dataControl_dataProvider_getEtudiantUe_result">
+      <NamedData NDName="an_id" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Long"/>
+      <NamedData NDName="sem_id" NDValue="#{sessionScope.id_smstre}" NDType="java.lang.Long"/>
+      <NamedData NDName="prcrs_maq_id" NDValue="#{sessionScope.prcrs_maq_an}" NDType="java.lang.Long"/>
+      <NamedData NDName="sess_id" NDValue="#{sessionScope.id_session}" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isAllUe2Closed" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isAllUe2Closed"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isAllUe2Closed.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isAllUe2Closed_isAllUe2Closed_dataControl_dataProvider_isAllUe2Closed_result">
+      <NamedData NDName="parcours_maq" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="semestre" NDType="java.lang.Integer"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

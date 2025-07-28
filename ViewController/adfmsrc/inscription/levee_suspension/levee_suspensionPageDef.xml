@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="levee_suspensionPageDef"
+                Package="inscription.levee_suspension">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="LesSuspenduRO" RangeSize="25" DataControl="inscriptionAppDataControl" id="LesSuspenduROIterator"/>
+    <searchRegion Binds="LesSuspenduROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="LesSuspenduROQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="LesSuspenduROIterator" id="LesSuspenduRO">
+      <nodeDefinition DefName="model.readOnlyView.LesSuspenduROVO" Name="LesSuspenduRO0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="Nationalite"/>
+          <Item Value="Duree"/>
+          <Item Value="DateFin"/>
+          <Item Value="DateDebut"/>
+          <Item Value="MotifSuspension"/>
+          <Item Value="LibAnnee"/>
+          <Item Value="case_cocher" Binds="case_cocher"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="LesSuspenduROIterator" id="case_cocher" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="case_cocher"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="True"/>
+        <Item Value="False"/>
+      </ValueList>
+    </button>
+    <methodAction id="findAndUpdateSusp" RequiresUpdateModel="true" Action="invokeMethod" MethodName="findAndUpdateSusp"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.findAndUpdateSusp.dataControl.dataProvider">
+      <NamedData NDName="id_susp" NDType="java.lang.Long"/>
+      <NamedData NDName="levee" NDType="java.lang.Long"/>
+      <NamedData NDName="util" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="UpdateSuspension" RequiresUpdateModel="true" Action="invokeMethod" MethodName="UpdateSuspension"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.UpdateSuspension.dataControl.dataProvider">
+      <NamedData NDName="id_susp" NDType="java.lang.Long"/>
+      <NamedData NDName="levee" NDType="java.lang.Long"/>
+      <NamedData NDName="util" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="LesSuspenduROIterator" id="RefreshSuspendu" InstanceName="inscriptionAppDataControl.LesSuspenduRO"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="iteratorExecute"/>
+  </bindings>
+</pageDefinition>

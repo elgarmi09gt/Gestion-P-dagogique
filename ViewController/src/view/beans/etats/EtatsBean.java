@@ -1355,7 +1355,8 @@ public class EtatsBean {
                                     AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanedetAn());
                                     AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanDetEtd());
                                 }
-                            }else{
+                            }
+                            else{
                                 //DetAnnEtu 
                                 OperationBinding opdetails = bindings.getOperationBinding("GetDetailsAnEtu");
                                 opdetails.getParamsMap().put("annee", getAnnee());

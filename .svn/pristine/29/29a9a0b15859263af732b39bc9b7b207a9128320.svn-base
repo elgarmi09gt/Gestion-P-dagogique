@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+  <af:panelGroupLayout id="pgl3" layout="scroll">
+    <af:panelGroupLayout id="pgl5" layout="vertical" valign="baseline" halign="center"
+                         inlineStyle="border: 2px solid;border-radius:8px">
+      <af:panelGroupLayout id="pgl10" layout="horizontal">
+        <af:panelGroupLayout id="pgl12" layout="horizontal">
+          <af:panelGroupLayout id="pgl4" layout="scroll">
+            <!--af:button actionListener="#{bindings.GetUtilisateurs.execute}" text="Les Utilisateurs"
+                   disabled="#{!bindings.GetUtilisateurs.enabled}" id="b2"
+                   inlineStyle="border-radius:12px 12px 12px 12px / 12px 12px 12px 12px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #f5e6e6; width:200px; height:50px; margin-right:15px; margin-top:20px; margin-bottom:15px; font-size:x-large; color:Blue; font-family:cursive;"/-->
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar"/>
+              <f:facet name="statusbar"/>
+              <af:table value="#{bindings.UtilisateurStructure.collectionModel}" var="row"
+                        rows="#{bindings.UtilisateurStructure.rangeSize}"
+                        emptyText="#{bindings.UtilisateurStructure.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0"
+                        selectedRowKeys="#{bindings.UtilisateurStructure.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.UtilisateurStructure.collectionModel.makeCurrent}"
+                        rowSelection="single" fetchSize="#{bindings.UtilisateurStructure.rangeSize}"
+                        filterModel="#{bindings.UtilisateurStructureQuery.queryDescriptor}" filterVisible="true"
+                        queryListener="#{bindings.UtilisateurStructureQuery.processQuery}" varStatus="vs" id="t2"
+                        columnStretching="last">
+                <af:column sortProperty="#{bindings.UtilisateurStructure.hints.isUserSelected.name}" filterable="false"
+                           sortable="true" id="c3" align="center" inlineStyle="font-size:large;">
+                  <af:selectBooleanCheckbox value="#{row.bindings.isUserSelected.inputValue}"
+                                            label="#{row.bindings.isUserSelected.label}"
+                                            shortDesc="#{bindings.UtilisateurStructure.hints.isUserSelected.tooltip}"
+                                            id="sbc2"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.UtilisateurStructure.hints.Prenomnom.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.UtilisateurStructure.hints.Prenomnom.label}" id="c4"
+                           inlineStyle="font-size:large;" width="250">
+                  <af:outputFormatted value="#{row.bindings.Prenomnom.inputValue}" id="of2"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.UtilisateurStructure.hints.AdressMail.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.UtilisateurStructure.hints.AdressMail.label}" id="c5"
+                           width="200" inlineStyle="font-size:large;">
+                  <af:outputFormatted value="#{row.bindings.AdressMail.inputValue}" id="of3"/>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:panelGroupLayout>
+          <af:spacer width="20" height="20" id="s1"/>
+          <af:panelGroupLayout id="pgl6" layout="vertical" halign="start">
+            <af:button actionListener="#{bindings.GetFormations.execute}" text="Niveaux Formations"
+                       disabled="#{!bindings.GetFormations.enabled}" id="b1"
+                       inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                       icon="/images/383188_48px.png"/>
+            <af:panelGroupLayout id="pgl1" layout="scroll">
+              <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="statusbar"/>
+                <af:table value="#{bindings.AccesNiveauFormation.collectionModel}" var="row"
+                          rows="#{bindings.AccesNiveauFormation.rangeSize}"
+                          emptyText="#{bindings.AccesNiveauFormation.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0"
+                          selectedRowKeys="#{bindings.AccesNiveauFormation.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.AccesNiveauFormation.collectionModel.makeCurrent}"
+                          rowSelection="single" fetchSize="#{bindings.AccesNiveauFormation.rangeSize}"
+                          filterModel="#{bindings.AccesNiveauFormationQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.AccesNiveauFormationQuery.processQuery}" varStatus="vs" id="t1"
+                          partialTriggers="::b1 :::b1" columnStretching="last"
+                          binding="#{NiveauAccesBean.niveauxFormationTable}">
+                  <af:column sortProperty="#{bindings.AccesNiveauFormation.hints.selectedFormation.name}"
+                             filterable="false" sortable="true" id="c1" align="center" inlineStyle="font-size:large;">
+                    <af:selectBooleanCheckbox value="#{row.bindings.selectedFormation.inputValue}"
+                                              label="#{row.bindings.selectedFormation.label}"
+                                              shortDesc="#{bindings.AccesNiveauFormation.hints.selectedFormation.tooltip}"
+                                              id="sbc1"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.AccesNiveauFormation.hints.LibelleLong.name}" filterable="true"
+                             sortable="true" headerText="Libellé" id="c2" inlineStyle="font-size:large;" width="300">
+                    <af:outputFormatted value="#{row.bindings.LibelleLong.inputValue}" id="of1"/>
+                  </af:column>
+                </af:table>
+              </af:panelCollection>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+          <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:1250px)"
+                                 propertyName="layout"/>
+        </af:panelGroupLayout>
+        <af:spacer width="20" height="20" id="s2"/>
+        <af:panelGroupLayout id="pgl7" layout="vertical">
+          <af:panelGroupLayout id="pgl8">
+            <af:outputFormatted value="NB : Veuillez spécifiez *Aucun* dans #Spécialité et #Option si vous choisissez plusieur Niveaux de formation"
+                                id="of8"
+                                inlineStyle="color:Red; font-size:large; font-family:cursive; font-style:italic;"/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl9" layout="vertical" inlineStyle="line-height:50px;">
+            <af:outputFormatted value="Spécialité" id="of6" styleUsage="pageStamp" inlineStyle="font-size:x-large;"/>
+            <af:selectOneChoice value="#{bindings.SpecialiteROVO1.inputValue}"
+                                required="#{bindings.SpecialiteROVO1.hints.mandatory}"
+                                shortDesc="#{bindings.SpecialiteROVO1.hints.tooltip}" id="soc3"
+                                contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:50px"
+                                autoSubmit="true" valueChangeListener="#{NiveauAccesBean.OnSpecialitevalueChange}"
+                                binding="#{NiveauAccesBean.inputSpecialite}">
+              <f:selectItems value="#{bindings.SpecialiteROVO1.items}" id="si3"/>
+              <f:validator binding="#{bindings.SpecialiteROVO1.validator}"/>
+            </af:selectOneChoice>
+            <af:outputFormatted value="Option" id="of7" styleUsage="pageStamp" inlineStyle="font-size:x-large;"/>
+            <af:selectOneChoice value="#{bindings.OptionROVO.inputValue}"
+                                required="#{bindings.OptionROVO.hints.mandatory}"
+                                shortDesc="#{bindings.OptionROVO.hints.tooltip}" id="soc2"
+                                contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:50px"
+                                unselectedLabel="Aucun" binding="#{NiveauAccesBean.inputOption}">
+              <f:selectItems value="#{bindings.OptionROVO.items}" id="si2"/>
+              <f:validator binding="#{bindings.OptionROVO.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:1500px)"
+                               propertyName="layout"/>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl11" layout="vertical" halign="center">
+        <af:button id="b4"
+                   inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                   icon="/images/save_close_48px.png" actionListener="#{NiveauAccesBean.AllowedAccesTo}"
+                   text="Enregistrer"/>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl2" layout="vertical" inlineStyle="margin-top:30px; border:2px solid;border-radius:8px"
+                         binding="#{NiveauAccesBean.utiAccessTable}">
+      <af:button actionListener="#{bindings.GetUtilisateurNivForm.execute}" text="Utilisateurs Niveaux Acces"
+                 disabled="#{!bindings.GetUtilisateurNivForm.enabled}" id="b3"
+                 inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                 icon="/images/user_male_48px.png"/>
+      <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t4">
+            <af:button id="b2" icon="/images/edit_icon.png"/>
+            <af:button id="b5" icon="/images/delete_icon.png"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.UtilisateurNiveauFormation.collectionModel}" var="row"
+                  rows="#{bindings.UtilisateurNiveauFormation.rangeSize}"
+                  emptyText="#{bindings.UtilisateurNiveauFormation.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.UtilisateurNiveauFormation.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.UtilisateurNiveauFormation.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.UtilisateurNiveauFormation.rangeSize}"
+                  filterModel="#{bindings.UtilisateurNiveauFormationQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.UtilisateurNiveauFormationQuery.processQuery}" varStatus="vs" id="t3"
+                  partialTriggers="::b3 :::b3" columnStretching="last">
+          <af:column sortProperty="#{bindings.UtilisateurNiveauFormation.hints.Prenomnom.name}" filterable="true"
+                     sortable="true" headerText="Prénom &amp; Nom" id="c6" width="250" inlineStyle="font-size:large;">
+            <af:outputText value="#{row.Prenomnom}"
+                           shortDesc="#{bindings.UtilisateurNiveauFormation.hints.Prenomnom.tooltip}" id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurNiveauFormation.hints.NiveauFormation.name}" filterable="true"
+                     sortable="true" headerText="Niveau Formation" id="c7" width="400" inlineStyle="font-size:large;">
+            <af:outputText value="#{row.NiveauFormation}"
+                           shortDesc="#{bindings.UtilisateurNiveauFormation.hints.NiveauFormation.tooltip}" id="ot2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurNiveauFormation.hints.Specialite.name}" filterable="true"
+                     sortable="true" headerText="Spécialités" id="c8" width="300" inlineStyle="font-size:large;">
+            <af:selectOneChoice value="#{row.bindings.Specialite.inputValue}" label="#{row.bindings.Specialite.label}"
+                                required="#{bindings.UtilisateurNiveauFormation.hints.Specialite.mandatory}"
+                                shortDesc="#{bindings.UtilisateurNiveauFormation.hints.Specialite.tooltip}"
+                                readOnly="true" id="soc1">
+              <f:selectItems value="#{row.bindings.Specialite.items}" id="si1"/>
+              <f:validator binding="#{row.bindings.Specialite.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurNiveauFormation.hints.Options.name}" filterable="true"
+                     sortable="true" headerText="Options" id="c9" inlineStyle="font-size:large;">
+            <af:outputText value="#{row.Options}"
+                           shortDesc="#{bindings.UtilisateurNiveauFormation.hints.Options.tooltip}" id="ot3">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.UtilisateurNiveauFormation.hints.Options.format}"/>
+            </af:outputText>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{NiveauAccesBean.pupupNotUserDetails}">
+    <af:dialog id="d1" title="Info !!!" type="ok" inlineStyle="text-align:center;">
+      <af:outputFormatted value="Aucun Utilisateurs Séléctionner" id="of4" inlineStyle="color:Red; font-size:x-large;"/>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{NiveauAccesBean.popupNotNivDetails}">
+    <af:dialog id="d2" title="Info !!!" type="ok" inlineStyle="text-align:center;">
+      <af:outputFormatted value="Aucun Niveaux  séléctionnés" id="of5" inlineStyle="color:Red; font-size:x-large;"/>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle"
+         value="#{adfBundle['viewcontroller.dap.gradesformation.listgradesformationBundle']}"/>
+  <af:panelStretchLayout id="psl1" dimensionsFrom="parent">
+    <f:facet name="start"/>
+    <f:facet name="end"/>
+    <f:facet name="top"/>
+    <f:facet name="bottom"/>
+    <f:facet name="center">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t2">
+            <af:button id="b1" actionListener="#{GradeFormationBean.OnNewClicked}" icon="/images/new_icon.png"/>
+            <af:button id="b2" actionListener="#{GradeFormationBean.OnEditClicked}" icon="/images/edit_icon.png"/>
+            <af:button id="b3" action="#{GradeFormationBean.OnDeleteClicked}" icon="/images/delete_icon.png">
+              <af:showPopupBehavior popupId="::popup-delete-grade-formation"/>
+            </af:button>
+          </af:toolbar>
+        </f:facet>
+        <af:table value="#{bindings.GradesFormation.collectionModel}" var="row"
+                  rows="#{bindings.GradesFormation.rangeSize}"
+                  emptyText="#{bindings.GradesFormation.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.GradesFormation.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.GradesFormation.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.GradesFormation.rangeSize}"
+                  filterModel="#{bindings.GradesFormationQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.GradesFormationQuery.processQuery}" varStatus="vs" id="t1"
+                  binding="#{GradeFormationBean.gradeFormationTable}" columnStretching="last">
+          <af:column sortProperty="#{bindings.GradesFormation.hints.LibelleLong.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.LIBELLE}" id="c1" width="20%">
+            <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.GradesFormation.hints.LibelleLong.tooltip}"
+                           id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.GradesFormation.hints.LibelleCourt.name}" filterable="true"
+                     sortable="true" headerText="#{viewcontrollerBundle.ABREVIATION}" id="c2">
+            <af:outputText value="#{row.LibelleCourt}"
+                           shortDesc="#{bindings.GradesFormation.hints.LibelleCourt.tooltip}" id="ot2"/>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p1">
+              <af:menu text="menu 1" id="m1">
+                <af:commandMenuItem id="cmi1" actionListener="#{GradeFormationBean.OnNewClicked}"
+                                    icon="/images/new_icon.png"/>
+                <af:commandMenuItem id="cmi2" actionListener="#{GradeFormationBean.OnEditClicked}"
+                                    icon="/images/edit_icon.png"/>
+                <af:commandMenuItem id="cmi3" action="#{GradeFormationBean.OnDeleteClicked}"
+                                    icon="/images/delete_icon.png">
+                  <af:showPopupBehavior popupId=":::popup-delete-grade-formation"/>
+                </af:commandMenuItem>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+        <f:facet name="statusbar"/>
+      </af:panelCollection>
+    </f:facet>
+  </af:panelStretchLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-new-grade-formation"
+            binding="#{GradeFormationBean.popupNew}" contentDelivery="lazyUncached">
+    <af:dialog id="d3" dialogListener="#{GradeFormationBean.OnDialogAction}" title="New Grade Formation">
+      <af:panelFormLayout id="pfl3">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it9">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle.ABREVIATION}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it10">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it11">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:clientListener type="dialog" method="OnDialogCancel"/>
+      <af:serverListener type="HandlerEvenDialogCancel" method="#{GradeFormationBean.OnDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-edit-grade-formation"
+            binding="#{GradeFormationBean.popupEdit}" contentDelivery="lazyUncached">
+    <af:dialog id="d2" dialogListener="#{GradeFormationBean.OnDialogAction}" title="Edit Grade Formation">
+      <af:panelFormLayout id="pfl2">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it6">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle.ABREVIATION}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it7">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it8">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-delete-grade-formation"
+            binding="#{GradeFormationBean.popupDelete}" contentDelivery="lazyUncached">
+    <af:dialog id="d1" dialogListener="#{GradeFormationBean.OnDeleteAction}" title="Confirmer Supprimer !!!"
+               type="yesNo" affirmativeTextAndAccessKey="OUI" noTextAndAccessKey="NON">
+      <af:panelFormLayout id="pfl1">
+        <af:inputText value="#{bindings.IdGradesFormation.inputValue}" label="#{viewcontrollerBundle.GRADE}"
+                      required="#{bindings.IdGradesFormation.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.IdGradesFormation.hints.displayWidth}"
+                      maximumLength="#{bindings.IdGradesFormation.hints.precision}"
+                      shortDesc="#{bindings.IdGradesFormation.hints.tooltip}" id="it1">
+          <f:validator binding="#{bindings.IdGradesFormation.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.IdGradesFormation.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibelleLong.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it2">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle.ABREVIATION}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it3">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputDate value="#{bindings.DateCreation.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation.hints.label}" required="#{bindings.DateCreation.hints.mandatory}"
+                      columns="#{bindings.DateCreation.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation.hints.tooltip}" id="id2">
+          <f:validator binding="#{bindings.DateCreation.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateModification.inputValue}" readOnly="true"
+                      label="#{bindings.DateModification.hints.label}"
+                      required="#{bindings.DateModification.hints.mandatory}"
+                      columns="#{bindings.DateModification.hints.displayWidth}"
+                      shortDesc="#{bindings.DateModification.hints.tooltip}" id="id3">
+          <f:validator binding="#{bindings.DateModification.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateModification.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it4">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie.inputValue}" label="#{bindings.UtiModifie.hints.label}"
+                      required="#{bindings.UtiModifie.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.UtiModifie.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+      function OnDialogCancel(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "HandlerEvenDialogCancel", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+</ui:composition>

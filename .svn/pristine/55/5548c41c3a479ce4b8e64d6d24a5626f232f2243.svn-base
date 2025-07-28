@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="reglescompensationsPageDef"
+                Package="parametrageSup.regles_compensations">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Parcours" RangeSize="25" DataControl="evaluationAppDataControl" id="ParcoursIterator"/>
+    <iterator Binds="ReglesCompensation" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ReglesCompensationIterator"/>
+    <iterator Binds="NivFormParcReglCompens" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="NivFormParcReglCompensIterator"/>
+    <iterator Binds="IsCompensedRuleParcoursExist" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsCompensedRuleParcoursExistIterator"/>
+    <iterator Binds="ReglesCompensationPArcoursROVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ReglesCompensationPArcoursROVOIterator"/>
+    <searchRegion Binds="ReglesCompensationPArcoursROVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ReglesCompensationPArcoursROVOQuery"/>
+  </executables>
+  <bindings>
+    <list IterBinding="ParcoursIterator" ListOperMode="navigation" ListIter="ParcoursIterator" id="Parcours"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="ReglesCompensationIterator" ListOperMode="navigation" ListIter="ReglesCompensationIterator"
+          id="ReglesCompensation1" DTSupportsMRU="false" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Libelle"/>
+        <Item Value="Description"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="ReglesCompensationIterator" id="IdRegleCompens">
+      <AttrNames>
+        <Item Value="IdRegleCompens"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ParcoursIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="NivFormParcReglCompensIterator" id="CreateParcoursRegle"
+            InstanceName="evaluationAppDataControl.NivFormParcReglCompens" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdNiveauFormationParcours" NDType="java.lang.String"/>
+      <NamedData NDName="IdAnneesUnivers" NDType="java.lang.String"/>
+      <NamedData NDName="IdRegleCompens" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+    </action>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="IsCompensedRuleParcoursExistIterator" id="IsCompensedRuleExist"
+            InstanceName="evaluationAppDataControl.IsCompensedRuleParcoursExist" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+    </action>
+    <tree IterBinding="ReglesCompensationPArcoursROVOIterator" id="ReglesCompensationPArcoursROVO">
+      <nodeDefinition DefName="model.readOnlyView.ReglesCompensationPArcoursROVO"
+                      Name="ReglesCompensationPArcoursROVO0">
+        <AttrNames>
+          <Item Value="Libelle"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ReglesCompensationPArcoursROVOIterator" id="GetRuleCompens"
+            InstanceName="evaluationAppDataControl.ReglesCompensationPArcoursROVO"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="deleteRuleNivParc" RequiresUpdateModel="true" Action="invokeMethod" MethodName="deleteRuleNivParc"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.deleteRuleNivParc.dataControl.dataProvider">
+      <NamedData NDName="id_niv_reg_parc" NDType="java.lang.Integer"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

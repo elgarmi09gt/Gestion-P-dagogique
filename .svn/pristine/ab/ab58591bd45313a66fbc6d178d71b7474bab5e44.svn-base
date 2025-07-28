@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <af:document title="recherche-anc-etud.jsf" id="d1">
+        <af:messages id="m1"/>
+        <af:form id="f1">
+            <af:panelBox text="Critères de Recherche" id="pb1" showDisclosure="false">
+                <f:facet name="toolbar"/>
+                <af:panelFormLayout id="pfl1">
+                    <af:inputText value="#{bindings.PieceIdentification.inputValue}" label="Numéro"
+                                  required="#{bindings.PieceIdentification.hints.mandatory}"
+                                  columns="#{bindings.PieceIdentification.hints.displayWidth}"
+                                  maximumLength="#{bindings.PieceIdentification.hints.precision}"
+                                  shortDesc="#{bindings.PieceIdentification.hints.tooltip}" id="it3"
+                                  binding="#{RechercheAncienEtudbean.num}">
+                        <f:validator binding="#{bindings.PieceIdentification.validator}"/>
+                    </af:inputText>
+                    <af:inputText value="#{bindings.Prenoms.inputValue}" label="#{bindings.Prenoms.hints.label}"
+                                  required="#{bindings.Prenoms.hints.mandatory}"
+                                  columns="#{bindings.Prenoms.hints.displayWidth}"
+                                  maximumLength="#{bindings.Prenoms.hints.precision}"
+                                  shortDesc="#{bindings.Prenoms.hints.tooltip}" id="it2"
+                                  binding="#{RechercheAncienEtudbean.prenom}">
+                        <f:validator binding="#{bindings.Prenoms.validator}"/>
+                    </af:inputText>
+                    <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                                  required="#{bindings.Nom.hints.mandatory}"
+                                  columns="#{bindings.Nom.hints.displayWidth}"
+                                  maximumLength="#{bindings.Nom.hints.precision}"
+                                  shortDesc="#{bindings.Nom.hints.tooltip}" id="it1"
+                                  binding="#{RechercheAncienEtudbean.nom}" inlineStyle="width:100px;">
+                        <f:validator binding="#{bindings.Nom.validator}"/>
+                    </af:inputText>
+                </af:panelFormLayout>
+                <af:panelGroupLayout id="pgl1" layout="horizontal">
+                    <af:button text="Search" id="b1" action="#{RechercheAncienEtudbean.onSearch}"
+                               inlineStyle="margin-top:10px;margin-left:10px;margin-bottom:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#f5e6e6;margin-bottom:15px;"
+                               accessKey="S"/>
+                    <af:button text="Reset" id="b2" accessKey="R"
+                               inlineStyle="margin-top:10px;margin-left:10px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#F2313D;margin-bottom:15px;background-color:#e87c8e;"
+                               action="#{RechercheAncienEtudbean.onReset}"/>
+                </af:panelGroupLayout>
+            </af:panelBox>
+            <af:panelCollection id="pc1" inlineStyle="width:648px;"
+                                binding="#{RechercheAncienEtudbean.tableCollection}">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar">
+                    <af:toolbar id="t2">
+                        <af:button id="b5" icon="/images/new_icon.png"
+                                   action="#{RechercheAncienEtudbean.onNewAncEtud}"/>
+                    </af:toolbar>
+                </f:facet>
+                <f:facet name="statusbar"/>
+                <af:table value="#{bindings.EtudAcnienRO.collectionModel}" var="row"
+                          rows="#{bindings.EtudAcnienRO.rangeSize}"
+                          emptyText="#{bindings.EtudAcnienRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0" selectedRowKeys="#{bindings.EtudAcnienRO.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.EtudAcnienRO.collectionModel.makeCurrent}" rowSelection="single"
+                          fetchSize="#{bindings.EtudAcnienRO.rangeSize}"
+                          filterModel="#{bindings.EtudAcnienROQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.EtudAcnienROQuery.processQuery}" varStatus="vs" id="t1"
+                          scrollPolicy="page" binding="#{RechercheAncienEtudbean.table}">
+                    <af:column sortProperty="#{bindings.EtudAcnienRO.hints.Numero.name}" filterable="true"
+                               sortable="true" headerText="Numéro" id="c1">
+                        <af:outputText value="#{row.Numero}" shortDesc="#{bindings.EtudAcnienRO.hints.Numero.tooltip}"
+                                       id="ot1"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.EtudAcnienRO.hints.Nom.name}" filterable="true" sortable="true"
+                               headerText="#{bindings.EtudAcnienRO.hints.Nom.label}" id="c2">
+                        <af:outputText value="#{row.Nom}" shortDesc="#{bindings.EtudAcnienRO.hints.Nom.tooltip}"
+                                       id="ot2"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.EtudAcnienRO.hints.Prenom.name}" filterable="true"
+                               sortable="true" headerText="Prénom" id="c3"
+                               width="300">
+                        <af:outputText value="#{row.Prenom}" shortDesc="#{bindings.EtudAcnienRO.hints.Prenom.tooltip}"
+                                       id="ot3"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.EtudAcnienRO.hints.DateNaissance.name}" filterable="true"
+                               sortable="true" headerText="Date Naissance" id="c4">
+                        <f:facet name="filter">
+                            <af:inputDate value="#{bindings.EtudAcnienROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                                          id="id2">
+                                <af:convertDateTime pattern="#{bindings.EtudAcnienRO.hints.DateNaissance.format}"/>
+                            </af:inputDate>
+                        </f:facet>
+                        <af:outputText value="#{row.DateNaissance}"
+                                       shortDesc="#{bindings.EtudAcnienRO.hints.DateNaissance.tooltip}" id="ot4">
+                            <af:convertDateTime pattern="#{bindings.EtudAcnienRO.hints.DateNaissance.format}"/>
+                        </af:outputText>
+                    </af:column>
+                </af:table>
+            </af:panelCollection>
+            <af:button text="Sélect" id="b3" action="#{RechercheAncienEtudbean.onSelectAncEtud}"
+                       inlineStyle="margin-left:10px;margin-top:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#ffffff;margin-bottom:15px;">
+                <af:setPropertyListener to="#{pageFlowScope.submitOrcancelEtud}" from="#{'submit'}" type="action"/>
+            </af:button>
+            <af:button text="Annuler" id="b4" action="return_etud"
+                       inlineStyle="margin-left:10px;margin-top:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#ffffff;margin-bottom:15px;">
+                <af:setPropertyListener to="#{pageFlowScope.submitOrcancelEtud}" from="#{'cancel'}" type="action"/>
+            </af:button>
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+                      binding="#{RechercheAncienEtudbean.popup}">
+                <af:dialog id="d2" title="Formulaire d'Ajouter un ancien étudiant"
+                           dialogListener="#{RechercheAncienEtudbean.onDialog}">
+                    <af:panelFormLayout id="pfl2">
+                        <af:inputText value="#{bindings.Numero.inputValue}" label="Numéro"
+                                      required="#{bindings.Numero.hints.mandatory}"
+                                      columns="#{bindings.Numero.hints.displayWidth}"
+                                      maximumLength="#{bindings.Numero.hints.precision}"
+                                      shortDesc="#{bindings.Numero.hints.tooltip}" id="it4">
+                            <f:validator binding="#{bindings.Numero.validator}"/>
+                        </af:inputText>
+                        <af:inputText value="#{bindings.Nom1.inputValue}" label="#{bindings.Nom1.hints.label}"
+                                      required="#{bindings.Nom1.hints.mandatory}"
+                                      columns="#{bindings.Nom1.hints.displayWidth}"
+                                      maximumLength="#{bindings.Nom1.hints.precision}"
+                                      shortDesc="#{bindings.Nom1.hints.tooltip}" id="it5">
+                            <f:validator binding="#{bindings.Nom1.validator}"/>
+                        </af:inputText>
+                        <af:inputText value="#{bindings.Prenom.inputValue}" label="Prénom"
+                                      required="#{bindings.Prenom.hints.mandatory}"
+                                      columns="#{bindings.Prenom.hints.displayWidth}"
+                                      maximumLength="#{bindings.Prenom.hints.precision}"
+                                      shortDesc="#{bindings.Prenom.hints.tooltip}" id="it6">
+                            <f:validator binding="#{bindings.Prenom.validator}"/>
+                        </af:inputText>
+                        <af:inputText value="#{bindings.LieuNaissance.inputValue}"
+                                      label="#{bindings.LieuNaissance.hints.label}"
+                                      required="#{bindings.LieuNaissance.hints.mandatory}"
+                                      columns="#{bindings.LieuNaissance.hints.displayWidth}"
+                                      maximumLength="#{bindings.LieuNaissance.hints.precision}"
+                                      shortDesc="#{bindings.LieuNaissance.hints.tooltip}" id="it8">
+                            <f:validator binding="#{bindings.LieuNaissance.validator}"/>
+                        </af:inputText>
+                        <af:inputText value="#{bindings.Civilite.inputValue}" label="#{bindings.Civilite.hints.label}"
+                                      required="#{bindings.Civilite.hints.mandatory}"
+                                      columns="#{bindings.Civilite.hints.displayWidth}"
+                                      maximumLength="#{bindings.Civilite.hints.precision}"
+                                      shortDesc="#{bindings.Civilite.hints.tooltip}" id="it9">
+                            <f:validator binding="#{bindings.Civilite.validator}"/>
+                        </af:inputText>
+                        <af:selectOneChoice value="#{bindings.Sexe.inputValue}" label="#{bindings.Sexe.label}"
+                                            required="#{bindings.Sexe.hints.mandatory}"
+                                            shortDesc="#{bindings.Sexe.hints.tooltip}" id="soc2">
+                            <f:selectItems value="#{bindings.Sexe.items}" id="si2"/>
+                            <f:validator binding="#{bindings.Sexe.validator}"/>
+                        </af:selectOneChoice>
+                        <af:inputDate value="#{bindings.DateNaissance.inputValue}"
+                                      label="#{bindings.DateNaissance.hints.label}"
+                                      required="#{bindings.DateNaissance.hints.mandatory}"
+                                      columns="#{bindings.DateNaissance.hints.displayWidth}"
+                                      shortDesc="#{bindings.DateNaissance.hints.tooltip}" id="id1">
+                            <f:validator binding="#{bindings.DateNaissance.validator}"/>
+                            <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+                        </af:inputDate>
+                        <af:selectOneChoice value="#{bindings.IdPays.inputValue}" label="#{bindings.IdPays.label}"
+                                            required="#{bindings.IdPays.hints.mandatory}"
+                                            shortDesc="#{bindings.IdPays.hints.tooltip}" id="soc1">
+                            <f:selectItems value="#{bindings.IdPays.items}" id="si1"/>
+                            <f:validator binding="#{bindings.IdPays.validator}"/>
+                        </af:selectOneChoice>
+                        <af:inputText value="#{bindings.NeVers.inputValue}" label="#{bindings.NeVers.hints.label}"
+                                      required="#{bindings.NeVers.hints.mandatory}"
+                                      columns="#{bindings.NeVers.hints.displayWidth}"
+                                      maximumLength="#{bindings.NeVers.hints.precision}"
+                                      shortDesc="#{bindings.NeVers.hints.tooltip}" id="it10">
+                            <f:validator binding="#{bindings.NeVers.validator}"/>
+                        </af:inputText>
+                    </af:panelFormLayout>
+                    <f:facet name="buttonBar"/>
+                    <af:clientListener method="onDialog" type="dialog"/>
+                    <af:serverListener type="onDialogEvent" method="#{RechercheAncienEtudbean.onDialogCancel}"/>
+                </af:dialog>
+            </af:popup>
+        </af:form>
+    <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+    </af:document>
+</f:view>

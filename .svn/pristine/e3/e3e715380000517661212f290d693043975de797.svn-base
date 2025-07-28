@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl5" layout="scroll">
+    <af:panelGroupLayout id="pgl1" layout="horizontal">
+      <af:panelHeader text="Groupe Saisie" id="ph1">
+        <f:facet name="context"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t2">
+            <af:button id="b1" icon="/images/new_icon.png"
+                       actionListener="#{GroupeSaisieBean.OnNewGroupeSaisieClicked}"/>
+            <af:button id="b2" icon="/images/edit_icon.png"/>
+            <af:button id="b3" icon="/images/delete_icon.png"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="menuBar"/>
+        <f:facet name="legend"/>
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{GroupeSaisieBean.groupeSaisiePC}">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="statusbar"/>
+          <af:table value="#{bindings.GroupeSaisieParcours.collectionModel}" var="row"
+                    rows="#{bindings.GroupeSaisieParcours.rangeSize}"
+                    emptyText="#{bindings.GroupeSaisieParcours.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0"
+                    selectedRowKeys="#{bindings.GroupeSaisieParcours.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.GroupeSaisieParcours.collectionModel.makeCurrent}"
+                    rowSelection="single" fetchSize="#{bindings.GroupeSaisieParcours.rangeSize}"
+                    filterModel="#{bindings.GroupeSaisieParcoursQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.GroupeSaisieParcoursQuery.processQuery}" varStatus="vs" id="t1"
+                    columnStretching="last" binding="#{GroupeSaisieBean.groupeSaisieTable}">
+            <af:column sortProperty="#{bindings.GroupeSaisieParcours.hints.LibelleLong.name}" filterable="true"
+                       sortable="true" headerText="Libelle" id="c1" width="300" inlineStyle="font-size:large;">
+              <af:outputText value="#{row.LibelleLong}"
+                             shortDesc="#{bindings.GroupeSaisieParcours.hints.LibelleLong.tooltip}" id="ot1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.GroupeSaisieParcours.hints.LibelleCourt.name}" filterable="true"
+                       sortable="true" headerText="Abreviation" id="c2" width="200" inlineStyle="font-size:large;">
+              <af:outputText value="#{row.LibelleCourt}"
+                             shortDesc="#{bindings.GroupeSaisieParcours.hints.LibelleCourt.tooltip}" id="ot2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.GroupeSaisieParcours.hints.Niveauformationparcours.name}"
+                       filterable="true" sortable="true" headerText="Nive Formation Parcours" id="c3"
+                       inlineStyle="font-size:large;" width="400">
+              <af:outputText value="#{row.Niveauformationparcours}"
+                             shortDesc="#{bindings.GroupeSaisieParcours.hints.Niveauformationparcours.tooltip}"
+                             id="ot5"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+        <f:facet name="info"/>
+      </af:panelHeader>
+      <af:spacer width="10" height="10" id="s1"/>
+      <af:panelGroupLayout id="pgl2" layout="vertical">
+        <af:button actionListener="#{bindings.GetEtudiant.execute}" text="Les Etudiants"
+                   disabled="#{!bindings.GetEtudiant.enabled}" id="b5"
+                   inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                   icon="/images/user_male_48px.png"/>
+        <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="statusbar"/>
+          <af:table value="#{bindings.EtudiantGroupeSaisieEtudiant.collectionModel}" var="row"
+                    rows="#{bindings.EtudiantGroupeSaisieEtudiant.rangeSize}"
+                    emptyText="#{bindings.EtudiantGroupeSaisieEtudiant.viewable ? 'Tout les etudiants sont déja dans des groupes de saisie.' : 'Accé non autorisé.'}"
+                    rowBandingInterval="0"
+                    selectedRowKeys="#{bindings.EtudiantGroupeSaisieEtudiant.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.EtudiantGroupeSaisieEtudiant.collectionModel.makeCurrent}"
+                    rowSelection="single" fetchSize="#{bindings.EtudiantGroupeSaisieEtudiant.rangeSize}"
+                    filterModel="#{bindings.EtudiantGroupeSaisieEtudiantQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.EtudiantGroupeSaisieEtudiantQuery.processQuery}" varStatus="vs" id="t5"
+                    partialTriggers="::b5 :::b5" binding="#{GroupeSaisieBean.etudiantTable}" columnStretching="last">
+            <af:column sortProperty="#{bindings.EtudiantGroupeSaisieEtudiant.hints.SelectedStudent.name}" id="c7"
+                       align="center" inlineStyle="font-size:large;">
+              <af:selectBooleanCheckbox value="#{row.bindings.SelectedStudent.inputValue}"
+                                        label="#{row.bindings.SelectedStudent.label}"
+                                        shortDesc="#{bindings.EtudiantGroupeSaisieEtudiant.hints.SelectedStudent.tooltip}"
+                                        id="sbc1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtudiantGroupeSaisieEtudiant.hints.Numero.name}" filterable="true"
+                       sortable="true" headerText="Numéro Etudiant" id="c8" inlineStyle="font-size:large;" width="150">
+              <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtudiantGroupeSaisieEtudiant.hints.PrenomNom.name}" filterable="true"
+                       sortable="true" headerText="Prenom &amp; Nom" id="c9" width="100">
+              <af:outputFormatted value="#{row.bindings.PrenomNom.inputValue}" id="of2"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:panelGroupLayout>
+      <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:1560px)"
+                             propertyName="layout"/>
+     <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:1200px)"
+                             propertyName="layout"/>
+    <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:850px)"
+                             propertyName="layout"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl4" layout="vertical" halign="center" inlineStyle="margin-top:20px">
+      <af:button id="b4" icon="/images/save_close_48px.png"
+                 actionListener="#{GroupeSaisieBean.OnSaveGroupeSaisieEtudiantClicked}" partialSubmit="true"
+                 inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                 text="Enregistrer"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl3" layout="vertical">
+      <af:button actionListener="#{bindings.GetGRoupeSaisieEtudiant.execute}" text="Groupe Saisie Etudiant"
+                 disabled="#{!bindings.GetGRoupeSaisieEtudiant.enabled}" id="b6" icon="/images/save_close_48px.png"
+                 inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"/>
+      <af:table value="#{bindings.GroupeSaisieEtudiantROVO.collectionModel}" var="row"
+                rows="#{bindings.GroupeSaisieEtudiantROVO.rangeSize}"
+                emptyText="#{bindings.GroupeSaisieEtudiantROVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0"
+                selectedRowKeys="#{bindings.GroupeSaisieEtudiantROVO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.GroupeSaisieEtudiantROVO.collectionModel.makeCurrent}"
+                rowSelection="single" fetchSize="#{bindings.GroupeSaisieEtudiantROVO.rangeSize}"
+                filterModel="#{bindings.GroupeSaisieEtudiantROVOQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.GroupeSaisieEtudiantROVOQuery.processQuery}" varStatus="vs" id="t3"
+                columnStretching="last" binding="#{GroupeSaisieBean.groupeSaisieEtudiantTable}" partialTriggers="::b6">
+        <af:column sortProperty="#{bindings.GroupeSaisieEtudiantROVO.hints.LibelleLong.name}" filterable="true"
+                   sortable="true" headerText="Groupe Saisie" id="c5" width="300" inlineStyle="font-size:large;">
+          <af:outputText value="#{row.LibelleLong}"
+                         shortDesc="#{bindings.GroupeSaisieEtudiantROVO.hints.LibelleLong.tooltip}" id="ot3"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.GroupeSaisieEtudiantROVO.hints.Prenomnom.name}" filterable="true"
+                   sortable="true" headerText="Prénom &amp; Nom Etudiant" id="c6" inlineStyle="font-size:large;">
+          <af:outputText value="#{row.Prenomnom}"
+                         shortDesc="#{bindings.GroupeSaisieEtudiantROVO.hints.Prenomnom.tooltip}" id="ot4"/>
+        </af:column>
+      </af:table>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+            binding="#{GroupeSaisieBean.popupNotStudentChekedDet}">
+    <af:dialog id="d2" title="Info !!!" inlineStyle="text-align:center;" type="ok">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Aucun Etudiant sélectioner" id="of3" inlineStyle="font-size:x-large; color:Red;"/>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+    function OnDialogCancel(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "OnDialogHandler", {},immediate);
+            evt.cancel();
+            }
+        }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{GroupeSaisieBean.popupNewGroupeSaisie}">
+    <af:dialog id="d1" title="Create New Groupe Saisie" inlineStyle="font-size:large;"
+               dialogListener="#{GroupeSaisieBean.OnDialogCreateGroupeSaisieAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl1" inlineStyle="font-size:large;">
+        <af:selectOneChoice value="#{bindings.IdNiveauFormationParcours.inputValue}" label="Niveau Formation Parcours"
+                            required="#{bindings.IdNiveauFormationParcours.hints.mandatory}"
+                            shortDesc="#{bindings.IdNiveauFormationParcours.hints.tooltip}" id="soc3">
+          <f:selectItems value="#{bindings.IdNiveauFormationParcours.items}" id="si3"/>
+          <f:validator binding="#{bindings.IdNiveauFormationParcours.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdCohorte.inputValue}" label="Cohorte"
+                            required="#{bindings.IdCohorte.hints.mandatory}"
+                            shortDesc="#{bindings.IdCohorte.hints.tooltip}" id="soc4">
+          <f:selectItems value="#{bindings.IdCohorte.items}" id="si4"/>
+          <f:validator binding="#{bindings.IdCohorte.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="Libelle"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="Abreviation"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="Utilisateur"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it3">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <af:serverListener type="OnDialogHandler" method="#{GroupeSaisieBean.OnDialogHandler}"/>
+      <af:clientListener type="dialog" method="OnDialogCancel"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

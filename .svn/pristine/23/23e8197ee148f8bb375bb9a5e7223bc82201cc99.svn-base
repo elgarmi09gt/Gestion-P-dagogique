@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="SemestreReDoubleROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.SemestreReDoubleROVORowImpl"
+  ComponentClass="model.readOnlyView.SemestreReDoubleROVOImpl"
+  FetchMode="FETCH_AS_NEEDED"
+  PageIterMode="Full"
+  OrderBy="ID_SEMESTRE">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.SemestreReDoubleROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT    
+    SEMESTRES.ID_SEMESTRE ID_SEMESTRE,    
+    SEMESTRES.LIBELLE_LONG LIBELLE_LONG    
+FROM    
+    SEMESTRES  
+  
+OFFSET 0 ROWS FETCH NEXT 0 ROWS ONLY]]></SQLQuery>
+  <ViewAttribute
+    Name="IdSemestre"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_SEMESTRE"
+    Expression="ID_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdSemestre"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,1056 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE AppModule SYSTEM "jbo_03_01.dtd">
+<!---->
+<AppModule xmlns="http://xmlns.oracle.com/bc4j" Name="evaluationApp" Version="12.2.1.12.24"
+           InheritPersonalization="merge" ClearCacheOnRollback="true" ComponentClass="model.services.evaluationAppImpl"
+           ComponentInterface="model.services.common.evaluationApp">
+    <DesignTime>
+        <Attr Name="_isCodegen" Value="true"/>
+    </DesignTime>
+    <Properties>
+        <SchemaBasedProperties>
+            <LABEL ResId="model.services.evaluationApp_LABEL"/>
+        </SchemaBasedProperties>
+    </Properties>
+    <ViewUsage Name="Parcours" ViewObjectName="model.readOnlyView.ParcoursROVO"/>
+    <ViewUsage Name="Semestres" ViewObjectName="model.readOnlyView.SemestreROVO"/>
+    <ViewUsage Name="HistoriquesStructures" ViewObjectName="model.readOnlyView.HistoriquesStructuresROVO"/>
+    <ViewUsage Name="Sessions" ViewObjectName="model.readOnlyView.SessionsROVO"/>
+    <ViewUsage Name="AnneeUnivers" ViewObjectName="model.readOnlyView.AnneeUniverROVO"/>
+    <ViewUsage Name="Etablissements" ViewObjectName="model.readOnlyView.EtablissementROVO"/>
+    <ViewUsage Name="Departements" ViewObjectName="model.readOnlyView.DepartementsROVO"/>
+    <ViewUsage Name="CalendrierDeliberationsRO" ViewObjectName="model.readOnlyView.CalendrierDeliberationVO"/>
+    <ViewUsage Name="CalendrierDeliberations" ViewObjectName="model.updatableview.CalendrierDeliberationVO"/>
+    <ViewUsage Name="NiveauFormationParcours" ViewObjectName="model.readOnlyView.NiveauFormationParcours"/>
+    <ViewUsage Name="CalendrierDeliberationVO" ViewObjectName="model.updatableview.CalendrierDeliberationVO"/>
+    <ViewUsage Name="ParcoursParamSaisieNoteEc" ViewObjectName="model.readOnlyView.ParcoursParamSaisieNoteEc"/>
+    <ViewUsage Name="FiliereUeSemestres" ViewObjectName="model.readOnlyView.FiliereUeSemestreROVO"/>
+    <ViewUsage Name="FiliereUeSemestreEcs" ViewObjectName="model.readOnlyView.FiliereUeSemestreEcROVO"/>
+    <ViewUsage Name="TypeControles" ViewObjectName="model.readOnlyView.TypeControleROVO"/>
+    <ViewUsage Name="ModeControles" ViewObjectName="model.readOnlyView.ModeControleROVO"/>
+    <ViewUsage Name="ModeControleEc" ViewObjectName="model.updatableview.ModeControleEcVO"/>
+    <ViewUsage Name="ModeControleEcs" ViewObjectName="model.updatableview.ModeControleEcVO"/>
+    <ViewUsage Name="DélibérationAnnuelle" ViewObjectName="model.readOnlyView.EtudiantResultAnnuelDelibROVO"/>
+    <ViewUsage Name="UeEvalRO" ViewObjectName="model.readOnlyView.UeEvalROVO"/>
+    <ViewUsage Name="EcEvalRO" ViewObjectName="model.readOnlyView.EcEvalROVO"/>
+    <ViewUsage Name="ModeControleEvalRO" ViewObjectName="model.readOnlyView.ModeControleEvalROVO"/>
+    <ViewUsage Name="TypeControle" ViewObjectName="model.updatableview.TypeControleVO"/>
+    <ViewUsage Name="NotesModeEnseignementInterVO1" ViewObjectName="model.updatableview.NotesModeEnseignementInterVO"/>
+    <ViewUsage Name="SaisieNotesGroupesSaisieLOV" ViewObjectName="model.readOnlyView.SaisieNotesGroupesSaisieLOV"/>
+    <ViewUsage Name="SaisieNotesFiltresLOV" ViewObjectName="model.readOnlyView.SaisieNotesFiltresLOV"/>
+    <ViewUsage Name="NotesModeEnseignement" ViewObjectName="model.updatableview.NotesModeEnseignementVO"/>
+    <ViewUsage Name="UeDelibRO" ViewObjectName="model.readOnlyView.UeDelibROVO"/>
+    <ViewUsage Name="EtudiantResultUeDelibRO" ViewObjectName="model.readOnlyView.EtudiantResultUeDelibROVO"/>
+    <ViewUsage Name="FiltreAnuelleROVO1" ViewObjectName="model.readOnlyView.FiltreAnuelleROVO"/>
+    <ViewUsage Name="FiltreModeDelibAn1" ViewObjectName="model.readOnlyView.FiltreModeDelibAn"/>
+    <ViewUsage Name="EtudiantSemestreDeliberationAn"
+               ViewObjectName="model.readOnlyView.EtudiantSemestreDeliberationAn"/>
+    <ViewUsage Name="DelibSemRepCritereCompLOV" ViewObjectName="model.readOnlyView.DelibSemRepCritereCompLOV"/>
+    <ViewUsage Name="DelibSemRepFiltreLOV" ViewObjectName="model.readOnlyView.DelibSemRepFiltreLOV"/>
+    <ViewUsage Name="DelibSemRepecherSurLOV" ViewObjectName="model.readOnlyView.DelibSemRepecherSurLOV"/>
+    <ViewUsage Name="DeliberationSemestrielle" ViewObjectName="model.readOnlyView.DeliberationSemestrielle"/>
+    <ViewUsage Name="EtudiantNoteInter" ViewObjectName="model.readOnlyView.EtudiantNoteInter"/>
+    <ViewUsage Name="ListeEtudiantInsc" ViewObjectName="model.readOnlyView.ListeEtudiantInsc"/>
+    <ViewUsage Name="ListeModeControl" ViewObjectName="model.readOnlyView.ListeModeControl"/>
+    <ViewUsage Name="ListeEc" ViewObjectName="model.readOnlyView.ListeEc"/>
+    <ViewUsage Name="DelibSemEtudiant" ViewObjectName="model.readOnlyView.DelibSemEtudiantROVO"/>
+    <ViewUsage Name="DelibSemFilEc" ViewObjectName="model.readOnlyView.DelibSemFilEcROVO"/>
+    <ViewUsage Name="DelibSemFilUe" ViewObjectName="model.readOnlyView.DelibSemFilUeROVO"/>
+    <ViewUsage Name="DelibSemInsPedSemUe" ViewObjectName="model.readOnlyView.DelibSemInsPedSemUeROVO"/>
+    <ViewUsage Name="DelibSemNoteEc" ViewObjectName="model.readOnlyView.DelibSemNoteEcROVO"/>
+    <ViewUsage Name="DelibResUe" ViewObjectName="model.readOnlyView.DelibResUeROVO"/>
+    <ViewUsage Name="DelibSemInsPedSem" ViewObjectName="model.readOnlyView.DelibSemInsPedSem"/>
+    <ViewUsage Name="DelibSemResSem" ViewObjectName="model.readOnlyView.DelibSemResSemROVO"/>
+    <ViewUsage Name="DelibUeModeCntrl" ViewObjectName="model.readOnlyView.DelibUeModeCntrlROVO"/>
+    <ViewUsage Name="DelibUeNoteModeCntrl" ViewObjectName="model.readOnlyView.DelibUeNoteModeCntrl"/>
+    <ViewUsage Name="DelibResEc" ViewObjectName="model.readOnlyView.DelibResEc"/>
+    <ViewUsage Name="GroupeSaisie" ViewObjectName="model.updatableview.GroupeSaisieVO"/>
+    <ViewUsage Name="EtudiantGroupeSaisieEtudiant" ViewObjectName="model.readOnlyView.EtudiantGroupeSaisieEtudiant"/>
+    <ViewUsage Name="GroupeSaisieEtudiant" ViewObjectName="model.updatableview.GroupeSaisieEtudiantVO"/>
+    <ViewUsage Name="Structures" ViewObjectName="model.updatableview.StructuresVO"/>
+    <ViewUsage Name="UtilisateurStructure" ViewObjectName="model.readOnlyView.UtilisateurStructureVO"/>
+    <ViewUsage Name="AccesNiveauFormation" ViewObjectName="model.readOnlyView.AccesNiveauFormationROVO"/>
+    <ViewUsage Name="UtilisateurNiveauFormation" ViewObjectName="model.readOnlyView.UtilisateurNiveauFormationROVO"/>
+    <ViewUsage Name="UtilisateurNiveauxFormationsVO"
+               ViewObjectName="model.updatableview.UtilisateurNiveauxFormationsVO"/>
+    <ViewUsage Name="GroupeSaisieEtudiantROVO" ViewObjectName="model.readOnlyView.GroupeSaisieEtudiantROVO"/>
+    <ViewUsage Name="GroupeSaisieParcours" ViewObjectName="model.readOnlyView.GroupeSaisieParcoursROVO"/>
+    <ViewUsage Name="UeNiveauFormationUtilisateursROVO"
+               ViewObjectName="model.readOnlyView.UeNiveauFormationUtilisateursROVO"/>
+    <ViewUsage Name="UtilisFiliereUeSemestreVO" ViewObjectName="model.updatableview.UtilisFiliereUeSemestreVO"/>
+    <ViewUsage Name="UtilisFiliereUeSemestreEcVO" ViewObjectName="model.updatableview.UtilisFiliereUeSemestreEcVO"/>
+    <ViewUsage Name="AccesUeList" ViewObjectName="model.readOnlyView.AccesUeList"/>
+    <ViewUsage Name="UtilisateurAccesUeROVO" ViewObjectName="model.readOnlyView.UtilisateurAccesUeROVO"/>
+    <ViewUsage Name="EcNiveauFormationUtilisateurROVO"
+               ViewObjectName="model.readOnlyView.EcNiveauFormationUtilisateurROVO"/>
+    <ViewUsage Name="AccesEcList" ViewObjectName="model.readOnlyView.AccesEcList"/>
+    <ViewUsage Name="UtilisateursAccesEcsROVO" ViewObjectName="model.readOnlyView.UtilisateursAccesEcsROVO"/>
+    <ViewUsage Name="IsEcAccesAllowedROVO" ViewObjectName="model.readOnlyView.IsEcAccesAllowedROVO"/>
+    <ViewUsage Name="IsUeAccesAllowedROVO" ViewObjectName="model.readOnlyView.IsUeAccesAllowedROVO"/>
+    <ViewUsage Name="OptionROVO" ViewObjectName="model.readOnlyView.OptionROVO"/>
+    <ViewUsage Name="SpecialiteROVO1" ViewObjectName="model.readOnlyView.SpecialiteROVO"/>
+    <ViewUsage Name="IsNivFormAccesAllowed" ViewObjectName="model.readOnlyView.IsNivFormAccesAllowed"/>
+    <ViewUsage Name="JuryROVO" ViewObjectName="model.readOnlyView.JuryROVO"/>
+    <ViewUsage Name="JuryVO" ViewObjectName="model.updatableview.JuryVO"/>
+    <ViewUsage Name="UtilisateursJuryVO" ViewObjectName="model.updatableview.UtilisateursJuryVO"/>
+    <ViewUsage Name="IsJuryAffectedROVO" ViewObjectName="model.readOnlyView.IsJuryAffectedROVO"/>
+    <ViewUsage Name="JuryRoleROVO" ViewObjectName="model.readOnlyView.JuryRoleROVO"/>
+    <ViewUsage Name="IsJuryPresidentExist" ViewObjectName="model.readOnlyView.IsJuryPresidentExist"/>
+    <ViewUsage Name="IsResponsableUeExist" ViewObjectName="model.readOnlyView.IsResponsableUeExist"/>
+    <ViewUsage Name="IsEcResponsableExist" ViewObjectName="model.readOnlyView.IsEcResponsableExist"/>
+    <ViewUsage Name="UtilisateurJuryROVO1" ViewObjectName="model.readOnlyView.UtilisateurJuryROVO"/>
+    <ViewUsage Name="UtilisateurJuryROVO2" ViewObjectName="model.readOnlyView.UtilisateurJuryROVO"/>
+    <ViewUsage Name="ReglesCompensation" ViewObjectName="model.readOnlyView.ReglesCompensationROVO"/>
+    <ViewUsage Name="NivFormParcReglCompens" ViewObjectName="model.updatableview.NivFormParcReglCompensVO"/>
+    <ViewUsage Name="IsCompensedRuleParcoursExist" ViewObjectName="model.readOnlyView.IsCompensedRuleParcoursExist"/>
+    <ViewUsage Name="EtudiantReleves" ViewObjectName="model.readOnlyView.EtudiantReleves"/>
+    <ViewUsage Name="EtudiantAttestation" ViewObjectName="model.readOnlyView.EtudiantAttestation"/>
+    <ViewUsage Name="Documents" ViewObjectName="model.readOnlyView.DocumentsROVO"/>
+    <ViewUsage Name="UserByUserName" ViewObjectName="model.readOnlyView.UserByUserName"/>
+    <ViewUsage Name="TextLoisVO" ViewObjectName="model.updatableview.TextLoisVO"/>
+    <ViewUsage Name="TextsLoisROVO" ViewObjectName="model.readOnlyView.TextsLoisROVO"/>
+    <ViewUsage Name="DeliberationStaticList" ViewObjectName="model.readOnlyView.DeliberationStaticList"/>
+    <ViewUsage Name="IsUsedFormationText" ViewObjectName="model.readOnlyView.IsUsedFormationText"/>
+    <ViewUsage Name="FormationByStructure" ViewObjectName="model.readOnlyView.FormationByStructure"/>
+    <ViewUsage Name="TextLoisByStructure" ViewObjectName="model.readOnlyView.TextLoisByStructure"/>
+    <ViewUsage Name="IsFormationTextIs" ViewObjectName="model.readOnlyView.IsFormationTextIs"/>
+    <ViewUsage Name="IsStructureTextExist" ViewObjectName="model.readOnlyView.IsStructureTextExist"/>
+    <ViewUsage Name="TextLoiFormationROVO" ViewObjectName="model.readOnlyView.TextLoiFormationROVO"/>
+    <ViewUsage Name="TextLoisHistoriqueStrVO" ViewObjectName="model.updatableview.TextLoisHistoriqueStrVO"/>
+    <ViewUsage Name="ReglesAnonymatVO" ViewObjectName="model.updatableview.ReglesAnonymatVO"/>
+    <ViewUsage Name="IsRuleUsed" ViewObjectName="model.readOnlyView.IsRuleUsed"/>
+    <ViewUsage Name="gerRuleUsed" ViewObjectName="model.readOnlyView.gerRuleUsed"/>
+    <ViewUsage Name="AnonymatVO" ViewObjectName="model.updatableview.AnonymatVO"/>
+    <ViewUsage Name="AnonymatVO1" ViewObjectName="model.updatableview.AnonymatVO"/>
+    <ViewUsage Name="StudentParcrsAnSemSess" ViewObjectName="model.readOnlyView.StudentParcrsAnSemSess"/>
+    <ViewUsage Name="GenAnonymatVO" ViewObjectName="model.updatableview.GenAnonymatVO"/>
+    <ViewUsage Name="IsExistEtuAno" ViewObjectName="model.readOnlyView.IsExistEtuAno"/>
+    <ViewUsage Name="UsedAno" ViewObjectName="model.readOnlyView.UsedAno"/>
+    <ViewUsage Name="GenAnonymatROVO" ViewObjectName="model.readOnlyView.GenAnonymatROVO"/>
+    
+  <ViewUsage
+    Name="EcROVO"
+    ViewObjectName="model.readOnlyView.EcROVO"/><ViewUsage Name="EcEvalTypeCtrlRO" ViewObjectName="model.readOnlyView.EcEvalTypeCtrlROVO"/>
+    <ViewUsage Name="EcEvalTypeCtrlModeCtrlRO" ViewObjectName="model.readOnlyView.EcEvalTypeCtrlModeCtrlROVO"/>
+    <ViewUsage
+        Name="AnonymatExecuteRO"
+        ViewObjectName="model.readOnlyView.AnonymatExecuteROVO"/>
+    <ViewUsage
+        Name="NoteModeEnsInterGenAnonymRO"
+        ViewObjectName="model.readOnlyView.NoteModeEnsInterGenAnonymROVO"/>
+    <ViewUsage
+        Name="NoteModeEnsGenAnonymROVO2"
+        ViewObjectName="model.readOnlyView.NoteModeEnsGenAnonymROVO"/>
+    <ViewUsage
+        Name="isClosedInscription"
+        ViewObjectName="model.readOnlyView.isClosedInscription"/>
+    <ViewUsage
+        Name="isParametredCalendar"
+        ViewObjectName="model.readOnlyView.isParametredCalendar"/>
+    <ViewUsage
+        Name="GenAnonymatNewRO"
+        ViewObjectName="model.readOnlyView.GenAnonymatNewROVO"/>
+    <ViewUsage
+        Name="Etudiants"
+        ViewObjectName="model.updatableview.EtudiantsVO"/>
+    <ViewUsage
+        Name="AnneeUniverROVO"
+        ViewObjectName="model.readOnlyView.AnneeUniverROVO"/>
+    <ViewUsage
+        Name="AnneesUniversVO"
+        ViewObjectName="model.updatableview.AnneesUniversVO"/>
+    <ViewUsage
+        Name="AnonymatParcours"
+        ViewObjectName="model.readOnlyView.AnonymatParcoursROVO"/>
+    <ViewUsage
+        Name="AnoGenParcours"
+        ViewObjectName="model.readOnlyView.AnoGenParcours"/>
+    <ViewUsage
+        Name="AllInteFilEcROVO"
+        ViewObjectName="model.readOnlyView.AllInteFilEcROVO"/>
+    <ViewUsage
+        Name="AllEcFilUe"
+        ViewObjectName="model.readOnlyView.AllEcFilUe"/>
+    <ViewUsage
+        Name="ReglesCompensationPArcoursROVO"
+        ViewObjectName="model.readOnlyView.ReglesCompensationPArcoursROVO"/>
+    <ViewUsage
+        Name="IsMaquetteUsedROVO"
+        ViewObjectName="model.readOnlyView.IsMaquetteUsedROVO"/>
+    <ViewUsage
+        Name="DelibSemUeEtudiant"
+        ViewObjectName="model.assoc.DelibSemUeEtudiantROVO"/>
+    <ViewUsage
+        Name="isEtudiantNumeroValide"
+        ViewObjectName="model.readOnlyView.isEtudiantNumeroValide"/>
+    <ViewUsage
+        Name="DetailsSemestreEtudiant"
+        ViewObjectName="model.readOnlyView.DetailsSemestreEtudiant"/>
+    <ViewUsage
+        Name="DetailsAnnEtudiant"
+        ViewObjectName="model.readOnlyView.DetailsAnnEtudiant"/>
+    <ViewUsage
+        Name="isNoteModeEnsInterExist1"
+        ViewObjectName="model.readOnlyView.isNoteModeEnsInterExist"/>
+    <ViewUsage
+        Name="HistoriquesStructuresVO1"
+        ViewObjectName="model.updatableview.HistoriquesStructuresVO"/>
+    <ViewUsage
+        Name="GroupeSaisieEtudiantROVO1"
+        ViewObjectName="model.readOnlyView.GroupeSaisieEtudiantROVO"/>
+    <ViewUsage
+        Name="isSess1Closed1"
+        ViewObjectName="model.readOnlyView.isSess1Closed"/>
+    <ViewUsage
+        Name="isJuryPdtROVO"
+        ViewObjectName="model.readOnlyView.isJuryPdtROVO"/>
+    <ViewUsage
+        Name="CalParcoursAnnee"
+        ViewObjectName="model.readOnlyView.CalParcoursAnnee"/>
+    <ViewUsage
+        Name="IsCalExist"
+        ViewObjectName="model.readOnlyView.IsCalExist"/>
+    <ViewUsage
+        Name="UtilisateursROVO1"
+        ViewObjectName="model.readOnlyView.UtilisateursROVO"/>
+    <ViewUsage
+        Name="IsResponsableFilUe"
+        ViewObjectName="model.readOnlyView.IsResponsableFilUe"/>
+    <ViewUsage
+        Name="IsResponsableFilEc"
+        ViewObjectName="model.readOnlyView.IsResponsableFilEc"/>
+    <ViewUsage
+        Name="StructureAcces"
+        ViewObjectName="model.readOnlyView.StructureAccesROVO"/>
+    <ViewUsage
+        Name="IsDelibCalendier"
+        ViewObjectName="model.readOnlyView.IsDelibCalendierROVO"/>
+    <ViewUsage
+        Name="UtilisateurNiveauFormationRO1"
+        ViewObjectName="model.readOnlyView.UtilisateurNiveauFormationRO"/>
+    <ViewUsage
+        Name="GetRoleROVO"
+        ViewObjectName="model.readOnlyView.GetRoleROVO"/>
+    <ViewUsage
+        Name="IsUserRoleExistROVO"
+        ViewObjectName="model.readOnlyView.IsUserRoleExistROVO"/>
+    <ViewUsage
+        Name="IsAnParcoursClosed"
+        ViewObjectName="model.readOnlyView.IsAnParcoursClosed"/>
+    <ViewUsage
+        Name="IsDelibDefEnd"
+        ViewObjectName="model.readOnlyView.IsDelibDefEnd"/>
+    <ViewUsage
+        Name="IsDelibDefStart"
+        ViewObjectName="model.readOnlyView.IsDelibDefStart"/>
+    <ViewUsage
+        Name="IsDelibProvEnd"
+        ViewObjectName="model.readOnlyView.IsDelibProvEnd"/>
+    <ViewUsage
+        Name="IsDelibProvStart"
+        ViewObjectName="model.readOnlyView.IsDelibProvStart"/>
+    <ViewUsage
+        Name="IsReclStart"
+        ViewObjectName="model.readOnlyView.IsReclStart"/>
+    <ViewUsage
+        Name="IsReclEnd"
+        ViewObjectName="model.readOnlyView.IsReclEnd"/>
+    <ViewLinkUsage Name="EtablissementToDepartement1" ViewLinkObjectName="model.viewlink.EtablissementToDepartement"
+                   SrcViewUsageName="model.services.evaluationApp.Etablissements"
+                   DstViewUsageName="model.services.evaluationApp.Departements" Reversed="false"/>
+    <ViewLinkUsage Name="NiveauFormationParcourToCalendrierDelib1"
+                   ViewLinkObjectName="model.viewlink.NiveauFormationParcourToCalendrierDelib"
+                   SrcViewUsageName="model.services.evaluationApp.NiveauFormationParcours"
+                   DstViewUsageName="model.services.evaluationApp.CalendrierDeliberationVO" Reversed="false"/>
+    <ViewLinkUsage Name="ParcoursParamSaisieNoteEcToFiliereUeSemestre1"
+                   ViewLinkObjectName="model.viewlink.ParcoursParamSaisieNoteEcToFiliereUeSemestre"
+                   SrcViewUsageName="model.services.evaluationApp.ParcoursParamSaisieNoteEc"
+                   DstViewUsageName="model.services.evaluationApp.FiliereUeSemestres" Reversed="false"/>
+    <ViewLinkUsage Name="FiliereUeSemestreToFiliereUeSemestreEc1"
+                   ViewLinkObjectName="model.viewlink.FiliereUeSemestreToFiliereUeSemestreEc"
+                   SrcViewUsageName="model.services.evaluationApp.FiliereUeSemestres"
+                   DstViewUsageName="model.services.evaluationApp.FiliereUeSemestreEcs" Reversed="false"/>
+    <ViewLinkUsage Name="FiliereUeSemestreEcToModeControleEc1"
+                   ViewLinkObjectName="model.viewlink.FiliereUeSemestreEcToModeControleEc"
+                   SrcViewUsageName="model.services.evaluationApp.FiliereUeSemestreEcs"
+                   DstViewUsageName="model.services.evaluationApp.ModeControleEcs" Reversed="false"/>
+    <ViewLinkUsage Name="UeEvalROToEcEvalROVL1" ViewLinkObjectName="model.viewlink.UeEvalROToEcEvalROVL"
+                   SrcViewUsageName="model.services.evaluationApp.UeEvalRO"
+                   DstViewUsageName="model.services.evaluationApp.EcEvalRO" Reversed="false"/>
+    <ViewLinkUsage Name="EcEvalROToTypeControleEvalROVL1"
+                   ViewLinkObjectName="model.viewlink.EcEvalROToTypeControleEvalROVL"
+                   SrcViewUsageName="model.services.evaluationApp.EcEvalRO"
+                   DstViewUsageName="model.services.evaluationApp.ModeControleEvalRO" Reversed="false"/>
+    <ViewLinkUsage Name="JuryToUtilisateurJuryVL1" ViewLinkObjectName="model.viewlink.JuryToUtilisateurJuryVL"
+                   SrcViewUsageName="model.services.evaluationApp.JuryROVO"
+                   DstViewUsageName="model.services.evaluationApp.UtilisateurJuryROVO2" Reversed="false"/>
+    <ViewLinkUsage Name="RegleToAnonymatVL1" ViewLinkObjectName="model.viewlink.RegleToAnonymatVL"
+                   SrcViewUsageName="model.services.evaluationApp.ReglesAnonymatVO"
+                   DstViewUsageName="model.services.evaluationApp.AnonymatVO1" Reversed="false"/>
+    <ViewLinkUsage Name="EcEvalToEcEvalTypeCtrlROVL1" ViewLinkObjectName="model.viewlink.EcEvalToEcEvalTypeCtrlROVL"
+                   SrcViewUsageName="model.services.evaluationApp.EcEvalRO"
+                   DstViewUsageName="model.services.evaluationApp.EcEvalTypeCtrlRO" Reversed="false"/>
+    <ViewLinkUsage Name="EcEvalTypeCtrlToModeCtrlROVOVL1"
+                   ViewLinkObjectName="model.viewlink.EcEvalTypeCtrlToModeCtrlROVOVL"
+                   SrcViewUsageName="model.services.evaluationApp.EcEvalTypeCtrlRO"
+                   DstViewUsageName="model.services.evaluationApp.EcEvalTypeCtrlModeCtrlRO" Reversed="false"/>
+    <ViewLinkUsage
+        Name="StructureToHStructureVL1"
+        ViewLinkObjectName="model.viewlink.StructureToHStructureVL"
+        SrcViewUsageName="model.services.evaluationApp.Structures"
+        DstViewUsageName="model.services.evaluationApp.HistoriquesStructuresVO1"
+        Reversed="false"/>
+    <ViewLinkUsage
+        Name="GroupeSaisiePcrsToGroupeSaisieEtdVL1"
+        ViewLinkObjectName="model.viewlink.GroupeSaisiePcrsToGroupeSaisieEtdVL"
+        SrcViewUsageName="model.services.evaluationApp.GroupeSaisieParcours"
+        DstViewUsageName="model.services.evaluationApp.GroupeSaisieEtudiantROVO1"
+        Reversed="false"/>
+    <ViewLinkUsage
+        Name="UserToStructureVL1"
+        ViewLinkObjectName="model.viewlink.UserToStructureVL"
+        SrcViewUsageName="model.services.evaluationApp.Structures"
+        DstViewUsageName="model.services.evaluationApp.UtilisateursROVO1"
+        Reversed="false"/>
+    <ViewLinkUsage
+        Name="UtilisateurToUtilisateurNiveau1"
+        ViewLinkObjectName="model.viewlink.UtilisateurToUtilisateurNiveau"
+        SrcViewUsageName="model.services.evaluationApp.UtilisateursROVO1"
+        DstViewUsageName="model.services.evaluationApp.UtilisateurNiveauFormationRO1"
+        Reversed="false"/>
+    <ClientInterface Name="__clientInterface">
+        <Method Name="InitialiserNoteModeEns" MethodName="InitialiserNoteModeEns">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="fil_ue_sem_ec" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier_deliberation" Type="java.lang.Integer"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="initialiserNoteModeEnsFiliere" MethodName="initialiserNoteModeEnsFiliere">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="anne_univers" Type="java.lang.Integer"/>
+            <Parameter Name="niv_fomr_parcours" Type="java.lang.Integer"/>
+            <Parameter Name="session_id" Type="java.lang.Integer"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="isCosedAllSemestre" MethodName="isCosedAllSemestre">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="annee" Type="java.lang.Integer"/>
+            <Parameter Name="session" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="InitialiserNoteModeEns" MethodName="InitialiserNoteModeEns">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="fil_ue_sem_ec" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier_deliberation" Type="java.lang.Integer"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="initialiserNoteModeEnsFiliere" MethodName="initialiserNoteModeEnsFiliere">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="anne_univers" Type="java.lang.Integer"/>
+            <Parameter Name="niv_fomr_parcours" Type="java.lang.Integer"/>
+            <Parameter Name="session_id" Type="java.lang.Integer"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="isCosedAllSemestre" MethodName="isCosedAllSemestre">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="annee" Type="java.lang.Integer"/>
+            <Parameter Name="session" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="isPublishedAllSemestre" MethodName="isPublishedAllSemestre">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="annee" Type="java.lang.Integer"/>
+            <Parameter Name="session" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="DeliberationAnnuelle" MethodName="DeliberationAnnuelle">
+            <Return Name="_return_type_" Type="oracle.jbo.RowSetIterator"/>
+            <Parameter Name="anne" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="session" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="calculMoyenneSemestrielle" MethodName="calculMoyenneSemestrielle">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="calendrier" Type="java.lang.Long"/>
+            <Parameter Name="utilisateur" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isClosedAllUe" MethodName="isClosedAllUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+            <Parameter Name="semestre" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="isDelibratedSemestre" MethodName="isDelibratedSemestre">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Long"/>
+            <Parameter Name="calendrier" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="clotureSaisieNotes" MethodName="clotureSaisieNotes">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fil_sem_ec" Type="java.lang.Long"/>
+            <Parameter Name="type_control" Type="java.lang.Long"/>
+            <Parameter Name="calendrier" Type="java.lang.Long"/>
+            <Parameter Name="action" Type="java.lang.String"/>
+            <Parameter Name="utilisateur" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="clotureSaisieNotesInter" MethodName="clotureSaisieNotesInter">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fil_sem_ec" Type="java.lang.Long"/>
+            <Parameter Name="type_control" Type="java.lang.Long"/>
+            <Parameter Name="mode_control" Type="java.lang.Long"/>
+            <Parameter Name="calendrier" Type="java.lang.Long"/>
+            <Parameter Name="action" Type="java.lang.String"/>
+            <Parameter Name="utilisateur" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="findAndUpdateNote" MethodName="findAndUpdateNote">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="idNoteModeEns" Type="java.lang.Long"/>
+            <Parameter Name="note" Type="java.lang.Float"/>
+        </Method>
+        <Method Name="findAndUpdateNoteInter" MethodName="findAndUpdateNoteInter">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="idNoteModeEnsInter" Type="java.lang.Long"/>
+            <Parameter Name="note" Type="java.lang.Float"/>
+        </Method>
+        <Method Name="getNotesEtudiants" MethodName="getNotesEtudiants">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="type_ctrl_ec" Type="java.lang.Long"/>
+            <Parameter Name="id_cal_del" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="getNotesEtudiantsModeEns" MethodName="getNotesEtudiantsModeEns">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="type_ctrl" Type="java.lang.Long"/>
+            <Parameter Name="id_cal_del" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isClosedSaisieNotesInter" MethodName="isClosedSaisieNotesInter">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fil_sem_ec" Type="java.lang.Long"/>
+            <Parameter Name="type_control" Type="java.lang.Long"/>
+            <Parameter Name="mode_control" Type="java.lang.Long"/>
+            <Parameter Name="calendrier" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="nbrColonneUe" MethodName="nbrColonneUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="isClosedSaisieNotes" MethodName="isClosedSaisieNotes">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fil_sem_ec" Type="java.lang.Long"/>
+            <Parameter Name="type_control" Type="java.lang.Long"/>
+            <Parameter Name="calendrier" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="clotureUe" MethodName="clotureUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fil_ue" Type="java.lang.Long"/>
+            <Parameter Name="calendrier" Type="java.lang.Long"/>
+            <Parameter Name="action" Type="java.lang.String"/>
+            <Parameter Name="utilisateur" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isClosedUe" MethodName="isClosedUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fileUesem" Type="java.lang.Long"/>
+            <Parameter Name="calendrier" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isDelibrateUe" MethodName="isDelibrateUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fileUesem" Type="java.lang.Long"/>
+            <Parameter Name="calendrier" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="deliberationUe" MethodName="deliberationUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fil_ue" Type="java.lang.Long"/>
+            <Parameter Name="calendrier" Type="java.lang.Long"/>
+            <Parameter Name="action" Type="java.lang.String"/>
+            <Parameter Name="utilisateur" Type="java.lang.Long"/>
+        </Method>
+        <!--Method
+      Name="calculMoyenneSemestrielle"
+      MethodName="calculMoyenneSemestrielle">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+      <Parameter
+        Name="calendrier"
+        Type="java.lang.Long"/>
+      <Parameter
+        Name="utilisateur"
+        Type="java.lang.Long"/>
+    </Method-->
+        <!--Method
+      Name="clotureSemestre"
+      MethodName="clotureSemestre">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.Integer"/>
+      <Parameter
+        Name="parcours"
+        Type="java.lang.Long"/>
+      <Parameter
+        Name="calendrier"
+        Type="java.lang.Long"/>
+      <Parameter
+        Name="semestre"
+        Type="java.lang.Long"/>
+      <Parameter
+        Name="action"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="utilisateur"
+        Type="java.lang.Long"/>
+    </Method-->
+        <!--Method
+      Name="isClosedAnnee"
+      MethodName="isClosedAnnee">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.Integer"/>
+      <Parameter
+        Name="parcours"
+        Type="java.lang.Long"/>
+      <Parameter
+        Name="calendrier"
+        Type="java.lang.Long"/>
+    </Method-->
+        <Method Name="isClosedSemestre" MethodName="isClosedSemestre">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Long"/>
+            <Parameter Name="calendrier" Type="java.lang.Long"/>
+        </Method>
+        <!--Method
+      Name="isDelibratedSemestre"
+      MethodName="isDelibratedSemestre">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.Integer"/>
+      <Parameter
+        Name="parcours"
+        Type="java.lang.Long"/>
+      <Parameter
+        Name="calendrier"
+        Type="java.lang.Long"/>
+    </Method-->
+        <Method Name="isCompensedSemestre" MethodName="isCompensedSemestre">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="delibererSemestre" MethodName="delibererSemestre">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+            <Parameter Name="semestre" Type="java.lang.Integer"/>
+            <Parameter Name="action" Type="java.lang.String"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="isClosedAnnee" MethodName="isClosedAnnee">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="closeSemestre" MethodName="closeSemestre">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+            <Parameter Name="semestre" Type="java.lang.Integer"/>
+            <Parameter Name="action" Type="java.lang.String"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="delibereUe" MethodName="delibereUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fil_ue" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+            <Parameter Name="action" Type="java.lang.String"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="isCosedAllNoteModeEns" MethodName="isCosedAllNoteModeEns">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fil_ue" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="isCosedUe" MethodName="isCosedUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fil_ue" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="calculMoyenneUe" MethodName="calculMoyenneUe">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+            <Parameter Name="fileUesem" Type="java.lang.Integer"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="ClosedUe" MethodName="ClosedUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="fil_ue" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+            <Parameter Name="action" Type="java.lang.String"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="addSelectedToGroupe" MethodName="addSelectedToGroupe">
+            <Return Name="_return_type_" Type="java.util.List" IsGeneric="true">
+                <Element Name="Long" Type="java.lang.Long"/>
+            </Return>
+        </Method>
+        <Method Name="getSelectedNiveauFormations" MethodName="getSelectedNiveauFormations">
+            <Return Name="_return_type_" Type="java.util.List" IsGeneric="true">
+                <Element Name="Long" Type="java.lang.Long"/>
+            </Return>
+        </Method>
+        <Method Name="getSelectedUsers" MethodName="getSelectedUsers">
+            <Return Name="_return_type_" Type="java.util.List" IsGeneric="true">
+                <Element Name="Long" Type="java.lang.Long"/>
+            </Return>
+        </Method>
+        <Method Name="getSelectedUes" MethodName="getSelectedUes">
+            <Return Name="_return_type_" Type="java.util.List" IsGeneric="true">
+                <Element Name="Long" Type="java.lang.Long"/>
+            </Return>
+        </Method>
+        <Method Name="getSelectedEcs" MethodName="getSelectedEcs">
+            <Return Name="_return_type_" Type="java.util.List" IsGeneric="true">
+                <Element Name="Long" Type="java.lang.Long"/>
+            </Return>
+        </Method>
+        <Method Name="getSelectedJury" MethodName="getSelectedJury">
+            <Return Name="_return_type_" Type="java.util.List" IsGeneric="true">
+                <Element Name="Long" Type="java.lang.Long"/>
+            </Return>
+        </Method>
+        <Method Name="UpdateRole" MethodName="UpdateRole">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="idUser" Type="java.lang.Integer"/>
+            <Parameter Name="idJury" Type="java.lang.Integer"/>
+            <Parameter Name="role" Type="java.lang.String"/>
+            <Parameter Name="utimodif" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="UpdateResponsableEc" MethodName="UpdateResponsableEc">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="idUser" Type="java.lang.Integer"/>
+            <Parameter Name="idFilEc" Type="java.lang.Integer"/>
+            <Parameter Name="role" Type="java.lang.String"/>
+            <Parameter Name="utimodif" Type="java.lang.Integer"/>
+            <Parameter Name="id_uti_fil_ec" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="UpdateResponsableUe" MethodName="UpdateResponsableUe">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="idUser" Type="java.lang.Integer"/>
+            <Parameter Name="idFilUe" Type="java.lang.Integer"/>
+            <Parameter Name="role" Type="java.lang.String"/>
+            <Parameter Name="utimodif" Type="java.lang.Integer"/>
+            <Parameter Name="id_uti_fil_ue" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="CompenserSemestre" MethodName="CompenserSemestre">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+            <Parameter Name="semestre" Type="java.lang.Integer"/>
+            <Parameter Name="action" Type="java.lang.String"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="compenser" MethodName="compenser">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="anne" Type="java.lang.Integer"/>
+            <Parameter Name="calendrier" Type="java.lang.Integer"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="UpdateResultat" MethodName="UpdateResultat">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="anne_univers" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="utilisateur" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="getSelectedLois" MethodName="getSelectedLois">
+            <Return Name="_return_type_" Type="java.util.List" IsGeneric="true">
+                <Element Name="Long" Type="java.lang.Long"/>
+            </Return>
+        </Method>
+        <Method Name="getSelectedParcours" MethodName="getSelectedParcours">
+            <Return Name="_return_type_" Type="java.util.List" IsGeneric="true">
+                <Element Name="Long" Type="java.lang.Long"/>
+            </Return>
+        </Method>
+        <Method Name="initAno" MethodName="initAno">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_ano" Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="CalculMoyenneEcFinalProc"
+            MethodName="CalculMoyenneEcFinalProc">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="anne"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="semestre"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="parcours"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="fileUesem"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="idFilieUeSemEc"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="calendrDelib"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="utilisateur"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="SortByCredit"
+            MethodName="SortByCredit">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="credit1"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="credit2"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="SortByMoyenne"
+            MethodName="SortByMoyenne">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="moyenne1"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="moyenne2"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="calculMoyenneEc"
+            MethodName="calculMoyenneEc">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="anne"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="semestre"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="parcours"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="fileUesem"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="idFilieUeSemEc"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="typeControle"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="calendrDelib"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="utilisateur"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="reconduireRedoublantToSess2"
+            MethodName="reconduireRedoublantToSess2">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="anne_univers"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="niv_fomr_parcours"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="session_id"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="utilisateur"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="CalculMoyenneAnnuel"
+            MethodName="CalculMoyenneAnnuel">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="anne_univers"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="parcours"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="utilisateur"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="getIdAnonymat"
+            MethodName="getIdAnonymat">
+            <Return
+                Name="_return_type_"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="parcours"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="anne"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="semestre"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="sessions"
+                Type="java.lang.Long"/>
+        </Method>
+        <Method
+            Name="isGenereAnonymat"
+            MethodName="isGenereAnonymat">
+            <Return
+                Name="_return_type_"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="parcours"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="anne"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="semestre"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="sessions"
+                Type="java.lang.Long"/>
+        </Method>
+        <Method
+            Name="deleteRuleNivParc"
+            MethodName="deleteRuleNivParc">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="id_niv_reg_parc"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="publishSemestre"
+            MethodName="publishSemestre">
+            <Return
+                Name="_return_type_"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="parcours"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="calendrier"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="semestre"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="action"
+                Type="java.lang.String"/>
+            <Parameter
+                Name="utilisateur"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="publierAnnee"
+            MethodName="publierAnnee">
+            <Return
+                Name="_return_type_"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="parcours"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="calendrier"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="action"
+                Type="java.lang.String"/>
+            <Parameter
+                Name="utilisateur"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="reconduireToSess2"
+            MethodName="reconduireToSess2">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="anne_univers"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="niv_fomr_parcours"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="session_id"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="semestre_id"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="utilisateur"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="reouvrirSaisieNotes"
+            MethodName="reouvrirSaisieNotes">
+            <Return
+                Name="_return_type_"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="parcours"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="fil_ue"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="fil_sem_ec"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="type_control"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="calendrier"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="utilisateur"
+                Type="java.lang.Long"/>
+        </Method>
+        <Method
+            Name="reouvrirSaisieNotesInter"
+            MethodName="reouvrirSaisieNotesInter">
+            <Return
+                Name="_return_type_"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="parcours"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="fil_ue"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="fil_sem_ec"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="type_control"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="mode_control"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="calendrier"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="utilisateur"
+                Type="java.lang.Long"/>
+        </Method>
+        <Method
+            Name="isJuryDefined"
+            MethodName="isJuryDefined">
+            <Return
+                Name="_return_type_"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="parcours"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="annee"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="sess"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="semestre"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="traitementEnjambiste"
+            MethodName="traitementEnjambiste">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="niv_fomr_parcours"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="anne_univers"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="utilisateur"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="UpdateFormationAccess"
+            MethodName="UpdateFormationAccess">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="id_acces"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="role"
+                Type="java.lang.String"/>
+            <Parameter
+                Name="utimodif"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="DeleteFormationAccess"
+            MethodName="DeleteFormationAccess">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="id_acces"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="AllowRoleTo"
+            MethodName="AllowRoleTo">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="role_id"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="uti_id"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="uticre"
+                Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="UpdateUserRole"
+            MethodName="UpdateUserRole">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="user_role_id"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="uti_id"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="uti_modif"
+                Type="java.lang.Integer"/>
+        </Method>
+    </ClientInterface>
+    <ResourceBundle>
+        <PropertiesBundle PropertiesFile="model.ModelBundle"/>
+    </ResourceBundle>
+</AppModule>

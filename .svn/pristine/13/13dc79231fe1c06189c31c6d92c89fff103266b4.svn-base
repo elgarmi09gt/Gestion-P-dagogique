@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="InscriptionPedSemUeEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="INSCRIPTION_PED_SEM_UE"
+  AliasName="InscriptionPedSemUeEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdInscriptionPedSemUe"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_INSCRIPTION_PED_SEM_UE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEM_UE"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdInscriptionPedSemestre"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_INSCRIPTION_PED_SEMESTRE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEM_UE"/>
+  <Attribute
+    Name="IdFiliereUeSemstre"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_FILIERE_UE_SEMSTRE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEM_UE"/>
+  <Attribute
+    Name="Maj"
+    Precision="1"
+    Scale="0"
+    ColumnName="MAJ"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEM_UE"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="INSCRIPTION_PED_SEM_UE"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="INSCRIPTION_PED_SEM_UE"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEM_UE"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="INSCRIPTION_PED_SEM_UE"/>
+  <Key
+    Name="PkInscriptionPedSemUe"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_INSCRIPTION_PED_SEM_UE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionPedSemUeEO.IdInscriptionPedSemUe"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsPedSemUeFilUeSem">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_FILIERE_UE_SEMSTRE"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_PED_SEM_UE_FIL_UE_SEM"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionPedSemUeEO.IdFiliereUeSemstre"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsPedSemUeInsPedSem">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_INSCRIPTION_PED_SEMESTRE"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_PED_SEM_UE_INS_PED_SEM"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionPedSemUeEO.IdInscriptionPedSemestre"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsPedSemUeUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_PED_SEM_UE_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionPedSemUeEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkInsPedSemUeUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_INS_PED_SEM_UE_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.InscriptionPedSemUeEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

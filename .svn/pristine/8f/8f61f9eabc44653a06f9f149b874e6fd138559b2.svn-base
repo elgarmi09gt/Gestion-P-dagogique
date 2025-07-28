@@ -1,0 +1,767 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:popup childCreation="deferred" autoCancel="disabled" id="newZone" binding="#{ZoneGeobean.popZone}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d1" dialogListener="#{ZoneGeobean.onDialog}" title="Formulaire pour ajouter une zone">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl1">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it3">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <af:serverListener type="onDialogEvent" method="#{ZoneGeobean.onDialogCancel}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popEditZone" contentDelivery="lazyUncached">
+    <af:dialog id="d2" title="Voulez-vous modifier la zone: #{bindings.LibelleLong}" dialogListener="#{ZoneGeobean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl2">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it4">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie.inputValue}" label="#{bindings.UtiModifie.hints.label}"
+                      required="#{bindings.UtiModifie.hints.mandatory}"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it6">
+          <f:validator binding="#{bindings.UtiModifie.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popDelZone" contentDelivery="lazyUncached">
+    <af:dialog id="d3" title="Voulez-vous supprimer la zone: #{bindings.LibelleLong}" dialogListener="#{ZoneGeobean.onDeleteZone}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl3">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it7">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it8">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputDate value="#{bindings.DateCreation.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation.hints.label}" required="#{bindings.DateCreation.hints.mandatory}"
+                      columns="#{bindings.DateCreation.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation.hints.tooltip}" id="id1">
+          <f:validator binding="#{bindings.DateCreation.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateModification.inputValue}" readOnly="true"
+                      label="#{bindings.DateModification.hints.label}"
+                      required="#{bindings.DateModification.hints.mandatory}"
+                      columns="#{bindings.DateModification.hints.displayWidth}"
+                      shortDesc="#{bindings.DateModification.hints.tooltip}" id="id2">
+          <f:validator binding="#{bindings.DateModification.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateModification.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it9">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie.inputValue}" label="#{bindings.UtiModifie.hints.label}"
+                      required="#{bindings.UtiModifie.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it10">
+          <f:validator binding="#{bindings.UtiModifie.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popPays" contentDelivery="lazyUncached"
+            binding="#{ZoneGeobean.popPays}">
+    <af:dialog id="d4" title="Voulez-vous ajouter un pays dans la zone: #{bindings.LibelleLong}" dialogListener="#{ZoneGeobean.onDialog}">
+      <af:panelFormLayout id="pfl4">
+        <af:selectOneChoice value="#{bindings.IdZoneGeographiques1.inputValue}" label="Zone Geographique"
+                            required="#{bindings.IdZoneGeographiques1.hints.mandatory}"
+                            shortDesc="#{bindings.IdZoneGeographiques1.hints.tooltip}" id="soc2">
+          <f:selectItems value="#{bindings.IdZoneGeographiques1.items}" id="si2"/>
+          <f:validator binding="#{bindings.IdZoneGeographiques1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.Libelle.inputValue}" label="#{bindings.Libelle.hints.label}"
+                      required="#{bindings.Libelle.hints.mandatory}" columns="#{bindings.Libelle.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle.hints.precision}" shortDesc="#{bindings.Libelle.hints.tooltip}"
+                      id="it13">
+          <f:validator binding="#{bindings.Libelle.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CodeIso.inputValue}" label="#{bindings.CodeIso.hints.label}"
+                      required="#{bindings.CodeIso.hints.mandatory}" columns="#{bindings.CodeIso.hints.displayWidth}"
+                      maximumLength="#{bindings.CodeIso.hints.precision}" shortDesc="#{bindings.CodeIso.hints.tooltip}"
+                      id="it14">
+          <f:validator binding="#{bindings.CodeIso.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Nationalite.inputValue}" label="#{bindings.Nationalite.hints.label}"
+                      required="#{bindings.Nationalite.hints.mandatory}"
+                      columns="#{bindings.Nationalite.hints.displayWidth}"
+                      maximumLength="#{bindings.Nationalite.hints.precision}"
+                      shortDesc="#{bindings.Nationalite.hints.tooltip}" id="it15">
+          <f:validator binding="#{bindings.Nationalite.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree1.inputValue}" label="#{bindings.UtiCree1.hints.label}"
+                      required="#{bindings.UtiCree1.hints.mandatory}" columns="#{bindings.UtiCree1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree1.hints.precision}"
+                      shortDesc="#{bindings.UtiCree1.hints.tooltip}" id="it16">
+          <f:validator binding="#{bindings.UtiCree1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree1.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:serverListener type="onDialogEvent" method="#{ZoneGeobean.onDialogCancelPays}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popEditPays" contentDelivery="lazyUncached">
+    <af:dialog id="d5" title="Voulez-vous modifier le pays: #{bindings.Libelle}" dialogListener="#{ZoneGeobean.onDialog}">
+      <af:panelFormLayout id="pfl5">
+        <af:inputText value="#{bindings.Libelle.inputValue}" label="#{bindings.Libelle.hints.label}"
+                      required="#{bindings.Libelle.hints.mandatory}" columns="#{bindings.Libelle.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle.hints.precision}" shortDesc="#{bindings.Libelle.hints.tooltip}"
+                      id="it17">
+          <f:validator binding="#{bindings.Libelle.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CodeIso.inputValue}" label="#{bindings.CodeIso.hints.label}"
+                      required="#{bindings.CodeIso.hints.mandatory}" columns="#{bindings.CodeIso.hints.displayWidth}"
+                      maximumLength="#{bindings.CodeIso.hints.precision}" shortDesc="#{bindings.CodeIso.hints.tooltip}"
+                      id="it18">
+          <f:validator binding="#{bindings.CodeIso.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Nationalite.inputValue}" label="#{bindings.Nationalite.hints.label}"
+                      required="#{bindings.Nationalite.hints.mandatory}"
+                      columns="#{bindings.Nationalite.hints.displayWidth}"
+                      maximumLength="#{bindings.Nationalite.hints.precision}"
+                      shortDesc="#{bindings.Nationalite.hints.tooltip}" id="it19">
+          <f:validator binding="#{bindings.Nationalite.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdZoneGeographiques1.inputValue}"
+                            label="Zone Geographique"
+                            required="#{bindings.IdZoneGeographiques1.hints.mandatory}"
+                            shortDesc="#{bindings.IdZoneGeographiques1.hints.tooltip}" id="soc3">
+          <f:selectItems value="#{bindings.IdZoneGeographiques1.items}" id="si3"/>
+          <f:validator binding="#{bindings.IdZoneGeographiques1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.UtiModifie1.inputValue}" label="#{bindings.UtiModifie1.hints.label}"
+                      required="#{bindings.UtiModifie1.hints.mandatory}"
+                      columns="#{bindings.UtiModifie1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie1.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie1.hints.tooltip}" id="it20">
+          <f:validator binding="#{bindings.UtiModifie1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie1.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popDeletePays" contentDelivery="lazyUncached">
+    <af:dialog id="d6" title="Voulez-vous supprimer le pays: #{bindings.Libelle}" dialogListener="#{ZoneGeobean.onDeletePays}">
+      <af:panelFormLayout id="pfl6">
+        <af:inputText value="#{bindings.Libelle.inputValue}" label="#{bindings.Libelle.hints.label}"
+                      required="#{bindings.Libelle.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Libelle.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle.hints.precision}" shortDesc="#{bindings.Libelle.hints.tooltip}"
+                      id="it25">
+          <f:validator binding="#{bindings.Libelle.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CodeIso.inputValue}" label="#{bindings.CodeIso.hints.label}"
+                      required="#{bindings.CodeIso.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.CodeIso.hints.displayWidth}"
+                      maximumLength="#{bindings.CodeIso.hints.precision}" shortDesc="#{bindings.CodeIso.hints.tooltip}"
+                      id="it26">
+          <f:validator binding="#{bindings.CodeIso.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Nationalite.inputValue}" label="#{bindings.Nationalite.hints.label}"
+                      required="#{bindings.Nationalite.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Nationalite.hints.displayWidth}"
+                      maximumLength="#{bindings.Nationalite.hints.precision}"
+                      shortDesc="#{bindings.Nationalite.hints.tooltip}" id="it27">
+          <f:validator binding="#{bindings.Nationalite.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.IdZoneGeographiques.inputValue}"
+                      label="Zone Geographique"
+                      required="#{bindings.IdZoneGeographiques.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.IdZoneGeographiques.hints.displayWidth}"
+                      maximumLength="#{bindings.IdZoneGeographiques.hints.precision}"
+                      shortDesc="#{bindings.IdZoneGeographiques.hints.tooltip}" id="it28">
+          <f:validator binding="#{bindings.IdZoneGeographiques.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.IdZoneGeographiques.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree1.inputValue}" label="#{bindings.UtiCree1.hints.label}"
+                      required="#{bindings.UtiCree1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiCree1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree1.hints.precision}"
+                      shortDesc="#{bindings.UtiCree1.hints.tooltip}" id="it29">
+          <f:validator binding="#{bindings.UtiCree1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie1.inputValue}" label="#{bindings.UtiModifie1.hints.label}"
+                      required="#{bindings.UtiModifie1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiModifie1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie1.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie1.hints.tooltip}" id="it30">
+          <f:validator binding="#{bindings.UtiModifie1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie1.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popRegion" binding="#{ZoneGeobean.popRegion}">
+    <af:dialog id="d7" title="Voulez-vous ajouter une région dans le pays: #{bindings.Libelle}" dialogListener="#{ZoneGeobean.onDialog}">
+      <af:panelFormLayout id="pfl7">
+        <af:inputText value="#{bindings.Libelle1.inputValue}" label="#{bindings.Libelle1.hints.label}"
+                      required="#{bindings.Libelle1.hints.mandatory}" columns="#{bindings.Libelle1.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle1.hints.precision}"
+                      shortDesc="#{bindings.Libelle1.hints.tooltip}" id="it11">
+          <f:validator binding="#{bindings.Libelle1.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdPays1.inputValue}" label="Pays"
+                            required="#{bindings.IdPays1.hints.mandatory}" shortDesc="#{bindings.IdPays1.hints.tooltip}"
+                            id="soc6">
+          <f:selectItems value="#{bindings.IdPays1.items}" id="si6"/>
+          <f:validator binding="#{bindings.IdPays1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.Code.inputValue}" label="#{bindings.Code.hints.label}"
+                      required="#{bindings.Code.hints.mandatory}" columns="#{bindings.Code.hints.displayWidth}"
+                      maximumLength="#{bindings.Code.hints.precision}" shortDesc="#{bindings.Code.hints.tooltip}"
+                      id="it12">
+          <f:validator binding="#{bindings.Code.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree2.inputValue}" label="#{bindings.UtiCree2.hints.label}"
+                      required="#{bindings.UtiCree2.hints.mandatory}" columns="#{bindings.UtiCree2.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree2.hints.precision}"
+                      shortDesc="#{bindings.UtiCree2.hints.tooltip}" id="it21">
+          <f:validator binding="#{bindings.UtiCree2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree2.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:serverListener type="onDialogEvent" method="#{ZoneGeobean.onDialogCancelRegion}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popEditReg" contentDelivery="lazyUncached">
+    <af:dialog id="d8" dialogListener="#{ZoneGeobean.onDialog}"
+               title="Voulez-vous modifier la région: #{bindings.Libelle1}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl13">
+        <af:inputText value="#{bindings.Libelle1.inputValue}" label="#{bindings.Libelle1.hints.label}"
+                      required="#{bindings.Libelle1.hints.mandatory}" columns="#{bindings.Libelle1.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle1.hints.precision}"
+                      shortDesc="#{bindings.Libelle1.hints.tooltip}" id="it22">
+          <f:validator binding="#{bindings.Libelle1.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdPays1.inputValue}" label="Pays"
+                            required="#{bindings.IdPays1.hints.mandatory}" shortDesc="#{bindings.IdPays1.hints.tooltip}"
+                            id="soc7">
+          <f:selectItems value="#{bindings.IdPays1.items}" id="si7"/>
+          <f:validator binding="#{bindings.IdPays1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.Code.inputValue}" label="#{bindings.Code.hints.label}"
+                      required="#{bindings.Code.hints.mandatory}" columns="#{bindings.Code.hints.displayWidth}"
+                      maximumLength="#{bindings.Code.hints.precision}" shortDesc="#{bindings.Code.hints.tooltip}"
+                      id="it23">
+          <f:validator binding="#{bindings.Code.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie2.inputValue}" label="#{bindings.UtiModifie2.hints.label}"
+                      required="#{bindings.UtiModifie2.hints.mandatory}"
+                      columns="#{bindings.UtiModifie2.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie2.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie2.hints.tooltip}" id="it24">
+          <f:validator binding="#{bindings.UtiModifie2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie2.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popDelReg" contentDelivery="lazyUncached">
+    <af:dialog id="d9" dialogListener="#{ZoneGeobean.onDeleteRegion}"
+               title="Voulez-vous supprimer la région: #{bindings.Libelle1}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl8">
+        <af:inputText value="#{bindings.Libelle1.inputValue}" label="#{bindings.Libelle1.hints.label}"
+                      required="#{bindings.Libelle1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Libelle1.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle1.hints.precision}"
+                      shortDesc="#{bindings.Libelle1.hints.tooltip}" id="it31">
+          <f:validator binding="#{bindings.Libelle1.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdPays1.inputValue}" label="Pays"
+                            required="#{bindings.IdPays1.hints.mandatory}" shortDesc="#{bindings.IdPays1.hints.tooltip}"
+                            readOnly="true" id="soc8">
+          <f:selectItems value="#{bindings.IdPays1.items}" id="si8"/>
+          <f:validator binding="#{bindings.IdPays1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.Code.inputValue}" label="#{bindings.Code.hints.label}"
+                      required="#{bindings.Code.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Code.hints.displayWidth}" maximumLength="#{bindings.Code.hints.precision}"
+                      shortDesc="#{bindings.Code.hints.tooltip}" id="it32">
+          <f:validator binding="#{bindings.Code.validator}"/>
+        </af:inputText>
+        <af:inputDate value="#{bindings.DateCreation1.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation1.hints.label}" required="#{bindings.DateCreation1.hints.mandatory}"
+                      columns="#{bindings.DateCreation1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation1.hints.tooltip}" id="id3">
+          <f:validator binding="#{bindings.DateCreation1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation1.format}"/>
+        </af:inputDate>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="pville" contentDelivery="lazyUncached"
+            binding="#{ZoneGeobean.popVille}">
+    <af:dialog id="d10" title="Voulez-vous ajouter une ville dans la région: #{bindings.Libelle1}" dialogListener="#{ZoneGeobean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{ZoneGeobean.onDialogCancelVille}"/>
+      <af:panelFormLayout id="pfl9">
+        <af:inputText value="#{bindings.Libelle2.inputValue}" label="#{bindings.Libelle2.hints.label}"
+                      required="#{bindings.Libelle2.hints.mandatory}" columns="#{bindings.Libelle2.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle2.hints.precision}"
+                      shortDesc="#{bindings.Libelle2.hints.tooltip}" id="it33">
+          <f:validator binding="#{bindings.Libelle2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Code1.inputValue}" label="#{bindings.Code1.hints.label}"
+                      required="#{bindings.Code1.hints.mandatory}" columns="#{bindings.Code1.hints.displayWidth}"
+                      maximumLength="#{bindings.Code1.hints.precision}" shortDesc="#{bindings.Code1.hints.tooltip}"
+                      id="it34">
+          <f:validator binding="#{bindings.Code1.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdRegion1.inputValue}" label="Région"
+                            required="#{bindings.IdRegion1.hints.mandatory}"
+                            shortDesc="#{bindings.IdRegion1.hints.tooltip}" id="soc9">
+          <f:selectItems value="#{bindings.IdRegion1.items}" id="si9"/>
+          <f:validator binding="#{bindings.IdRegion1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.UtiCree3.inputValue}" label="#{bindings.UtiCree3.hints.label}"
+                      required="#{bindings.UtiCree3.hints.mandatory}" columns="#{bindings.UtiCree3.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree3.hints.precision}"
+                      shortDesc="#{bindings.UtiCree3.hints.tooltip}" id="it35">
+          <f:validator binding="#{bindings.UtiCree3.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree3.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popEditVille" contentDelivery="lazyUncached">
+    <af:dialog id="d11" title="Voulez-vous modifier la ville: #{bindings.Libelle2}" dialogListener="#{ZoneGeobean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl10">
+        <af:inputText value="#{bindings.Libelle2.inputValue}" label="#{bindings.Libelle2.hints.label}"
+                      required="#{bindings.Libelle2.hints.mandatory}" columns="#{bindings.Libelle2.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle2.hints.precision}"
+                      shortDesc="#{bindings.Libelle2.hints.tooltip}" id="it36">
+          <f:validator binding="#{bindings.Libelle2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Code1.inputValue}" label="#{bindings.Code1.hints.label}"
+                      required="#{bindings.Code1.hints.mandatory}" columns="#{bindings.Code1.hints.displayWidth}"
+                      maximumLength="#{bindings.Code1.hints.precision}" shortDesc="#{bindings.Code1.hints.tooltip}"
+                      id="it37">
+          <f:validator binding="#{bindings.Code1.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdRegion1.inputValue}" label="Région"
+                            required="#{bindings.IdRegion1.hints.mandatory}"
+                            shortDesc="#{bindings.IdRegion1.hints.tooltip}" id="soc10">
+          <f:selectItems value="#{bindings.IdRegion1.items}" id="si10"/>
+          <f:validator binding="#{bindings.IdRegion1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.UtiCree3.inputValue}" label="#{bindings.UtiCree3.hints.label}"
+                      required="#{bindings.UtiCree3.hints.mandatory}" columns="#{bindings.UtiCree3.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree3.hints.precision}"
+                      shortDesc="#{bindings.UtiCree3.hints.tooltip}" id="it38">
+          <f:validator binding="#{bindings.UtiCree3.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree3.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popDelVille" contentDelivery="lazyUncached">
+    <af:dialog id="d12" title="Voulez-vous supprimer la ville: #{bindings.Libelle2}" dialogListener="#{ZoneGeobean.onDeleteVille}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl12">
+        <af:inputText value="#{bindings.Libelle2.inputValue}" label="#{bindings.Libelle2.hints.label}"
+                      required="#{bindings.Libelle2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Libelle2.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle2.hints.precision}"
+                      shortDesc="#{bindings.Libelle2.hints.tooltip}" id="it42">
+          <f:validator binding="#{bindings.Libelle2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Code1.inputValue}" label="#{bindings.Code1.hints.label}"
+                      required="#{bindings.Code1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Code1.hints.displayWidth}" maximumLength="#{bindings.Code1.hints.precision}"
+                      shortDesc="#{bindings.Code1.hints.tooltip}" id="it43">
+          <f:validator binding="#{bindings.Code1.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdRegion1.inputValue}" label="Région"
+                            required="#{bindings.IdRegion1.hints.mandatory}"
+                            shortDesc="#{bindings.IdRegion1.hints.tooltip}" readOnly="true" id="soc12">
+          <f:selectItems value="#{bindings.IdRegion1.items}" id="si12"/>
+          <f:validator binding="#{bindings.IdRegion1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputDate value="#{bindings.DateCreation2.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation2.hints.label}" required="#{bindings.DateCreation2.hints.mandatory}"
+                      columns="#{bindings.DateCreation2.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation2.hints.tooltip}" id="id5">
+          <f:validator binding="#{bindings.DateCreation2.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation2.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree3.inputValue}" label="#{bindings.UtiCree3.hints.label}"
+                      required="#{bindings.UtiCree3.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiCree3.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree3.hints.precision}"
+                      shortDesc="#{bindings.UtiCree3.hints.tooltip}" id="it44">
+          <f:validator binding="#{bindings.UtiCree3.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree3.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:panelGridLayout id="pgl1">
+    <af:gridRow marginTop="5px" height="auto" id="gr1">
+      <af:gridCell marginStart="5px" width="50%" id="gc1">
+        <af:panelHeader text="Zones Géographiques" id="ph1" inlineStyle="height:57px;">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelStretchLayout id="psl1" dimensionsFrom="parent">
+            <f:facet name="start"/>
+            <f:facet name="end"/>
+            <f:facet name="top"/>
+            <f:facet name="bottom"/>
+            <f:facet name="center">
+              <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{ZoneGeobean.collectionZone}">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar">
+                  <af:toolbar id="t2">
+                    <af:button id="b1" actionListener="#{ZoneGeobean.onZoneNew}" icon="/images/new_icon.png"/>
+                    <af:button id="b2" icon="/images/edit_icon.png">
+                      <af:showPopupBehavior popupId="::popEditZone"/>
+                    </af:button>
+                    <af:button id="b3" icon="/images/delete_icon.png">
+                      <af:showPopupBehavior popupId="::popDelZone"/>
+                    </af:button>
+                  </af:toolbar>
+                </f:facet>
+                <f:facet name="statusbar"/>
+                <af:table value="#{bindings.ZoneGeographiques.collectionModel}" var="row"
+                          rows="#{bindings.ZoneGeographiques.rangeSize}"
+                          emptyText="#{bindings.ZoneGeographiques.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0"
+                          selectedRowKeys="#{bindings.ZoneGeographiques.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.ZoneGeographiques.collectionModel.makeCurrent}"
+                          rowSelection="single" fetchSize="#{bindings.ZoneGeographiques.rangeSize}"
+                          filterModel="#{bindings.ZoneGeographiquesQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.ZoneGeographiquesQuery.processQuery}" varStatus="vs" id="t1"
+                          scrollPolicy="page">
+                  <af:column sortProperty="#{bindings.ZoneGeographiques.hints.LibelleLong.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.ZoneGeographiques.hints.LibelleLong.label}" id="c2">
+                    <af:outputText value="#{row.LibelleLong}"
+                                   shortDesc="#{bindings.ZoneGeographiques.hints.LibelleLong.tooltip}" id="ot2"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.ZoneGeographiques.hints.LibelleCourt.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.ZoneGeographiques.hints.LibelleCourt.label}"
+                             id="c3">
+                    <af:outputText value="#{row.LibelleCourt}"
+                                   shortDesc="#{bindings.ZoneGeographiques.hints.LibelleCourt.tooltip}" id="ot3"/>
+                  </af:column>
+                  <f:facet name="contextMenu">
+                    <af:popup childCreation="deferred" autoCancel="disabled" id="p1">
+                      <af:menu text="menu 1" id="m1">
+                        <af:commandMenuItem text="New" id="cmi1" actionListener="#{ZoneGeobean.onZoneNew}"
+                                            icon="/images/new_icon.png"/>
+                        <af:commandMenuItem text="Edit" id="cmi2" icon="/images/edit_icon.png">
+                          <af:showPopupBehavior popupId=":::popEditZone"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="Delete" id="cmi3" icon="/images/delete_icon.png">
+                          <af:showPopupBehavior popupId=":::popDelZone"/>
+                        </af:commandMenuItem>
+                      </af:menu>
+                    </af:popup>
+                  </f:facet>
+                </af:table>
+              </af:panelCollection>
+            </f:facet>
+          </af:panelStretchLayout>
+        </af:panelHeader>
+      </af:gridCell>
+      <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="gc2">
+        <af:panelHeader text="Les différents pays de la zone: #{bindings.LibelleLong}" id="ph2"
+                        inlineStyle="height:54px;">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelStretchLayout id="psl2" dimensionsFrom="parent">
+            <f:facet name="start"/>
+            <f:facet name="end"/>
+            <f:facet name="top"/>
+            <f:facet name="bottom"/>
+            <f:facet name="center">
+              <af:panelCollection id="pc2" styleClass="AFStretchWidth" binding="#{ZoneGeobean.collectionPays}">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar">
+                  <af:toolbar id="t4">
+                    <af:button id="b4" actionListener="#{ZoneGeobean.onPaysNew}" icon="/images/new_icon.png"/>
+                    <af:button id="b5" icon="/images/edit_icon.png">
+                      <af:showPopupBehavior popupId="::popEditPays"/>
+                    </af:button>
+                    <af:button id="b6" icon="/images/delete_icon.png">
+                      <af:showPopupBehavior popupId="::popDeletePays"/>
+                    </af:button>
+                  </af:toolbar>
+                </f:facet>
+                <f:facet name="statusbar"/>
+                <af:table value="#{bindings.PaysVO11.collectionModel}" var="row" rows="#{bindings.PaysVO11.rangeSize}"
+                          emptyText="#{bindings.PaysVO11.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0" selectedRowKeys="#{bindings.PaysVO11.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.PaysVO11.collectionModel.makeCurrent}" rowSelection="single"
+                          fetchSize="#{bindings.PaysVO11.rangeSize}"
+                          filterModel="#{bindings.PaysVO1Query.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.PaysVO1Query.processQuery}" varStatus="vs" id="t7"
+                          scrollPolicy="page">
+                  <af:column sortProperty="#{bindings.PaysVO11.hints.Libelle.name}" filterable="true" sortable="true"
+                             headerText="#{bindings.PaysVO11.hints.Libelle.label}" id="c1">
+                    <af:outputText value="#{row.Libelle}" shortDesc="#{bindings.PaysVO11.hints.Libelle.tooltip}"
+                                   id="ot1"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.PaysVO11.hints.Nationalite.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.PaysVO11.hints.Nationalite.label}" id="c4">
+                    <af:outputText value="#{row.Nationalite}" shortDesc="#{bindings.PaysVO11.hints.Nationalite.tooltip}"
+                                   id="ot4"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.PaysVO11.hints.IdZoneGeographiques.name}" filterable="true"
+                             sortable="true" headerText="Zone Geographiques" id="c5">
+                    <af:selectOneChoice value="#{row.bindings.IdZoneGeographiques.inputValue}"
+                                        label="#{row.bindings.IdZoneGeographiques.label}"
+                                        required="#{bindings.PaysVO11.hints.IdZoneGeographiques.mandatory}"
+                                        shortDesc="#{bindings.PaysVO11.hints.IdZoneGeographiques.tooltip}"
+                                        readOnly="true" id="soc1">
+                      <f:selectItems value="#{row.bindings.IdZoneGeographiques.items}" id="si1"/>
+                      <f:validator binding="#{row.bindings.IdZoneGeographiques.validator}"/>
+                    </af:selectOneChoice>
+                  </af:column>
+                  <f:facet name="contextMenu">
+                    <af:popup childCreation="deferred" autoCancel="disabled" id="p2">
+                      <af:menu text="menu 2" id="m2">
+                        <af:commandMenuItem text="New" id="cmi4" actionListener="#{ZoneGeobean.onPaysNew}"
+                                            icon="/images/new_icon.png"/>
+                        <af:commandMenuItem text="Edit" id="cmi5" icon="/images/edit_icon.png">
+                          <af:showPopupBehavior popupId=":::popEditPays"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="Delete" id="cmi6" icon="/images/delete_icon.png">
+                          <af:showPopupBehavior popupId=":::popDeletePays"/>
+                        </af:commandMenuItem>
+                      </af:menu>
+                    </af:popup>
+                  </f:facet>
+                </af:table>
+              </af:panelCollection>
+            </f:facet>
+          </af:panelStretchLayout>
+        </af:panelHeader>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr2">
+      <af:gridCell marginStart="5px" width="50%" id="gc3">
+        <af:showDetailHeader text="Les différentes régions du pays: #{bindings.Libelle}" disclosed="true" id="sdh1">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelStretchLayout id="psl3" dimensionsFrom="parent">
+            <f:facet name="start"/>
+            <f:facet name="end"/>
+            <f:facet name="top"/>
+            <f:facet name="bottom"/>
+            <f:facet name="center">
+              <af:panelCollection id="pc3" styleClass="AFStretchWidth" binding="#{ZoneGeobean.collectionRegion}">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar">
+                  <af:toolbar id="t6">
+                    <af:button id="b7" actionListener="#{ZoneGeobean.onRegionNew}" icon="/images/new_icon.png"/>
+                    <af:button id="b8" icon="/images/edit_icon.png">
+                      <af:showPopupBehavior popupId="::popEditReg"/>
+                    </af:button>
+                    <af:button id="b9" icon="/images/delete_icon.png">
+                      <af:showPopupBehavior popupId="::popDelReg"/>
+                    </af:button>
+                  </af:toolbar>
+                </f:facet>
+                <f:facet name="statusbar"/>
+                <af:table value="#{bindings.RegionsVO1.collectionModel}" var="row"
+                          rows="#{bindings.RegionsVO1.rangeSize}"
+                          emptyText="#{bindings.RegionsVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0" selectedRowKeys="#{bindings.RegionsVO1.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.RegionsVO1.collectionModel.makeCurrent}" rowSelection="single"
+                          fetchSize="#{bindings.RegionsVO1.rangeSize}"
+                          filterModel="#{bindings.RegionsVO1Query.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.RegionsVO1Query.processQuery}" varStatus="vs" id="t5"
+                          scrollPolicy="page">
+                  <af:column sortProperty="#{bindings.RegionsVO1.hints.Libelle.name}" filterable="true" sortable="true"
+                             headerText="#{bindings.RegionsVO1.hints.Libelle.label}" id="c17">
+                    <af:outputText value="#{row.Libelle}" shortDesc="#{bindings.RegionsVO1.hints.Libelle.tooltip}"
+                                   id="ot17"/>
+                  </af:column>
+                  <f:facet name="contextMenu">
+                    <af:popup childCreation="deferred" autoCancel="disabled" id="p3">
+                      <af:menu text="menu 3" id="m3">
+                        <af:commandMenuItem text="New" id="cmi7" actionListener="#{ZoneGeobean.onRegionNew}"
+                                            icon="/images/new_icon.png"/>
+                        <af:commandMenuItem text="Edit" id="cmi8" icon="/images/edit_icon.png">
+                          <af:showPopupBehavior popupId=":::popEditReg"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="Delete" id="cmi9" icon="/images/delete_icon.png">
+                          <af:showPopupBehavior popupId=":::popDelReg"/>
+                        </af:commandMenuItem>
+                      </af:menu>
+                    </af:popup>
+                  </f:facet>
+                  <af:column headerText="Pays" id="c6">
+                    <af:selectOneChoice value="#{row.bindings.IdPays.inputValue}" label="#{row.bindings.IdPays.label}"
+                                        required="#{bindings.RegionsVO1.hints.IdPays.mandatory}"
+                                        shortDesc="#{bindings.RegionsVO1.hints.IdPays.tooltip}" readOnly="true"
+                                        id="soc4">
+                      <f:selectItems value="#{row.bindings.IdPays.items}" id="si4"/>
+                      <f:validator binding="#{row.bindings.IdPays.validator}"/>
+                    </af:selectOneChoice>
+                  </af:column>
+                </af:table>
+              </af:panelCollection>
+            </f:facet>
+          </af:panelStretchLayout>
+        </af:showDetailHeader>
+      </af:gridCell>
+      <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="gc4">
+        <af:panelHeader text="Les différentes villes de la région: #{bindings.Libelle1}" id="ph3"
+                        inlineStyle="height:51px;">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelStretchLayout id="psl4" dimensionsFrom="parent">
+            <f:facet name="start"/>
+            <f:facet name="end"/>
+            <f:facet name="top"/>
+            <f:facet name="bottom"/>
+            <f:facet name="center">
+              <af:panelCollection id="pc4" styleClass="AFStretchWidth" binding="#{ZoneGeobean.collectionVille}">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar">
+                  <af:toolbar id="t8">
+                    <af:button id="b10" actionListener="#{ZoneGeobean.onVilleNew}" icon="/images/new_icon.png"/>
+                    <af:button id="b11" icon="/images/edit_icon.png">
+                      <af:showPopupBehavior popupId="::popEditVille"/>
+                    </af:button>
+                    <af:button id="b12" icon="/images/delete_icon.png">
+                      <af:showPopupBehavior popupId="::popDelVille"/>
+                    </af:button>
+                  </af:toolbar>
+                </f:facet>
+                <f:facet name="statusbar"/>
+                <af:table value="#{bindings.VillesVO1.collectionModel}" var="row" rows="#{bindings.VillesVO1.rangeSize}"
+                          emptyText="#{bindings.VillesVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0" selectedRowKeys="#{bindings.VillesVO1.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.VillesVO1.collectionModel.makeCurrent}" rowSelection="single"
+                          fetchSize="#{bindings.VillesVO1.rangeSize}"
+                          filterModel="#{bindings.VillesVO1Query.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.VillesVO1Query.processQuery}" varStatus="vs" id="t9"
+                          scrollPolicy="page">
+                  <af:column sortProperty="#{bindings.VillesVO1.hints.Libelle.name}" filterable="true" sortable="true"
+                             headerText="#{bindings.VillesVO1.hints.Libelle.label}" id="c29">
+                    <af:outputText value="#{row.Libelle}" shortDesc="#{bindings.VillesVO1.hints.Libelle.tooltip}"
+                                   id="ot29"/>
+                  </af:column>
+                  <f:facet name="contextMenu">
+                    <af:popup childCreation="deferred" autoCancel="disabled" id="p4">
+                      <af:menu text="menu 4" id="m4">
+                        <af:commandMenuItem text="New" id="cmi10" icon="/images/new_icon.png"
+                                            actionListener="#{ZoneGeobean.onVilleNew}"/>
+                        <af:commandMenuItem text="Edit" id="cmi11" icon="/images/edit_icon.png">
+                          <af:showPopupBehavior popupId=":::popEditVille"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="Delete" id="cmi12" icon="/images/delete_icon.png">
+                          <af:showPopupBehavior popupId=":::popDelVille"/>
+                        </af:commandMenuItem>
+                      </af:menu>
+                    </af:popup>
+                  </f:facet>
+                  <af:column headerText="Region" id="c7">
+                    <af:selectOneChoice value="#{row.bindings.IdRegion.inputValue}"
+                                        label="#{row.bindings.IdRegion.label}"
+                                        required="#{bindings.VillesVO1.hints.IdRegion.mandatory}"
+                                        shortDesc="#{bindings.VillesVO1.hints.IdRegion.tooltip}" readOnly="true"
+                                        id="soc5">
+                      <f:selectItems value="#{row.bindings.IdRegion.items}" id="si5"/>
+                      <f:validator binding="#{row.bindings.IdRegion.validator}"/>
+                    </af:selectOneChoice>
+                  </af:column>
+                </af:table>
+                <f:facet name="viewMenu"/>
+              </af:panelCollection>
+            </f:facet>
+          </af:panelStretchLayout>
+        </af:panelHeader>
+      </af:gridCell>
+    </af:gridRow>
+  </af:panelGridLayout>
+</ui:composition>

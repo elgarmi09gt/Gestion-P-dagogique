@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ListeEtudROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ListeEtudROVORowImpl"
+  ComponentClass="model.readOnlyView.ListeEtudROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|Prog|VarAccess"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ListeEtudROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_parc"
+    Kind="viewcriteria"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_annee"
+    Kind="viewcriteria"
+    Type="java.lang.Long"/>
+  <ViewAccessor
+    Name="PreinsApteEnRegleLOV1"
+    ViewObjectName="model.readOnlyView.PreinsApteEnRegleLOV"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="PreinsApteEnRegleLOV2"
+    ViewObjectName="model.readOnlyView.PreinsApteEnRegleLOV"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="PreinsApteEnRegleLOV3"
+    ViewObjectName="model.readOnlyView.PreinsApteEnRegleLOV"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="PreinsApteEnRegleLOV4"
+    ViewObjectName="model.readOnlyView.PreinsApteEnRegleLOV"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_EnRegle"
+    ListVOName="PreinsApteEnRegleLOV1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="EnRegle"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="libelle"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_Apte"
+    ListVOName="PreinsApteEnRegleLOV2"
+    NullValueFlag="start"
+    MRUCount="0"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}">
+    <AttrArray Name="AttrNames">
+      <Item Value="Apte"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="libelle"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_InsEnLigne"
+    ListVOName="PreinsApteEnRegleLOV3"
+    NullValueFlag="start"
+    MRUCount="0"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}">
+    <AttrArray Name="AttrNames">
+      <Item Value="InsEnLigne"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="libelle"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_Valider"
+    ListVOName="PreinsApteEnRegleLOV4"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Valider"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="libelle"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[select e.numero, p.nom , p.prenoms , p.date_naissance , p.adresse, p.piece_identification,p.lieu_naissance,e.id_etudiant,e.id_personne , ip.id_inscription_pedagogique , ip.id_inscription_admin , ip.etat_inscr_etat_inscr_id , ip.id_parcours_maquet_annee ,ia.id_annees_univers ,ip.ins_en_ligne ,  eb.en_regle ,ae.apte, pe.valider           
+from inscriptions_pedagogiques ip          
+JOIN inscriptions_admin ia on ip.id_inscription_admin = ia.id_inscription_admin          
+left JOIN aptitude_etudiant ae on ae.id_etudiant = ia.id_etudiant          
+left JOIN etudiant_bu eb on eb.id_etudiant = ia.id_etudiant          
+join etudiants e on e.id_etudiant = ia.id_etudiant          
+join personnes p on e.id_personne = p.id_personne   
+join paiement_etudiant pe on pe.id_etudiant = ia.id_etudiant    
+join parcours_maquette_annee pma on pma.id_parcours_maquet_annee =  ip.id_parcours_maquet_annee  
+where ia.id_annees_univers = ae.id_annees_univers and  pe.id_inscription_pedagogique = ip.id_inscription_pedagogique  and pe.id_niveau_formation_parcours = pma.id_niveau_formation_parcours  
+and ip.id_inscription_pedagogique not in(select id_inscription_pedagogique from inscriptions_pedagogiques where etat_inscr_etat_inscr_id=22)    
+and ia.id_annees_univers = eb.id_annees_univers  
+and ia.id_annees_univers = pe.id_annees_univers]]></SQLQuery>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenoms"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMS"
+    Expression="PRENOMS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_NAISSANCE"
+    Expression="DATE_NAISSANCE"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="Adresse"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ADRESSE"
+    Expression="ADRESSE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PieceIdentification"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PIECE_IDENTIFICATION"
+    Expression="PIECE_IDENTIFICATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LieuNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIEU_NAISSANCE"
+    Expression="LIEU_NAISSANCE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdPersonne"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PERSONNE"
+    Expression="ID_PERSONNE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionPedagogique"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PEDAGOGIQUE"
+    Expression="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionAdmin"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_ADMIN"
+    Expression="ID_INSCRIPTION_ADMIN"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="EtatInscrEtatInscrId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="ETAT_INSCR_ETAT_INSCR_ID"
+    Expression="ETAT_INSCR_ETAT_INSCR_ID"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="IdParcoursMaquetAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PARCOURS_MAQUET_ANNEE"
+    Expression="ID_PARCOURS_MAQUET_ANNEE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="InsEnLigne"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="INS_EN_LIGNE"
+    Expression="INS_EN_LIGNE"
+    SQLType="INTEGER"
+    LOVName="LOV_InsEnLigne">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EnRegle"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="EN_REGLE"
+    Expression="EN_REGLE"
+    SQLType="INTEGER"
+    LOVName="LOV_EnRegle">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Apte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="APTE"
+    Expression="APTE"
+    SQLType="INTEGER"
+    LOVName="LOV_Apte">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Valider"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="VALIDER"
+    Expression="VALIDER"
+    SQLType="INTEGER"
+    LOVName="LOV_Valider">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="etud_bu"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="VIEW_ATTR"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="case_cocher"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="VIEW_ATTR"
+    SQLType="BIT">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="ListeEtudROVOCriteria"
+    ViewObjectName="model.readOnlyView.ListeEtudROVO"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="ListeEtudROVOCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="IdParcoursMaquetAnnee"
+        ViewAttribute="IdParcoursMaquetAnnee"
+        Operator="="
+        Conjunction="AND"
+        Value=":id_parc"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="IdAnneesUnivers"
+        ViewAttribute="IdAnneesUnivers"
+        Operator="="
+        Conjunction="AND"
+        Value=":id_annee"
+        IsBindVarValue="true"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdInscriptionPedagogique"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="NivFormationROVO"
+    ViewLink="model.viewlink.NivFormationToListeEtudVL"
+    Type="model.readOnlyView.NivFormationROVORowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

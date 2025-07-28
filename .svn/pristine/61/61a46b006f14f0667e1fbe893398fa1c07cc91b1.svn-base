@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity xmlns="http://xmlns.oracle.com/bc4j" 
+        Name="AutorisesEO" 
+        Version="12.2.1.12.24" 
+        InheritPersonalization="merge"
+        DBObjectType="table" 
+        DBObjectName="AUTORISES" 
+        AliasName="Autorises" 
+        BindingStyle="OracleName">
+    <Attribute Name="Derogation" Precision="1" Scale="0" ColumnName="DEROGATION" SQLType="NUMERIC"
+               Type="java.lang.Integer" ColumnType="NUMBER" TableName="AUTORISES"/>
+    <Attribute ChangeIndicator="true" Name="IdAutorise" Precision="10" Scale="0" ColumnName="ID_AUTORISE"
+               SQLType="NUMERIC" Type="oracle.jbo.domain.DBSequence" ColumnType="NUMBER" TableName="AUTORISES"
+               PrimaryKey="true" IsUpdateable="while_insert" DefaultValue="@0" Domain="oracle.jbo.domain.DBSequence"
+               RetrievedOnInsert="true"/>
+    <Attribute Name="DateCreation" ColumnName="DATE_CREATION" SQLType="DATE" Type="java.sql.Timestamp" ColumnType="DATE"
+               TableName="AUTORISES"/>
+    <Attribute Name="DateModification" ColumnName="DATE_MODIFICATION" SQLType="DATE" Type="java.sql.Timestamp"
+               ColumnType="DATE" TableName="AUTORISES"/>
+    <Attribute Name="UtiCree" IsNotNull="true" Precision="10" Scale="0" ColumnName="UTI_CREE" SQLType="NUMERIC"
+               Type="java.lang.Long" ColumnType="NUMBER" TableName="AUTORISES"/>
+    <Attribute Name="UtiModifie" Precision="10" Scale="0" ColumnName="UTI_MODIFIE" SQLType="NUMERIC"
+               Type="java.lang.Long" ColumnType="NUMBER" TableName="AUTORISES"/>
+    <Attribute Name="Valide" Precision="1" Scale="0" ColumnName="VALIDE" SQLType="NUMERIC" Type="java.lang.Integer"
+               ColumnType="NUMBER" TableName="AUTORISES"/>
+    <Attribute Name="IdParcoursMaquetAnnee" Precision="10" Scale="0" ColumnName="ID_PARCOURS_MAQUET_ANNEE"
+               SQLType="NUMERIC" Type="java.lang.Long" ColumnType="NUMBER" TableName="AUTORISES"/>
+    <Attribute Name="IdPersonne" IsNotNull="true" Precision="10" Scale="0" ColumnName="ID_PERSONNE" SQLType="NUMERIC"
+               Type="java.lang.Long" ColumnType="NUMBER" TableName="AUTORISES"/>
+    <Attribute Name="IdAnneesUnivers" Precision="10" Scale="0" ColumnName="ID_ANNEES_UNIVERS" SQLType="NUMERIC"
+               Type="java.lang.Long" ColumnType="NUMBER" TableName="AUTORISES"/>
+    
+  <Attribute
+    Name="IdModeEntree"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_MODE_ENTREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="AUTORISES"/>
+  <Attribute
+    Name="AnneeBac"
+    Precision="4"
+    Scale="0"
+    ColumnName="ANNEE_BAC"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="AUTORISES"/>
+  <Attribute
+    Name="IdSerieBac"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_SERIE_BAC"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="AUTORISES"/>
+  <Attribute
+    Name="IdTypeMention"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_TYPE_MENTION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="AUTORISES"/>
+  <Attribute
+    Name="IdLycee"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_LYCEE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="AUTORISES"/><Key Name="PkAutorises" PrimaryKey="true">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="PK_AUTORISES"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.AutorisesEO.IdAutorise"/>
+        </AttrArray>
+    </Key>
+    <Key Name="AutorisesFk1">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_PERSONNES"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="AUTORISES_FK1"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.AutorisesEO.IdPersonne"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkAutoLycee">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_LYCEE"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_AUTO_LYCEE"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.AutorisesEO.IdLycee"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkAutoModEntr">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_MODE_ENTREE"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_AUTO_MOD_ENTR"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.AutorisesEO.IdModeEntree"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkAutoSerieBac">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_SERIE_BAC"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_AUTO_SERIE_BAC"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.AutorisesEO.IdSerieBac"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkAutoTypeMent">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_TYPE_MENTION"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_AUTO_TYPE_MENT"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.AutorisesEO.IdTypeMention"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkAutorisesIdAnnee">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_ANNEES_UNIVERS"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_AUTORISES_ID_ANNEE"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.AutorisesEO.IdAnneesUnivers"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkAutorisesIdParcours">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_PARCOURS_MAQ_ANNEE"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_AUTORISES_ID_PARCOURS"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.AutorisesEO.IdParcoursMaquetAnnee"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkAutorisesUtiCree">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_AUTORISES_UTI_CREE"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.AutorisesEO.UtiCree"/>
+        </AttrArray>
+    </Key>
+    <Key Name="FkAutorisesUtiModif">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_AUTORISES_UTI_MODIF"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="model.entities.AutorisesEO.UtiModifie"/>
+        </AttrArray>
+    </Key>
+</Entity>

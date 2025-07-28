@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle"
+         value="#{adfBundle['viewcontroller.evaluation.calendrierDeliberation.listcalendrierdeliberationBundle']}"/>
+  <af:panelGroupLayout id="pgl15" layout="scroll">
+    <af:panelHeader text="Parcours" id="ph1"
+                    inlineStyle="border:solid 2px #2897e8 ; border-radius:4px ; line-height:30px;margin:30px">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.NiveauFormationParcours.collectionModel}" var="row"
+                  rows="#{bindings.NiveauFormationParcours.rangeSize}"
+                  emptyText="#{bindings.NiveauFormationParcours.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.NiveauFormationParcours.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.NiveauFormationParcours.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.NiveauFormationParcours.rangeSize}"
+                  filterModel="#{bindings.NiveauFormationParcoursQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.NiveauFormationParcoursQuery.processQuery}" varStatus="vs" id="t1"
+                  scrollPolicy="page" columnStretching="last">
+          <af:column sortProperty="#{bindings.NiveauFormationParcours.hints.Niveauformationparcours.name}"
+                     filterable="true" sortable="true" headerText="ParCours" id="c1" width="200%" align="center">
+            <af:outputText value="#{row.Niveauformationparcours}"
+                           shortDesc="#{bindings.NiveauFormationParcours.hints.Niveauformationparcours.tooltip}"
+                           id="ot1"/>
+          </af:column>
+          <af:column headerText="Année Universitaire" id="c3" align="center">
+            <af:selectOneChoice value="#{row.bindings.IdAnneesUnivers.inputValue}"
+                                required="#{bindings.NiveauFormationParcours.hints.IdAnneesUnivers.mandatory}"
+                                shortDesc="#{bindings.NiveauFormationParcours.hints.IdAnneesUnivers.tooltip}"
+                                id="soc19">
+              <f:selectItems value="#{row.bindings.IdAnneesUnivers.items}" id="si19"/>
+              <f:validator binding="#{row.bindings.IdAnneesUnivers.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelHeader>
+    <af:panelHeader text="Calendrier Délibération" id="ph3"
+                    inlineStyle="border:solid 2px #2897e8 ; border-radius:4px ; line-height:30px;"
+                    contentStyle="font-size:14px">
+      <f:facet name="context"/>
+      <f:facet name="toolbar">
+        <af:toolbar id="t8">
+          <af:button id="b7" icon="/images/new_icon.png" actionListener="#{CalendrierBean.OnNewCalendrierCLicked}"/>
+        </af:toolbar>
+        <af:toolbar id="t9">
+          <af:button id="b8" icon="/images/edit_icon.png" actionListener="#{CalendrierBean.OnEditClicked}"/>
+        </af:toolbar>
+        <af:toolbar id="t10">
+          <af:button id="b9" icon="/images/delete_icon.png">
+            <af:showPopupBehavior popupId="popup-delete-calendrier"/>
+          </af:button>
+        </af:toolbar>
+      </f:facet>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:listView value="#{bindings.CalendrierDeliberationVO.collectionModel}" var="item"
+                   emptyText="#{bindings.CalendrierDeliberationVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                   fetchSize="#{bindings.CalendrierDeliberationVO.rangeSize}" id="lv1" styleClass="AFStretchWidth"
+                   binding="#{CalendrierBean.calendrierListView}"
+                   selectionListener="#{bindings.CalendrierDeliberationVO.treeModel.makeCurrent}" selection="single"
+                   partialTriggers="::pc1:t1">
+        <af:listItem id="li1">
+          <af:panelGridLayout id="pgl1">
+            <af:gridRow marginTop="5px" height="auto" id="gr1">
+              <af:gridCell marginStart="5px" rowSpan="2" width="20%" id="gc1">
+                <af:selectOneChoice value="#{item.bindings.IdSemestre.inputValue}"
+                                    required="#{bindings.CalendrierDeliberationVO.hints.IdSemestre.mandatory}"
+                                    shortDesc="#{bindings.CalendrierDeliberationVO.hints.IdSemestre.tooltip}"
+                                    readOnly="true" id="soc17" contentStyle="font-size : 16px"
+                                    inlineStyle="overflow-wrap:break-word; font-size:large;">
+                  <f:selectItems value="#{item.bindings.IdSemestre.items}" id="si17"/>
+                  <f:validator binding="#{item.bindings.IdSemestre.validator}"/>
+                </af:selectOneChoice>
+              </af:gridCell>
+              <af:gridCell marginStart="5px" rowSpan="2" width="20%" id="gc2">
+                <af:selectOneChoice value="#{item.bindings.IdSession.inputValue}"
+                                    required="#{bindings.CalendrierDeliberationVO.hints.IdSession.mandatory}"
+                                    shortDesc="#{bindings.CalendrierDeliberationVO.hints.IdSession.tooltip}"
+                                    readOnly="true" id="soc18" inlineStyle="overflow-wrap:break-word; font-size:large;"
+                                    contentStyle="font-size : 16px">
+                  <f:selectItems value="#{item.bindings.IdSession.items}" id="si18"/>
+                  <f:validator binding="#{item.bindings.IdSession.validator}"/>
+                </af:selectOneChoice>
+              </af:gridCell>
+              <af:gridCell marginStart="5px" width="20%" id="gc3">
+                <af:outputFormatted value="Début : #{item.bindings.DateDebutDelibProvisoir.inputValue}" id="of14"
+                                    inlineStyle="color:#2897e8; font-size:15px;">
+                  <af:convertDateTime pattern="#{bindings.CalendrierDeliberationVO.hints.DateDebutDelibProvisoir.format}"/>
+                </af:outputFormatted>
+              </af:gridCell>
+              <af:gridCell marginStart="5px" width="20%" id="gc4">
+                <af:outputFormatted value="Début : #{item.bindings.DateDebutReclammation.inputValue}" id="of15"
+                                    inlineStyle="color:#EDA039; font-size:15px">
+                  <af:convertDateTime pattern="#{bindings.CalendrierDeliberationVO.hints.DateDebutReclammation.format}"/>
+                </af:outputFormatted>
+              </af:gridCell>
+              <af:gridCell marginStart="5px" width="20%" marginEnd="5px" id="gc5">
+                <af:outputFormatted value="Début : #{item.bindings.DateDebutDelibDefinitive.inputValue}" id="of16"
+                                    inlineStyle="color:#28BC1A; font-size:15px">
+                  <af:convertDateTime pattern="#{bindings.CalendrierDeliberationVO.hints.DateDebutDelibDefinitive.format}"/>
+                </af:outputFormatted>
+              </af:gridCell>
+            </af:gridRow>
+            <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr2">
+              <af:gridCell marginStart="5px" width="20%" id="gc6">
+                <af:outputFormatted value="Fin : #{item.bindings.DateFinDelibProvisoir.inputValue}" id="of17"
+                                    inlineStyle="color:#2897e8; font-size:15px;">
+                  <af:convertDateTime pattern="#{bindings.CalendrierDeliberationVO.hints.DateFinDelibProvisoir.format}"/>
+                </af:outputFormatted>
+              </af:gridCell>
+              <af:gridCell marginStart="5px" width="20%" id="gc7">
+                <af:outputFormatted value="Fin : #{item.bindings.DateFinReclammation.inputValue}" id="of18"
+                                    inlineStyle="color:#EDA039; font-size:15px">
+                  <af:convertDateTime pattern="#{bindings.CalendrierDeliberationVO.hints.DateFinReclammation.format}"/>
+                </af:outputFormatted>
+              </af:gridCell>
+              <af:gridCell marginStart="5px" width="20%" marginEnd="5px" id="gc8">
+                <af:outputFormatted value="Fin : #{item.bindings.DateFinDelibDefinitive.inputValue}" id="of19"
+                                    inlineStyle="color:#28BC1A; font-size:15px">
+                  <af:convertDateTime pattern="#{bindings.CalendrierDeliberationVO.hints.DateFinDelibDefinitive.format}"/>
+                </af:outputFormatted>
+              </af:gridCell>
+            </af:gridRow>
+          </af:panelGridLayout>
+        </af:listItem>
+      </af:listView>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-new-calendrier-delib" binding="#{CalendrierBean.popupNewCalendrier}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d1" title="Nouveau Calendrier Délibération"
+               dialogListener="#{CalendrierBean.OnCalendrierDialogAction}" resize="off">
+      <f:facet name="buttonBar"/>
+      <af:clientListener type="dialog" method="OnDialogCancel"/>
+      <af:serverListener type="OnDialogHandler" method="#{CalendrierBean.OnDialogHandler}"/>
+      <af:panelFormLayout id="pfl4" inlineStyle="font-size:medium; line-height:50px;">
+        <af:selectOneChoice value="#{bindings.IdAnneesUnivers1.inputValue}"
+                            label="#{viewcontrollerBundle.ANNEE_UNIVERSITAIRE}"
+                            required="#{bindings.IdAnneesUnivers1.hints.mandatory}"
+                            shortDesc="#{bindings.IdAnneesUnivers1.hints.tooltip}" readOnly="true" id="soc2"
+                            contentStyle="width:100%; font-size:14px;">
+          <f:selectItems value="#{bindings.IdAnneesUnivers1.items}" id="si2"/>
+          <f:validator binding="#{bindings.IdAnneesUnivers1.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdNiveauFormationCohorte1.inputValue}"
+                            label="#{viewcontrollerBundle.NIVEAU_FORMATION_COHORTE}"
+                            required="#{bindings.IdNiveauFormationCohorte1.hints.mandatory}"
+                            shortDesc="#{bindings.IdNiveauFormationCohorte1.hints.tooltip}" readOnly="true" id="soc1"
+                            contentStyle="width:100%; font-size:14px;">
+          <f:selectItems value="#{bindings.IdNiveauFormationCohorte1.items}" id="si1"/>
+          <f:validator binding="#{bindings.IdNiveauFormationCohorte1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong1.inputValue}" label="#{viewcontrollerBundle.LIBELLE_LNG}"
+                      required="#{bindings.LibelleLong1.hints.mandatory}"
+                      columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it9"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt1.inputValue}" label="#{viewcontrollerBundle.LIBELLE_CRT}"
+                      required="#{bindings.LibelleCourt1.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt1.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt1.hints.tooltip}" id="it10"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.LibelleCourt1.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdSession1.inputValue}" label="#{viewcontrollerBundle.SESSION}"
+                            required="#{bindings.IdSession1.hints.mandatory}"
+                            shortDesc="#{bindings.IdSession1.hints.tooltip}" id="soc3"
+                            contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:selectItems value="#{bindings.IdSession1.items}" id="si3"/>
+          <f:validator binding="#{bindings.IdSession1.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdSemestre1.inputValue}" label="#{viewcontrollerBundle.SEMESTRE}"
+                            required="#{bindings.IdSemestre1.hints.mandatory}"
+                            shortDesc="#{bindings.IdSemestre1.hints.tooltip}" id="soc4"
+                            contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:selectItems value="#{bindings.IdSemestre1.items}" id="si4"/>
+          <f:validator binding="#{bindings.IdSemestre1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputDate value="#{bindings.DateDebutDelibProvisoir1.inputValue}"
+                      label="#{viewcontrollerBundle.DEBUT_DELIBERATION_PROVISOIR}"
+                      required="#{bindings.DateDebutDelibProvisoir1.hints.mandatory}"
+                      columns="#{bindings.DateDebutDelibProvisoir1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateDebutDelibProvisoir1.hints.tooltip}" id="id3"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateDebutDelibProvisoir1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateDebutDelibProvisoir1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateFinDelibProvisoir1.inputValue}"
+                      label="#{viewcontrollerBundle.FIN_DELIBERATION_PROVISOIR}"
+                      required="#{bindings.DateFinDelibProvisoir1.hints.mandatory}"
+                      columns="#{bindings.DateFinDelibProvisoir1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateFinDelibProvisoir1.hints.tooltip}" id="id5"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateFinDelibProvisoir1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateFinDelibProvisoir1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateDebutDelibDefinitive1.inputValue}"
+                      label="#{viewcontrollerBundle.DEBUT_DELIBERATION_DEFINITIVE}"
+                      required="#{bindings.DateDebutDelibDefinitive1.hints.mandatory}"
+                      columns="#{bindings.DateDebutDelibDefinitive1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateDebutDelibDefinitive1.hints.tooltip}" id="id9"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateDebutDelibDefinitive1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateDebutDelibDefinitive1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateFinDelibDefinitive1.inputValue}"
+                      label="#{viewcontrollerBundle.FIN_DELIBERATION_DEFINITIVE}"
+                      required="#{bindings.DateFinDelibDefinitive1.hints.mandatory}"
+                      columns="#{bindings.DateFinDelibDefinitive1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateFinDelibDefinitive1.hints.tooltip}" id="id22"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateFinDelibDefinitive1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateFinDelibDefinitive1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateDebutReclammation1.inputValue}"
+                      label="#{viewcontrollerBundle.DEBUT_RECLAMATION}"
+                      required="#{bindings.DateDebutReclammation1.hints.mandatory}"
+                      columns="#{bindings.DateDebutReclammation1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateDebutReclammation1.hints.tooltip}" id="id23"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateDebutReclammation1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateDebutReclammation1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateFinReclammation1.inputValue}"
+                      label="#{viewcontrollerBundle.FIN_RECLAMATION}"
+                      required="#{bindings.DateFinReclammation1.hints.mandatory}"
+                      columns="#{bindings.DateFinReclammation1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateFinReclammation1.hints.tooltip}" id="id24"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateFinReclammation1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateFinReclammation1.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree1.inputValue}" label="#{bindings.UtiCree1.hints.label}"
+                      required="#{bindings.UtiCree1.hints.mandatory}" columns="#{bindings.UtiCree1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree1.hints.precision}"
+                      shortDesc="#{bindings.UtiCree1.hints.tooltip}" id="it11"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.UtiCree1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree1.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-edit-calendrier"
+            binding="#{CalendrierBean.popupEditCalendrier}" contentDelivery="lazyUncached">
+    <af:dialog id="d2" title="Edit Calendrier Deliberation" dialogListener="#{CalendrierBean.OnCalendrierDialogAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl1">
+        <af:selectOneChoice value="#{bindings.IdNiveauFormationCohorte1.inputValue}"
+                            label="#{bindings.IdNiveauFormationCohorte1.label}"
+                            required="#{bindings.IdNiveauFormationCohorte1.hints.mandatory}"
+                            shortDesc="#{bindings.IdNiveauFormationCohorte1.hints.tooltip}" readOnly="true" id="soc5"
+                            contentStyle="width:100%; font-size:14px;">
+          <f:selectItems value="#{bindings.IdNiveauFormationCohorte1.items}" id="si5"/>
+          <f:validator binding="#{bindings.IdNiveauFormationCohorte1.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdAnneesUnivers1.inputValue}" label="#{bindings.IdAnneesUnivers1.label}"
+                            required="#{bindings.IdAnneesUnivers1.hints.mandatory}"
+                            shortDesc="#{bindings.IdAnneesUnivers1.hints.tooltip}" readOnly="true" id="soc6"
+                            contentStyle="width:100%; font-size:14px;">
+          <f:selectItems value="#{bindings.IdAnneesUnivers1.items}" id="si6"/>
+          <f:validator binding="#{bindings.IdAnneesUnivers1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong1.inputValue}" label="#{bindings.LibelleLong1.hints.label}"
+                      required="#{bindings.LibelleLong1.hints.mandatory}"
+                      columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it1"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt1.inputValue}" label="#{bindings.LibelleCourt1.hints.label}"
+                      required="#{bindings.LibelleCourt1.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt1.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt1.hints.tooltip}" id="it2"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.LibelleCourt1.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdSession1.inputValue}" label="#{bindings.IdSession1.label}"
+                            required="#{bindings.IdSession1.hints.mandatory}"
+                            shortDesc="#{bindings.IdSession1.hints.tooltip}" id="soc7"
+                            contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:selectItems value="#{bindings.IdSession1.items}" id="si7"/>
+          <f:validator binding="#{bindings.IdSession1.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdSemestre1.inputValue}" label="#{bindings.IdSemestre1.label}"
+                            required="#{bindings.IdSemestre1.hints.mandatory}"
+                            shortDesc="#{bindings.IdSemestre1.hints.tooltip}" id="soc8"
+                            contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:selectItems value="#{bindings.IdSemestre1.items}" id="si8"/>
+          <f:validator binding="#{bindings.IdSemestre1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputDate value="#{bindings.DateDebutDelibProvisoir1.inputValue}"
+                      label="#{bindings.DateDebutDelibProvisoir1.hints.label}"
+                      required="#{bindings.DateDebutDelibProvisoir1.hints.mandatory}"
+                      columns="#{bindings.DateDebutDelibProvisoir1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateDebutDelibProvisoir1.hints.tooltip}" id="id1"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateDebutDelibProvisoir1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateDebutDelibProvisoir1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateFinDelibProvisoir1.inputValue}"
+                      label="#{bindings.DateFinDelibProvisoir1.hints.label}"
+                      required="#{bindings.DateFinDelibProvisoir1.hints.mandatory}"
+                      columns="#{bindings.DateFinDelibProvisoir1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateFinDelibProvisoir1.hints.tooltip}" id="id2"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateFinDelibProvisoir1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateFinDelibProvisoir1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateDebutDelibDefinitive1.inputValue}"
+                      label="#{bindings.DateDebutDelibDefinitive1.hints.label}"
+                      required="#{bindings.DateDebutDelibDefinitive1.hints.mandatory}"
+                      columns="#{bindings.DateDebutDelibDefinitive1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateDebutDelibDefinitive1.hints.tooltip}" id="id4"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateDebutDelibDefinitive1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateDebutDelibDefinitive1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateFinDelibDefinitive1.inputValue}"
+                      label="#{bindings.DateFinDelibDefinitive1.hints.label}"
+                      required="#{bindings.DateFinDelibDefinitive1.hints.mandatory}"
+                      columns="#{bindings.DateFinDelibDefinitive1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateFinDelibDefinitive1.hints.tooltip}" id="id6"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateFinDelibDefinitive1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateFinDelibDefinitive1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateDebutReclammation1.inputValue}"
+                      label="#{bindings.DateDebutReclammation1.hints.label}"
+                      required="#{bindings.DateDebutReclammation1.hints.mandatory}"
+                      columns="#{bindings.DateDebutReclammation1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateDebutReclammation1.hints.tooltip}" id="id7"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateDebutReclammation1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateDebutReclammation1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateFinReclammation1.inputValue}"
+                      label="#{bindings.DateFinReclammation1.hints.label}"
+                      required="#{bindings.DateFinReclammation1.hints.mandatory}"
+                      columns="#{bindings.DateFinReclammation1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateFinReclammation1.hints.tooltip}" id="id8"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.DateFinReclammation1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateFinReclammation1.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree1.inputValue}" label="#{bindings.UtiCree1.hints.label}"
+                      required="#{bindings.UtiCree1.hints.mandatory}" columns="#{bindings.UtiCree1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree1.hints.precision}"
+                      shortDesc="#{bindings.UtiCree1.hints.tooltip}" id="it3"
+                      contentStyle="width:100%; font-size:14px; border:solid 1px #2897e8; border-radius:4px">
+          <f:validator binding="#{bindings.UtiCree1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree1.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-delete-calendrier"
+            binding="#{CalendrierBean.popupDelete}" contentDelivery="lazyUncached">
+    <af:dialog id="d3" title="Confirmer Supprimer" dialogListener="#{CalendrierBean.OnDeleteDialogAction}" type="yesNo"
+               affirmativeTextAndAccessKey="SUPPRIMER" noTextAndAccessKey="ANNULER">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl2">
+        <af:selectOneChoice value="#{bindings.IdNiveauFormationCohorte1.inputValue}"
+                            label="#{bindings.IdNiveauFormationCohorte1.label}"
+                            required="#{bindings.IdNiveauFormationCohorte1.hints.mandatory}"
+                            shortDesc="#{bindings.IdNiveauFormationCohorte1.hints.tooltip}" readOnly="true" id="soc9">
+          <f:selectItems value="#{bindings.IdNiveauFormationCohorte1.items}" id="si9"/>
+          <f:validator binding="#{bindings.IdNiveauFormationCohorte1.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdAnneesUnivers1.inputValue}" label="#{bindings.IdAnneesUnivers1.label}"
+                            required="#{bindings.IdAnneesUnivers1.hints.mandatory}"
+                            shortDesc="#{bindings.IdAnneesUnivers1.hints.tooltip}" readOnly="true" id="soc10">
+          <f:selectItems value="#{bindings.IdAnneesUnivers1.items}" id="si10"/>
+          <f:validator binding="#{bindings.IdAnneesUnivers1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong1.inputValue}" label="#{bindings.LibelleLong1.hints.label}"
+                      required="#{bindings.LibelleLong1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it4">
+          <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt1.inputValue}" label="#{bindings.LibelleCourt1.hints.label}"
+                      required="#{bindings.LibelleCourt1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleCourt1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt1.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt1.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.LibelleCourt1.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdSession1.inputValue}" label="#{bindings.IdSession1.label}"
+                            required="#{bindings.IdSession1.hints.mandatory}"
+                            shortDesc="#{bindings.IdSession1.hints.tooltip}" readOnly="true" id="soc11">
+          <f:selectItems value="#{bindings.IdSession1.items}" id="si11"/>
+          <f:validator binding="#{bindings.IdSession1.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdSemestre1.inputValue}" label="#{bindings.IdSemestre1.label}"
+                            required="#{bindings.IdSemestre1.hints.mandatory}"
+                            shortDesc="#{bindings.IdSemestre1.hints.tooltip}" readOnly="true" id="soc12">
+          <f:selectItems value="#{bindings.IdSemestre1.items}" id="si12"/>
+          <f:validator binding="#{bindings.IdSemestre1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputDate value="#{bindings.DateDebutDelibProvisoir1.inputValue}" readOnly="true"
+                      label="#{bindings.DateDebutDelibProvisoir1.hints.label}"
+                      required="#{bindings.DateDebutDelibProvisoir1.hints.mandatory}"
+                      columns="#{bindings.DateDebutDelibProvisoir1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateDebutDelibProvisoir1.hints.tooltip}" id="id10">
+          <f:validator binding="#{bindings.DateDebutDelibProvisoir1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateDebutDelibProvisoir1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateFinDelibProvisoir1.inputValue}" readOnly="true"
+                      label="#{bindings.DateFinDelibProvisoir1.hints.label}"
+                      required="#{bindings.DateFinDelibProvisoir1.hints.mandatory}"
+                      columns="#{bindings.DateFinDelibProvisoir1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateFinDelibProvisoir1.hints.tooltip}" id="id11">
+          <f:validator binding="#{bindings.DateFinDelibProvisoir1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateFinDelibProvisoir1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateDebutDelibDefinitive1.inputValue}" readOnly="true"
+                      label="#{bindings.DateDebutDelibDefinitive1.hints.label}"
+                      required="#{bindings.DateDebutDelibDefinitive1.hints.mandatory}"
+                      columns="#{bindings.DateDebutDelibDefinitive1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateDebutDelibDefinitive1.hints.tooltip}" id="id12">
+          <f:validator binding="#{bindings.DateDebutDelibDefinitive1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateDebutDelibDefinitive1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateFinDelibDefinitive1.inputValue}" readOnly="true"
+                      label="#{bindings.DateFinDelibDefinitive1.hints.label}"
+                      required="#{bindings.DateFinDelibDefinitive1.hints.mandatory}"
+                      columns="#{bindings.DateFinDelibDefinitive1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateFinDelibDefinitive1.hints.tooltip}" id="id13">
+          <f:validator binding="#{bindings.DateFinDelibDefinitive1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateFinDelibDefinitive1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateDebutReclammation1.inputValue}" readOnly="true"
+                      label="#{bindings.DateDebutReclammation1.hints.label}"
+                      required="#{bindings.DateDebutReclammation1.hints.mandatory}"
+                      columns="#{bindings.DateDebutReclammation1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateDebutReclammation1.hints.tooltip}" id="id14">
+          <f:validator binding="#{bindings.DateDebutReclammation1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateDebutReclammation1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateFinReclammation1.inputValue}" readOnly="true"
+                      label="#{bindings.DateFinReclammation1.hints.label}"
+                      required="#{bindings.DateFinReclammation1.hints.mandatory}"
+                      columns="#{bindings.DateFinReclammation1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateFinReclammation1.hints.tooltip}" id="id15">
+          <f:validator binding="#{bindings.DateFinReclammation1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateFinReclammation1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateCreation.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation.hints.label}" required="#{bindings.DateCreation.hints.mandatory}"
+                      columns="#{bindings.DateCreation.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation.hints.tooltip}" id="id16">
+          <f:validator binding="#{bindings.DateCreation.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateModification.inputValue}" readOnly="true"
+                      label="#{bindings.DateModification.hints.label}"
+                      required="#{bindings.DateModification.hints.mandatory}"
+                      columns="#{bindings.DateModification.hints.displayWidth}"
+                      shortDesc="#{bindings.DateModification.hints.tooltip}" id="id17">
+          <f:validator binding="#{bindings.DateModification.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateModification.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree1.inputValue}" label="#{bindings.UtiCree1.hints.label}"
+                      required="#{bindings.UtiCree1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiCree1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree1.hints.precision}"
+                      shortDesc="#{bindings.UtiCree1.hints.tooltip}" id="it6">
+          <f:validator binding="#{bindings.UtiCree1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie.inputValue}" label="#{bindings.UtiModifie.hints.label}"
+                      required="#{bindings.UtiModifie.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it7">
+          <f:validator binding="#{bindings.UtiModifie.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+    function OnDialogCancel(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "OnDialogHandler", {},immediate);
+            evt.cancel();
+            }
+        }
+  </af:resource>
+</ui:composition>

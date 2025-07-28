@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="detail_PersonnePageDef"
+                Package="inscription.processus_inscription">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Personnes" RangeSize="25" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="listeInsPed" RangeSize="10" DataControl="inscriptionAppDataControl" id="listeInsPedIterator"/>
+    <taskFlow id="taskflowdetailcursus1"
+              taskFlowId="/inscription/cursus_etudiant/task-flow-detail-cursus.xml#task-flow-detail-cursus"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="detailhistoriqueinscription1"
+              taskFlowId="/inscription/historique_inscription/detail-historique-inscription.xml#detail-historique-inscription"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="tasketudbu1" taskFlowId="/inscription/etudiant_bu/task-etud-bu.xml#task-etud-bu" activation="deferred"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="paiementetudtk1" taskFlowId="/inscription/paiement_etudiant/paiement-etud-tk.xml#paiement-etud-tk"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <iterator Binds="Etudiants" RangeSize="10" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="SerieBac" RangeSize="25" DataControl="inscriptionAppDataControl" id="SerieBacIterator"/>
+    <iterator Binds="Lycee" RangeSize="25" DataControl="inscriptionAppDataControl" id="LyceeIterator"/>
+    <iterator Binds="TypeMention" RangeSize="25" DataControl="inscriptionAppDataControl" id="TypeMentionIterator"/>
+    <taskFlow id="responsableetudtk1" taskFlowId="/inscription/responsable/responsable-etud-tk.xml#responsable-etud-tk"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="etudianttictk1" taskFlowId="/inscription/etudiant_tic/etudiant-tic-tk.xml#etudiant-tic-tk"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="NomMarital">
+      <AttrNames>
+        <Item Value="NomMarital"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="EmailInstitutionnel">
+      <AttrNames>
+        <Item Value="EmailInstitutionnel"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="EmailPersonnel">
+      <AttrNames>
+        <Item Value="EmailPersonnel"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Adresse">
+      <AttrNames>
+        <Item Value="Adresse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Telephone">
+      <AttrNames>
+        <Item Value="Telephone"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Portable">
+      <AttrNames>
+        <Item Value="Portable"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdPays" id="IdPays" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdPaysNationalite" id="IdPaysNationalite"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdCivilite" id="IdCivilite"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="PersonnesIterator" id="PieceIdentification">
+      <AttrNames>
+        <Item Value="PieceIdentification"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="listeInsPedIterator" id="ExecuteWithParamsListInsPed"
+            InstanceName="inscriptionAppDataControl.listeInsPed" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="EtudiantsIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="SerieBacIterator" ListOperMode="navigation" ListIter="SerieBacIterator" id="SerieBac"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Serie"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="LyceeIterator" ListOperMode="navigation" ListIter="LyceeIterator" id="Lycee"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="TypeMentionIterator" ListOperMode="navigation" ListIter="TypeMentionIterator" id="TypeMention"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+  </bindings>
+</pageDefinition>

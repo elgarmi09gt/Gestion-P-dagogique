@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="FiliereUeSemestreEcROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.FiliereUeSemestreEcROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewAccessor
+    Name="EcROVO1"
+    ViewObjectName="model.readOnlyView.EcROVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_IdEc"
+    ListVOName="EcROVO1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdEc"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdEc"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[SELECT  DISTINCT        
+    fec.ID_FILIERE_UE_SEMSTRE_EC, fec.ID_FILIERE_UE_SEMSTRE, fec.CODIFICATION, fec.ID_EC,        
+    pma.ID_PARCOURS_MAQUET_ANNEE          
+FROM          
+    FILIERE_UE_SEMSTRE_EC fec         
+JOIN FILIERE_UE_SEMSTRE fue ON fec.ID_FILIERE_UE_SEMSTRE=fue.ID_FILIERE_UE_SEMSTRE        
+JOIN MAQUETTES mq ON fue.ID_MAQUETTE=mq.ID_MAQUETTE        
+JOIN PARCOURS_MAQUETTE_ANNEE pma ON mq.ID_MAQUETTE=pma.ID_MAQUETTE        
+JOIN UE ON fue.ID_UE = UE.ID_UE    
+Order By fec.CODIFICATION]]></SQLQuery>
+  <ViewAttribute
+    Name="IdFiliereUeSemstreEc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_FILIERE_UE_SEMSTRE_EC"
+    Expression="ID_FILIERE_UE_SEMSTRE_EC"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdFiliereUeSemstre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_FILIERE_UE_SEMSTRE"
+    Expression="ID_FILIERE_UE_SEMSTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Codification"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODIFICATION"
+    Expression="CODIFICATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdEc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_EC"
+    Expression="ID_EC"
+    SQLType="NUMERIC"
+    LOVName="LOV_IdEc">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdParcoursMaquetAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PARCOURS_MAQUET_ANNEE"
+    Expression="ID_PARCOURS_MAQUET_ANNEE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdFiliereUeSemstreEc"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="FiliereUeSemestreROVO"
+    ViewLink="model.viewlink.FiliereUeSemestreToFiliereUeSemestreEc"
+    Type="model.readOnlyView.FiliereUeSemestreROVORowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ModeControleEcVO"
+    ViewLink="model.viewlink.FiliereUeSemestreEcToModeControleEc"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="FontionalitesUserROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.FontionalitesUserROVORowImpl"
+  ComponentClass="model.readOnlyView.FontionalitesUserROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.FontionalitesUserROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[select Distinct ftx.ID_FONCTIONNALITE, ftx.LIBELLE_LONG,ftx.URL_ACTION,ftx.CHEMIN_IMAGE,ftx.ORDRE ,ftx.ID_MODULE,ftx.ID_UTILISATEUR    
+from   
+  (  
+    Select fx.ID_FONCTIONNALITE, fx.LIBELLE_LONG,fx.URL_ACTION,fx.CHEMIN_IMAGE,fx.ORDRE ,mo.ID_MODULE,uti.ID_UTILISATEUR  
+    from MODULES mo join FONCTIONNALITES fx on mo.ID_MODULE=fx.ID_MODULE  
+    Join ROLES_FONCTIONNALITES rfx on fx.ID_FONCTIONNALITE=rfx.ID_FONCTIONNALITE  
+    Join ROLES rls on rfx.ID_ROLE = rls.ID_ROLE  
+    Join UTILISATEURS_ROLES urls on rls.ID_ROLE=urls.ID_ROLE  
+    Join UTILISATEURS uti on urls.ID_UTILISATEUR = uti.ID_UTILISATEUR  
+    UNION  
+    Select fx.ID_FONCTIONNALITE, fx.LIBELLE_LONG,fx.URL_ACTION,fx.CHEMIN_IMAGE,fx.ORDRE ,mo.ID_MODULE,uti.ID_UTILISATEUR  
+    from MODULES mo join FONCTIONNALITES fx on mo.ID_MODULE=fx.ID_MODULE  
+    join UTILISATEURS_FONCTIONNALITES ufx on fx.ID_FONCTIONNALITE=ufx.ID_FONCTIONNALITE  
+    join UTILISATEURS uti on ufx.ID_UTILISATEUR=uti.ID_UTILISATEUR  
+  ) ftx  
+order by ftx.ORDRE]]></SQLQuery>
+  <ViewAttribute
+    Name="IdFonctionnalite"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_FONCTIONNALITE"
+    Expression="ID_FONCTIONNALITE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="UrlAction"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="URL_ACTION"
+    Expression="URL_ACTION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="255"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CheminImage"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CHEMIN_IMAGE"
+    Expression="CHEMIN_IMAGE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="255"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Ordre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="ORDRE"
+    Expression="ORDRE"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="IdModule"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_MODULE"
+    Expression="ID_MODULE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdUtilisateur"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_UTILISATEUR"
+    Expression="ID_UTILISATEUR"
+    SQLType="NUMERIC"/>
+  <ViewLinkAccessor
+    Name="ModuleUserROVO"
+    ViewLink="model.viewlink.ModuleToFonctionalitesUser"
+    Type="model.readOnlyView.ModuleUserROVORowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdFonctionnalite"/>
+  </AttrArray>
+</ViewObject>

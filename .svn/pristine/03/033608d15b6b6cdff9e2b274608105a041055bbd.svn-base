@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="liste_autorisationPageDef"
+                Package="inscription.autorisation_inscription">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ListePersonnesRO" RangeSize="7" DataControl="inscriptionAppDataControl"
+              id="ListePersonnesROIterator"/>
+    <searchRegion Binds="ListePersonnesROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ListePersonnesROQuery"/>
+    <iterator Binds="AttrSearchPers" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="AttrSearchPersIterator"/>
+    <iterator Binds="Autorises" RangeSize="10" DataControl="inscriptionAppDataControl" id="AutorisesIterator"/>
+    <iterator Binds="Personnes" RangeSize="25" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="ListePersAutorise" RangeSize="5" DataControl="inscriptionAppDataControl"
+              id="ListePersAutoriseIterator"/>
+    <searchRegion Binds="ListePersAutoriseIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ListePersAutoriseQuery"/>
+    <iterator Binds="AttrSearchPersAut" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="AttrSearchPersAutIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ListePersonnesROIterator" id="ListePersonnesRO">
+      <nodeDefinition DefName="model.readOnlyView.ListePersonnesROVO" Name="ListePersonnesRO0">
+        <AttrNames>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Adresse"/>
+          <Item Value="EmailPersonnel"/>
+          <Item Value="PieceIdentification"/>
+          <Item Value="Portable"/>
+          <Item Value="Numero"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="Adresse">
+      <AttrNames>
+        <Item Value="Adresse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="PieceIdentification">
+      <AttrNames>
+        <Item Value="PieceIdentification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListePersonnesROIterator" id="IdPersonne">
+      <AttrNames>
+        <Item Value="IdPersonne"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="AutorisesIterator" id="CreateInsert" InstanceName="inscriptionAppDataControl.Autorises"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="AutorisesIterator" id="IdPersonne1">
+      <AttrNames>
+        <Item Value="IdPersonne"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AutorisesIterator" id="IdNiveauFormation">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AutorisesIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ListePersonnesROIterator" id="ExecuteWithParams"
+            InstanceName="inscriptionAppDataControl.ListePersonnesRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_niv_formation" NDType="java.lang.Long"/>
+      <NamedData NDName="adresse_bn" NDType="java.lang.String"/>
+      <NamedData NDName="lieu_naiss" NDType="java.lang.String"/>
+      <NamedData NDName="nom_bn" NDType="java.lang.String"/>
+      <NamedData NDName="cin" NDType="java.lang.String"/>
+      <NamedData NDName="prenom" NDType="java.lang.String"/>
+      <NamedData NDName="date_naiss" NDType="java.sql.Timestamp"/>
+      <NamedData NDName="id_parc_maquette" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom1">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="NomMarital">
+      <AttrNames>
+        <Item Value="NomMarital"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms1">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance1">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="LieuNaissance1">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="EmailInstitutionnel">
+      <AttrNames>
+        <Item Value="EmailInstitutionnel"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="EmailPersonnel1">
+      <AttrNames>
+        <Item Value="EmailPersonnel"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Adresse1">
+      <AttrNames>
+        <Item Value="Adresse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Telephone">
+      <AttrNames>
+        <Item Value="Telephone"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Portable1">
+      <AttrNames>
+        <Item Value="Portable"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdPays" id="IdPays" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdPaysNationalite" id="IdPaysNationalite"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdCivilite" id="IdCivilite"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="PersonnesIterator" id="PieceIdentification1">
+      <AttrNames>
+        <Item Value="PieceIdentification"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="PersonnesIterator" id="CreateInsert1" InstanceName="inscriptionAppDataControl.Personnes"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="PersonnesIterator" id="UtiCree1">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="ListePersAutoriseIterator" id="ListePersAutorise">
+      <nodeDefinition DefName="model.readOnlyView.ListePersAutorise" Name="ListePersAutorise0">
+        <AttrNames>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Adresse"/>
+          <Item Value="Numero"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ListePersAutoriseIterator" id="ExecuteWithParams1"
+            InstanceName="inscriptionAppDataControl.ListePersAutorise" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_niv_form" NDType="java.lang.Long"/>
+      <NamedData NDName="nom_var_bn" NDType="java.lang.String"/>
+      <NamedData NDName="prenom_var_bn" NDType="java.lang.String"/>
+      <NamedData NDName="cin_var_bn" NDType="java.lang.String"/>
+      <NamedData NDName="id_parc_maquette" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="AttrSearchPersAutIterator" id="Nom2">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersAutIterator" id="Prenoms2">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersAutIterator" id="PieceIdentification2">
+      <AttrNames>
+        <Item Value="PieceIdentification"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

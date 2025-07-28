@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="deail_groupe_tdPageDef"
+                Package="inscription.Groupe_TD_TP">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ListeGroupeTdTpRO" RangeSize="5" DataControl="inscriptionAppDataControl"
+              id="ListeGroupeTdTpROIterator"/>
+    <searchRegion Binds="ListeGroupeTdTpROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ListeGroupeTdTpROQuery"/>
+    <iterator Binds="ListeEtudPasGroupeTdRO" RangeSize="-1" DataControl="inscriptionAppDataControl"
+              id="ListeEtudPasGroupeTdROIterator"/>
+    <iterator Binds="GroupeTpTdEtudiants" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="GroupeTpTdEtudiantsIterator"/>
+    <iterator Binds="ListeEtudiantGroupeTdRO" RangeSize="7" DataControl="inscriptionAppDataControl"
+              id="ListeEtudiantGroupeTdROIterator"/>
+    <searchRegion Binds="ListeEtudiantGroupeTdROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ListeEtudiantGroupeTdROQuery"/>
+    <iterator Binds="GroupeTpTd" RangeSize="25" DataControl="inscriptionAppDataControl" id="GroupeTpTdIterator"/>
+    <iterator Binds="GroupeTdTpParcours" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="GroupeTdTpParcoursIterator"/>
+    <iterator Binds="GroupeParcSemestre" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="GroupeParcSemestreIterator"/>
+    <iterator Binds="AttrParcours" RangeSize="10" DataControl="inscriptionAppDataControl" id="AttrParcoursIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ListeGroupeTdTpROIterator" id="ListeGroupeTdTpRO">
+      <nodeDefinition DefName="model.readOnlyView.ListeGroupeTdTpROVO" Name="ListeGroupeTdTpRO0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="Effectif"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list ListOperMode="multiSelect" IterBinding="ListeEtudPasGroupeTdROIterator" id="IdInscriptionPedagogique"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="IdInscriptionPedagogique"/>
+      </AttrNames>
+      <ListDisplayAttrNames>
+        <Item Value="Numero"/>
+        <Item Value="Nom"/>
+        <Item Value="Prenoms"/>
+      </ListDisplayAttrNames>
+    </list>
+    <methodAction id="filterEtudiantsTd" RequiresUpdateModel="true" Action="invokeMethod" MethodName="filterEtudiantsTd"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.filterEtudiantsTd.dataControl.dataProvider">
+      <NamedData NDName="searchString" NDType="java.lang.String"/>
+      <NamedData NDName="selectedList" NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="ListeGroupeTdTpROIterator" id="IdGroupeTpTd">
+      <AttrNames>
+        <Item Value="IdGroupeTpTd"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListeGroupeTdTpROIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdEtudiantsIterator" id="IdGroupeTpTd1">
+      <AttrNames>
+        <Item Value="IdGroupeTpTd"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdEtudiantsIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdEtudiantsIterator" id="IdInscriptionPedagogique1">
+      <AttrNames>
+        <Item Value="IdInscriptionPedagogique"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="GroupeTpTdEtudiantsIterator" id="CreateInsert"
+            InstanceName="inscriptionAppDataControl.GroupeTpTdEtudiants" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <tree IterBinding="ListeEtudiantGroupeTdROIterator" id="ListeEtudiantGroupeTdRO">
+      <nodeDefinition DefName="model.readOnlyView.ListeEtudiantGroupeTdROVO" Name="ListeEtudiantGroupeTdRO0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="Adresse"/>
+          <Item Value="PieceIdentification"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ListeEtudiantGroupeTdROIterator" id="ExecuteWithParams"
+            InstanceName="inscriptionAppDataControl.ListeEtudiantGroupeTdRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_groupe" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="ListeGroupeTdTpROIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListeGroupeTdTpROIterator" id="IdHorairesTd">
+      <AttrNames>
+        <Item Value="IdHorairesTd"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListeGroupeTdTpROIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListeGroupeTdTpROIterator" id="IdSemestre">
+      <AttrNames>
+        <Item Value="IdSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ListeEtudPasGroupeTdROIterator" id="ExecuteWithParams1"
+            InstanceName="inscriptionAppDataControl.ListeEtudPasGroupeTdRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_sem" NDType="java.lang.Long"/>
+      <NamedData NDName="id_horaire_td" NDType="java.lang.Long"/>
+      <NamedData NDName="id_niv_form_parc" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="LibelleLong1">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="Effectif">
+      <AttrNames>
+        <Item Value="Effectif"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="EffectifNouveau">
+      <AttrNames>
+        <Item Value="EffectifNouveau"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="EffectifDoublant">
+      <AttrNames>
+        <Item Value="EffectifDoublant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="EffectifReelNouveau">
+      <AttrNames>
+        <Item Value="EffectifReelNouveau"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="EffectifReelDoublant">
+      <AttrNames>
+        <Item Value="EffectifReelDoublant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="IdHorairesTd1">
+      <AttrNames>
+        <Item Value="IdHorairesTd"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="IdModeEnseignement">
+      <AttrNames>
+        <Item Value="IdModeEnseignement"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="IdSemestre1">
+      <AttrNames>
+        <Item Value="IdSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="IdAnneesUnivers1">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="UtiCree1">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTpTdIterator" id="IdNiveauFormationParcours1">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="GroupeTpTdIterator" id="CreateInsertGrpTd" InstanceName="inscriptionAppDataControl.GroupeTpTd"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="GroupeTdTpParcoursIterator" id="IdNiveauFormationParcours2">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeParcSemestreIterator" id="IdSemestre2">
+      <AttrNames>
+        <Item Value="IdSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrParcoursIterator" id="Parcours">
+      <AttrNames>
+        <Item Value="Parcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrParcoursIterator" id="Idmode">
+      <AttrNames>
+        <Item Value="Idmode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="GroupeTdTpParcoursIterator" id="IdAnneesUnivers2">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ListeGroupeTdTpROIterator" id="ExecuteWithParams2"
+            InstanceName="inscriptionAppDataControl.ListeGroupeTdTpRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_horaire" NDType="java.lang.Long"/>
+      <NamedData NDName="id_mode" NDType="java.lang.Long"/>
+      <NamedData NDName="id_parc" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sem" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="GroupeTpTdIterator" id="ExecuteWithParams3" InstanceName="inscriptionAppDataControl.GroupeTpTd"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_grp_td" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="ListeEtudiantGroupeTdROIterator" id="IdGroupeTpTdEtudiant">
+      <AttrNames>
+        <Item Value="IdGroupeTpTdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="GroupeTpTdEtudiantsIterator" id="Delete"
+            InstanceName="inscriptionAppDataControl.GroupeTpTdEtudiants" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="GroupeTpTdEtudiantsIterator" id="ExecuteWithParams4"
+            InstanceName="inscriptionAppDataControl.GroupeTpTdEtudiants" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_grp_etud" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="ListeEtudiantGroupeTdROIterator" id="IdAnneesUnivers3">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListeEtudiantGroupeTdROIterator" id="IdGroupeTpTd2">
+      <AttrNames>
+        <Item Value="IdGroupeTpTd"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListeEtudiantGroupeTdROIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListeEtudiantGroupeTdROIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

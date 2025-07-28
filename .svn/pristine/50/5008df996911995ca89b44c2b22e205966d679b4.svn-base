@@ -1,0 +1,371 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="vertical">
+    <af:outputFormatted value="#{bindings.LibParcours.inputValue}" id="of8"/>
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar">
+        <af:toolbar id="t2">
+          <af:button id="b1" icon="/images/new_icon.png" actionListener="#{JuryBean.OnNewJuryClicked}"/>
+          <af:button id="b2" icon="/images/edit_icon.png" actionListener="#{JuryBean.OnEditClicked}"/>
+          <af:button id="b3" icon="/images/delete_icon.png" action="#{JuryBean.onDeleteClicked}">
+            <af:showPopupBehavior popupId="::popupdelete"/>
+          </af:button>
+        </af:toolbar>
+      </f:facet>
+      <af:table value="#{bindings.JuryVO.collectionModel}" var="row" rows="#{bindings.JuryVO.rangeSize}"
+                emptyText="#{bindings.JuryVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.JuryVO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.JuryVO.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.JuryVO.rangeSize}" filterModel="#{bindings.JuryVOQuery.queryDescriptor}"
+                filterVisible="true" queryListener="#{bindings.JuryVOQuery.processQuery}" varStatus="vs" id="t1"
+                binding="#{JuryBean.juryTable}" columnStretching="last">
+        <af:column sortProperty="#{bindings.JuryVO.hints.LibelleLong.name}" filterable="true" sortable="true"
+                   headerText="Libellé" id="c1" width="250" inlineStyle="font-size:large;">
+          <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.JuryVO.hints.LibelleLong.tooltip}" id="ot1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.JuryVO.hints.LibelleCourt.name}" filterable="true" sortable="true"
+                   headerText="Abréviation" id="c2" width="150" inlineStyle="font-size:large;">
+          <af:outputText value="#{row.LibelleCourt}" shortDesc="#{bindings.JuryVO.hints.LibelleCourt.tooltip}"
+                         id="ot2"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.JuryVO.hints.IdSession.name}" filterable="true" sortable="true"
+                   headerText="Session" id="c5" inlineStyle="font-size:large;">
+          <af:selectOneChoice value="#{row.bindings.IdSession.inputValue}" label="#{row.bindings.IdSession.label}"
+                              required="#{bindings.JuryVO.hints.IdSession.mandatory}"
+                              shortDesc="#{bindings.JuryVO.hints.IdSession.tooltip}" readOnly="true" id="soc15">
+            <f:selectItems value="#{row.bindings.IdSession.items}" id="si15"/>
+            <f:validator binding="#{row.bindings.IdSession.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.JuryVO.hints.IdSemestre.name}" filterable="true" sortable="true"
+                   headerText="Semestre" id="c6" inlineStyle="font-size:large;">
+          <af:selectOneChoice value="#{row.bindings.IdSemestre.inputValue}" label="#{row.bindings.IdSemestre.label}"
+                              required="#{bindings.JuryVO.hints.IdSemestre.mandatory}"
+                              shortDesc="#{bindings.JuryVO.hints.IdSemestre.tooltip}" readOnly="true" id="soc16">
+            <f:selectItems value="#{row.bindings.IdSemestre.items}" id="si16"/>
+            <f:validator binding="#{row.bindings.IdSemestre.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+      </af:table>
+      <f:facet name="statusbar"/>
+    </af:panelCollection>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popunew" binding="#{JuryBean.popupNewJury}"
+            contentDelivery="lazyUncached" popupFetchListener="#{JuryBean.OnPopupShow}">
+    <af:dialog id="d1" title="Nouveau Jury" dialogListener="#{JuryBean.OnDialogAction}">
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="OnDialogCancel" type="dialog"/>
+      <af:serverListener type="HandlerEvenDialogCancel" method="#{JuryBean.OnDialogCancel}"/>
+      <af:panelFormLayout id="pfl1" binding="#{JuryBean.formNewJury}">
+        <af:panelGroupLayout id="pgl2" inlineStyle="line-height:30px;" layout="horizontal">
+          <af:panelGroupLayout id="pgl3" layout="vertical" inlineStyle="width:300px">
+            <af:outputFormatted value="Libellé" id="of1" inlineStyle="font-size:x-large;" styleUsage="pageStamp"/>
+            <af:inputText value="#{bindings.LibelleLong.inputValue}"
+                          required="#{bindings.LibelleLong.hints.mandatory}"
+                          columns="#{bindings.LibelleLong.hints.displayWidth}"
+                          maximumLength="#{bindings.LibelleLong.hints.precision}"
+                          shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1"
+                          contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:35px">
+              <f:validator binding="#{bindings.LibelleLong.validator}"/>
+            </af:inputText>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="width:300px; margin-left:20px">
+            <af:outputFormatted value="Abréviation" id="of7" inlineStyle="font-size:x-large;" styleUsage="pageStamp"/>
+            <af:inputText value="#{bindings.LibelleCourt.inputValue}"
+                          required="#{bindings.LibelleCourt.hints.mandatory}"
+                          columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                          maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                          shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2"
+                          contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:35px">
+              <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+            </af:inputText>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl10" layout="horizontal">
+          <af:panelGroupLayout id="pgl9" layout="vertical" inlineStyle="width:300px">
+            <af:outputFormatted value="Parcours" id="of2" inlineStyle="font-size:x-large;"
+                                styleUsage="pageStamp" binding="#{JuryBean.formInputParcours}"/>
+            <af:selectOneChoice value="#{bindings.IdNiveauFormationParcours.inputValue}"
+                                required="#{bindings.IdNiveauFormationParcours.hints.mandatory}"
+                                shortDesc="#{bindings.IdNiveauFormationParcours.hints.tooltip}" id="soc1"
+                                contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:35px">
+              <f:selectItems value="#{bindings.IdNiveauFormationParcours.items}" id="si1"/>
+              <f:validator binding="#{bindings.IdNiveauFormationParcours.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl8" layout="vertical" inlineStyle="width:300px; margin-left:20px">
+            <af:outputFormatted value="Année Univers" id="of3" styleUsage="pageStamp" inlineStyle="font-size:x-large;"/>
+            <af:selectOneChoice value="#{bindings.IdAnneesUnivers.inputValue}"
+                                required="#{bindings.IdAnneesUnivers.hints.mandatory}"
+                                shortDesc="#{bindings.IdAnneesUnivers.hints.tooltip}" id="soc2"
+                                contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:35px">
+              <f:selectItems value="#{bindings.IdAnneesUnivers.items}" id="si2"/>
+              <f:validator binding="#{bindings.IdAnneesUnivers.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl11" layout="horizontal">
+          <af:panelGroupLayout id="pgl7" layout="vertical" inlineStyle="width:300px; margin-left:10px">
+            <af:outputFormatted value="Session" id="of4" inlineStyle="font-size:x-large;" styleUsage="pageStamp"/>
+            <af:selectOneChoice value="#{bindings.IdSession.inputValue}"
+                                required="#{bindings.IdSession.hints.mandatory}"
+                                shortDesc="#{bindings.IdSession.hints.tooltip}" id="soc3"
+                                contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:35px">
+              <f:selectItems value="#{bindings.IdSession.items}" id="si3"/>
+              <f:validator binding="#{bindings.IdSession.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl6" layout="vertical" inlineStyle="width:300px; margin-left:20px">
+            <af:outputFormatted value="Semestre" id="of5" inlineStyle="font-size:x-large;" styleUsage="pageStamp"/>
+            <af:selectOneChoice value="#{bindings.IdSemestre.inputValue}"
+                                required="#{bindings.IdSemestre.hints.mandatory}"
+                                shortDesc="#{bindings.IdSemestre.hints.tooltip}" id="soc4"
+                                contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:35px">
+              <f:selectItems value="#{bindings.IdSemestre.items}" id="si4"/>
+              <f:validator binding="#{bindings.IdSemestre.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl5" layout="horizontal">
+          <af:outputFormatted value="Utilisateur" id="of6" inlineStyle="font-size:x-large;" styleUsage="pageStamp"/>
+          <af:inputText value="#{bindings.UtiCree.inputValue}"
+                        required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                        maximumLength="#{bindings.UtiCree.hints.precision}"
+                        shortDesc="#{bindings.UtiCree.hints.tooltip}" id="it3"
+                        contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:35px">
+            <f:validator binding="#{bindings.UtiCree.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+          </af:inputText>
+        </af:panelGroupLayout>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupedit" binding="#{JuryBean.popupEdit}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d2" title="Modifier Jury" dialogListener="#{JuryBean.OnDialogAction}">
+      <af:panelFormLayout id="pfl2">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it4">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdNiveauFormationParcours.inputValue}"
+                            label="#{bindings.IdNiveauFormationParcours.label}"
+                            required="#{bindings.IdNiveauFormationParcours.hints.mandatory}"
+                            shortDesc="#{bindings.IdNiveauFormationParcours.hints.tooltip}" id="soc5">
+          <f:selectItems value="#{bindings.IdNiveauFormationParcours.items}" id="si5"/>
+          <f:validator binding="#{bindings.IdNiveauFormationParcours.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdAnneesUnivers.inputValue}" label="#{bindings.IdAnneesUnivers.label}"
+                            required="#{bindings.IdAnneesUnivers.hints.mandatory}"
+                            shortDesc="#{bindings.IdAnneesUnivers.hints.tooltip}" id="soc6">
+          <f:selectItems value="#{bindings.IdAnneesUnivers.items}" id="si6"/>
+          <f:validator binding="#{bindings.IdAnneesUnivers.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdSession.inputValue}" label="#{bindings.IdSession.label}"
+                            required="#{bindings.IdSession.hints.mandatory}"
+                            shortDesc="#{bindings.IdSession.hints.tooltip}" id="soc7">
+          <f:selectItems value="#{bindings.IdSession.items}" id="si7"/>
+          <f:validator binding="#{bindings.IdSession.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdSemestre.inputValue}" label="#{bindings.IdSemestre.label}"
+                            required="#{bindings.IdSemestre.hints.mandatory}"
+                            shortDesc="#{bindings.IdSemestre.hints.tooltip}" id="soc8">
+          <f:selectItems value="#{bindings.IdSemestre.items}" id="si8"/>
+          <f:validator binding="#{bindings.IdSemestre.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it6">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+<af:popup childCreation="deferred" autoCancel="disabled" id="popupdelete" contentDelivery="lazyUncached">
+    <af:dialog id="d3" title="Supprimer Juty" dialogListener="#{JuryBean.OnDeleteDialogAction}" type="yesNo">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl3">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it7">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it8">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdNiveauFormationParcours.inputValue}"
+                            label="#{bindings.IdNiveauFormationParcours.label}"
+                            required="#{bindings.IdNiveauFormationParcours.hints.mandatory}"
+                            shortDesc="#{bindings.IdNiveauFormationParcours.hints.tooltip}" readOnly="true" id="soc9">
+          <f:selectItems value="#{bindings.IdNiveauFormationParcours.items}" id="si9"/>
+          <f:validator binding="#{bindings.IdNiveauFormationParcours.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdAnneesUnivers.inputValue}" label="#{bindings.IdAnneesUnivers.label}"
+                            required="#{bindings.IdAnneesUnivers.hints.mandatory}"
+                            shortDesc="#{bindings.IdAnneesUnivers.hints.tooltip}" readOnly="true" id="soc10">
+          <f:selectItems value="#{bindings.IdAnneesUnivers.items}" id="si10"/>
+          <f:validator binding="#{bindings.IdAnneesUnivers.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdSession.inputValue}" label="#{bindings.IdSession.label}"
+                            required="#{bindings.IdSession.hints.mandatory}"
+                            shortDesc="#{bindings.IdSession.hints.tooltip}" readOnly="true" id="soc11">
+          <f:selectItems value="#{bindings.IdSession.items}" id="si11"/>
+          <f:validator binding="#{bindings.IdSession.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdSemestre.inputValue}" label="#{bindings.IdSemestre.label}"
+                            required="#{bindings.IdSemestre.hints.mandatory}"
+                            shortDesc="#{bindings.IdSemestre.hints.tooltip}" readOnly="true" id="soc12">
+          <f:selectItems value="#{bindings.IdSemestre.items}" id="si12"/>
+          <f:validator binding="#{bindings.IdSemestre.validator}"/>
+        </af:selectOneChoice>
+        <af:inputDate value="#{bindings.DateCreation.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation.hints.label}" required="#{bindings.DateCreation.hints.mandatory}"
+                      columns="#{bindings.DateCreation.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation.hints.tooltip}" id="id1">
+          <f:validator binding="#{bindings.DateCreation.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateModification.inputValue}" readOnly="true"
+                      label="#{bindings.DateModification.hints.label}"
+                      required="#{bindings.DateModification.hints.mandatory}"
+                      columns="#{bindings.DateModification.hints.displayWidth}"
+                      shortDesc="#{bindings.DateModification.hints.tooltip}" id="id2">
+          <f:validator binding="#{bindings.DateModification.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateModification.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it9">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie.inputValue}" label="#{bindings.UtiModifie.hints.label}"
+                      required="#{bindings.UtiModifie.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it10">
+          <f:validator binding="#{bindings.UtiModifie.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+    function OnDialogCancel(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "HandlerEvenDialogCancel", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <!--af:panelGroupLayout id="pgl12" layout="horizontal">
+    <af:panelGroupLayout id="pgl13">
+      <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t6">
+            <af:button actionListener="#{bindings.ExecuteWithParams1.execute}" text="Liste Utilisateurs"
+                       disabled="#{!bindings.ExecuteWithParams1.enabled}" id="b5"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.UtilisateurStructure.collectionModel}" var="row"
+                  rows="#{bindings.UtilisateurStructure.rangeSize}"
+                  emptyText="#{bindings.UtilisateurStructure.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.UtilisateurStructure.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.UtilisateurStructure.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.UtilisateurStructure.rangeSize}"
+                  filterModel="#{bindings.UtilisateurStructureQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.UtilisateurStructureQuery.processQuery}" varStatus="vs" id="t3"
+                  columnStretching="last" partialTriggers="::b5">
+          <af:column sortProperty="#{bindings.UtilisateurStructure.hints.isUserSelected.name}" filterable="true"
+                     sortable="true" id="c3"
+                     align="center" width="100">
+            <af:selectBooleanCheckbox value="#{row.bindings.isUserSelected.inputValue}"
+                                      label="#{row.bindings.isUserSelected.label}"
+                                      shortDesc="#{bindings.UtilisateurStructure.hints.isUserSelected.tooltip}"
+                                      id="sbc1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurStructure.hints.Prenomnom.name}" filterable="true"
+                     sortable="true" headerText="Prénom &amp; Nom" id="c4" width="250">
+            <af:outputFormatted value="#{row.bindings.Prenomnom.inputValue}" id="of10"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurStructure.hints.AdressMail.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.UtilisateurStructure.hints.AdressMail.label}" id="c7"
+                     width="101">
+            <af:outputFormatted value="#{row.bindings.AdressMail.inputValue}" id="of9"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl14">
+      <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t5">
+            <af:button actionListener="#{bindings.ExecuteWithParams.execute}" text="Liste Jury"
+                       disabled="#{!bindings.ExecuteWithParams.enabled}" id="b4"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.JuryROVO.collectionModel}" var="row" rows="#{bindings.JuryROVO.rangeSize}"
+                  emptyText="#{bindings.JuryROVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.JuryROVO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.JuryROVO.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.JuryROVO.rangeSize}" filterModel="#{bindings.JuryROVOQuery.queryDescriptor}"
+                  filterVisible="true" queryListener="#{bindings.JuryROVOQuery.processQuery}" varStatus="vs" id="t4"
+                  columnStretching="last" partialTriggers="::b4">
+          <af:column sortProperty="#{bindings.JuryROVO.hints.IsJurySelected.name}" sortable="true" id="c8"
+                     align="center">
+            <af:selectBooleanCheckbox value="#{row.bindings.IsJurySelected.inputValue}"
+                                      label="#{row.bindings.IsJurySelected.label}"
+                                      shortDesc="#{bindings.JuryROVO.hints.IsJurySelected.tooltip}" id="sbc2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.JuryROVO.hints.LibelleLong.name}" filterable="true" sortable="true"
+                     headerText="Libellé" id="c9" width="250">
+            <af:outputFormatted value="#{row.bindings.LibelleLong.inputValue}" id="of11"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.JuryROVO.hints.LibelleCourt.name}" filterable="true" sortable="true"
+                     headerText="Abréviation" id="c10" width="150">
+            <af:outputFormatted value="#{row.bindings.LibelleCourt.inputValue}" id="of12"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.JuryROVO.hints.Semestre.name}" filterable="true" sortable="true"
+                     headerText="Semestre" id="c11">
+            <af:outputFormatted value="#{row.bindings.Semestre.inputValue}" id="of13"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.JuryROVO.hints.Sess.name}" filterable="true" sortable="true"
+                     headerText="Session" id="c12">
+            <af:outputFormatted value="#{row.bindings.Sess.inputValue}" id="of14"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout-->
+</ui:composition>

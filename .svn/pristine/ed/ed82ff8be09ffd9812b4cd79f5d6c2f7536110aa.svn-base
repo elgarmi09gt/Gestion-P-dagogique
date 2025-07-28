@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+<af:panelTabbed position="above" id="pt1">
+    <af:showDetailItem id="tab1" text="Inscription" disclosed="true">
+      <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"
+                inlineStyle="margin-top:10px;margin-bottom:10px;height:65px;"
+                visible="#{sessionScope.var_etud_mob == '1' ? false : true}"/>
+       <af:panelGroupLayout id="pg3" layout="horizontal"
+                         inlineStyle="background-color:#2897e8;margin-bottom:5px;margin-left:300px;">
+      <af:panelLabelAndMessage label="Numéro" id="plam1" inlineStyle="margin-left:40px; font-size:large;">
+        <af:outputFormatted value="#{bindings.Numero.inputValue}" id="of1"/>
+      </af:panelLabelAndMessage>
+      <af:panelLabelAndMessage label="Prénoms" id="plam7" inlineStyle="margin-left:40px; font-size:large;">
+        <af:outputFormatted value="#{bindings.Prenoms.inputValue}" id="of7"/>
+      </af:panelLabelAndMessage>
+      <af:panelLabelAndMessage label="#{bindings.Nom.hints.label}" id="plam2"
+                               inlineStyle="margin-left:40px; font-size:large;">
+        <af:outputFormatted value="#{bindings.Nom.inputValue}" id="of2"/>
+      </af:panelLabelAndMessage>
+      <af:panelLabelAndMessage label="Date Naissance" id="plam3" inlineStyle="margin-left:40px; font-size:large;">
+        <af:outputFormatted value="#{bindings.DateNaissance.inputValue}" id="of3">
+          <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+        </af:outputFormatted>
+      </af:panelLabelAndMessage>
+    </af:panelGroupLayout>
+      <af:panelLabelAndMessage label="L'étudiant #{bindings.Prenoms.inputValue}   #{bindings.Nom.inputValue} (#{bindings.Numero.inputValue}) est un(e) étudiant(e) en Mobilité" id="plam5" visible="#{sessionScope.var_etud_mob == '1' ? true : false}"
+                               inlineStyle="background-color:Yellow;margin-left:200px;margin-top:10px;"/>
+      <af:panelLabelAndMessage label="Veuillez cliquer sur le menu Etudiant Mobilité" id="plam4"
+                               inlineStyle="background-color:Yellow;margin-top:20px;margin-left:200px;"
+                               visible="#{sessionScope.var_etud_mob == '1' ? true : false}"/>
+      <af:button text="Inscription Pédagogique Semestre Ue" id="b13"
+               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:5px;margin-bottom:0px;"
+               partialSubmit="false" disabled="true"/>
+   
+      <af:panelGroupLayout id="pgl2" layout="horizontal"
+                           inlineStyle="margin-top:10px;border:solid  2px #2897e8;margin-left:10px" valign="top">
+        <af:panelGroupLayout id="pgl3" layout="vertical">
+          <af:button text="Liste des Ue à s'inscrire" id="b3"
+                     inlineStyle="border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:5px;margin-top:5px;margin-bottom:5px;"
+                     partialSubmit="false" disabled="true"/>
+          <af:table value="#{bindings.InscriptPedSemUeRO.collectionModel}" var="row"
+                    rows="#{bindings.InscriptPedSemUeRO.rangeSize}"
+                    emptyText="#{bindings.InscriptPedSemUeRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.InscriptPedSemUeRO.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.InscriptPedSemUeRO.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.InscriptPedSemUeRO.rangeSize}"
+                    filterModel="#{bindings.InscriptPedSemUeROQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.InscriptPedSemUeROQuery.processQuery}" varStatus="vs" id="t2"
+                    inlineStyle="width:425px;margin-left:10px;margin-top:10px;margin-bottom:10px;" scrollPolicy="page">
+            <af:column sortProperty="#{bindings.InscriptPedSemUeRO.hints.Codification.name}" filterable="true"
+                       sortable="true" headerText="Codification Ue" id="c3" width="300">
+              <af:outputText value="#{row.Codification}"
+                             shortDesc="#{bindings.InscriptPedSemUeRO.hints.Codification.tooltip}" id="ot3"/>
+            </af:column>
+            <af:column headerText="Select" id="c4">
+              <af:selectBooleanCheckbox value="#{row.bindings.case_cocher.inputValue}"
+                                        label="#{row.bindings.case_cocher.label}"
+                                        shortDesc="#{bindings.InscriptPedSemUeRO.hints.case_cocher.tooltip}" id="sbc1"/>
+              <f:facet name="header">
+                <af:selectBooleanCheckbox text="Tout" id="sbc2" autoSubmit="true"
+                                          binding="#{Inscriptionbean.check_all}"
+                                          valueChangeListener="#{Inscriptionbean.onSelectAllUe}"/>
+              </f:facet>
+            </af:column>
+          </af:table>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl4" layout="vertical">
+          <af:button text="Liste des Ue validées" id="b4"
+                     inlineStyle="border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:5px;margin-top:5px;margin-bottom:5px;margin-left:30px"
+                     partialSubmit="false" disabled="true"/>
+          <af:table value="#{bindings.listeUeValide.collectionModel}" var="row"
+                    rows="#{bindings.listeUeValide.rangeSize}"
+                    emptyText="#{bindings.listeUeValide.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.listeUeValide.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.listeUeValide.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.listeUeValide.rangeSize}"
+                    filterModel="#{bindings.listeUeValideQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.listeUeValideQuery.processQuery}" varStatus="vs" id="t3"
+                    inlineStyle="margin-left:30px;width:820px;margin-bottom:10px;margin-top:10px;" scrollPolicy="page">
+            <af:column sortProperty="#{bindings.listeUeValide.hints.CodificationUe.name}" filterable="true"
+                       sortable="true" headerText="Codification Ue" id="c1" width="300">
+              <af:outputText value="#{row.CodificationUe}"
+                             shortDesc="#{bindings.listeUeValide.hints.CodificationUe.tooltip}" id="ot2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.listeUeValide.hints.Note.name}" filterable="true" sortable="true"
+                       headerText="#{bindings.listeUeValide.hints.Note.label}" id="c2">
+              <af:outputText value="#{row.Note}" shortDesc="#{bindings.listeUeValide.hints.Note.tooltip}" id="ot4">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.listeUeValide.hints.Note.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.listeUeValide.hints.Credit.name}" filterable="true" sortable="true"
+                       headerText="#{bindings.listeUeValide.hints.Credit.label}" id="c5">
+              <af:outputText value="#{row.Credit}" shortDesc="#{bindings.listeUeValide.hints.Credit.tooltip}" id="ot5">
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.listeUeValide.hints.Credit.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.listeUeValide.hints.AnneeVal.name}" filterable="true" sortable="true"
+                       headerText="Année Validation" id="c6" width="150">
+              <af:outputText value="#{row.AnneeVal}" shortDesc="#{bindings.listeUeValide.hints.AnneeVal.tooltip}"
+                             id="ot6"/>
+            </af:column>
+            <af:column id="c7" headerText="Valider">
+              <af:selectBooleanCheckbox id="sbc3" disabled="true" selected="true"/>
+            </af:column>
+          </af:table>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl1">
+        <af:button text="&lt;&lt; Précédent" id="b1"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:5px;"
+                   action="#{Inscriptionbean.autorisePreviousStop}"/>
+        <af:button text="Suivant >>" id="b2"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:5px;"
+                   action="#{Inscriptionbean.onNextInsPedSemUe}"
+                   disabled="#{sessionScope.var_etud_mob == '1' ? true : false}"/>
+      </af:panelGroupLayout>
+    </af:showDetailItem>
+    <af:showDetailItem id="tab2" text="Consultations">
+      <af:panelTabbed position="above" id="pt2">
+        <af:showDetailItem id="tab3" text="Cursus" disclosed="true">
+          <af:region value="#{bindings.taskflowdetailcursus1.regionModel}" id="r1"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab4" text="Responsable">
+          <af:region value="#{bindings.responsableetudtk1.regionModel}" id="r6"/>
+        </af:showDetailItem>
+        <af:showDetailItem text="Historique Insc." id="sdi1">
+          <af:region value="#{bindings.detailhistoriqueinscription1.regionModel}" id="r2"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab5" text="Etudiant TIC">
+          <af:region value="#{bindings.etudianttictk1.regionModel}" id="r5"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab6" text="Etudiant BU">
+          <af:region value="#{bindings.tasketudbu1.regionModel}" id="r3"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab7" text="Etudiant ACP">
+          <af:region value="#{bindings.paiementetudtk1.regionModel}" id="r4"/>
+        </af:showDetailItem>
+      </af:panelTabbed>
+    </af:showDetailItem>
+  </af:panelTabbed>
+</ui:composition>

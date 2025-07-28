@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="EtudiantAttestation"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.EtudiantAttestation_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="anne"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="id_hs"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT                       
+  nfp.ID_NIVEAU_FORMATION_PARCOURS, etu.NUMERO, pers.PRENOMS, pers.NOM                         
+FROM INSCRIPTIONS_ADMIN ia JOIN INSCRIPTIONS_PEDAGOGIQUES ip ON ia.ID_INSCRIPTION_ADMIN = ip.ID_INSCRIPTION_ADMIN                       
+JOIN ETUDIANTS etu on ia.ID_ETUDIANT = etu.ID_ETUDIANT               
+JOIN PERSONNES pers on pers.ID_PERSONNE = etu.ID_PERSONNE               
+JOIN RESULTATS_ANNUELS ra on ip.ID_INSCRIPTION_PEDAGOGIQUE = ra.ID_INSCRIPTION_PEDAGOGIQUE                       
+JOIN PARCOURS_MAQUETTE_ANNEE pma on pma.ID_PARCOURS_MAQUET_ANNEE = ip.ID_PARCOURS_MAQUET_ANNEE                       
+JOIN NIVEAUX_FORMATION_PARCOURS nfp on nfp.ID_NIVEAU_FORMATION_PARCOURS = pma.ID_NIVEAU_FORMATION_PARCOURS                       
+JOIN NIVEAU_FORMATION_COHORTES nfc on nfc.ID_NIVEAU_FORMATION_COHORTE = nfp.ID_NIVEAU_FORMATION_COHORTE                       
+JOIN NIVEAUX_FORMATIONS nf on nfc.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION                       
+JOIN FORMATIONS f on nf.ID_FORMATION = f.ID_FORMATION            
+JOIN HISTORIQUES_STRUCTURES hs on hs.ID_HISTORIQUES_STRUCTURE = f.ID_HISTORIQUES_STRUCTURE          
+where ia.ID_ANNEES_UNIVERS=:anne and nfp.ID_NIVEAU_FORMATION_PARCOURS=:parcours and hs.ID_HISTORIQUES_STRUCTURE=:id_hs                     
+AND ra.RESULTAT=5]]></SQLQuery>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenoms"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMS"
+    Expression="PRENOMS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNiveauFormationParcours"/>
+    <Item Value="Numero"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

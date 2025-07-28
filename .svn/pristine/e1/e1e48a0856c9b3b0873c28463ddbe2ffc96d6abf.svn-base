@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="operations_cmpte_formationPageDef" Package="ecolage.operations_cmpte_formation">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="lesRecettesCmptFormRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="lesRecettesCmptFormROIterator"/>
+    <searchRegion Binds="lesRecettesCmptFormROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="lesRecettesCmptFormROQuery"/>
+    <iterator Binds="FormPayHstFormParcRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="FormPayHstFormParcROIterator"/>
+    <iterator Binds="etatActuCmpteFormRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="etatActuCmpteFormROIterator"/>
+    <searchRegion Binds="etatActuCmpteFormROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="etatActuCmpteFormROQuery"/>
+    <iterator Binds="RechCompteGlobRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="RechCompteGlobROIterator"/>
+    <iterator Binds="lesDepensesEffectueesFromRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="lesDepensesEffectueesFromROIterator"/>
+    <searchRegion Binds="lesDepensesEffectueesFromROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="lesDepensesEffectueesFromROQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="lesRecettesCmptFormROIterator" id="lesRecettesCmptFormRO">
+      <nodeDefinition DefName="model.readOnlyView.lesRecettesCmptFormROVO" Name="lesRecettesCmptFormRO0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="PrenomNom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="Montant"/>
+          <Item Value="DateOperation"/>
+          <Item Value="Motif"/>
+          <Item Value="Pourcentage"/>
+          <Item Value="MontantVerse"/>
+          <Item Value="Banque"/>
+          <Item Value="NumChqVir"/>
+          <Item Value="LibTypeCmpte"/>
+          <Item Value="LibNivForm"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="FormPayHstFormParcROIterator" id="getFormHist"
+            InstanceName="ecolageAppDataControl.FormPayHstFormParcRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="niv_form_parc" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="lesRecettesCmptFormROIterator" id="getRecetteCmpteForm"
+            InstanceName="ecolageAppDataControl.lesRecettesCmptFormRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="etatActuCmpteFormROIterator" id="getEtatActuCmptForm"
+            InstanceName="ecolageAppDataControl.etatActuCmpteFormRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="etatActuCmpteFormROIterator" id="etatActuCmpteFormRO">
+      <nodeDefinition DefName="model.readOnlyView.etatActuCmpteFormROVO" Name="etatActuCmpteFormRO0">
+        <AttrNames>
+          <Item Value="LibTypeCmpte"/>
+          <Item Value="SoldeInitial"/>
+          <Item Value="SoldeActuel"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="RechCompteGlobROIterator" id="getRechCmpteGlob"
+            InstanceName="ecolageAppDataControl.RechCompteGlobRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_strct" NDType="java.lang.Long"/>
+      <NamedData NDName="type_cmpte" NDType="java.lang.Long"/>
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="RechCompteGlobROIterator" id="RechCompteGlobRO">
+      <nodeDefinition DefName="model.readOnlyView.RechCompteGlobROVO" Name="RechCompteGlobRO0">
+        <AttrNames>
+          <Item Value="LibCompte"/>
+          <Item Value="SoldeInitial"/>
+          <Item Value="SoldeActuel"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="FormPayHstFormParcROIterator" id="LibForm">
+      <AttrNames>
+        <Item Value="LibForm"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="lesDepensesEffectueesFromROIterator" id="lesDepensesEffectueesFrom"
+            InstanceName="ecolageAppDataControl.lesDepensesEffectueesFromRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_strc" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="lesDepensesEffectueesFromROIterator" id="lesDepensesEffectueesFromRO">
+      <nodeDefinition DefName="model.readOnlyView.lesDepensesEffectueesFromROVO" Name="lesDepensesEffectueesFromRO0">
+        <AttrNames>
+          <Item Value="DateOperation"/>
+          <Item Value="Montant"/>
+          <Item Value="LibModePaie"/>
+          <Item Value="LibTypeCmpte"/>
+          <Item Value="NumeroRecu"/>
+          <Item Value="Motif"/>
+          <Item Value="Proprietaire"/>
+          <Item Value="NumChqVir"/>
+          <Item Value="OpVal"/>
+          <Item Value="Banque"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ParcoursToJury"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge">
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.viewlink.ParcoursToJury_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewLinkDefEnd
+    Name="ParcoursROVO"
+    Cardinality="1"
+    Source="true"
+    Owner="model.readOnlyView.ParcoursROVO">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_accessor" Value="true"/>
+      <Attr Name="_finderName" Value="ParcoursROVO"/>
+      <Attr Name="_entityAccessor" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.readOnlyView.ParcoursROVO.IdNiveauFormationParcours"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="JuryVO"
+    Cardinality="-1"
+    Owner="model.updatableview.JuryVO">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_finderName" Value="JuryVO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.updatableview.JuryVO.IdNiveauFormationParcours"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewLink>

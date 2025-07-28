@@ -1,0 +1,477 @@
+package autorisation_valide;
+
+import java.util.Map;
+
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+
+import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
+import javax.faces.event.ValueChangeEvent;
+
+import model.services.inscriptionAppImpl;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCIteratorBinding;
+
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPopup;
+import oracle.adf.view.rich.component.rich.data.RichTable;
+
+import oracle.adf.view.rich.component.rich.input.RichSelectBooleanCheckbox;
+import oracle.adf.view.rich.component.rich.output.RichPanelCollection;
+import oracle.adf.view.rich.context.AdfFacesContext;
+
+import oracle.adf.view.rich.event.DialogEvent;
+import oracle.adf.view.rich.render.ClientEvent;
+
+import oracle.binding.AttributeBinding;
+import oracle.binding.BindingContainer;
+
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+import oracle.jbo.RowSetIterator;
+import oracle.jbo.VariableValueManager;
+import oracle.jbo.ViewCriteria;
+import oracle.jbo.ViewCriteriaManager;
+import oracle.jbo.ViewObject;
+import oracle.jbo.server.ViewObjectImpl;
+
+public class AutorisationValBean {
+    private RichTable table;
+    private RichPanelCollection collection;
+    private RichSelectBooleanCheckbox check;
+    private RichPopup popup;
+
+    Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    private String parcours = sessionScope.get("id_niv_form_parcours").toString();
+    private String anne_univers = sessionScope.get("id_annee").toString();
+    private String session = sessionScope.get("id_session").toString();
+    private String utilisateur = sessionScope.get("id_user").toString();
+    private String calendrier = sessionScope.get("id_calendrier").toString();
+    private String semestre = sessionScope.get("id_smstre").toString();
+
+    public AutorisationValBean() {
+    }
+
+    public BindingContainer getBindings() {
+        return (BindingContainer) BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    public void setAnne_univers(String anne_univers) {
+        this.anne_univers = anne_univers;
+    }
+
+    public String getAnne_univers() {
+        return anne_univers;
+    }
+
+    public void setUtilisateur(String utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public String getUtilisateur() {
+        return utilisateur;
+    }
+
+    public Integer nombreCaseCoche(String bind_interator){
+        DCIteratorBinding iter = (DCIteratorBinding) getBindings().get(bind_interator);       
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        Integer i = 0;
+        while (rsi.hasNext()) {
+            Row nextRow = rsi.next();
+            if(nextRow.getAttribute("case_cocher")!=null){
+                if(Boolean.parseBoolean(nextRow.getAttribute("case_cocher").toString())){
+                    i++;
+                }
+            }
+        }
+        return i;
+    }
+    
+    public Object resolvElDC(String data) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Application app = fc.getApplication();
+        ExpressionFactory elFactory = app.getExpressionFactory();
+        ELContext elContext = fc.getELContext();
+        ValueExpression valueExp = elFactory.createValueExpression(elContext, "#{data." + data + ".dataProvider}", Object.class);
+        return valueExp.getValue(elContext);
+    }
+
+    @SuppressWarnings("oracle.jdeveloper.java.unchecked-conversion-or-cast")
+    public String onValiderAutorisation() {
+        // Add event code here...
+        AttributeBinding id_parc_maquette = (AttributeBinding) getBindings().getControlBinding("IdParcoursMaquetAnnee");
+        AttributeBinding id_annee = (AttributeBinding) getBindings().getControlBinding("IdAnneesUnivers");
+
+        DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("AutorisationValideROIterator");        
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        
+        Integer i =0;
+        Integer j = 0;
+        
+        if(rsi.getRowCount()==0){
+            FacesMessage msg = new FacesMessage(" Aucune autorisation provisoire disponible ! ");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+        else{                 
+            if(nombreCaseCoche("AutorisationValideROIterator")==0){
+                FacesMessage msg = new FacesMessage(" Veuillez cocher une autorisation provisoire avant de valider ! ");
+                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+            else{
+                while (rsi.hasNext()) {
+                    Row nextRow = rsi.next();
+                    if(nextRow.getAttribute("case_cocher")!=null){
+                        if(Boolean.parseBoolean(nextRow.getAttribute("case_cocher").toString())){ 
+                            System.out.println("re " +getDerogationEtud(id_parc_maquette.getInputValue().toString(),nextRow.getAttribute("IdEtudiant").toString(),getAnne_univers()));
+                            if(getDerogationEtud(id_parc_maquette.getInputValue().toString(),nextRow.getAttribute("IdEtudiant").toString(),getAnne_univers()) == null){ 
+                                OperationBinding op_autorise = getBindings().getOperationBinding("fingAndUpdateAutorise");
+                                op_autorise.getParamsMap().put("id_aut",  Long.parseLong(nextRow.getAttribute("IdAutorise").toString()));
+                                op_autorise.getParamsMap().put("valide",  1);   // validé par le Chef de Scolarité       
+                                op_autorise.execute();
+                                i++;
+                            }
+                            else{ 
+                                String id_ped = inscriptionValidee(id_parc_maquette.getInputValue().toString(),nextRow.getAttribute("IdPersonne").toString(),nextRow.getAttribute("IdEtudiant").toString());
+                                if(id_ped != null){ 
+                                    OperationBinding op_autorise = getBindings().getOperationBinding("fingAndUpdateAutorise");
+                                    op_autorise.getParamsMap().put("id_aut",  Long.parseLong(nextRow.getAttribute("IdAutorise").toString()));
+                                    op_autorise.getParamsMap().put("valide",  3);          
+                                    op_autorise.execute();
+                                    j++;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                FacesMessage msg = new FacesMessage( i+" Autorisation(s) validée(s) avec succès ");
+                msg.setSeverity(FacesMessage.SEVERITY_INFO);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                if(j > 0)
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage( j+" Inscrit(s) provisoirement avec succès "));
+                //refresh la liste des étudiants autorisés
+                OperationBinding op_aut = getBindings().getOperationBinding("autorisationValider");
+                op_aut.getParamsMap().put("id_parc_maquet",  Long.parseLong(id_parc_maquette.getInputValue().toString()));
+                op_aut.getParamsMap().put("id_annee",  Long.parseLong(id_annee.getInputValue().toString()));               
+                op_aut.execute();
+                //refresh la liste des étudiants autorisés provisoirement
+                OperationBinding op_aut_prov = getBindings().getOperationBinding("autorisationAValider");
+                op_aut_prov.getParamsMap().put("id_parc_maquet",  Long.parseLong(id_parc_maquette.getInputValue().toString()));
+                op_aut_prov.getParamsMap().put("id_annee",  Long.parseLong(id_annee.getInputValue().toString()));
+                op_aut_prov.execute();
+
+            }
+        }
+        return null;
+    }
+
+    public void setTable(RichTable table) {
+        this.table = table;
+    }
+
+    public RichTable getTable() {
+        return table;
+    }
+
+    public void setCollection(RichPanelCollection collection) {
+        this.collection = collection;
+    }
+
+    public RichPanelCollection getCollection() {
+        return collection;
+    }
+
+    public void onSelectAll(ValueChangeEvent valueChangeEvent) {
+        if(Boolean.parseBoolean(check.getValue().toString())){
+            DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("AutorisationValideROIterator");        
+            RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null); 
+            while (rsi.hasNext()) {
+                Row nextRow = rsi.next();
+                nextRow.setAttribute("case_cocher", Boolean.TRUE);
+            }
+        }
+        else{
+            DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("AutorisationValideROIterator");        
+            RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null); 
+            while (rsi.hasNext()) {
+                Row nextRow = rsi.next();
+                nextRow.setAttribute("case_cocher", Boolean.FALSE);
+            }
+        }     
+    }
+
+    public void setCheck(RichSelectBooleanCheckbox check) {
+        this.check = check;
+    }
+
+    public RichSelectBooleanCheckbox getCheck() {
+        return check;
+    }
+
+    @SuppressWarnings("unchecked")
+    public String onDeleteAutorisation() {
+        // Add event code here...
+        DCIteratorBinding dciter = (DCIteratorBinding) getBindings().get("ListePersAutValROIterator");
+        Row currentRow = dciter.getCurrentRow();
+        
+        OperationBinding annuler_auto = getBindings().getOperationBinding("getAutorisation");
+
+        annuler_auto.getParamsMap().put("id_autorise", Long.parseLong(currentRow.getAttribute("IdAutorise").toString()));
+        annuler_auto.execute();
+        //Valide
+        AttributeBinding valide = (AttributeBinding) getBindings().getControlBinding("Valide");
+        
+        if(Integer.parseInt(valide.getInputValue().toString()) > 1){
+            FacesMessage msg = new FacesMessage( " Impossible d'annuler l'autorisation de "+currentRow.getAttribute("Prenoms")+" "+currentRow.getAttribute("Nom")+" ( "+currentRow.getAttribute("Numero")+" )");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);//
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(" Le Responsable a déjà validé"));
+        }
+        else{        
+            RichPopup popup = this.getPopup();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            popup.show(hints);
+        }
+        return null;
+    }
+
+    public void setPopup(RichPopup popup) {
+        this.popup = popup;
+    }
+
+    public RichPopup getPopup() {
+        return popup;
+    }
+
+    public void onDialogCan(ClientEvent clientEvent) {
+        // Add event code here...
+        this.getPopup().hide();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void onDialog(DialogEvent dialogEvent) {
+        // Add event code here...
+        AttributeBinding id_autorise = (AttributeBinding) getBindings().getControlBinding("IdAutorisePers");
+        
+        AttributeBinding id_parc_maquette = (AttributeBinding) getBindings().getControlBinding("IdParcoursMaquetAnnee");
+        AttributeBinding id_annee = (AttributeBinding) getBindings().getControlBinding("IdAnneesUnivers");
+        
+        OperationBinding op_autorise = getBindings().getOperationBinding("fingAndUpdateAutorise");
+        op_autorise.getParamsMap().put("id_aut",  Long.parseLong(id_autorise.getInputValue().toString()));
+        op_autorise.getParamsMap().put("valide",  0);   // annulation de l'autorisation par le Chef de Scolarité 
+        op_autorise.execute();
+
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollection());
+        //refresh la liste des étudiants autorisés provisoirement
+        OperationBinding op_aut_prov = getBindings().getOperationBinding("autorisationAValider");
+        op_aut_prov.getParamsMap().put("id_parc_maquet",  Long.parseLong(id_parc_maquette.getInputValue().toString()));
+        op_aut_prov.getParamsMap().put("id_annee",  Long.parseLong(id_annee.getInputValue().toString()));
+        op_aut_prov.execute();
+        
+        //refresh la liste des étudiants autorisés
+        OperationBinding op_aut = getBindings().getOperationBinding("autorisationValider");
+        op_aut.getParamsMap().put("id_parc_maquet",  Long.parseLong(id_parc_maquette.getInputValue().toString()));
+        op_aut.getParamsMap().put("id_annee",  Long.parseLong(id_annee.getInputValue().toString()));               
+        op_aut.execute();
+    }
+
+    @SuppressWarnings("unchecked")
+    public Row getDerogationEtud(String id_parc,String id_etud,String id_annee){
+     OperationBinding op_getDerogationEtud = getBindings().getOperationBinding("getDerogationEtud");
+     op_getDerogationEtud.getParamsMap().put("id_parc",  id_parc);
+     op_getDerogationEtud.getParamsMap().put("id_etud",  id_etud);
+     op_getDerogationEtud.getParamsMap().put("id_annee",  id_annee);
+     op_getDerogationEtud.execute();
+     DCIteratorBinding iter_op_res_der = (DCIteratorBinding) BindingContext.getCurrent().getCurrentBindingsEntry().get("DerogationEtudROIterator");
+     System.out.println("iter_op_res_der.getCurrentRow()"+iter_op_res_der.getCurrentRow());
+     return  iter_op_res_der.getCurrentRow();
+    }
+    
+    @SuppressWarnings("unchecked")
+       public String inscriptionValidee(String id_niv_form_parc,String id_pers,String id_etud){
+                   
+           AttributeBinding id_type_form = (AttributeBinding) getBindings().getControlBinding("IdTypeFormation");
+           AttributeBinding id_grade = (AttributeBinding) getBindings().getControlBinding("IdGrade");
+           AttributeBinding niveau = (AttributeBinding) getBindings().getControlBinding("Niveau");
+           
+           //dernière inscription
+           OperationBinding op_last_insc = getBindings().getOperationBinding("getLastInsc");
+           op_last_insc.getParamsMap().put("idpers",  Long.parseLong(id_pers));
+           op_last_insc.execute();
+           DCIteratorBinding iter_op_last_insc = (DCIteratorBinding) BindingContext.getCurrent().getCurrentBindingsEntry().get("InscAncienneROIterator");
+           Row row_op_last_insce = iter_op_last_insc.getCurrentRow();
+           
+            OperationBinding op_insc_ped_anc = getBindings().getOperationBinding("getDetailInscPedAnc");
+           op_insc_ped_anc.getParamsMap().put("id_insc_ped",  row_op_last_insce.getAttribute("IdInscriptionPedagogique"));
+           op_insc_ped_anc.execute();
+           DCIteratorBinding iter_op_insc_ped = (DCIteratorBinding) BindingContext.getCurrent().getCurrentBindingsEntry().get("InscPedagogiqueROIterator");
+           Row rw_insc_ped = iter_op_insc_ped.getCurrentRow(); 
+          
+           // nombre max d'insc atteint
+           OperationBinding op_nombre_insc = getBindings().getOperationBinding("getNombreInscription");
+           op_nombre_insc.getParamsMap().put("id_parc_maq",  Long.parseLong(id_niv_form_parc));
+           op_nombre_insc.getParamsMap().put("id_etud",  id_etud);        
+           op_nombre_insc.execute();
+           
+           DCIteratorBinding iter_nombre_insc = (DCIteratorBinding) getBindings().get("InscNombreMaxiROIterator");        
+           RowSetIterator rsi_nombre_insc = iter_nombre_insc.getViewObject().createRowSetIterator(null);
+           
+           // pour reafficher en cas d'erreur
+           OperationBinding detpers = getBindings().getOperationBinding("getDetailPers");
+           detpers.getParamsMap().put("idpers_var",  Long.parseLong(id_pers));
+           detpers.execute();
+           
+           DCIteratorBinding iter_det_pers = (DCIteratorBinding)getBindings().get("PersonnesIterator");
+               //Create RowSetIterato iterate over viewObject
+           RowSetIterator rsi_det_pers = iter_det_pers.getViewObject().createRowSetIterator(null);
+           Row row_det_pers = rsi_det_pers.first();
+           System.out.println("row_det_pers "+row_det_pers);        
+           //getDroitNiveauPays
+           
+           OperationBinding getDroitNiveauPays = getBindings().getOperationBinding("getDroitNiveauPays");
+           getDroitNiveauPays.getParamsMap().put("id_niveau",  Long.parseLong(niveau.getInputValue().toString())); 
+           getDroitNiveauPays.getParamsMap().put("id_pays_nation",  row_det_pers.getAttribute("IdPaysNationalite"));
+           getDroitNiveauPays.execute(); 
+           DCIteratorBinding iter_droit_niv = (DCIteratorBinding) BindingContext.getCurrent().getCurrentBindingsEntry().get("DroitNiveauPaysROIterator");
+           Row row_droit_niv_pays = iter_droit_niv.getCurrentRow();System.out.println("row_droit_niv_pays "+row_droit_niv_pays); 
+
+           
+           AttributeBinding idTypeFormation = (AttributeBinding) getBindings().getControlBinding("IdTypeFormationInscAdmin");
+           AttributeBinding id_annee_insc_admin = (AttributeBinding) getBindings().getControlBinding("IdAnneesUniversInscAdmin");
+           AttributeBinding idetud = (AttributeBinding) getBindings().getControlBinding("IdEtudiantInscAdmin");
+           AttributeBinding idGrade = (AttributeBinding) getBindings().getControlBinding("IdGradeInscAdmin");
+           AttributeBinding util_insert_admin = (AttributeBinding) getBindings().getControlBinding("UtiCreeInscAdmin");
+           //Inscription Administrative
+           OperationBinding op_insc_admin = getBindings().getOperationBinding("CreateInsertInscAdmin");
+           Object result_op_insc_admin = op_insc_admin.execute();
+           if (!op_insc_admin.getErrors().isEmpty()) {
+               return null;
+           }
+           else{
+               util_insert_admin.setInputValue(getUtilisateur());
+               idTypeFormation.setInputValue(id_type_form.getInputValue());
+               id_annee_insc_admin.setInputValue(getAnne_univers());
+               idetud.setInputValue(id_etud);
+               idGrade.setInputValue(id_grade.getInputValue());
+               
+               OperationBinding op_insert_admin_commit = getBindings().getOperationBinding("Commit");
+               Object result_insert_admin_commit = op_insert_admin_commit.execute();
+               if (!op_insert_admin_commit.getErrors().isEmpty()) {
+                   return null;
+               }                               
+               else{
+                   AttributeBinding id_insc_admin = (AttributeBinding) getBindings().getControlBinding("IdInscriptionAdmin");
+                   
+                   //les attributs qui seront modifier lors de l'insc
+                   AttributeBinding id_insc_admin_ped = (AttributeBinding) getBindings().getControlBinding("IdInscriptionAdminPed");
+                   AttributeBinding id_HorairesTd = (AttributeBinding) getBindings().getControlBinding("IdHorairesTd");
+                   AttributeBinding id_Statut = (AttributeBinding) getBindings().getControlBinding("IdStatut");
+                   AttributeBinding id_Option = (AttributeBinding) getBindings().getControlBinding("IdOption");
+                   AttributeBinding id_Bourse = (AttributeBinding) getBindings().getControlBinding("IdBourse");
+                   AttributeBinding id_Cohorte = (AttributeBinding) getBindings().getControlBinding("IdCohorte");
+                   AttributeBinding id_TypeConvention = (AttributeBinding) getBindings().getControlBinding("IdTypeConvention");
+                   AttributeBinding id_Operateur = (AttributeBinding) getBindings().getControlBinding("IdOperateur");
+                   AttributeBinding derniere_insc = (AttributeBinding) getBindings().getControlBinding("DernierInscription");
+                   
+                   AttributeBinding id_parc_maq_annee = (AttributeBinding) getBindings().getControlBinding("IdParcoursMaquetAnneePed");
+                   AttributeBinding nb_insc = (AttributeBinding) getBindings().getControlBinding("NbInsc");
+                   AttributeBinding util_permet_double_insc = (AttributeBinding) getBindings().getControlBinding("UtiPermetDoublInsPed");
+                   AttributeBinding id_etat_insc = (AttributeBinding) getBindings().getControlBinding("EtatInscrEtatInscrIdPed");
+                   AttributeBinding tarif = (AttributeBinding) getBindings().getControlBinding("Tarif");
+                   AttributeBinding redouble = (AttributeBinding) getBindings().getControlBinding("Redoublement");
+                   AttributeBinding utilisateur_cree = (AttributeBinding) getBindings().getControlBinding("UtiCreeInscPed");
+       
+                   AttributeBinding cout_formation = (AttributeBinding) getBindings().getControlBinding("CoutFormation");
+                   AttributeBinding droit_ins_adm = (AttributeBinding) getBindings().getControlBinding("DroitInsAdm");
+                   AttributeBinding droit_ins_ped = (AttributeBinding) getBindings().getControlBinding("DroitInsPed");
+                   
+                   System.out.println("id_insc_admin "+id_insc_admin.getInputValue());  
+                   System.out.println("id_grade "+rw_insc_ped.getAttribute("IdHorairesTd"));  
+                   //System.out.println("niveau "+niveau); 
+                   //Inscription Pédagogique
+                   OperationBinding op_insc_ped = getBindings().getOperationBinding("CreateInsertInscPed");
+                   Object result_op_insc_ped = op_insc_ped.execute();
+                   if (!op_insc_ped.getErrors().isEmpty()) {
+                       return null;
+                   }
+                   else{
+                       System.out.println("droit adm "+row_droit_niv_pays.getAttribute("DroitInsAdm")); 
+                       // les frais d'inscription
+                       Integer droit_insc_admin = 0;
+                       Integer droit_insc_ped = 0;
+                       if(row_droit_niv_pays.getAttribute("DroitInsAdm") != null && row_droit_niv_pays.getAttribute("DroitInsPed") == null){
+                           droit_insc_admin = Integer.parseInt( row_droit_niv_pays.getAttribute("DroitInsAdm").toString());
+                           droit_ins_adm.setInputValue(droit_insc_admin);
+                           droit_ins_ped.setInputValue(row_droit_niv_pays.getAttribute("DroitInsPed"));
+                           cout_formation.setInputValue( 0 + droit_insc_admin);
+                       }
+                       else{
+                           if(row_droit_niv_pays.getAttribute("DroitInsPed") != null && row_droit_niv_pays.getAttribute("DroitInsAdm") == null){
+                               droit_insc_ped = Integer.parseInt( row_droit_niv_pays.getAttribute("DroitInsPed").toString());
+                               droit_ins_ped.setInputValue(droit_insc_ped);
+                               droit_ins_adm.setInputValue(row_droit_niv_pays.getAttribute("DroitInsAdm"));
+                               cout_formation.setInputValue( 0 + droit_insc_ped);
+                           }
+                           else{
+                               if(row_droit_niv_pays.getAttribute("DroitInsPed") == null && row_droit_niv_pays.getAttribute("DroitInsAdm") == null){
+                                   droit_ins_ped.setInputValue(row_droit_niv_pays.getAttribute("DroitInsPed"));
+                                   droit_ins_adm.setInputValue(row_droit_niv_pays.getAttribute("DroitInsAdm"));
+                                   cout_formation.setInputValue(null);
+                               }
+                               else{
+                                   droit_insc_admin = Integer.parseInt( row_droit_niv_pays.getAttribute("DroitInsAdm").toString());
+                                   droit_insc_ped = Integer.parseInt( row_droit_niv_pays.getAttribute("DroitInsPed").toString());
+                                   droit_ins_ped.setInputValue(row_droit_niv_pays.getAttribute("DroitInsPed"));
+                                   droit_ins_adm.setInputValue(row_droit_niv_pays.getAttribute("DroitInsAdm"));
+                                   cout_formation.setInputValue(droit_insc_admin + droit_insc_ped);
+                               }
+                           }
+                       }
+                       
+                       id_insc_admin_ped.setInputValue(Long.parseLong(id_insc_admin.getInputValue().toString()));
+                       id_HorairesTd.setInputValue(rw_insc_ped.getAttribute("IdHorairesTd"));
+                       id_Statut.setInputValue(rw_insc_ped.getAttribute("IdStatut"));
+                       id_Option.setInputValue(rw_insc_ped.getAttribute("IdOption"));
+                       id_Bourse.setInputValue(rw_insc_ped.getAttribute("IdBourse"));
+                       id_Cohorte.setInputValue(rw_insc_ped.getAttribute("IdCohorte"));
+                       id_TypeConvention.setInputValue(rw_insc_ped.getAttribute("IdTypeConvention"));
+                       id_Operateur.setInputValue(rw_insc_ped.getAttribute("IdOperateur"));
+                       if(row_op_last_insce != null)
+                           derniere_insc.setInputValue(row_op_last_insce.getAttribute("IdInscriptionPedagogique"));
+                       else
+                           derniere_insc.setInputValue(Long.parseLong("0"));
+                       
+                       id_parc_maq_annee.setInputValue(id_niv_form_parc);
+                       nb_insc.setInputValue(rsi_nombre_insc.getRowCount() + 1);
+                       util_permet_double_insc.setInputValue(getUtilisateur()); //utilisateur connecté ou un autre
+                       id_etat_insc.setInputValue(Long.parseLong("21")); // etat prvisoire                   
+                       utilisateur_cree.setInputValue(getUtilisateur());
+                       
+                       if(rsi_nombre_insc.getRowCount() > 0)
+                           redouble.setInputValue(1);
+                       else
+                           redouble.setInputValue(0);
+                       
+                       OperationBinding op_insert_ped_commit = getBindings().getOperationBinding("Commit");
+                       Object result_insert_ped_commit = op_insert_ped_commit.execute();
+                       if (!op_insert_ped_commit.getErrors().isEmpty()) {
+                           return null;
+                       }                               
+                       else{
+                           AttributeBinding id_ped = (AttributeBinding) getBindings().getControlBinding("IdInscriptionPedagogiquePed");                           
+                           return id_ped.getInputValue().toString();
+                       }
+                   }
+               }
+           } 
+           
+       }
+}

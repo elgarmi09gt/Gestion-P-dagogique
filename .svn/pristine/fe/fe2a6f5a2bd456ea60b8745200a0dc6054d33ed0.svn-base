@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+              <af:button text="Liste des Etudiants en Mobilité" id="b3"
+                       inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:30px;margin-bottom:20px;"
+                       partialSubmit="false" disabled="true"/>
+  <af:table value="#{bindings.listeEtudMobiliteRO.collectionModel}" var="row"
+            rows="#{bindings.listeEtudMobiliteRO.rangeSize}"
+            emptyText="#{bindings.listeEtudMobiliteRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+            rowBandingInterval="0" selectedRowKeys="#{bindings.listeEtudMobiliteRO.collectionModel.selectedRow}"
+            selectionListener="#{bindings.listeEtudMobiliteRO.collectionModel.makeCurrent}" rowSelection="single"
+            fetchSize="#{bindings.listeEtudMobiliteRO.rangeSize}"
+            filterModel="#{bindings.listeEtudMobiliteROQuery.queryDescriptor}" filterVisible="true"
+            queryListener="#{bindings.listeEtudMobiliteROQuery.processQuery}" varStatus="vs" id="t1">
+    <af:column sortProperty="#{bindings.listeEtudMobiliteRO.hints.Numero.name}" filterable="true" sortable="true"
+               headerText="#{bindings.listeEtudMobiliteRO.hints.Numero.label}" id="c1">
+      <af:outputText value="#{row.Numero}" shortDesc="#{bindings.listeEtudMobiliteRO.hints.Numero.tooltip}" id="ot1"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.listeEtudMobiliteRO.hints.Prenoms.name}" filterable="true" sortable="true"
+               headerText="#{bindings.listeEtudMobiliteRO.hints.Prenoms.label}" id="c2" width="400">
+      <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.listeEtudMobiliteRO.hints.Prenoms.tooltip}" id="ot2"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.listeEtudMobiliteRO.hints.Nom.name}" filterable="true" sortable="true"
+               headerText="#{bindings.listeEtudMobiliteRO.hints.Nom.label}" id="c3" width="350">
+      <af:outputText value="#{row.Nom}" shortDesc="#{bindings.listeEtudMobiliteRO.hints.Nom.tooltip}" id="ot3"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.listeEtudMobiliteRO.hints.DateNaissance.name}" filterable="true" sortable="true"
+               headerText="Date Naissance" id="c4" width="150">
+      <f:facet name="filter">
+        <af:inputDate value="#{bindings.listeEtudMobiliteROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                      id="id1">
+          <af:convertDateTime pattern="#{bindings.listeEtudMobiliteRO.hints.DateNaissance.format}"/>
+        </af:inputDate>
+      </f:facet>
+      <af:outputText value="#{row.DateNaissance}"
+                     shortDesc="#{bindings.listeEtudMobiliteRO.hints.DateNaissance.tooltip}" id="ot4">
+        <af:convertDateTime pattern="#{bindings.listeEtudMobiliteRO.hints.DateNaissance.format}"/>
+      </af:outputText>
+    </af:column>
+    <af:column sortProperty="#{bindings.listeEtudMobiliteRO.hints.LieuNaissance.name}" filterable="true" sortable="true"
+               headerText="Lieu Naissance" id="c5" width="400">
+      <af:outputText value="#{row.LieuNaissance}"
+                     shortDesc="#{bindings.listeEtudMobiliteRO.hints.LieuNaissance.tooltip}" id="ot5"/>
+    </af:column>
+  </af:table>
+                <af:button text="Liste des Ue inscrites par l'Etudiant" id="b1"
+                       inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:30px;margin-bottom:20px;"
+                       partialSubmit="false" disabled="true"/>
+  <af:table value="#{bindings.listeEtudMobUeRO.collectionModel}" var="row" rows="#{bindings.listeEtudMobUeRO.rangeSize}"
+            emptyText="#{bindings.listeEtudMobUeRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+            rowBandingInterval="0" selectedRowKeys="#{bindings.listeEtudMobUeRO.collectionModel.selectedRow}"
+            selectionListener="#{bindings.listeEtudMobUeRO.collectionModel.makeCurrent}" rowSelection="single"
+            fetchSize="#{bindings.listeEtudMobUeRO.rangeSize}"
+            filterModel="#{bindings.listeEtudMobUeROQuery.queryDescriptor}" filterVisible="true"
+            queryListener="#{bindings.listeEtudMobUeROQuery.processQuery}" varStatus="vs" id="t2">
+    <af:column sortProperty="#{bindings.listeEtudMobUeRO.hints.LibUe.name}" filterable="true" sortable="true"
+               headerText="Libellé Ue" id="c6" width="700">
+      <af:outputText value="#{row.LibUe}" shortDesc="#{bindings.listeEtudMobUeRO.hints.LibUe.tooltip}" id="ot6"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.listeEtudMobUeRO.hints.Codification.name}" filterable="true" sortable="true"
+               headerText="#{bindings.listeEtudMobUeRO.hints.Codification.label}" id="c7" width="300">
+      <af:outputText value="#{row.Codification}" shortDesc="#{bindings.listeEtudMobUeRO.hints.Codification.tooltip}"
+                     id="ot7"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.listeEtudMobUeRO.hints.Semestre.name}" filterable="true" sortable="true"
+               headerText="#{bindings.listeEtudMobUeRO.hints.Semestre.label}" id="c8" width="200">
+      <af:outputText value="#{row.Semestre}" shortDesc="#{bindings.listeEtudMobUeRO.hints.Semestre.tooltip}" id="ot8"/>
+    </af:column>
+  </af:table>
+</ui:composition>

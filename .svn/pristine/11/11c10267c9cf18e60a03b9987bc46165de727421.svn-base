@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="UtilisateurJuryROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.UtilisateurJuryROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT uj.ID_JURY, u.ID_UTILISATEUR, j.LIBELLE_LONG,p.PRENOMS|| ' '|| p.NOM PrenomNom, uj.ROLE,         
+j.ID_ANNEES_UNIVERS Annes_univers, j.ID_SEMESTRE Semestre, j.ID_SESSION Sess,j.ID_NIVEAU_FORMATION_PARCOURS         
+FROM UTILISATEURS_JURY uj            
+JOIN UTILISATEURS u ON uj.ID_UTILISATEUR= u.ID_UTILISATEUR          
+JOIN jury j ON uj.ID_JURY = j.ID_JURY           
+JOIN PERSONNES p on u.ID_PERSONNE = p.ID_PERSONNE           
+ORDER BY uj.ROLE DESC]]></SQLQuery>
+  <ViewAttribute
+    Name="IdJury"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_JURY"
+    Expression="ID_JURY"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdUtilisateur"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_UTILISATEUR"
+    Expression="ID_UTILISATEUR"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenomnom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="301"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMNOM"
+    Expression="PRENOMNOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="301"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Role"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="75"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ROLE"
+    Expression="ROLE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="AnnesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ANNES_UNIVERS"
+    Expression="ANNES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Semestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="SEMESTRE"
+    Expression="SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Sess"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="SESS"
+    Expression="SESS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdJury"/>
+    <Item Value="IdUtilisateur"/>
+    <Item Value="AnnesUnivers"/>
+    <Item Value="Semestre"/>
+    <Item Value="Sess"/>
+    <Item Value="IdNiveauFormationParcours"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="JuryROVO"
+    ViewLink="model.viewlink.JuryToUtilisateurJuryVL"
+    Type="oracle.jbo.server.ViewRowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

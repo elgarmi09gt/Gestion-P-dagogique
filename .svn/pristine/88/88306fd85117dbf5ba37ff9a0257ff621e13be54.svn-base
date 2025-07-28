@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ComptesEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="COMPTES"
+  AliasName="ComptesEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdCompte"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_COMPTE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="COMPTES"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="NumeroCompte"
+    Precision="100"
+    ColumnName="NUMERO_COMPTE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="COMPTES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Solde"
+    Precision="10"
+    Scale="0"
+    ColumnName="SOLDE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="COMPTES"/>
+  <Attribute
+    Name="IdTypeCompte"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_TYPE_COMPTE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="COMPTES"/>
+  <Attribute
+    Name="Proprietaire"
+    Precision="250"
+    ColumnName="PROPRIETAIRE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="COMPTES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IdStructure"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_STRUCTURE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="COMPTES"/>
+  <Attribute
+    Name="IdHistoriquesStructure"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_HISTORIQUES_STRUCTURE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="COMPTES"/>
+  <Attribute
+    Name="IdFormation"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_FORMATION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="COMPTES"/>
+  <Attribute
+    Name="IdEtudiant"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ETUDIANT"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="COMPTES"/>
+  <Attribute
+    Name="IdFournisseur"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_FOURNISSEUR"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="COMPTES"/>
+  <Attribute
+    Name="IdAnneesUnivers"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="COMPTES"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="COMPTES"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="COMPTES"/>
+  <Attribute
+    Name="UtiCree"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="COMPTES"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="COMPTES"/>
+  <Key
+    Name="PkComptes"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_COMPTES"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ComptesEO.IdCompte"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCmptAnnee">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ANNEES_UNIVERS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CMPT_ANNEE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ComptesEO.IdAnneesUnivers"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCmpteEtud">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ETUDIANTS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CMPTE_ETUD"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ComptesEO.IdEtudiant"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCmpteForm">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_FORMATIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CMPTE_FORM"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ComptesEO.IdFormation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCmpteFourni">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_FOURNISSEURS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CMPTE_FOURNI"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ComptesEO.IdFournisseur"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCmpteHist">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_HISTORIQUES_STRUCTURES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CMPTE_HIST"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ComptesEO.IdHistoriquesStructure"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCmpteStrc">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_STRUCTURES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CMPTE_STRC"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ComptesEO.IdStructure"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCmpteTypCpt">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_TYPE_CMPTE"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CMPTE_TYP_CPT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ComptesEO.IdTypeCompte"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCmpteUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CMPTE_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ComptesEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCmpteUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CMPTE_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ComptesEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

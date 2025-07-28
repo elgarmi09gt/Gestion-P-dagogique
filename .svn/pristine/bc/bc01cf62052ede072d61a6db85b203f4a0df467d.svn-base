@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelSplitter id="ps1" splitterPosition="1100" dimensionsFrom="children" firstBorder="all" secondBorder="all"
+                    disabled="true">
+    <f:facet name="first">
+      <af:panelGroupLayout id="pgl2" layout="vertical">
+        <af:button text="Liste Inscription Pédagogique" id="b1"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:20px;"/>
+        <af:table value="#{bindings.InscPedChangeNationaliteRO.collectionModel}" var="row"
+                  rows="#{bindings.InscPedChangeNationaliteRO.rangeSize}"
+                  emptyText="#{bindings.InscPedChangeNationaliteRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.InscPedChangeNationaliteRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.InscPedChangeNationaliteRO.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.InscPedChangeNationaliteRO.rangeSize}"
+                  filterModel="#{bindings.InscPedChangeNationaliteROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.InscPedChangeNationaliteROQuery.processQuery}" varStatus="vs" id="t1">
+          <af:column sortProperty="#{bindings.InscPedChangeNationaliteRO.hints.LibNivForm.name}" filterable="true"
+                     sortable="true" headerText="Niveau Formation" id="c1" width="500">
+            <af:outputText value="#{row.LibNivForm}"
+                           shortDesc="#{bindings.InscPedChangeNationaliteRO.hints.LibNivForm.tooltip}" id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedChangeNationaliteRO.hints.DroitInsAdm.name}" filterable="true"
+                     sortable="true" headerText="Droit Inscription Administrative" id="c2">
+            <af:outputText value="#{row.DroitInsAdm}"
+                           shortDesc="#{bindings.InscPedChangeNationaliteRO.hints.DroitInsAdm.tooltip}" id="ot2">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.InscPedChangeNationaliteRO.hints.DroitInsAdm.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedChangeNationaliteRO.hints.DroitInsPed.name}" filterable="true"
+                     sortable="true" headerText="Droit Inscription Pédagogique" id="c3">
+            <af:outputText value="#{row.DroitInsPed}"
+                           shortDesc="#{bindings.InscPedChangeNationaliteRO.hints.DroitInsPed.tooltip}" id="ot3">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.InscPedChangeNationaliteRO.hints.DroitInsPed.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedChangeNationaliteRO.hints.CoutFormation.name}" filterable="true"
+                     sortable="true" headerText="Cout Formation" id="c4">
+            <af:outputText value="#{row.CoutFormation}"
+                           shortDesc="#{bindings.InscPedChangeNationaliteRO.hints.CoutFormation.tooltip}" id="ot4">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.InscPedChangeNationaliteRO.hints.CoutFormation.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedChangeNationaliteRO.hints.EtatInscrEtatInscrId.name}"
+                     filterable="true" sortable="true" headerText="Etat Inscription" id="c5">
+            <af:selectOneChoice value="#{row.bindings.EtatInscrEtatInscrId.inputValue}"
+                                label="#{row.bindings.EtatInscrEtatInscrId.label}"
+                                required="#{bindings.InscPedChangeNationaliteRO.hints.EtatInscrEtatInscrId.mandatory}"
+                                shortDesc="#{bindings.InscPedChangeNationaliteRO.hints.EtatInscrEtatInscrId.tooltip}"
+                                readOnly="true" id="soc1">
+              <f:selectItems value="#{row.bindings.EtatInscrEtatInscrId.items}" id="si1"/>
+              <f:validator binding="#{row.bindings.EtatInscrEtatInscrId.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.InscPedChangeNationaliteRO.hints.IdPaysNationalite.name}"
+                     filterable="true" sortable="true" headerText="Nationalité" id="c6">
+            <af:selectOneChoice value="#{row.bindings.IdPaysNationalite.inputValue}"
+                                label="#{row.bindings.IdPaysNationalite.label}"
+                                required="#{bindings.InscPedChangeNationaliteRO.hints.IdPaysNationalite.mandatory}"
+                                shortDesc="#{bindings.InscPedChangeNationaliteRO.hints.IdPaysNationalite.tooltip}"
+                                readOnly="true" id="soc2">
+              <f:selectItems value="#{row.bindings.IdPaysNationalite.items}" id="si2"/>
+              <f:validator binding="#{row.bindings.IdPaysNationalite.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </f:facet>
+    <f:facet name="second">
+      <af:panelGroupLayout id="pgl1" layout="vertical">
+        <af:button text="Nouvelle Nationalité" id="b2"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:20px;"/>
+        <af:selectOneChoice value="#{bindings.Pays.inputValue}" label="Nouvelle Nationalité"
+                            required="#{bindings.Pays.hints.mandatory}" shortDesc="#{bindings.Pays.hints.tooltip}"
+                            id="soc4" inlineStyle="margin-left:20px;"
+                            contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;">
+          <f:selectItems value="#{bindings.Pays.items}" id="si4"/>
+          <f:validator binding="#{bindings.Pays.validator}"/>
+        </af:selectOneChoice>
+        <af:button text="Valider" id="b3"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                   icon="/images/commit.png" action="#{DetailChanngeNationaliteBean.onValiderNouvelleNationalite}"/>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:panelSplitter>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+            binding="#{DetailChanngeNationaliteBean.pop}">
+    <af:dialog id="d1" title="Formulaire de confirmation" dialogListener="#{DetailChanngeNationaliteBean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous changer la nationalité de l'étudiant : #{sessionScope.prenom_etud}   #{sessionScope.nom_etud}" id="ot5"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{DetailChanngeNationaliteBean.onDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+    <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>        
+</ui:composition>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="EtudiantsEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="ETUDIANTS"
+  AliasName="EtudiantsEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdEtudiant"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ETUDIANT"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="ETUDIANTS"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="IdPersonne"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_PERSONNE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="ETUDIANTS"
+    Domain="oracle.jbo.domain.DBSequence"/>
+  <Attribute
+    Name="Numero"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="50"
+    ColumnName="NUMERO"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="ETUDIANTS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="ETUDIANTS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="ETUDIANTS"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="ETUDIANTS"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="ETUDIANTS"/>
+  <Attribute
+    Name="Mobilite"
+    Precision="1"
+    Scale="0"
+    ColumnName="MOBILITE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="ETUDIANTS"/>
+  <AccessorAttribute
+    Name="PersonnesEO"
+    Association="model.assoc.PersonnesToEtudiantAssoc"
+    AssociationEnd="model.assoc.PersonnesToEtudiantAssoc.PersonnesEO"
+    AssociationOtherEnd="model.assoc.PersonnesToEtudiantAssoc.EtudiantsEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <ViewLinkAccessor
+    Name="PersonnesVO"
+    ViewLink="model.viewlink.PersonnesToEtudiantVL"
+    ViewLinkEnd="model.viewlink.PersonnesToEtudiantVL.PersonnesVO"
+    ViewLinkOtherEnd="model.viewlink.PersonnesToEtudiantVL.EtudiantsVO"
+    Type="oracle.jbo.server.ViewRowImpl"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkEtudiants"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_ETUDIANTS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.EtudiantsEO.IdEtudiant"/>
+      <Item Value="model.entities.EtudiantsEO.IdPersonne"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqEtudiantsNumero">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_ETUDIANTS_NUMERO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.EtudiantsEO.Numero"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkEtudiantsPersonne">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_PERSONNES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_ETUDIANTS_PERSONNE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.EtudiantsEO.IdPersonne"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkEtudiantsUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_ETUDIANTS_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.EtudiantsEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkEtudiantsUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_ETUDIANTS_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.EtudiantsEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

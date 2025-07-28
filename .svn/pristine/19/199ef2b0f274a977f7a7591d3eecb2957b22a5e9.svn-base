@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <af:document title="attestationtf.jsf" id="d1">
+        <af:messages id="m1"/>
+        <af:form id="f1">
+            <af:panelGroupLayout id="pgl1">
+                <af:panelCollection id="pc1">
+                    <f:facet name="menus"/>
+                    <f:facet name="toolbar">
+                        <af:toolbar id="t2">
+                            <af:button text="print" id="b1" actionListener="#{PrintAttestationBean.OnPrintClicked}"/>
+                        </af:toolbar>
+                    </f:facet>
+                    <f:facet name="statusbar"/>
+                    <af:table value="#{bindings.EtudiantAttestation.collectionModel}" var="row"
+                              rows="#{bindings.EtudiantAttestation.rangeSize}"
+                              emptyText="#{bindings.EtudiantAttestation.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.EtudiantAttestation.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.EtudiantAttestation.collectionModel.makeCurrent}"
+                              rowSelection="single" fetchSize="#{bindings.EtudiantAttestation.rangeSize}" id="t1">
+                        <af:column sortProperty="#{bindings.EtudiantAttestation.hints.IdNiveauFormationParcours.name}"
+                                   sortable="true"
+                                   headerText="#{bindings.EtudiantAttestation.hints.IdNiveauFormationParcours.label}"
+                                   id="c1">
+                            <af:outputFormatted value="#{row.bindings.IdNiveauFormationParcours.inputValue}" id="of1">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.EtudiantAttestation.hints.IdNiveauFormationParcours.format}"/>
+                            </af:outputFormatted>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Numero.name}" sortable="true"
+                                   headerText="#{bindings.EtudiantAttestation.hints.Numero.label}" id="c2">
+                            <af:outputFormatted value="#{row.bindings.Numero.inputValue}" id="of2"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Prenoms.name}" sortable="true"
+                                   headerText="#{bindings.EtudiantAttestation.hints.Prenoms.label}" id="c3">
+                            <af:outputFormatted value="#{row.bindings.Prenoms.inputValue}" id="of3"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Nom.name}" sortable="true"
+                                   headerText="#{bindings.EtudiantAttestation.hints.Nom.label}" id="c4">
+                            <af:outputFormatted value="#{row.bindings.Nom.inputValue}" id="of4"/>
+                        </af:column>
+                    </af:table>
+                </af:panelCollection>
+            </af:panelGroupLayout>
+        </af:form>
+    </af:document>
+</f:view>

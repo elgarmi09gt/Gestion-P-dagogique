@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelGroupLayout id="pgl2" layout="horizontal">
+      <af:panelGroupLayout id="pgl4" layout="vertical" halign="center" valign="middle" inlineStyle="line-height:30px;">
+        <af:outputFormatted value="Utilisateurs" id="of1" styleUsage="pageStamp" inlineStyle="font-size:x-large;"/>
+        <af:selectOneChoice value="#{bindings.UtilisateurStructure.inputValue}"
+                            required="#{bindings.UtilisateurStructure.hints.mandatory}"
+                            shortDesc="#{bindings.UtilisateurStructure.hints.tooltip}" id="soc1"
+                            contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:50px"
+                            valueChangeListener="#{UesAcessBean.OnUserValueChangeListener}" autoSubmit="true">
+          <f:selectItems value="#{bindings.UtilisateurStructure.items}" id="si1"/>
+          <f:validator binding="#{bindings.UtilisateurStructure.validator}"/>
+        </af:selectOneChoice>
+        <af:spacer width="10" height="10" id="s3"/>
+        <af:outputFormatted value="Role" id="of2" styleUsage="pageStamp" inlineStyle="font-size:x-large;"/>
+        <af:selectOneRadio value="#{bindings.AccesUeList.inputValue}" required="#{bindings.AccesUeList.hints.mandatory}"
+                           shortDesc="#{bindings.AccesUeList.hints.tooltip}" id="sor1"
+                           contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:80px; line-height:30px;"
+                           binding="#{UesAcessBean.roleChecked}">
+          <f:selectItems value="#{bindings.AccesUeList.items}" id="si2"/>
+          <f:validator binding="#{bindings.AccesUeList.validator}"/>
+        </af:selectOneRadio>
+      </af:panelGroupLayout>
+      <af:spacer width="50" height="20" id="s1"/>
+      <af:panelGroupLayout id="pgl5" layout="scroll">
+        <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t3"/>
+          </f:facet>
+          <af:table value="#{bindings.UeNiveauFormationUtilisateursROVO.collectionModel}" var="row"
+                    rows="#{bindings.UeNiveauFormationUtilisateursROVO.rangeSize}"
+                    emptyText="#{bindings.UeNiveauFormationUtilisateursROVO.viewable ? 'Cet Utilisateur n a acces dans aucune formation possedant d ues .' : 'Access Denied.'}"
+                    rowBandingInterval="0"
+                    selectedRowKeys="#{bindings.UeNiveauFormationUtilisateursROVO.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.UeNiveauFormationUtilisateursROVO.collectionModel.makeCurrent}"
+                    rowSelection="single" fetchSize="#{bindings.UeNiveauFormationUtilisateursROVO.rangeSize}"
+                    filterModel="#{bindings.UeNiveauFormationUtilisateursROVOQuery.queryDescriptor}"
+                    filterVisible="true" queryListener="#{bindings.UeNiveauFormationUtilisateursROVOQuery.processQuery}"
+                    varStatus="vs" id="t2" binding="#{UesAcessBean.ueTable}" columnStretching="last">
+            <af:column sortProperty="#{bindings.UeNiveauFormationUtilisateursROVO.hints.isUeSelected.name}"
+                       sortable="true" id="c3" inlineStyle="font-size:large;" align="center">
+              <af:selectBooleanCheckbox value="#{row.bindings.isUeSelected.inputValue}"
+                                        label="#{row.bindings.isUeSelected.label}"
+                                        shortDesc="#{bindings.UeNiveauFormationUtilisateursROVO.hints.isUeSelected.tooltip}"
+                                        id="sbc1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.UeNiveauFormationUtilisateursROVO.hints.Ue.name}" filterable="true"
+                       sortable="true" headerText="Filiéres Ue" id="c4" width="300" inlineStyle="font-size:large;">
+              <af:outputFormatted value="#{row.bindings.Ue.inputValue}" id="of3"/>
+            </af:column>
+          </af:table>
+          <f:facet name="statusbar"/>
+        </af:panelCollection>
+      </af:panelGroupLayout>
+      <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:1250px)"
+                             propertyName="layout"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl3" layout="vertical" halign="center">
+      <af:button text="Enregistrer" id="b1"
+                 inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                 icon="/images/save_close_48px.png" actionListener="#{UesAcessBean.OnSaveClicked}"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl6" layout="vertical" inlineStyle="margin-top : 20px">
+      <af:outputFormatted value="Acces Accordés à : #{bindings.Prenomnom.inputValue}" id="of4"
+                          inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:4px;background:#2897e8;"/>
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t4">
+            <af:button id="b3" icon="/images/edit_icon.png"/>
+            <af:button id="b2" icon="/images/delete_icon.png"/>
+          </af:toolbar>
+        </f:facet>
+        <af:table value="#{bindings.UtilisateurAccesUeROVO.collectionModel}" var="row"
+                  rows="#{bindings.UtilisateurAccesUeROVO.rangeSize}"
+                  emptyText="#{bindings.UtilisateurAccesUeROVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.UtilisateurAccesUeROVO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.UtilisateurAccesUeROVO.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.UtilisateurAccesUeROVO.rangeSize}"
+                  filterModel="#{bindings.UtilisateurAccesUeROVOQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.UtilisateurAccesUeROVOQuery.processQuery}" varStatus="vs" id="t1"
+                  binding="#{UesAcessBean.ueAccesTable}" columnStretching="last">
+          <af:column sortProperty="#{bindings.UtilisateurAccesUeROVO.hints.LibelleLong.name}" filterable="true"
+                     sortable="true" headerText="Filiére Ue" id="c1" width="500" inlineStyle="font-size:large;">
+            <af:outputText value="#{row.LibelleLong}"
+                           shortDesc="#{bindings.UtilisateurAccesUeROVO.hints.LibelleLong.tooltip}" id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurAccesUeROVO.hints.Role.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.UtilisateurAccesUeROVO.hints.Role.label}" id="c2"
+                     inlineStyle="font-size:large;">
+            <af:outputText value="#{row.Role}" shortDesc="#{bindings.UtilisateurAccesUeROVO.hints.Role.tooltip}"
+                           id="ot2"/>
+          </af:column>
+        </af:table>
+        <f:facet name="statusbar"/>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</ui:composition>

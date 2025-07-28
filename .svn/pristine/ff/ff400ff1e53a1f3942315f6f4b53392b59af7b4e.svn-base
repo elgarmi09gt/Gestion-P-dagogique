@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <af:document title="recherche-diplome.jsf" id="d1">
+        <af:messages id="m1"/>
+        <af:form id="f1">
+            <af:panelBox text="Critères de Recherche" id="pb1">
+                <f:facet name="toolbar"/>
+                <af:panelFormLayout id="pfl1">
+                    <af:selectOneChoice value="#{bindings.IdAnnee.inputValue}" label="Année Univers."
+                                        required="#{bindings.IdAnnee.hints.mandatory}"
+                                        shortDesc="#{bindings.IdAnnee.hints.tooltip}" id="soc1" autoSubmit="true"
+                                        binding="#{RechercheNumDiplomebean.annee}">
+                        <f:selectItems value="#{bindings.IdAnnee.items}" id="si1"/>
+                        <f:validator binding="#{bindings.IdAnnee.validator}"/>
+                    </af:selectOneChoice>
+                    <af:inputText value="#{bindings.Numero.inputValue}" label="#{bindings.Numero.hints.label}"
+                                  required="#{bindings.Numero.hints.mandatory}"
+                                  columns="#{bindings.Numero.hints.displayWidth}"
+                                  maximumLength="#{bindings.Numero.hints.precision}"
+                                  shortDesc="#{bindings.Numero.hints.tooltip}" id="it1"
+                                  binding="#{RechercheNumDiplomebean.num_diplom}" visible="false">
+                        <f:validator binding="#{bindings.Numero.validator}"/>
+                    </af:inputText>
+                    <af:selectOneChoice value="#{bindings.HistResultAncienRO.inputValue}" label="Structure"
+                                        required="#{bindings.HistResultAncienRO.hints.mandatory}"
+                                        shortDesc="#{bindings.HistResultAncienRO.hints.tooltip}" id="soc2"
+                                        binding="#{RechercheNumDiplomebean.structure}" visible="false">
+                        <f:selectItems value="#{bindings.HistResultAncienRO.items}" id="si2"/>
+                        <f:validator binding="#{bindings.HistResultAncienRO.validator}"/>
+                    </af:selectOneChoice>
+                </af:panelFormLayout>
+            </af:panelBox>
+            <af:button text="Search" id="b1" action="#{RechercheNumDiplomebean.onSearch}" immediate="true"
+                       inlineStyle="margin-top:10px;margin-left:10px;margin-bottom:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#f5e6e6;margin-bottom:15px;"/>
+            <af:button text="Reset" id="b2" action="#{RechercheNumDiplomebean.onReset}"
+                       inlineStyle="margin-top:10px;margin-left:10px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#F2313D;margin-bottom:15px;background-color:#e87c8e;"/>
+            <af:panelHeader text="Liste des Diplomes" id="ph1">
+                <f:facet name="context"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="menuBar"/>
+                <f:facet name="legend"/>
+                <f:facet name="info"/>
+                <af:panelCollection id="pc1" binding="#{RechercheNumDiplomebean.tableCollection}"
+                                    inlineStyle="width:350px;">
+                    <f:facet name="menus"/>
+                    <f:facet name="toolbar">
+                        <af:toolbar id="t2">
+                            <af:button id="b5" icon="/images/new_icon.png"
+                                       action="#{RechercheNumDiplomebean.onNewDiplome}"/>
+                        </af:toolbar>
+                    </f:facet>
+                    <f:facet name="statusbar"/>
+                    <af:table value="#{bindings.NumDiplomeInsAncRO.collectionModel}" var="row"
+                              rows="#{bindings.NumDiplomeInsAncRO.rangeSize}"
+                              emptyText="#{bindings.NumDiplomeInsAncRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.NumDiplomeInsAncRO.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.NumDiplomeInsAncRO.collectionModel.makeCurrent}"
+                              rowSelection="single" fetchSize="#{bindings.NumDiplomeInsAncRO.rangeSize}"
+                              filterModel="#{bindings.NumDiplomeInsAncROQuery.queryDescriptor}" filterVisible="true"
+                              queryListener="#{bindings.NumDiplomeInsAncROQuery.processQuery}" varStatus="vs" id="t1"
+                              binding="#{RechercheNumDiplomebean.table}">
+                        <af:column sortProperty="#{bindings.NumDiplomeInsAncRO.hints.Numero.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.NumDiplomeInsAncRO.hints.Numero.label}"
+                                   id="c1">
+                            <af:outputText value="#{row.Numero}"
+                                           shortDesc="#{bindings.NumDiplomeInsAncRO.hints.Numero.tooltip}" id="ot1">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.NumDiplomeInsAncRO.hints.Numero.format}"/>
+                            </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.NumDiplomeInsAncRO.hints.IdHistoriqueStructure.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="Structure"
+                                   id="c2">
+                            <af:selectOneChoice value="#{row.bindings.IdHistoriqueStructure.inputValue}"
+                                                label="#{row.bindings.IdHistoriqueStructure.label}"
+                                                required="#{bindings.NumDiplomeInsAncRO.hints.IdHistoriqueStructure.mandatory}"
+                                                shortDesc="#{bindings.NumDiplomeInsAncRO.hints.IdHistoriqueStructure.tooltip}"
+                                                readOnly="true" id="soc3">
+                                <f:selectItems value="#{row.bindings.IdHistoriqueStructure.items}" id="si3"/>
+                                <f:validator binding="#{row.bindings.IdHistoriqueStructure.validator}"/>
+                            </af:selectOneChoice>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.NumDiplomeInsAncRO.hints.LibelleLong.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.NumDiplomeInsAncRO.hints.LibelleLong.label}" id="c3">
+                            <af:outputText value="#{row.LibelleLong}"
+                                           shortDesc="#{bindings.NumDiplomeInsAncRO.hints.LibelleLong.tooltip}"
+                                           id="ot2"/>
+                        </af:column>
+                    </af:table>
+                </af:panelCollection>
+            </af:panelHeader>
+            <af:button text="Sélect" id="b3" action="#{RechercheNumDiplomebean.onSelectDiplome}"
+                       inlineStyle="margin-left:10px;margin-top:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#ffffff;margin-bottom:15px;">
+                <af:setPropertyListener to="#{pageFlowScope.submitOrCanDiplom}" type="action" from="#{'submit'}"/>
+            </af:button>
+            <af:button text="Annuler" id="b4" action="return"
+                       inlineStyle="margin-left:10px;margin-top:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#ffffff;margin-bottom:15px;">
+                <af:setPropertyListener from="#{'cancel'}" to="#{pageFlowScope.submitOrCanDiplom}" type="action"/>
+            </af:button>
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+                      binding="#{RechercheNumDiplomebean.pop}">
+                <af:dialog id="d2" title="Formulaire d'Ajout Diplome" dialogListener="#{RechercheNumDiplomebean.onDialog}">
+                    <af:panelFormLayout id="pfl2">
+                        <af:selectOneChoice value="#{bindings.IdAnneesUnivers.inputValue}"
+                                            label="Année Univers."
+                                            required="#{bindings.IdAnneesUnivers.hints.mandatory}"
+                                            shortDesc="#{bindings.IdAnneesUnivers.hints.tooltip}" id="soc5">
+                            <f:selectItems value="#{bindings.IdAnneesUnivers.items}" id="si5"/>
+                            <f:validator binding="#{bindings.IdAnneesUnivers.validator}"/>
+                        </af:selectOneChoice>
+                        <af:inputText value="#{bindings.Numero1.inputValue}" label="#{bindings.Numero1.hints.label}"
+                                      required="#{bindings.Numero1.hints.mandatory}"
+                                      columns="#{bindings.Numero1.hints.displayWidth}"
+                                      maximumLength="#{bindings.Numero1.hints.precision}"
+                                      shortDesc="#{bindings.Numero1.hints.tooltip}" id="it2" contentStyle="width:50px;">
+                            <f:validator binding="#{bindings.Numero1.validator}"/>
+                            <af:convertNumber groupingUsed="false" pattern="#{bindings.Numero1.format}"/>
+                        </af:inputText>
+                        <af:selectOneChoice value="#{bindings.IdHistoriqueStructure.inputValue}"
+                                            label="Structure"
+                                            required="#{bindings.IdHistoriqueStructure.hints.mandatory}"
+                                            shortDesc="#{bindings.IdHistoriqueStructure.hints.tooltip}" id="soc6">
+                            <f:selectItems value="#{bindings.IdHistoriqueStructure.items}" id="si6"/>
+                            <f:validator binding="#{bindings.IdHistoriqueStructure.validator}"/>
+                        </af:selectOneChoice>
+                    </af:panelFormLayout>
+                    <f:facet name="buttonBar"/>
+                    <af:clientListener method="onDialog" type="dialog"/>
+                    <af:serverListener type="onDialogEvent" method="#{RechercheNumDiplomebean.onDialogCan}"/>
+                </af:dialog>
+            </af:popup>
+        </af:form>
+    <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+    </af:document>
+</f:view>

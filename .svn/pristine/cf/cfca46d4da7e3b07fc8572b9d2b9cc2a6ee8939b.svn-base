@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelGroupLayout id="pgl3" layout="horizontal" inlineStyle="line-height:30px;">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.UtilisateurStructure.collectionModel}" var="row"
+                  rows="#{bindings.UtilisateurStructure.rangeSize}"
+                  emptyText="#{bindings.UtilisateurStructure.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.UtilisateurStructure.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.UtilisateurStructure.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.UtilisateurStructure.rangeSize}"
+                  filterModel="#{bindings.UtilisateurStructureQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.UtilisateurStructureQuery.processQuery}" varStatus="vs" id="t1"
+                  columnStretching="last" binding="#{UsersJuryBean.userTable}">
+          <af:column sortProperty="#{bindings.UtilisateurStructure.hints.isUserSelected.name}" sortable="true" id="c1"
+                     align="center">
+            <af:selectBooleanCheckbox value="#{row.bindings.isUserSelected.inputValue}"
+                                      label="#{row.bindings.isUserSelected.label}"
+                                      shortDesc="#{bindings.UtilisateurStructure.hints.isUserSelected.tooltip}"
+                                      id="sbc1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurStructure.hints.Prenomnom.name}" filterable="true"
+                     sortable="true" headerText="Prénom &amp; Nom" id="c2" width="250">
+            <af:outputFormatted value="#{row.bindings.Prenomnom.inputValue}" id="of3"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurStructure.hints.AdressMail.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.UtilisateurStructure.hints.AdressMail.label}" id="c3">
+            <af:outputFormatted value="#{row.bindings.AdressMail.inputValue}" id="of2"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+      <af:spacer width="10" height="10" id="s1"/>
+      <af:panelGroupLayout id="pgl2" layout="vertical">
+        <af:button actionListener="#{bindings.GetJury.execute}" text="Liste Jury"
+                   disabled="#{!bindings.GetJury.enabled}" id="b1"
+                   inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                   icon="/images/383188_48px.png"/>
+        <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="statusbar"/>
+          <af:table value="#{bindings.JuryROVO.collectionModel}" var="row" rows="#{bindings.JuryROVO.rangeSize}"
+                    emptyText="#{bindings.JuryROVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.JuryROVO.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.JuryROVO.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.JuryROVO.rangeSize}" filterModel="#{bindings.JuryROVOQuery.queryDescriptor}"
+                    filterVisible="true" queryListener="#{bindings.JuryROVOQuery.processQuery}" varStatus="vs" id="t2"
+                    columnStretching="last" partialTriggers=":::b1" binding="#{UsersJuryBean.juryTable}">
+            <af:column sortProperty="#{bindings.JuryROVO.hints.IsJurySelected.name}" sortable="true" id="c4"
+                       align="center">
+              <af:selectBooleanCheckbox value="#{row.bindings.IsJurySelected.inputValue}"
+                                        label="#{row.bindings.IsJurySelected.label}"
+                                        shortDesc="#{bindings.JuryROVO.hints.IsJurySelected.tooltip}" id="sbc2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JuryROVO.hints.LibelleLong.name}" filterable="true" sortable="true"
+                       headerText="Libellé" id="c5" width="300">
+              <af:outputFormatted value="#{row.bindings.LibelleLong.inputValue}" id="of1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JuryROVO.hints.LibelleCourt.name}" filterable="true" sortable="true"
+                       headerText="Abréviation" id="c6" width="150">
+              <af:outputFormatted value="#{row.bindings.LibelleCourt.inputValue}" id="of4"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JuryROVO.hints.Semestre.name}" filterable="true" sortable="true"
+                       headerText="Semestre" id="c7">
+              <af:outputFormatted value="#{row.bindings.Semestre.inputValue}" id="of5"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JuryROVO.hints.Sess.name}" filterable="true" sortable="true"
+                       headerText="Session" id="c8">
+              <af:outputFormatted value="#{row.bindings.Sess.inputValue}" id="of6"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:panelGroupLayout>
+      <af:matchMediaBehavior matchedPropertyValue="vertical" propertyName="layout"
+                             mediaQuery="screen and (max-width:1200px)"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl4" layout="horizontal" inlineStyle="margin-bottom:20px;margin-top:10px">
+      <af:outputFormatted value="Role" id="of11" styleUsage="pageStamp" inlineStyle="font-size:x-large;"/>
+      <af:selectOneRadio value="#{bindings.JuryRoleROVO.inputValue}" required="#{bindings.JuryRoleROVO.hints.mandatory}"
+                         shortDesc="#{bindings.JuryRoleROVO.hints.tooltip}" id="sor1"
+                         contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:60px; line-height:30px;"
+                         binding="#{UsersJuryBean.inputRole}">
+        <f:selectItems value="#{bindings.JuryRoleROVO.items}" id="si1"/>
+        <f:validator binding="#{bindings.JuryRoleROVO.validator}"/>
+      </af:selectOneRadio>
+      <af:matchMediaBehavior matchedPropertyValue="vertical" propertyName="layout"
+                             mediaQuery="screen and (max-width:980px)"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl6" layout="vertical" halign="center">
+      <af:button text="Enregistrer" id="b2"
+                 inlineStyle="font-size:x-large; color:White; font-family:cursive; border-radius:8px 8px 8px 8px / 8px 8px 8px 8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8;"
+                 icon="/images/save_close_48px.png" actionListener="#{UsersJuryBean.OnSaveUsersJury}"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl5" layout="vertical">
+      <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.UtilisateurJuryROVO2.collectionModel}" var="row"
+                  rows="#{bindings.UtilisateurJuryROVO2.rangeSize}"
+                  emptyText="#{bindings.UtilisateurJuryROVO2.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.UtilisateurJuryROVO2.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.UtilisateurJuryROVO2.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.UtilisateurJuryROVO2.rangeSize}"
+                  filterModel="#{bindings.UtilisateurJuryROVO2Query.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.UtilisateurJuryROVO2Query.processQuery}" varStatus="vs" id="t3"
+                  columnStretching="last">
+          <af:column sortProperty="#{bindings.UtilisateurJuryROVO2.hints.Prenomnom.name}" filterable="true"
+                     sortable="true" headerText="Prénom &amp; Nom" id="c9" width="300">
+            <af:outputText value="#{row.Prenomnom}" shortDesc="#{bindings.UtilisateurJuryROVO2.hints.Prenomnom.tooltip}"
+                           id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.UtilisateurJuryROVO2.hints.Role.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.UtilisateurJuryROVO2.hints.Role.label}" id="c10">
+            <af:outputText value="#{row.Role}" shortDesc="#{bindings.UtilisateurJuryROVO2.hints.Role.tooltip}"
+                           id="ot2"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{UsersJuryBean.popupJuryDetails}">
+    <af:dialog id="d1" title="Info !!!" type="cancel" cancelTextAndAccessKey="Fermer" inlineStyle="text-align:center;">
+      <af:outputFormatted value="Aucun Jury Selectionner" id="of9" inlineStyle="font-size:x-large; color:Red;"/>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{UsersJuryBean.pupupNotUserDetails}">
+    <af:dialog id="d2" type="cancel" cancelTextAndAccessKey="Fermer" title="Info !!!" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Aucun utilisateur Selectionné !!!" id="of10" inlineStyle="color:Red; font-size:x-large;"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

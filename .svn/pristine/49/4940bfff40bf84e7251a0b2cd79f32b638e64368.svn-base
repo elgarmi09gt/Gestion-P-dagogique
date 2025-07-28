@@ -1,0 +1,995 @@
+package view.beans.evaluation.deliberation_ue;
+
+import java.security.Key;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+
+import java.util.Map;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+
+import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import model.services.evaluationAppImpl;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCIteratorBinding;
+
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPopup;
+import oracle.adf.view.rich.component.rich.input.RichSelectOneChoice;
+
+import oracle.adf.view.rich.component.rich.output.RichOutputFormatted;
+
+import oracle.adf.view.rich.context.AdfFacesContext;
+
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+import oracle.jbo.RowSetIterator;
+
+import oracle.jbo.VariableValueManager;
+import oracle.jbo.ViewCriteria;
+import oracle.jbo.ViewCriteriaManager;
+import oracle.jbo.ViewObject;
+
+import saisie_notes_mode_ens.NoteModeEns;
+
+import sun.misc.BASE64Decoder;
+
+import view.beans.entities.Ec;
+import view.beans.entities.Etudiant;
+import view.beans.entities.EtudiantBis;
+import view.beans.entities.ModeCntrlEc;
+import view.beans.evaluation.deliberation_sem.DeliberationSemestrielleBean;
+
+public class DeliberatioUeBean {
+    
+    private List<EtudiantBis> etudiantbislists;
+    private List<NoteModeEns> etud_note_ens;
+    private List<Etudiant> etudiantlists;
+    private List<Ec> eclists;
+    private List<ModeCntrlEc> mclists;
+    private RichSelectOneChoice btnUe;
+    private HashMap<String, String> list;
+    private List<HashMap<String, String>> reslists;
+    private RichSelectOneChoice btnDeliberer;
+    private RichSelectOneChoice inputDeliberer;
+    private RichOutputFormatted inputFilUe;
+    private RichPopup popupShowDetUeClose;
+    private RichPopup popupShowDetNotModEnsSaisieClosedAll;
+    private RichPopup popupShowDetUeDelibSuccess;
+    private RichPopup popupShowDetUeNotDelib;
+    private RichPopup popupShowDetUeCloseSuccess;
+    Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    private Integer parcours = Integer.parseInt(sessionScope.get("id_niv_form_parcours").toString());
+    private Integer anne_univers = Integer.parseInt(sessionScope.get("id_annee").toString());
+    private Integer session = Integer.parseInt(sessionScope.get("id_session").toString());
+    private Integer utilisateur = Integer.parseInt(sessionScope.get("id_user").toString());
+    private Integer calendrier = Integer.parseInt(sessionScope.get("id_calendrier").toString());
+    private Integer semestre = Integer.parseInt(sessionScope.get("id_smstre").toString());
+    private Integer historique_str = Integer.parseInt(sessionScope.get("id_hs").toString());
+     /*Integer.parseInt(sessionScope.get("id_annee").toString(),0)*/
+     private static final String ALGO = "AES";
+     private byte[] keyvalue;
+    @SuppressWarnings("unchecked")
+    public DeliberatioUeBean() {
+         
+    }
+    public String decryptAnonymat(String encdata, String keys ) throws Exception {
+        keyvalue = keys.getBytes();
+        Key key = new SecretKeySpec(keyvalue, ALGO);
+        //Key key = generateKey();
+        Cipher c = Cipher.getInstance(ALGO);
+        c.init(Cipher.DECRYPT_MODE, key);
+        @SuppressWarnings("oracle.jdeveloper.java.semantic-warning")
+        byte[] decodedValue = new BASE64Decoder().decodeBuffer(encdata);
+        byte[] decVal = c.doFinal(decodedValue);
+        String decryptValue = new String(decVal);
+        return decryptValue;
+    }
+
+    public void setEtud_note_ens(List<NoteModeEns> etud_note_ens) {
+        this.etud_note_ens = etud_note_ens;
+    }
+
+    public List<NoteModeEns> getEtud_note_ens() {
+        return etud_note_ens;
+    }
+
+    public void setEtudiantlists(List<Etudiant> etudiantlists) {
+        this.etudiantlists = etudiantlists;
+    }
+
+    public List<Etudiant> getEtudiantlists() {
+        return etudiantlists;
+    }
+
+    public void setEtudiantbislists(List<EtudiantBis> etudiantbislists) {
+        this.etudiantbislists = etudiantbislists;
+    }
+
+    public List<EtudiantBis> getEtudiantbislists() {
+        return etudiantbislists;
+    }
+
+    public void setEclists(List<Ec> eclists) {
+        this.eclists = eclists;
+    }
+
+    public List<Ec> getEclists() {
+        return eclists;
+    }
+
+    public void setMclists(List<ModeCntrlEc> mclists) {
+        this.mclists = mclists;
+    }
+
+    public List<ModeCntrlEc> getMclists() {
+        return mclists;
+    }
+    @SuppressWarnings("unchecked")
+    public String getAuto(String id_etud,String nivForm){
+        //getAuto(String id_etud,String nivForm)
+        String autorise = "Non";
+        
+        OperationBinding auto = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getAutorisation");
+        auto.getParamsMap().put("id_etud", Long.parseLong(id_etud));
+        auto.getParamsMap().put("id_niv_form", Long.parseLong(nivForm));
+        auto.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("AutoInscPreinsROIterator");
+        Row currentRow = iter.getCurrentRow();
+        if (currentRow == null) {
+            return autorise;
+        }
+        else{
+            autorise = "Oui";
+            return autorise;
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public String getValidationAuto(String id_etud,String nivForm){
+        //getAuto(String id_etud,String nivForm)
+        String autorise = "Non";
+        
+        OperationBinding op_validation = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getAutorisation");
+        op_validation.getParamsMap().put("id_etud", Long.parseLong(id_etud));
+        op_validation.getParamsMap().put("id_niv_form", Long.parseLong(nivForm));
+        op_validation.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("AutoInscPreinsROIterator");
+        Row currentRow = iter.getCurrentRow();
+        if (currentRow == null) {
+            return autorise;
+        }
+        else{
+            if(Integer.parseInt(currentRow.getAttribute("Valide").toString()) >=1){
+                autorise = "Oui";
+                return autorise;
+            }
+            else{
+                return autorise;
+            }
+            
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public String getValidationAutoResp(String id_etud,String nivForm){
+        //getAuto(String id_etud,String nivForm)
+        String autorise = "Non";
+        
+        OperationBinding op_validation_resp = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getAutorisation");
+        op_validation_resp.getParamsMap().put("id_etud", Long.parseLong(id_etud));
+        op_validation_resp.getParamsMap().put("id_niv_form", Long.parseLong(nivForm));
+        op_validation_resp.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("AutoInscPreinsROIterator");
+        Row currentRow = iter.getCurrentRow();
+        if (currentRow == null) {
+            return autorise;
+        }
+        else{
+            if(Integer.parseInt(currentRow.getAttribute("Valide").toString()) >=2){
+                autorise = "Oui";
+                return autorise;
+            }
+            else{
+                return autorise;
+            }
+            
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public String getValidationAutoDap(String id_etud,String nivForm){
+        //getAuto(String id_etud,String nivForm)
+        String autorise = "Non";
+        
+        OperationBinding op_validation_dap = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getFormAutoDap");
+        op_validation_dap.getParamsMap().put("id_util", getUtilisateur());
+        op_validation_dap.getParamsMap().put("id_niv_form", Long.parseLong(nivForm));
+        op_validation_dap.getParamsMap().put("id_annee", getAnne_univers());
+        op_validation_dap.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("NivFormAutoriseDapROIterator");
+        Row currentRow = iter.getCurrentRow();
+        if (currentRow == null) {
+            return "----";
+        }
+        else{
+            OperationBinding op_validation_dap_ok = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getAutorisation");
+            op_validation_dap_ok.getParamsMap().put("id_etud", Long.parseLong(id_etud));
+            op_validation_dap_ok.getParamsMap().put("id_niv_form", Long.parseLong(nivForm));
+            op_validation_dap_ok.execute();
+            DCIteratorBinding iter_dap_ok = (DCIteratorBinding) getBindings().get("AutoInscPreinsROIterator");
+            Row currentrow_dap_ok = iter_dap_ok.getCurrentRow();
+            if (currentrow_dap_ok == null) {
+                return autorise;
+            }
+            else{
+                if(Integer.parseInt(currentrow_dap_ok.getAttribute("Valide").toString()) >=3){
+                    autorise = "Oui";
+                    return autorise;
+                }
+                else{
+                    return autorise;
+                }
+                
+            }    
+            
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public String getEtudiantBu(String id_etud,String id_annee){
+        //getAuto(String id_etud,String nivForm)
+        String autorise = "Non";
+        //id_historique_strc
+        OperationBinding op_historique_strc = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getHistStrct");
+        op_historique_strc.getParamsMap().put("id_historique_strc",  getHistorique_str());
+        op_historique_strc.execute();
+        DCIteratorBinding iter_histo = (DCIteratorBinding)getBindings().get("HistoriquesStructuresIterator");
+        Row row_histo = iter_histo.getCurrentRow();
+        if(row_histo != null){
+            OperationBinding op_etud_bu = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getEtudiantBu");
+            op_etud_bu.getParamsMap().put("id_struct",  Long.parseLong(row_histo.getAttribute("IdStructures").toString()));
+            op_etud_bu.getParamsMap().put("id_etud", Long.parseLong(id_etud));
+            op_etud_bu.getParamsMap().put("id_annee", Long.parseLong(id_annee));
+            op_etud_bu.execute();
+            DCIteratorBinding iter_etud_bu = (DCIteratorBinding) getBindings().get("EtudiantBuIterator");
+            Row currentRow_etud_bu = iter_etud_bu.getCurrentRow();
+            if (currentRow_etud_bu == null) {
+                return autorise;
+            }
+            else{
+                if(currentRow_etud_bu.getAttribute("EnRegle") == null){
+                    return autorise;
+                }
+                else{
+                    if(Integer.parseInt(currentRow_etud_bu.getAttribute("EnRegle").toString()) == 1){
+                        autorise = "Oui";
+                        return autorise;
+                    }
+                    else{
+                        return autorise;
+                    }  
+                }
+            }
+        }
+        else{
+            return autorise;
+        }
+
+        
+    }
+
+    @SuppressWarnings("unchecked")
+    public String getApteEtudiant(String id_etud,String id_annee){
+        //getAuto(String id_etud,String nivForm)
+        String autorise = "Non";
+        
+        OperationBinding opNote = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getAptitudeEtudiant");
+        opNote.getParamsMap().put("id_etud", Long.parseLong(id_etud));
+        opNote.getParamsMap().put("id_annee", Long.parseLong(id_annee));
+        opNote.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("AptePreinsIterator");
+        Row currentRow = iter.getCurrentRow();
+        if (currentRow == null) {
+            return autorise;
+        }
+        else{   
+            if(currentRow.getAttribute("Apte") == null){
+                return autorise;
+            }
+            else{
+                if(Integer.parseInt(currentRow.getAttribute("Apte").toString()) == 1){
+                    autorise = "Oui";
+                    return autorise;
+                }
+                else
+                    return autorise;
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public String getResponsableEtud(String id_etud){    
+        
+        String autorise = "Non";
+        OperationBinding op_resp_etud = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getResponsableEtud");
+        op_resp_etud.getParamsMap().put("id_etud", Long.parseLong(id_etud));
+        op_resp_etud.execute();
+        DCIteratorBinding iter_resp_etud = (DCIteratorBinding) getBindings().get("ResponsableROIterator");
+        Row currentRow_resp_etud = iter_resp_etud.getCurrentRow();
+        if (currentRow_resp_etud == null) {
+            return autorise;
+        }
+        else{
+            autorise = "Oui";
+            return autorise;         
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public String getInscPedVal(String id_insc_ped){
+        String autorise = "Non";
+        OperationBinding op_resp_etud = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getIncPedetud");
+        op_resp_etud.getParamsMap().put("id_ins_ped", Long.parseLong(id_insc_ped));
+        op_resp_etud.execute();
+        DCIteratorBinding iter_insc_ped = (DCIteratorBinding) getBindings().get("InscriptionsPedagogiquesIterator");
+        Row currentRow_insc_ped = iter_insc_ped.getCurrentRow();
+        if (currentRow_insc_ped == null ) {
+            return autorise;
+        }
+        else{
+            if (currentRow_insc_ped.getAttribute("InsEnLigne") == null || currentRow_insc_ped.getAttribute("EtatInscrEtatInscrId") == null ) {
+                return autorise;
+            }
+            else{
+                // inscription validée si InsEnLigne (oui : 1) et EtatInscription (definitif : 22)
+                if (Integer.parseInt(currentRow_insc_ped.getAttribute("InsEnLigne").toString()) == 1 && Long.parseLong(currentRow_insc_ped.getAttribute("EtatInscrEtatInscrId").toString()) == 22) {
+                    autorise = "Oui";
+                    return autorise;
+                }
+                else{
+                    return autorise;
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public String getInscEnLigne(String id_insc_ped){
+        String autorise = "Non";
+        OperationBinding op_resp_etud = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getIncPedetud");
+        op_resp_etud.getParamsMap().put("id_ins_ped", Long.parseLong(id_insc_ped));
+        op_resp_etud.execute();
+        DCIteratorBinding iter_insc_ped = (DCIteratorBinding) getBindings().get("InscriptionsPedagogiquesIterator");
+        Row currentRow_insc_ped = iter_insc_ped.getCurrentRow();
+        if (currentRow_insc_ped == null ) {
+            return autorise;
+        }
+        else{
+            if (currentRow_insc_ped.getAttribute("InsEnLigne") == null ) {
+                return autorise;
+            }
+            else{
+                // inscription validée si InsEnLigne (oui : 1) 
+                if (Integer.parseInt(currentRow_insc_ped.getAttribute("InsEnLigne").toString()) == 1) {
+                    autorise = "Oui";
+                    return autorise;
+                }
+                else{
+                    return autorise;
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public String getEtudTic(String id_etud,String id_annee){
+        String etud_tic_var = "Non";
+        OperationBinding etud_tic = getBindings().getOperationBinding("getEtudiantTic");
+        etud_tic.getParamsMap().put("id_etud",  id_etud);
+        etud_tic.getParamsMap().put("id_annee",  Long.parseLong(id_annee));
+        etud_tic.execute();
+        
+        DCIteratorBinding iter_etud_tic = (DCIteratorBinding) getBindings().get("EtudiantTicROIterator");
+        
+        Row currentRow_etud_tic = iter_etud_tic.getCurrentRow();
+        
+        if(currentRow_etud_tic != null){
+            etud_tic_var = "Oui";
+            return etud_tic_var;
+        }
+        else{
+            return etud_tic_var;  
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public String getPaiementEtudiant(String id_etud,String id_annee,String parcours,String inscPed){
+        String autorise = "Non";
+        
+        OperationBinding op_paie_etud = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getPaiementEtud");
+        op_paie_etud.getParamsMap().put("id_insc_ped", Long.parseLong(inscPed));
+        op_paie_etud.getParamsMap().put("parcours", Long.parseLong(parcours));
+        op_paie_etud.getParamsMap().put("id_etud", Long.parseLong(id_etud));
+        op_paie_etud.getParamsMap().put("id_annee", Long.parseLong(id_annee));
+        op_paie_etud.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("PaiementEtudPreinsIterator");
+
+        Row currentRow = iter.getCurrentRow();
+        if (currentRow == null) {
+            return autorise;
+        }
+        else{
+            if(currentRow.getAttribute("Valider") == null){
+                return autorise;
+            }
+            else{
+                if(Integer.parseInt(currentRow.getAttribute("Valider").toString()) == 1){
+                    autorise = "Oui";
+                    return autorise;
+                }
+                else
+                    return autorise;
+            }
+        }
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public String getAnonymatDecrypte(String id_etud,String parcours,String semestre,String anne,String sessions){
+        String decrypted="";
+        //a.id_niveau_formation_parcours = parcours and a.id_semestre = semestre and  a.id_session = sessions and a.id_annees_univers = anne
+        OperationBinding op_get_anonymat = BindingContext.getCurrent().getCurrentBindingsEntry().getOperationBinding("getAnonymatDecrypte");
+        op_get_anonymat.getParamsMap().put("id_etud", Long.parseLong(id_etud));
+        op_get_anonymat.getParamsMap().put("parcours", Long.parseLong(parcours));
+        op_get_anonymat.getParamsMap().put("semestre", Long.parseLong(semestre));
+        op_get_anonymat.getParamsMap().put("anne", Long.parseLong(anne));
+        op_get_anonymat.getParamsMap().put("sessions", Long.parseLong(sessions));
+        //op_validation_resp.getParamsMap().put("parcours", Long.parseLong(parcours));
+        op_get_anonymat.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) getBindings().get("GenAnonymatNewROIterator");
+        Row currentRow = iter.getCurrentRow();
+        
+        String key = getParcours() + "" + getSession() + "" + getSemestre() + "" + getAnne_univers() + "" + getAnne_univers() + "" +
+        getSemestre() + "" + getSession() + "" + getParcours() + "" + getSemestre() + "" + getSession() + "" + getParcours() +
+        "" + getAnne_univers() + "" + getSession() + "" + getParcours() + "" + getAnne_univers() + "" + getSemestre();
+        String val_key = key.substring(0, 16);
+        
+        if (currentRow == null) {
+            return decrypted;
+        }
+        else{
+
+            try {
+                decrypted = decryptAnonymat((String) currentRow.getAttribute("Anonymat").toString(),val_key);
+            } 
+            catch (Exception e) {
+            }
+            return decrypted;
+            
+        }
+    }
+    public Object resolvElDC(String data) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Application app = fc.getApplication();
+        ExpressionFactory elFactory = app.getExpressionFactory();
+        ELContext elContext = fc.getELContext();
+        ValueExpression valueExp =
+            elFactory.createValueExpression(elContext, "#{data." + data + ".dataProvider}", Object.class);
+        return valueExp.getValue(elContext);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void getEtudNoteModeEns(String id_fil_ec,String id_type_ctrl,String cal){
+        evaluationAppImpl am = (evaluationAppImpl)resolvElDC("evaluationAppDataControl");
+        ViewObject NoteModeEnsVo = am.getNotesModeEnseignement();
+        ViewCriteriaManager vcm = NoteModeEnsVo.getViewCriteriaManager();
+        ViewCriteria vc = vcm.getViewCriteria("NotesModeEnseignementVOCriteria");
+        VariableValueManager vvm =vc.ensureVariableManager();
+        vvm.setVariableValue("id_type_ctrl_var", Long.parseLong(id_type_ctrl));
+        vvm.setVariableValue("id_cal_delib_var", Long.parseLong(cal));
+        vvm.setVariableValue("id_fil_ec",  Long.parseLong(id_fil_ec));
+        NoteModeEnsVo.applyViewCriteria(vc);
+        NoteModeEnsVo.executeQuery();
+        NoteModeEnsVo.setSortBy("Anonymat"); //empVo.
+        //Long fil_sem_ec,Long type_control,Long calendrier
+        OperationBinding isClosedSaisieNotesInter = getBindings().getOperationBinding("isClosedSaisieNotes");
+        isClosedSaisieNotesInter.getParamsMap().put("fil_sem_ec", id_fil_ec);
+        isClosedSaisieNotesInter.getParamsMap().put("type_control", id_type_ctrl);
+        isClosedSaisieNotesInter.getParamsMap().put("calendrier", Long.parseLong(cal));
+        Integer result = (Integer) isClosedSaisieNotesInter.execute();
+        
+        OperationBinding isGenereAnonymat = getBindings().getOperationBinding("isGenereAnonymat");
+        isGenereAnonymat.getParamsMap().put("parcours", Long.parseLong( getParcours().toString()));
+        isGenereAnonymat.getParamsMap().put("anne", Long.parseLong( getAnne_univers().toString()));
+        isGenereAnonymat.getParamsMap().put("semestre", Long.parseLong( getSemestre().toString()));
+        isGenereAnonymat.getParamsMap().put("sessions", Long.parseLong( getSession().toString()));
+        Integer is_anomymat = (Integer)isGenereAnonymat.execute();
+        //pas d'anonymat
+        if(is_anomymat == 0){ 
+            sessionScope.put("isAnonymat", 0);
+        }
+        else{
+            sessionScope.put("isAnonymat", 1);
+        }
+        
+        sessionScope.put("isClosed", result);
+        
+        
+            
+    }
+
+    @SuppressWarnings("unchecked")
+    public void getEtudiantNoteModeInter(String fil_ue_ec,String type_ctrl,String mode_ctrl,String cal){
+        
+        evaluationAppImpl am = (evaluationAppImpl)resolvElDC("evaluationAppDataControl");
+        ViewObject NoteModeEnsInterVo = am.getNotesModeEnseignementInterVO1();
+        ViewCriteriaManager vcm = NoteModeEnsInterVo.getViewCriteriaManager();
+        ViewCriteria vc = vcm.getViewCriteria("NotesModeEnseignementInterVOCriteria");
+        VariableValueManager vvm =vc.ensureVariableManager();
+        vvm.setVariableValue("id_type_ctrl_var", Long.parseLong(type_ctrl));
+        vvm.setVariableValue("id_mode_ctrl_ec_var", Long.parseLong(mode_ctrl));
+        vvm.setVariableValue("id_cal_delib_var",  Long.parseLong(cal));
+        NoteModeEnsInterVo.applyViewCriteria(vc);
+        NoteModeEnsInterVo.executeQuery();
+        NoteModeEnsInterVo.setSortBy("Anonymat"); //empVo.
+        //Verification si la saisie est deja cloturer ou pas
+        
+        OperationBinding isClosedSaisieNotesInter = getBindings().getOperationBinding("isClosedSaisieNotesInter");
+        //Long fil_sem_ec,Long type_control,Long mode_control,Long calendrier
+        isClosedSaisieNotesInter.getParamsMap().put("fil_sem_ec", Long.parseLong(fil_ue_ec));
+        isClosedSaisieNotesInter.getParamsMap().put("type_control", Long.parseLong(type_ctrl));
+        isClosedSaisieNotesInter.getParamsMap().put("mode_control", Long.parseLong(mode_ctrl));
+        isClosedSaisieNotesInter.getParamsMap().put("calendrier", Long.parseLong(cal));
+        Integer result = (Integer) isClosedSaisieNotesInter.execute();
+        sessionScope.put("isClosed", result);
+        
+        OperationBinding isGenereAnonymat = getBindings().getOperationBinding("isGenereAnonymat");
+        isGenereAnonymat.getParamsMap().put("parcours", Long.parseLong( getParcours()+""));
+        isGenereAnonymat.getParamsMap().put("anne", Long.parseLong( getAnne_univers()+""));
+        isGenereAnonymat.getParamsMap().put("semestre", Long.parseLong( getSemestre()+""));
+        isGenereAnonymat.getParamsMap().put("sessions", Long.parseLong( getSession()+""));
+        Integer is_anomymat = (Integer)isGenereAnonymat.execute();
+        //pas d'anonymat
+        if(is_anomymat == 0){ 
+            sessionScope.put("isAnonymat", 0);
+        }
+        else{
+            sessionScope.put("isAnonymat", 1);
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<Etudiant> getStudents() {  
+        etudiantlists = new ArrayList();
+        OperationBinding lesEtudiants = BindingContext.getCurrent()
+                                                      .getCurrentBindingsEntry()
+                                                      .getOperationBinding("GetEtudiant");
+        lesEtudiants.getParamsMap().put("annee", getAnne_univers());
+        lesEtudiants.getParamsMap().put("sem", getSemestre());
+        lesEtudiants.getParamsMap().put("parcours", getParcours());
+        lesEtudiants.getParamsMap().put("sess", getSession());
+        lesEtudiants.execute();
+        System.out.println("Parcours : "+getParcours());
+        System.out.println("Annee : "+Integer.parseInt(sessionScope.get("id_niv_form_parcours").toString()));
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibSemEtudiantIterator");
+        Row currentinsped = iter.getCurrentRow();
+        if (currentinsped == null) {
+            return etudiantlists;
+        }
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        while (rsi.hasNext()) {
+            Row nextRow = rsi.next();
+            etudiantlists.add(new Etudiant(nextRow.getAttribute("Numero").toString(),
+                                           nextRow.getAttribute("PrenomNom").toString()));
+        }
+        System.out.print(etudiantlists.toString());
+        return etudiantlists;
+    }
+//getListeetudProv
+     @SuppressWarnings("unchecked")
+    public List<EtudiantBis> getEtud() {  
+        etudiantbislists = new ArrayList();
+        OperationBinding lesEtudiants = BindingContext.getCurrent()
+                                                      .getCurrentBindingsEntry()
+                                                      .getOperationBinding("getListeetudProv");
+        lesEtudiants.getParamsMap().put("id_annee", getAnne_univers());
+        lesEtudiants.getParamsMap().put("id_parc", getParcours());
+        lesEtudiants.getParamsMap().put("etat", 21);
+        lesEtudiants.execute();
+        System.out.println("Parcours : "+getParcours());
+        //System.out.println("Annee : "+Integer.parseInt(sessionScope.get("id_niv_form_parcours").toString()));
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("ListeEtudInscProvROIterator");
+        Row currentinsped = iter.getCurrentRow();
+        if (currentinsped == null) {
+            return etudiantbislists;
+        }
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        while (rsi.hasNext()) {
+            Row nextRow = rsi.next();System.out.print("num "+nextRow.getAttribute("Numero"));
+            etudiantbislists.add(new EtudiantBis(nextRow.getAttribute("IdEtudiant").toString(),
+                                              nextRow.getAttribute("Numero").toString(),nextRow.getAttribute("Prenomnom").toString(),
+                                           nextRow.getAttribute("IdInscriptionPedagogique").toString()));
+        }
+        System.out.print(etudiantbislists.toString());
+        return etudiantbislists;
+    }   
+    @SuppressWarnings("unchecked")
+    // liste des ecs pour un fil_ue_sem
+    public List<Ec> getEcParcousAnSemSess(Integer fil_ue) {
+        //Map sessionScope = ADFContext.getCurrent().getSessionScope();
+        eclists = new ArrayList();
+        OperationBinding lesFilUe = BindingContext.getCurrent()
+                                                  .getCurrentBindingsEntry()
+                                                  .getOperationBinding("GetEcsFilUeSem");
+        lesFilUe.getParamsMap().put("anne", getAnne_univers());
+        lesFilUe.getParamsMap().put("sem",getSemestre());
+        lesFilUe.getParamsMap().put("parcours", getParcours());
+        lesFilUe.getParamsMap().put("sess", getSession());
+        lesFilUe.getParamsMap().put("fil_ue", fil_ue);
+        lesFilUe.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibSemFilEcIterator");
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        while (rsi.hasNext()) {
+            Row nextRow = rsi.next();
+            eclists.add(new Ec(Integer.parseInt(nextRow.getAttribute("IdFiliereUeSemstreEc").toString()),
+                               nextRow.getAttribute("LibelleLong").toString(),
+                               Integer.parseInt(nextRow.getAttribute("Coefficient").toString())));
+        }
+        return eclists;
+    }
+
+    // la liste des Ecs déja disponible dans deliberation semestrielle
+    // GetModeCntrl : recuperer la liste des modes control pour un fil-ec donnée
+    @SuppressWarnings("unchecked")
+    public List<ModeCntrlEc> getModeCntrlEc(Integer fil_ec) {
+        //Map sessionScope = ADFContext.getCurrent().getSessionScope();
+        mclists = new ArrayList();
+        OperationBinding lesModCntrl = BindingContext.getCurrent()
+                                                     .getCurrentBindingsEntry()
+                                                     .getOperationBinding("GetModeCntrl");
+        lesModCntrl.getParamsMap().put("annee", getAnne_univers());
+        lesModCntrl.getParamsMap().put("sem", getSemestre());
+        lesModCntrl.getParamsMap().put("parcours", getParcours());
+        lesModCntrl.getParamsMap().put("sess", getSession());
+        lesModCntrl.getParamsMap().put("fil_ec", fil_ec);
+        lesModCntrl.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibUeModeCntrlIterator");
+        Row currentinsped = iter.getCurrentRow();
+        if (currentinsped == null) {
+            //mclists.add(new ModeCntrlEc(Integer.parseInt(""),"",Integer.parseInt("")));
+            return mclists;
+        }
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        while (rsi.hasNext()) {
+            Row nextRow = rsi.next();
+            mclists.add(new ModeCntrlEc(Integer.parseInt(nextRow.getAttribute("IdModeControleEc").toString()),
+                                        nextRow.getAttribute("Modecntrl").toString()));
+        }
+        return mclists;
+    }
+
+    @SuppressWarnings("unchecked")
+    // recuperer la note de l'etudiant pour un ec donne
+    public String getNoteMcntrl(Integer insped, Integer fil_ue, Integer fil_ue_se_ec, Integer mcec) {
+        
+        //Map sessionScope = ADFContext.getCurrent().getSessionScope();
+        OperationBinding opNote = BindingContext.getCurrent()
+                                                .getCurrentBindingsEntry()
+                                                .getOperationBinding("GetNoteModeCntrl");
+        opNote.getParamsMap().put("annee", getAnne_univers());
+        opNote.getParamsMap().put("sem", getSemestre());
+        opNote.getParamsMap().put("parcours", getParcours());
+        opNote.getParamsMap().put("sess", getSession());
+        opNote.getParamsMap().put("fil_ue", fil_ue);
+        opNote.getParamsMap().put("inspedsem_ue", insped);
+        opNote.getParamsMap().put("fil_ec", fil_ue_se_ec);
+        opNote.getParamsMap().put("mcec", mcec);
+        opNote.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibUeNoteModeCntrlIterator");
+        Row currentnote = iter.getCurrentRow();
+        if (currentnote == null) {
+            return "";
+        }
+        return currentnote.getAttribute("Note").toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    // recuperer la moyenne, le resultat et le credit de l'etudiant pour un insped_sem_ue donnee
+    public List<HashMap<String, String>> getResultEc(Integer inspedSemUe, Integer fil_ec) {
+        reslists = new ArrayList();
+        list = new HashMap<String, String>();
+
+        OperationBinding inspedsem_ = BindingContext.getCurrent()
+                                                    .getCurrentBindingsEntry()
+                                                    .getOperationBinding("GetMoyCredResEc");
+        inspedsem_.getParamsMap().put("annee", getAnne_univers());
+        inspedsem_.getParamsMap().put("sem", getSemestre());
+        inspedsem_.getParamsMap().put("parcours", getParcours());
+        inspedsem_.getParamsMap().put("sess", getSession());
+        inspedsem_.getParamsMap().put("inspedsemue", inspedSemUe);
+        //inspedsem_.getParamsMap().put("inspedsemue", fil_ue);
+        inspedsem_.getParamsMap().put("fil_ec", fil_ec);
+        inspedsem_.execute();
+
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibResEcIterator");
+        Row currentinsped = iter.getCurrentRow();
+        if (currentinsped == null) {
+            list.put("Moyenne", "");
+            list.put("Coeficient", "");
+            reslists.add(list);
+            return reslists;
+        }
+        list.put("Moyenne", currentinsped.getAttribute("Note").toString());
+        list.put("Coeficient", currentinsped.getAttribute("Coefficient").toString());
+        reslists.add(list);
+
+        return reslists;
+    }
+
+    public void setBtnUe(RichSelectOneChoice btnUe) {
+        this.btnUe = btnUe;
+    }
+
+    public RichSelectOneChoice getBtnUe() {
+        return btnUe;
+    }
+
+    public BindingContainer getBindings() {
+        return (BindingContainer) BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void Deliberer(ActionEvent actionEvent) {
+        
+        String action = "O";
+        // chek if is_all_not_mod_ens_saisie_close
+        BindingContainer bindings = getBindings();
+        OperationBinding is_closed_all_note_mod_ens = bindings.getOperationBinding("isCosedAllNoteModeEns");
+        is_closed_all_note_mod_ens.getParamsMap().put("fil_ue", Integer.parseInt(this.getInputFilUe()
+                                                                                     .getValue()
+                                                                                     .toString()));
+        is_closed_all_note_mod_ens.getParamsMap().put("calendrier", getCalendrier());
+        Integer is_all_note_mod_ens_closed = (Integer) is_closed_all_note_mod_ens.execute();
+        if (is_all_note_mod_ens_closed == 0) {
+            // saisie non cloturé : show popup detail
+            System.out.println("Toutes les saisie note mode enseignement pas encore cloturé");
+            RichPopup popup = this.getPopupShowDetNotModEnsSaisieClosedAll();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints);
+            return;
+        } else {
+            // chek if ue_is_not_close yet
+            OperationBinding is_closed_ue = bindings.getOperationBinding("isCosedUe");
+            is_closed_ue.getParamsMap().put("fil_ue", Integer.parseInt(this.getInputFilUe()
+                                                                           .getValue()
+                                                                           .toString()));
+            is_closed_ue.getParamsMap().put("calendrier", getCalendrier());
+            Integer is_ue_closed = (Integer) is_closed_ue.execute();
+            if (is_ue_closed == 1) {
+                // ue closed delib not possible
+                System.out.println("Ue cloturé impossible de délibérer");
+                RichPopup popup = this.getPopupShowDetUeClose();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+                return;
+            } else {
+                // all is find : Calculer la moyenne de l'ue et délibérer
+                // CalculMoyenneUeProc(calendrier,fileUesem,utilisateur)
+                OperationBinding calcul_moyenne_ue = bindings.getOperationBinding("calculMoyenneUe");
+                calcul_moyenne_ue.getParamsMap().put("calendrier", getCalendrier());
+                calcul_moyenne_ue.getParamsMap().put("fileUesem", Integer.parseInt(this.getInputFilUe()
+                                                                                       .getValue()
+                                                                                       .toString()));
+                calcul_moyenne_ue.getParamsMap().put("utilisateur",getUtilisateur());
+                calcul_moyenne_ue.execute();
+
+                OperationBinding delib_ue = bindings.getOperationBinding("delibereUe");
+                delib_ue.getParamsMap().put("fil_ue", Integer.parseInt(this.getInputFilUe()
+                                                                           .getValue()
+                                                                           .toString()));
+                delib_ue.getParamsMap().put("calendrier", getCalendrier());
+                delib_ue.getParamsMap().put("action", action);
+                delib_ue.getParamsMap().put("utilisateur", getUtilisateur());
+                Integer is_delib_ue = (Integer) delib_ue.execute();
+                if (is_delib_ue == 217) {
+                    System.out.println("Ue délibéré avec succe");
+                    RichPopup popup = this.getPopupShowDetUeDelibSuccess();
+                    RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                    //empty hints renders dialog in center of screen
+                    popup.show(hints);
+                    return;
+                    
+                } else {
+                    System.out.println("Une erreur détecté !!!");
+                }
+            }
+        }
+
+    }
+
+    @SuppressWarnings("unchecked")
+    public void Cloturer(ActionEvent actionEvent) {
+        
+        String action = "O";
+        // Ue délibérer : cloture possible
+        BindingContainer bindings = getBindings();
+        // ClosedUe(fil_ue, calendrier, action ,utilisateur)
+        OperationBinding is_closed = bindings.getOperationBinding("ClosedUe");
+        is_closed.getParamsMap().put("fil_ue", Integer.parseInt(this.getInputFilUe()
+                                                                    .getValue()
+                                                                    .toString()));
+        is_closed.getParamsMap().put("calendrier", getCalendrier());
+        is_closed.getParamsMap().put("action", action);
+        is_closed.getParamsMap().put("utilisateur", getUtilisateur());
+
+        Integer closed = (Integer) is_closed.execute();
+        if (closed == 0) {
+            // saisie non cloturé : show popup detail
+            System.out.println("Ue non délibérer");
+            RichPopup popup = this.getPopupShowDetUeNotDelib();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints);
+            return;
+        } else {
+            System.out.println("Ue Cloturé");
+            RichPopup popup = this.getPopupShowDetUeCloseSuccess();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints);
+            return;
+        }
+    }
+
+    public void setBtnDeliberer(RichSelectOneChoice btnDeliberer) {
+        this.btnDeliberer = btnDeliberer;
+    }
+
+    public RichSelectOneChoice getBtnDeliberer() {
+        return btnDeliberer;
+    }
+
+    public void setInputDeliberer(RichSelectOneChoice inputDeliberer) {
+        this.inputDeliberer = inputDeliberer;
+    }
+
+    public RichSelectOneChoice getInputDeliberer() {
+        return inputDeliberer;
+    }
+
+    public void setInputFilUe(RichOutputFormatted inputFilUe) {
+        this.inputFilUe = inputFilUe;
+    }
+
+    public RichOutputFormatted getInputFilUe() {
+        return inputFilUe;
+    }
+
+    public void setPopupShowDetUeClose(RichPopup popupShowDetUeClose) {
+        this.popupShowDetUeClose = popupShowDetUeClose;
+    }
+
+    public RichPopup getPopupShowDetUeClose() {
+        return popupShowDetUeClose;
+    }
+
+    public void setPopupShowDetNotModEnsSaisieClosedAll(RichPopup popupShowDetNotModEnsSaisieClosedAll) {
+        this.popupShowDetNotModEnsSaisieClosedAll = popupShowDetNotModEnsSaisieClosedAll;
+    }
+
+    public RichPopup getPopupShowDetNotModEnsSaisieClosedAll() {
+        return popupShowDetNotModEnsSaisieClosedAll;
+    }
+
+    public void setPopupShowDetUeDelibSuccess(RichPopup popupShowDetUeDelibSuccess) {
+        this.popupShowDetUeDelibSuccess = popupShowDetUeDelibSuccess;
+    }
+
+    public RichPopup getPopupShowDetUeDelibSuccess() {
+        return popupShowDetUeDelibSuccess;
+    }
+
+    public void setPopupShowDetUeNotDelib(RichPopup popupShowDetUeNotDelib) {
+        this.popupShowDetUeNotDelib = popupShowDetUeNotDelib;
+    }
+
+    public RichPopup getPopupShowDetUeNotDelib() {
+        return popupShowDetUeNotDelib;
+    }
+
+    public void setPopupShowDetUeCloseSuccess(RichPopup popupShowDetUeCloseSuccess) {
+        this.popupShowDetUeCloseSuccess = popupShowDetUeCloseSuccess;
+    }
+
+    public RichPopup getPopupShowDetUeCloseSuccess() {
+        return popupShowDetUeCloseSuccess;
+    }
+
+
+    public void setParcours(Integer parcours) {
+        this.parcours = parcours;
+    }
+
+    public Integer getParcours() {
+        return parcours;
+    }
+
+    public void setAnne_univers(Integer anne_univers) {
+        this.anne_univers = anne_univers;
+    }
+
+    public Integer getAnne_univers() {
+        return anne_univers;
+    }
+
+    public void setSession(Integer session) {
+        this.session = session;
+    }
+
+    public Integer getSession() {
+        return session;
+    }
+
+    public void setUtilisateur(Integer utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Integer getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setCalendrier(Integer calendrier) {
+        this.calendrier = calendrier;
+    }
+
+    public Integer getCalendrier() {
+        return calendrier;
+    }
+
+    public void setSemestre(Integer semestre) {
+        this.semestre = semestre;
+    }
+
+    public Integer getSemestre() {
+        return semestre;
+    }
+
+    public void setHistorique_str(Integer historique_str) {
+        this.historique_str = historique_str;
+    }
+
+    public Integer getHistorique_str() {
+        return historique_str;
+    }
+}

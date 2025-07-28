@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ParcoursROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ParcoursROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_user"
+    Kind="where"
+    Type="oracle.jbo.domain.Number"/>
+  <Variable
+    Name="idDept"
+    Kind="where"
+    Type="oracle.jbo.domain.Number"/>
+
+  <SQLQuery><![CDATA[SELECT  DISTINCT              
+    nf.ID_FORMATION,              
+    nfp.ID_NIVEAU_FORMATION_PARCOURS,                            
+    crt.ID_NIVEAU_FORMATION_COHORTE,                            
+    crt.ID_NIVEAU_FORMATION,                           
+    f.ID_HISTORIQUES_STRUCTURE,                                              
+    nf.LIBELLE_LONG || ' ' || crt.lib_cohorte || DECODE(nfp.ID_FORMATION_SPECIALITE, NULL, '', ' Spécialité : ' || sp.lib_specialite) || DECODE(nfp.ID_FORMATION_OPTION, NULL, '', ' Option : ' || op.lib_option) lib_parcours,                
+    nf.LIBELLE_LONG niveauFormation, crt.lib_cohorte cohorte, sp.lib_specialite specialite,op.lib_option opt                
+FROM                                              
+    (((((NIVEAUX_FORMATION_PARCOURS nfp JOIN (                                             
+        SELECT                                              
+            nfc.ID_NIVEAU_FORMATION_COHORTE,                                              
+            ct.LIBELLE lib_cohorte,                                              
+            nfc.ID_NIVEAU_FORMATION                                              
+        FROM                                              
+            NIVEAU_FORMATION_COHORTES nfc             
+            JOIN COHORTES ct ON nfc.ID_COHORTE = ct.ID_COHORTE                                             
+    ) crt ON crt.ID_NIVEAU_FORMATION_COHORTE = nfp.ID_NIVEAU_FORMATION_COHORTE)             
+    JOIN NIVEAUX_FORMATIONS nf ON crt.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION)             
+    JOIN FORMATIONS f ON nf.ID_FORMATION = f.ID_FORMATION)             
+    --LEFT           
+    JOIN UTILISATEUR_FORMATIONS uf on f.ID_FORMATION = uf.ID_FORMATION            
+    LEFT           
+    JOIN UTILISATEUR_NIVEAUX_FORMATIONS unf ON unf.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION AND unf.ID_UTILISATEUR = uf.ID_UTILISATEUR            
+    )             
+    LEFT JOIN (                                             
+        SELECT                                              
+            sp.LIBELLE_LONG lib_specialite,                                              
+            fs.ID_FORMATION_SPECIALITE                                              
+        FROM                                              
+            FORMATIONS_SPECIALITES fs JOIN SPECIALITES sp ON fs.ID_SPECIALITE = sp.ID_SPECIALITE                                             
+    ) sp ON sp.ID_FORMATION_SPECIALITE = nfp.ID_FORMATION_SPECIALITE)             
+    LEFT JOIN (                                             
+        SELECT                  
+            op.LIBELLE_LONG lib_option,                  
+            fo.ID_FORMATION_OPTION                  
+        FROM    
+            FORMATIONS_OPTIONS fo JOIN OPTIONS op ON fo.ID_OPTION = op.ID_OPTION  
+    ) op ON op.ID_FORMATION_OPTION = nfp.ID_FORMATION_OPTION  
+    WHERE uf.ID_UTILISATEUR =:id_user  
+    AND f.ID_HISTORIQUES_STRUCTURE =:idDept]]></SQLQuery>
+  <ViewAttribute
+    Name="IdFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_FORMATION"
+    Expression="ID_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormationCohorte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_COHORTE"
+    Expression="ID_NIVEAU_FORMATION_COHORTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION"
+    Expression="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdHistoriquesStructure"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="ID_HISTORIQUES_STRUCTURE"
+    Expression="ID_HISTORIQUES_STRUCTURE"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="LibParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="725"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_PARCOURS"
+    Expression="LIB_PARCOURS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="725"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Niveauformation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NIVEAUFORMATION"
+    Expression="NIVEAUFORMATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Cohorte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="COHORTE"
+    Expression="COHORTE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Specialite"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SPECIALITE"
+    Expression="SPECIALITE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Opt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="OPT"
+    Expression="OPT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="isChecked"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="VIEW_ATTR"
+    SQLType="BIT">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNiveauFormationParcours"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="HistoriquesStructuresROVO"
+    ViewLink="model.viewlink.DepartementToParcoursVL"
+    Type="oracle.jbo.server.ViewRowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

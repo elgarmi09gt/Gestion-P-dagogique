@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="AnneeUniverROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.AnneeUniverROVORowImpl"
+  ComponentClass="model.readOnlyView.AnneeUniverROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.AnneeUniverROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_annee"
+    Kind="viewcriteria"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="lib_annee"
+    Kind="viewcriteria"
+    Type="java.lang.String"/>
+  <SQLQuery><![CDATA[SELECT DISTINCT        
+    ANNEES_UNIVERS.ID_ANNEES_UNIVERS ID_ANNEES_UNIVERS,                
+    ANNEES_UNIVERS.LIBELLE_COURT LIBELLE_COURT,                
+    ANNEES_UNIVERS.LIBELLE_LONG LIBELLE_LONG                
+FROM                
+    ANNEES_UNIVERS]]></SQLQuery>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleCourt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="75"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_COURT"
+    Expression="LIBELLE_COURT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="AnneeUniverROVOCriteria"
+    ViewObjectName="model.readOnlyView.AnneeUniverROVO"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="AnneeUniverROVOCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="AnneeUniverROVOCriteria_AnneeUniverROVOCriteria_row_0_IdAnneesUnivers"
+        ViewAttribute="IdAnneesUnivers"
+        Operator="="
+        Conjunction="AND"
+        Value=":id_annee"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="LibelleLong"
+        ViewAttribute="LibelleLong"
+        Operator="STARTSWITH"
+        Conjunction="OR"
+        Value=":lib_annee"
+        IsBindVarValue="true"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdAnneesUnivers"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="GenAnonymatNewROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.GenAnonymatNewROVORowImpl"
+  ComponentClass="model.readOnlyView.GenAnonymatNewROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.GenAnonymatNewROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_etud"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="semestre"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="sessions"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="anne"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select id_gen_anonymat, anonymat, ga.id_anonymat, ga.id_etudiant     
+from gen_anonymat ga   
+join anonymat a on ga.id_anonymat = a.id_anonymat   
+where ga.id_etudiant=:id_etud   
+and a.id_niveau_formation_parcours=:parcours    
+and a.id_semestre=:semestre    
+and  a.id_session=:sessions    
+and a.id_annees_univers=:anne  
+order by ga.id_anonymat]]></SQLQuery>
+  <ViewAttribute
+    Name="IdGenAnonymat"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_GEN_ANONYMAT"
+    Expression="ID_GEN_ANONYMAT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Anonymat"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ANONYMAT"
+    Expression="ANONYMAT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdAnonymat"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANONYMAT"
+    Expression="ID_ANONYMAT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdGenAnonymat"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

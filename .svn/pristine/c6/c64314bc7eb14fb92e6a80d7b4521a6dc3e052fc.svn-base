@@ -1,0 +1,290 @@
+package view.beans.etats;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.File;
+
+import java.io.OutputStream;
+
+import java.nio.file.Path;
+
+import java.nio.file.Paths;
+
+import java.sql.Connection;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import javax.faces.event.ValueChangeEvent;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import javax.sql.DataSource;
+
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.type.WhenNoDataTypeEnum;
+import net.sf.jasperreports.engine.util.JRLoader;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCIteratorBinding;
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPopup;
+
+import oracle.binding.BindingContainer;
+
+import oracle.jbo.Row;
+
+public class EtatsBean {
+    private RichPopup popupSuccessReport;
+    ADFContext adfCtx = ADFContext.getCurrent();
+    Map sessionFlowScope = adfCtx.getSessionScope();
+    Long annee = Long.parseLong(sessionFlowScope.get("id_annee").toString());
+    Long id_hs = Long.parseLong(sessionFlowScope.get("id_hs").toString());
+
+    public EtatsBean() {
+    }
+
+    @SuppressWarnings({ "unchecked", "oracle.jdeveloper.java.insufficient-catch-block" })
+    public void BtnAttestationAction(ActionEvent actionEvent) {
+        Map m = new HashMap();
+        m.put("parcours", new Long(2));
+        m.put("annee_univers", new Long(2));
+        m.put("id_hs", new Long(5));
+        try {
+            runReport("attestation_stand_bis.jasper", m,"attestations");
+        } catch (Exception e) {
+        }
+    }
+    public Connection getDataSourceConnection(String dataSourceName) throws Exception {
+        Context ctx = new InitialContext();
+        DataSource ds = (DataSource) ctx.lookup(dataSourceName);
+        return ds.getConnection();
+    }
+
+    private Connection getConnection() throws Exception {
+        return getDataSourceConnection("jdbc/refDS"); // datasource name should be defined in weblogic
+    }
+
+    public ServletContext getContext() {
+        return (ServletContext) getFacesContext().getExternalContext().getContext();
+    }
+
+    public HttpServletResponse getResponse() {
+        return (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
+    }
+
+    public static FacesContext getFacesContext() {
+        return FacesContext.getCurrentInstance();
+    }
+    public BindingContainer getBindings() {
+        return (BindingContainer) BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+    @SuppressWarnings("unchecked")
+    public void runReport(String repPath, java.util.Map param, String document) throws Exception {
+        System.out.println("Running ...");
+            String path0 = System.getProperty("user.home");
+            System.out.println("User Directory : "+path0);
+            BindingContainer bindings = getBindings();
+            //Get Rule
+            DCIteratorBinding iterR = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                        .getCurrentBindingsEntry()
+                                                                        .get("ParcoursIterator");
+            Row currentR = iterR.getCurrentRow();
+            //String path =path0+"\\etats\\"+document+"\\";
+            String doc_name =document+"_";
+            //String spec="";
+            String niveauForm =currentR.getAttribute("Niveauformation").toString();
+            System.out.println("niveauForm : "+niveauForm);
+            String cohorte =currentR.getAttribute("Cohorte").toString();
+            System.out.println("cohorte : "+cohorte);
+            //path=path+niveauForm+"\\"+cohorte+"\\";
+            doc_name=doc_name+niveauForm+"_"+cohorte+"_";
+            System.out.println("Path before : "+doc_name);
+            if(currentR.getAttribute("Specialite")!=null){
+                //path=path+currentR.getAttribute("Specialite").toString()+"\\";
+                doc_name=doc_name+currentR.getAttribute("Specialite").toString()+"_";
+                //spec = currentR.getAttribute("Specialite").toString();
+            }
+            if(currentR.getAttribute("Opt")!=null){
+                //path=path+currentR.getAttribute("Opt").toString()+"\\";
+                doc_name=doc_name+currentR.getAttribute("Opt").toString()+"_";
+            }
+            System.out.println("Document Name : "+doc_name);
+            
+            Connection conn = null;
+            Map sessionScope = ADFContext.getCurrent().getSessionScope();
+            LocalDateTime dateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            System.out.println(dateTime.format(formatter));
+            //String path = "D:\\Niang\\etats\\parcours0\\"+document+"\\";
+                         // +document+dateTime.format(formatter)+".pdf";
+            /*File f = new File(path);
+            if (!f.exists()) {
+                f.mkdirs();
+            }*/
+            //System.out.println("f exist "+f.exists());
+            String file_name = doc_name+dateTime.format(formatter)+".pdf";
+            sessionScope.put("file_name", file_name);
+            //f = new File(file);
+            //System.out.println("file "+file);
+            //if (!f.exists()) {
+                try {
+                HttpServletResponse response = getResponse();
+                ServletOutputStream out = response.getOutputStream();
+                response.setHeader("Cache-Control", "max-age=0");
+                response.setContentType("application/pdf");
+                ServletContext context = getContext();
+                InputStream fs = context.getResourceAsStream("/reports/" + repPath);
+                JasperReport template = (JasperReport) JRLoader.loadObject(fs);
+                template.setWhenNoDataType(WhenNoDataTypeEnum.ALL_SECTIONS_NO_DETAIL);
+                conn = getConnection();
+                @SuppressWarnings("unchecked")
+                JasperPrint print = JasperFillManager.fillReport(template, param, conn);
+                //Affichage du report
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                JasperExportManager.exportReportToPdfStream(print, baos);
+                out.write(baos.toByteArray());
+                //téléchargement du report direct
+                //JasperExportManager.exportReportToPdfFile(print,file);
+                //JasperExportManager.exportReportToPdfFile(printFileName, "C://sample_report.pdf");
+                
+                //RichPopup popup = this.getPopupSuccessReport();
+                //RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //popup.show(hints);
+                
+                out.flush();
+                out.close();
+        
+                FacesContext.getCurrentInstance().responseComplete();
+                
+            } catch (Exception jex) {
+                jex.printStackTrace();
+            } finally {
+                System.out.println("Finnish");
+                close(conn);
+            }
+            //}
+        }
+
+        @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+        public void close(Connection con) {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+
+    @SuppressWarnings({ "unchecked", "oracle.jdeveloper.java.unchecked-conversion-or-cast",
+                        "oracle.jdeveloper.java.insufficient-catch-block" })
+    public String BtnAttestationAction() {
+        Map m = new HashMap();
+        m.put("parcours", new Long(2));
+        m.put("annee_univers", new Long(2));
+        m.put("id_hs", new Long(5));
+        try {
+            runReport("attestation_stand_bis.jasper", m, "attestation");
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    @SuppressWarnings({ "oracle.jdeveloper.java.insufficient-catch-block", "unchecked" })
+    public String BtnRelevesAction() {
+        Map m = new HashMap();
+        m.put("parcours", new Long(2));
+        m.put("annee_univers", new Long(2));
+        m.put("id_hs", new Long(5));
+        try {
+            runReport("releves_standard.jasper", m, "releves");
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public void setPopupSuccessReport(RichPopup popupSuccessReport) {
+        this.popupSuccessReport = popupSuccessReport;
+    }
+
+    public RichPopup getPopupSuccessReport() {
+        return popupSuccessReport;
+    }
+
+    public void RefreshParcours(ValueChangeEvent valueChangeEvent) {
+        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+    }
+
+    @SuppressWarnings({ "unchecked", "oracle.jdeveloper.java.insufficient-catch-block" })
+    public void TestDownload(FacesContext facesContext, OutputStream outputStream) {
+        Map m = new HashMap();
+        m.put("parcours", new Long(2));
+        m.put("annee_univers", new Long(2));
+        m.put("id_hs", new Long(5));
+        try {
+            runReport("attestation_stand_bis.jasper", m,"attestations");
+        } catch (Exception e) {
+        }
+
+    }
+
+    @SuppressWarnings({ "oracle.jdeveloper.java.insufficient-catch-block", "unchecked" })
+    public void AttestationClicked(FacesContext facesContext, OutputStream outputStream) {
+        Map m = new HashMap();
+        /*DCIteratorBinding iterP = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                    .getCurrentBindingsEntry()
+                                                                    .get("ParcoursIterator");
+        Row currentR = iterP.getCurrentRow();
+        Long niveauForm =Long.parseLong(currentR.getAttribute("Niveauformation").toString());*/
+        //IsParcoursAnneedeliberate
+        m.put("parcours", new Long(2));
+        m.put("annee_univers", getAnnee());
+        m.put("id_hs", getId_hs());
+        try {
+            runReport("attestation_stand_bis.jasper", m,"attestation");
+        } catch (Exception e) {
+        }
+    }
+
+    @SuppressWarnings({ "unchecked", "oracle.jdeveloper.java.insufficient-catch-block" })
+    public void RelevesClicked(FacesContext facesContext, OutputStream outputStream) {
+        Map m = new HashMap();
+        m.put("parcours", new Long(2));
+        m.put("annee_univers", getAnnee());
+        m.put("id_hs", getId_hs());
+        try {
+            runReport("releves_standard.jasper", m,"attestation");
+        } catch (Exception e) {
+        }
+    }
+
+    public void setAnnee(Long annee) {
+        this.annee = annee;
+    }
+
+    public Long getAnnee() {
+        return annee;
+    }
+
+    public void setId_hs(Long id_hs) {
+        this.id_hs = id_hs;
+    }
+
+    public Long getId_hs() {
+        return id_hs;
+    }
+}

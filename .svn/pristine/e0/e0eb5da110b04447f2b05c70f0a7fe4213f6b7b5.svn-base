@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="GroupeLingLangueROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.GroupeLingLangueROVORowImpl"
+  ComponentClass="model.readOnlyView.GroupeLingLangueROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.GroupeLingLangueROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewAccessor
+    Name="LanguesVO1"
+    ViewObjectName="model.updatableview.LanguesVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_IdLangue"
+    ListVOName="LanguesVO1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdLangue"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdLangue"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[select gll.id_grp_ling , gll.id_grp_ling_langue , gll.id_langue ,l.libelle_court , l.libelle_long  from groupe_linguistique_langues gll join langues l on l.id_langue = gll.id_langue]]></SQLQuery>
+  <ViewAttribute
+    Name="IdGrpLing"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_GRP_LING"
+    Expression="ID_GRP_LING"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdGrpLingLangue"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_GRP_LING_LANGUE"
+    Expression="ID_GRP_LING_LANGUE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdLangue"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    AliasName="ID_LANGUE"
+    Expression="ID_LANGUE"
+    SQLType="NUMERIC"
+    LOVName="LOV_IdLangue">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleCourt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="75"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_COURT"
+    Expression="LIBELLE_COURT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdGrpLingLangue"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

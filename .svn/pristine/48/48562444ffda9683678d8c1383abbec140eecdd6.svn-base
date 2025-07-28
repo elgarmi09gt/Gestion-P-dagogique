@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="SpecialitesEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="SPECIALITES"
+  AliasName="SpecialitesEO"
+  BindingStyle="OracleName"
+  RowClass="model.entities.SpecialitesEOImpl">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Attribute
+    Name="IdSpecialite"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_SPECIALITE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="SPECIALITES"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="LibelleLong"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="200"
+    ColumnName="LIBELLE_LONG"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="SPECIALITES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="LibelleCourt"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="75"
+    ColumnName="LIBELLE_COURT"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="SPECIALITES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="IdMention"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_MENTION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="SPECIALITES"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="SPECIALITES"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="SPECIALITES"/>
+  <Attribute
+    Name="UtiCree"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="SPECIALITES"
+    IsNotNull="true"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="SPECIALITES"/>
+  <Attribute
+    Name="IdD"
+    ColumnName="ID_D"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    IsPersistent="false"
+    IsQueriable="false"
+    IsUpdateable="false">
+    <TransientExpression
+      Name="ExpressionScript"
+      trustMode="untrusted"
+      CodeSourceName="SpecialitesEORow"/>
+  </Attribute>
+  <AccessorAttribute
+    Name="MentionsEO"
+    Association="model.assoc.MenstionsToSpecialitesAssoc"
+    AssociationEnd="model.assoc.MenstionsToSpecialitesAssoc.MentionsEO"
+    AssociationOtherEnd="model.assoc.MenstionsToSpecialitesAssoc.SpecialitesEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <AccessorAttribute
+    Name="FormationsSpecialitesEO"
+    Association="model.assoc.SpecialitesToFormationsSpecialitesAssoc"
+    AssociationEnd="model.assoc.SpecialitesToFormationsSpecialitesAssoc.FormationsSpecialitesEO"
+    AssociationOtherEnd="model.assoc.SpecialitesToFormationsSpecialitesAssoc.SpecialitesEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="MentionsVO"
+    ViewLink="model.viewlink.MentionsToSpecialitesVL"
+    ViewLinkEnd="model.viewlink.MentionsToSpecialitesVL.MentionsVO"
+    ViewLinkOtherEnd="model.viewlink.MentionsToSpecialitesVL.SpecialitesVO"
+    Type="oracle.jbo.server.ViewRowImpl"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="FormationsSpecialitesVO"
+    ViewLink="model.viewlink.SpecialitesToFormationsSpecialitesVL"
+    ViewLinkEnd="model.viewlink.SpecialitesToFormationsSpecialitesVL.FormationsSpecialitesVO"
+    ViewLinkOtherEnd="model.viewlink.SpecialitesToFormationsSpecialitesVL.SpecialitesVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="OptionsVO"
+    ViewLink="model.viewlink.SpectialiteToOption"
+    ViewLinkEnd="model.viewlink.SpectialiteToOption.OptionsVO"
+    ViewLinkOtherEnd="model.viewlink.SpectialiteToOption.SpecialitesVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkSpecialites"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_SPECIALITES"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.SpecialitesEO.IdSpecialite"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkSpecialiteMention">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_MENTIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_SPECIALITE_MENTION"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.SpecialitesEO.IdMention"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkSpecialiteUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_SPECIALITE_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.SpecialitesEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkSpecialiteUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_SPECIALITE_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.SpecialitesEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="niv_grp_langPageDef"
+                Package="parametrage.groupe_ling_niv_form">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="NivFormationRO" RangeSize="10" DataControl="parametrageAppDataControl"
+              id="NivFormationROIterator"/>
+    <searchRegion Binds="NivFormationROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NivFormationROQuery"/>
+    <iterator Binds="NivFormGroupeLinguistique" RangeSize="10" DataControl="parametrageAppDataControl"
+              id="NivFormGroupeLinguistiqueIterator"/>
+    <iterator Binds="NivFormLangues" RangeSize="10" DataControl="parametrageAppDataControl"
+              id="NivFormLanguesIterator"/>
+    <iterator Binds="NivFormGrpLingLangRO" RangeSize="5" DataControl="parametrageAppDataControl"
+              id="NivFormGrpLingLangROIterator"/>
+    <searchRegion Binds="NivFormGrpLingLangROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NivFormGrpLingLangROQuery"/>
+    <iterator Binds="NivFormGrpLang" RangeSize="5" DataControl="parametrageAppDataControl"
+              id="NivFormGrpLangIterator"/>
+    <searchRegion Binds="NivFormGrpLangIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NivFormGrpLangQuery"/>
+    <iterator Binds="NivFromListeLingLangRO" RangeSize="25" DataControl="parametrageAppDataControl"
+              id="NivFromListeLingLangROIterator"/>
+    <searchRegion Binds="NivFromListeLingLangROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NivFromListeLingLangROQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="NivFormationROIterator" id="NivFormationRO">
+      <nodeDefinition DefName="model.readOnlyView.NivFormationROVO" Name="NivFormationRO0">
+        <AttrNames>
+          <Item Value="Diplome"/>
+          <Item Value="Libform"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="NivFormGroupeLinguistiqueIterator" id="CreateInsertNivFormGrp"
+            InstanceName="parametrageAppDataControl.NivFormGroupeLinguistique" DataControl="parametrageAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="NivFormGroupeLinguistiqueIterator" id="IdNivFormGrpLing">
+      <AttrNames>
+        <Item Value="IdNivFormGrpLing"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormGroupeLinguistiqueIterator" id="IdGrpLing">
+      <AttrNames>
+        <Item Value="IdGrpLing"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormGroupeLinguistiqueIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormGroupeLinguistiqueIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormGroupeLinguistiqueIterator" id="IdAnnee">
+      <AttrNames>
+        <Item Value="IdAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="NivFormLanguesIterator" id="CreateInsertNivFormLang"
+            InstanceName="parametrageAppDataControl.NivFormLangues" DataControl="parametrageAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="NivFormLanguesIterator" id="IdGrpLingLang">
+      <AttrNames>
+        <Item Value="IdGrpLingLang"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormLanguesIterator" id="IdNivFormGrpLing1">
+      <AttrNames>
+        <Item Value="IdNivFormGrpLing"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormLanguesIterator" id="UtiCree1">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormLanguesIterator" id="IdAnnee1">
+      <AttrNames>
+        <Item Value="IdAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="NivFormationROIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="NivFormGrpLingLangROIterator" id="NivFormGrpLingLangRO">
+      <nodeDefinition DefName="model.readOnlyView.NivFormGrpLingLangROVO" Name="NivFormGrpLingLangRO0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="NivFormationROIterator" id="Libform">
+      <AttrNames>
+        <Item Value="Libform"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormGrpLingLangROIterator" id="LibelleLongGrpLang">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="NivFormGrpLangIterator" id="NivFormGrpLang">
+      <nodeDefinition DefName="model.readOnlyView.NivFormGrpLang" Name="NivFormGrpLang0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="case_cocher" Binds="case_cocher"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="NivFormGrpLangIterator" id="ExecuteWithParamsLang"
+            InstanceName="parametrageAppDataControl.NivFormGrpLang" DataControl="parametrageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_grp" NDType="java.lang.Long"/>
+      <NamedData NDName="id_parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="NivFromListeLingLangROIterator" id="NivFromListeLingLangRO">
+      <nodeDefinition DefName="model.readOnlyView.NivFromListeLingLangROVO" Name="NivFromListeLingLangRO0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="NivFromListeLingLangROIterator" id="ExecuteWithParamsListeLang"
+            InstanceName="parametrageAppDataControl.NivFromListeLingLangRO" DataControl="parametrageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_parc" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_grp" NDType="java.lang.Long"/>
+    </action>
+    <button IterBinding="NivFormGrpLangIterator" id="case_cocher" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="case_cocher"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="True"/>
+        <Item Value="False"/>
+      </ValueList>
+    </button>
+  </bindings>
+</pageDefinition>

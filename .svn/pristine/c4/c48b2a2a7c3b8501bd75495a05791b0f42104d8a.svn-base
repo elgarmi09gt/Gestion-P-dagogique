@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="MentionsEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="MENTIONS"
+  AliasName="MentionsEO"
+  BindingStyle="OracleName"
+  RowClass="model.entities.MentionsEOImpl">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Attribute
+    Name="IdMention"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_MENTION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="MENTIONS"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="LibelleLong"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="200"
+    ColumnName="LIBELLE_LONG"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="MENTIONS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="LibelleCourt"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="75"
+    ColumnName="LIBELLE_COURT"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="MENTIONS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="IdDomaine"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_DOMAINE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="MENTIONS"
+    IsNotNull="true"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="MENTIONS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="MENTIONS"/>
+  <Attribute
+    Name="UtiCree"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="MENTIONS"
+    IsNotNull="true"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="MENTIONS"/>
+  <AccessorAttribute
+    Name="DomainesEO"
+    Association="model.assoc.DomainesToMentionsAssoc"
+    AssociationEnd="model.assoc.DomainesToMentionsAssoc.DomainesEO"
+    AssociationOtherEnd="model.assoc.DomainesToMentionsAssoc.MentionsEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <AccessorAttribute
+    Name="SpecialitesEO"
+    Association="model.assoc.MenstionsToSpecialitesAssoc"
+    AssociationEnd="model.assoc.MenstionsToSpecialitesAssoc.SpecialitesEO"
+    AssociationOtherEnd="model.assoc.MenstionsToSpecialitesAssoc.MentionsEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="DomainesVO"
+    ViewLink="model.viewlink.DomainesToMentionsVL"
+    ViewLinkEnd="model.viewlink.DomainesToMentionsVL.DomainesVO"
+    ViewLinkOtherEnd="model.viewlink.DomainesToMentionsVL.MentionsVO"
+    Type="oracle.jbo.server.ViewRowImpl"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="SpecialitesVO"
+    ViewLink="model.viewlink.MentionsToSpecialitesVL"
+    ViewLinkEnd="model.viewlink.MentionsToSpecialitesVL.SpecialitesVO"
+    ViewLinkOtherEnd="model.viewlink.MentionsToSpecialitesVL.MentionsVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkMentions"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_MENTIONS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.MentionsEO.IdMention"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkMentionDomaine">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_DOMAINES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_MENTION_DOMAINE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.MentionsEO.IdDomaine"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkMentionUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_MENTION_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.MentionsEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkMentionUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_MENTION_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.MentionsEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

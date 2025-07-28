@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="paramSaisieNoteEcPageDef"
+                Package="evaluation.paramsaisienoteec">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ParcoursParamSaisieNoteEc" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ParcoursParamSaisieNoteEcIterator"/>
+    <iterator Binds="FiliereUeSemestres" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="FiliereUeSemestresIterator"/>
+    <iterator Binds="FiliereUeSemestreEcs" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="FiliereUeSemestreEcsIterator"/>
+    <searchRegion Binds="FiliereUeSemestreEcsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FiliereUeSemestreEcsQuery"/>
+    <iterator Binds="ModeControleEcs" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ModeControleEcsIterator"/>
+    <searchRegion Binds="ModeControleEcsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ModeControleEcsQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ParcoursParamSaisieNoteEcIterator" id="ParcoursParamSaisieNoteEc">
+      <nodeDefinition DefName="model.readOnlyView.ParcoursParamSaisieNoteEc" Name="ParcoursParamSaisieNoteEc0">
+        <AttrNames>
+          <Item Value="IdMaquette"/>
+          <Item Value="IdAnneesUnivers"/>
+          <Item Value="Niveauformationparcours"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FiliereUeSemestresIterator" id="FiliereUeSemestres">
+      <nodeDefinition DefName="model.readOnlyView.FiliereUeSemestreROVO" Name="FiliereUeSemestres0">
+        <AttrNames>
+          <Item Value="IdFiliereUeSemstre"/>
+          <Item Value="Codification"/>
+          <Item Value="IdUe"/>
+          <Item Value="IdSemestre"/>
+          <Item Value="IdMaquette"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FiliereUeSemestreEcsIterator" id="FiliereUeSemestreEcs">
+      <nodeDefinition DefName="model.readOnlyView.FiliereUeSemestreEcROVO" Name="FiliereUeSemestreEcs0">
+        <AttrNames>
+          <Item Value="IdFiliereUeSemstreEc"/>
+          <Item Value="IdFiliereUeSemstre"/>
+          <Item Value="Codification"/>
+          <Item Value="IdEc"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ModeControleEcsIterator" id="ModeControleEcs">
+      <nodeDefinition DefName="model.updatableview.ModeControleEcVO" Name="ModeControleEcs0">
+        <AttrNames>
+          <Item Value="IdTypeControle"/>
+          <Item Value="IdModeControle"/>
+          <Item Value="Coefficient"/>
+          <Item Value="ModeCalcul"/>
+          <Item Value="UtiCree"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ModeControleEcsIterator" id="CreateInsert" RequiresUpdateModel="true"
+            Action="createInsertRow"/>
+    <action id="Commit" RequiresUpdateModel="true" Action="commitTransaction" DataControl="evaluationAppDataControl"/>
+    <attributeValues IterBinding="ModeControleEcsIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

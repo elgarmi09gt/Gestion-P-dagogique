@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listtypeverrouPageDef"
+                Package="parametrage.typeverrou">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="TypeVerrou" RangeSize="25" DataControl="parametrageAppDataControl" id="TypeVerrouIterator"/>
+    <searchRegion Binds="TypeVerrouIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="TypeVerrou1Query"/>
+  </executables>
+  <bindings>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="Rollback" DataControl="parametrageAppDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <action IterBinding="TypeVerrouIterator" id="CreateInsert" InstanceName="parametrageAppDataControl.TypeVerrou"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="TypeVerrouIterator" id="Delete" InstanceName="parametrageAppDataControl.TypeVerrou"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="TypeVerrouIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeVerrouIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeVerrouIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeVerrouIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeVerrouIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="TypeVerrouIterator" id="TypeVerrou1">
+      <nodeDefinition DefName="model.updatableview.TypeVerrouVO" Name="TypeVerrou10">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

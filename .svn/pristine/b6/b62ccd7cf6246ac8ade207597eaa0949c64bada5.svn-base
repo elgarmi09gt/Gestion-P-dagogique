@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:button text="Imprimer Attestation" id="b1"
+             inlineStyle="border-radius:20px ; background: #f5e6e6; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;"
+             icon="/images/383188_48px.png" actionListener="#{AttestationsBean.OnPrintAttestationClicked}"
+             action="#{AttestationsBean.OnPrintActionClick}"/>
+  <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+    <f:facet name="menus"/>
+    <f:facet name="toolbar"/>
+    <f:facet name="statusbar"/>
+    <af:table value="#{bindings.EtudiantAttestation.collectionModel}" var="row"
+              rows="#{bindings.EtudiantAttestation.rangeSize}"
+              emptyText="#{bindings.EtudiantAttestation.viewable ? 'No data to display.' : 'Access Denied.'}"
+              rowBandingInterval="0" selectedRowKeys="#{bindings.EtudiantAttestation.collectionModel.selectedRow}"
+              selectionListener="#{bindings.EtudiantAttestation.collectionModel.makeCurrent}" rowSelection="single"
+              fetchSize="#{bindings.EtudiantAttestation.rangeSize}"
+              filterModel="#{bindings.EtudiantAttestationQuery.queryDescriptor}" filterVisible="true"
+              queryListener="#{bindings.EtudiantAttestationQuery.processQuery}" varStatus="vs" id="t1"
+              columnStretching="last">
+      <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Numero.name}" filterable="true" sortable="true"
+                 headerText="NUMERO ETUDIANT" id="c1" width="200" inlineStyle="font-size:large;">
+        <af:outputText value="#{row.Numero}" shortDesc="#{bindings.EtudiantAttestation.hints.Numero.tooltip}" id="ot1"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Prenoms.name}" filterable="true" sortable="true"
+                 headerText="PRENOM" id="c2" width="400" inlineStyle="font-size:large;">
+        <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.EtudiantAttestation.hints.Prenoms.tooltip}"
+                       id="ot2"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Nom.name}" filterable="true" sortable="true"
+                 headerText="NOM" id="c3" inlineStyle="font-size:large;">
+        <af:outputText value="#{row.Nom}" shortDesc="#{bindings.EtudiantAttestation.hints.Nom.tooltip}" id="ot3"/>
+      </af:column>
+    </af:table>
+  </af:panelCollection>
+</ui:composition>

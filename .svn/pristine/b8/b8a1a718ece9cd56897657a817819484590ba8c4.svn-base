@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="FormationLangueEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="FORMATION_LANGUE"
+  AliasName="FormationLangueEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdFormationLangue"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_FORMATION_LANGUE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="FORMATION_LANGUE"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdLangue"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_LANGUE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="FORMATION_LANGUE"/>
+  <Attribute
+    Name="IdFormation"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_FORMATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="FORMATION_LANGUE"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="FORMATION_LANGUE"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="FORMATION_LANGUE"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="FORMATION_LANGUE"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="FORMATION_LANGUE"/>
+  <Attribute
+    Name="Pourcentage"
+    Precision="4"
+    Scale="2"
+    ColumnName="POURCENTAGE"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="FORMATION_LANGUE"/>
+  <AccessorAttribute
+    Name="FormationsEO"
+    Association="model.assoc.FormationToFormationLangueAssoc"
+    AssociationEnd="model.assoc.FormationToFormationLangueAssoc.FormationsEO"
+    AssociationOtherEnd="model.assoc.FormationToFormationLangueAssoc.FormationLangueEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <Key
+    Name="PkIdFormationLangue"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_ID_FORMATION_LANGUE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FormationLangueEO.IdFormationLangue"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkFormLanguAcces">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_LANGUE"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_FORM_LANGU_ACCES"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FormationLangueEO.IdLangue"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkFormLanguForm">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_FORMATIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_FORM_LANGU_FORM"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FormationLangueEO.IdFormation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkFormLanguUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_FORM_LANGU_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FormationLangueEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkFormLanguUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_FORM_LANGU_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FormationLangueEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

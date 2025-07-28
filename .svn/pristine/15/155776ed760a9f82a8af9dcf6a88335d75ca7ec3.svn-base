@@ -1,0 +1,340 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelTabbed position="above" id="pt1" dimensionsFrom="auto">
+      <af:showDetailItem id="tab1" text="TEXTS De LOIS" icon="/images/383188_48px.png" disclosed="true">
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t2">
+              <af:button id="b1" icon="/images/new_icon.png" actionListener="#{TextLoisBean.OnNewTextLoiClicked}"/>
+              <af:button id="b2" icon="/images/edit_icon.png" actionListener="#{TextLoisBean.OnEditTextLoiClicked}"/>
+              <af:button id="b3" icon="/images/delete_icon.png" action="#{TextLoisBean.OnDeleteTextLoiClicked}"/>
+            </af:toolbar>
+          </f:facet>
+          <af:table value="#{bindings.TextLoisVO.collectionModel}" var="row" rows="#{bindings.TextLoisVO.rangeSize}"
+                    emptyText="#{bindings.TextLoisVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.TextLoisVO.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.TextLoisVO.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.TextLoisVO.rangeSize}"
+                    filterModel="#{bindings.TextLoisVOQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.TextLoisVOQuery.processQuery}" varStatus="vs" id="t1"
+                    columnStretching="last" binding="#{TextLoisBean.textTable}">
+            <af:column sortProperty="#{bindings.TextLoisVO.hints.Text.name}" filterable="true" sortable="true"
+                       headerText="#{bindings.TextLoisVO.hints.Text.label}" id="c1" width="850" noWrap="false"
+                       inlineStyle="font-size:large;">
+              <af:outputFormatted value="#{row.bindings.Text.inputValue}" id="of1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.TextLoisVO.hints.Deliberation.name}" filterable="true" sortable="true"
+                       headerText="#{bindings.TextLoisVO.hints.Deliberation.label}" id="c2"
+                       inlineStyle="font-size:large;" align="center">
+              <af:selectOneChoice value="#{row.bindings.Deliberation.inputValue}"
+                                  label="#{row.bindings.Deliberation.label}"
+                                  required="#{bindings.TextLoisVO.hints.Deliberation.mandatory}"
+                                  shortDesc="#{bindings.TextLoisVO.hints.Deliberation.tooltip}" readOnly="true"
+                                  id="soc1" inlineStyle="font-size:large;" contentStyle="font-size:large;">
+                <f:selectItems value="#{row.bindings.Deliberation.items}" id="si1"/>
+                <f:validator binding="#{row.bindings.Deliberation.validator}"/>
+              </af:selectOneChoice>
+            </af:column>
+          </af:table>
+          <f:facet name="statusbar"/>
+        </af:panelCollection>
+      </af:showDetailItem>
+      <af:showDetailItem id="tab2" text="Text  Structures-Formations" inflexibleHeight="150"
+                         stretchChildren="first" flex="1">
+        <af:panelGroupLayout id="pgl4" layout="horizontal">
+          <af:panelGroupLayout id="pgl3" layout="vertical" inlineStyle="line-height:20px;margin-right:30px">
+            <af:outputFormatted value="Formation" id="of3" styleUsage="pageStamp"
+                                        inlineStyle="font-size:x-large;"/>
+            <af:selectOneChoice value="#{bindings.FormationByStructure.inputValue}"
+                                contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:50px"
+                                        autoSubmit="true"
+                                required="#{bindings.FormationByStructure.hints.mandatory}"
+                                shortDesc="#{bindings.FormationByStructure.hints.tooltip}" id="soc5"
+                                valueChangeListener="#{TextLoisBean.OnFormationChange}">
+              <f:selectItems value="#{bindings.FormationByStructure.items}" id="si5"/>
+              <f:validator binding="#{bindings.FormationByStructure.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl2" layout="vertical">
+            <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar">
+                <af:toolbar id="t4">
+                  <af:button id="b4" icon="/images/new_icon.png"
+                             actionListener="#{TextLoisBean.OnNewTextLoiStructClicked}"/>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.TextLoisByStructure.collectionModel}" var="row"
+                        rows="#{bindings.TextLoisByStructure.rangeSize}"
+                        emptyText="#{bindings.TextLoisByStructure.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0"
+                        selectedRowKeys="#{bindings.TextLoisByStructure.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.TextLoisByStructure.collectionModel.makeCurrent}"
+                        rowSelection="single" fetchSize="#{bindings.TextLoisByStructure.rangeSize}"
+                        filterModel="#{bindings.TextLoisByStructureQuery.queryDescriptor}" filterVisible="true"
+                        queryListener="#{bindings.TextLoisByStructureQuery.processQuery}" varStatus="vs" id="t3"
+                        columnStretching="last" partialTriggers=":::soc5" binding="#{TextLoisBean.textloiStructTable}">
+                <af:column sortProperty="#{bindings.TextLoisByStructure.hints.isSelected.name}" id="c3" align="center" inlineStyle="font-size:large;">
+                  <af:selectBooleanCheckbox value="#{row.bindings.isSelected.inputValue}"
+                                            label="#{row.bindings.isSelected.label}"
+                                            shortDesc="#{bindings.TextLoisByStructure.hints.isSelected.tooltip}"
+                                            id="sbc1" contentStyle="font-size:large;"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.TextLoisByStructure.hints.Text.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.TextLoisByStructure.hints.Text.label}" id="c4"
+                           inlineStyle="font-size:large;">
+                  <af:inputText value="#{row.bindings.Text.inputValue}"
+                                label="#{bindings.TextLoisByStructure.hints.Text.label}"
+                                required="#{bindings.TextLoisByStructure.hints.Text.mandatory}"
+                                columns="#{bindings.TextLoisByStructure.hints.Text.displayWidth}"
+                                maximumLength="#{bindings.TextLoisByStructure.hints.Text.precision}"
+                                shortDesc="#{bindings.TextLoisByStructure.hints.Text.tooltip}" id="it11"
+                                inlineStyle="font-size:large;" contentStyle="font-size:large;">
+                    <f:validator binding="#{row.bindings.Text.validator}"/>
+                  </af:inputText>
+                </af:column>
+              </af:table>
+              <f:facet name="statusbar"/>
+            </af:panelCollection>
+          </af:panelGroupLayout>
+          <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:1325px)"
+                               propertyName="layout"/>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl5" layout="vertical" halign="center">
+      <af:button text="Enregistrer" id="b5"
+                 inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                 icon="/images/save_close_48px.png" actionListener="#{TextLoisBean.OnSavaTextLoiFormationClick}"
+                 action="#{TextLoisBean.OnSaveTextLoiFormationAction}"/>
+    </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl6" layout="vertical">
+          <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.TextLoiFormationROVO.collectionModel}" var="row"
+                      rows="#{bindings.TextLoiFormationROVO.rangeSize}"
+                      emptyText="#{bindings.TextLoiFormationROVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.TextLoiFormationROVO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.TextLoiFormationROVO.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.TextLoiFormationROVO.rangeSize}"
+                      filterModel="#{bindings.TextLoiFormationROVOQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.TextLoiFormationROVOQuery.processQuery}" varStatus="vs" id="t5"
+                      columnStretching="last">
+              <af:column sortProperty="#{bindings.TextLoiFormationROVO.hints.Text.name}" filterable="true"
+                         sortable="true" headerText="Text" id="c5" binding="#{TextLoisBean.textLoiFormationTable}"
+                         inlineStyle="font-size:large;">
+                <af:outputText value="#{row.Text}" shortDesc="#{bindings.TextLoiFormationROVO.hints.Text.tooltip}"
+                               id="ot1"/>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl7" layout="vertical"/>
+      </af:showDetailItem>
+    </af:panelTabbed>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupNew" binding="#{TextLoisBean.popupNewText}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d1" dialogListener="#{TextLoisBean.OnTextLoiDialogAction}" title="Ajout de text de loi">
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="OnDialogCancel" type="dialog"/>
+      <af:serverListener type="HandlerEvenDialogCancel" method="#{TextLoisBean.OnTextLoiDialogCancel}"/>
+      <af:panelFormLayout id="pfl1">
+        <af:inputText value="#{bindings.Text.inputValue}" label="#{bindings.Text.hints.label}"
+                      required="#{bindings.Text.hints.mandatory}" columns="#{bindings.Text.hints.displayWidth}"
+                      maximumLength="#{bindings.Text.hints.precision}" shortDesc="#{bindings.Text.hints.tooltip}"
+                      id="it1" rows="3">
+          <f:validator binding="#{bindings.Text.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it3">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.Deliberation1.inputValue}" label="#{bindings.Deliberation1.label}"
+                            required="#{bindings.Deliberation1.hints.mandatory}"
+                            shortDesc="#{bindings.Deliberation1.hints.tooltip}" id="soc2">
+          <f:selectItems value="#{bindings.Deliberation1.items}" id="si2"/>
+          <f:validator binding="#{bindings.Deliberation1.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupEdit" contentDelivery="lazyUncached"
+            binding="#{TextLoisBean.popupEditText}">
+    <af:dialog id="d2" dialogListener="#{TextLoisBean.OnTextLoiDialogAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl2">
+        <af:inputText value="#{bindings.Text.inputValue}" label="#{bindings.Text.hints.label}"
+                      required="#{bindings.Text.hints.mandatory}" columns="#{bindings.Text.hints.displayWidth}"
+                      maximumLength="#{bindings.Text.hints.precision}" shortDesc="#{bindings.Text.hints.tooltip}"
+                      id="it4" rows="3">
+          <f:validator binding="#{bindings.Text.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.Deliberation1.inputValue}" label="#{bindings.Deliberation1.label}"
+                            required="#{bindings.Deliberation1.hints.mandatory}"
+                            shortDesc="#{bindings.Deliberation1.hints.tooltip}" id="soc3">
+          <f:selectItems value="#{bindings.Deliberation1.items}" id="si3"/>
+          <f:validator binding="#{bindings.Deliberation1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it6">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupDelete" contentDelivery="lazyUncached"
+            binding="#{TextLoisBean.popupDeleteText}">
+    <af:dialog id="d3" title="Confirmer Supprimer !!" dialogListener="#{TextLoisBean.OnDeleteTextLoiAction}"
+               type="yesNo" affirmativeTextAndAccessKey="OUI" noTextAndAccessKey="NON">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl3">
+        <af:inputText value="#{bindings.Text.inputValue}" label="#{bindings.Text.hints.label}"
+                      required="#{bindings.Text.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Text.hints.displayWidth}" maximumLength="#{bindings.Text.hints.precision}"
+                      shortDesc="#{bindings.Text.hints.tooltip}" id="it7">
+          <f:validator binding="#{bindings.Text.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it8">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputDate value="#{bindings.DateCreation.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation.hints.label}" required="#{bindings.DateCreation.hints.mandatory}"
+                      columns="#{bindings.DateCreation.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation.hints.tooltip}" id="id1">
+          <f:validator binding="#{bindings.DateCreation.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateModification.inputValue}" readOnly="true"
+                      label="#{bindings.DateModification.hints.label}"
+                      required="#{bindings.DateModification.hints.mandatory}"
+                      columns="#{bindings.DateModification.hints.displayWidth}"
+                      shortDesc="#{bindings.DateModification.hints.tooltip}" id="id2">
+          <f:validator binding="#{bindings.DateModification.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateModification.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it9">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie.inputValue}" label="#{bindings.UtiModifie.hints.label}"
+                      required="#{bindings.UtiModifie.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it10">
+          <f:validator binding="#{bindings.UtiModifie.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.Deliberation1.inputValue}" label="#{bindings.Deliberation1.label}"
+                            required="#{bindings.Deliberation1.hints.mandatory}"
+                            shortDesc="#{bindings.Deliberation1.hints.tooltip}" readOnly="true" id="soc4">
+          <f:selectItems value="#{bindings.Deliberation1.items}" id="si4"/>
+          <f:validator binding="#{bindings.Deliberation1.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+    function OnDialogCancel(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "HandlerEvenDialogCancel", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupIsTextUsed" binding="#{TextLoisBean.isTextUsed}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d4" type="cancel" cancelTextAndAccessKey="Fermer" title="Info"
+               inlineStyle="text-align:center; font-size:large; color:Red;">
+      <f:facet name="buttonBar"/>
+      <af:icon name="error" id="i3"/>
+      <af:outputFormatted value="Le text que vous voulez supprimez est utilisé !!!" id="of2"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{TextLoisBean.noTextSelected}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d5" title="Info !!!" type="cancel" cancelTextAndAccessKey="Fermer"
+               inlineStyle="font-size:large; color:red; text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:icon name="error" id="i1"/>
+      <af:outputFormatted value="Aucun text de loi Selectionné !!!" id="of4"/>
+      <af:icon name="error" id="i2"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{TextLoisBean.popupNewTextStruct}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d6" title="New" dialogListener="#{TextLoisBean.OnTextLoiStrDialogAction}" type="okCancel">
+      <af:panelFormLayout id="pfl4">
+        <af:inputText value="#{bindings.IdHistoriquesStructure.inputValue}"
+                      required="#{bindings.IdHistoriquesStructure.hints.mandatory}"
+                      columns="#{bindings.IdHistoriquesStructure.hints.displayWidth}"
+                      maximumLength="#{bindings.IdHistoriquesStructure.hints.precision}"
+                      shortDesc="#{bindings.IdHistoriquesStructure.hints.tooltip}" id="it12"
+                      binding="#{TextLoisBean.id_struc}" placeholder="Entrer une valeur !!!">
+          <f:validator binding="#{bindings.IdHistoriquesStructure.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.IdHistoriquesStructure.format}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdTextLoi.inputValue}" label="Text de Loi"
+                            required="#{bindings.IdTextLoi.hints.mandatory}"
+                            shortDesc="#{bindings.IdTextLoi.hints.tooltip}" id="soc6" binding="#{TextLoisBean.id_text}">
+          <f:selectItems value="#{bindings.IdTextLoi.items}" id="si6"/>
+          <f:validator binding="#{bindings.IdTextLoi.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.Ordre.inputValue}" label="#{bindings.Ordre.hints.label}"
+                      required="#{bindings.Ordre.hints.mandatory}" columns="#{bindings.Ordre.hints.displayWidth}"
+                      maximumLength="#{bindings.Ordre.hints.precision}" shortDesc="#{bindings.Ordre.hints.tooltip}"
+                      id="it13" binding="#{TextLoisBean.ordre}">
+          <f:validator binding="#{bindings.Ordre.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Ordre.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree1.inputValue}"
+                      required="#{bindings.UtiCree1.hints.mandatory}" columns="#{bindings.UtiCree1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree1.hints.precision}"
+                      shortDesc="#{bindings.UtiCree1.hints.tooltip}" id="it14" placeholder="Entrer une valeur"
+                      binding="#{TextLoisBean.user_input}">
+          <f:validator binding="#{bindings.UtiCree1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree1.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="OnDialogCancel" type="dialog"/>
+      <af:serverListener type="HandlerEvenDialogCancel" method="#{TextLoisBean.OnTextLoiStrDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="list_repechage_list_repechage_ExecuteWithParams1PageDef" Package="evaluation.repechage"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="ResultatsSemestreVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ResultatsSemestreVOIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="ResultatsSemestreVOIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams" InstanceName="evaluationAppDataControl.ResultatsSemestreVO"
+            DataControl="evaluationAppDataControl">
+      <NamedData NDName="inferieur" NDValue="0" NDType="java.lang.Integer"/>
+      <NamedData NDName="superieur" NDValue="20" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_calendrier" NDValue="#{sessionScope.id_calendrier}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

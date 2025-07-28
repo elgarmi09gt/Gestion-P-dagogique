@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelBox text="Critères de recherche" id="pb1" showDisclosure="false" inlineStyle="width:890px;">
+      <f:facet name="toolbar"/>
+      <af:panelFormLayout id="pfl1" rows="2">
+        <f:facet name="footer"/>
+        <af:selectOneChoice value="#{bindings.GroupeTdTpParcours.inputValue}" label="Niveau Formation Parcours"
+                            required="#{bindings.GroupeTdTpParcours.hints.mandatory}"
+                            shortDesc="#{bindings.GroupeTdTpParcours.hints.tooltip}" id="soc3" autoSubmit="true" immediate="true"
+                            helpTopicId="0" clientComponent="true" contentStyle="margin-top:10px;">
+          <f:selectItems value="#{bindings.GroupeTdTpParcours.items}" id="si3"/>
+          <f:validator binding="#{bindings.GroupeTdTpParcours.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.GroupeParcSemestre.inputValue}" label="Semestre"
+                            required="#{bindings.GroupeParcSemestre.hints.mandatory}"
+                            shortDesc="#{bindings.GroupeParcSemestre.hints.tooltip}" id="soc1" autoSubmit="true"
+                            contentStyle="margin-top:10px;">
+          <f:selectItems value="#{bindings.GroupeParcSemestre.items}" id="si2"/>
+          <f:validator binding="#{bindings.GroupeParcSemestre.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.Parcours.inputValue}" label="Horaires TD"
+                            required="#{bindings.Parcours.hints.mandatory}"
+                            shortDesc="#{bindings.Parcours.hints.tooltip}" id="soc2" autoSubmit="true"
+                            contentStyle="margin-top:10px;">
+          <f:selectItems value="#{bindings.Parcours.items}" id="si4"/>
+          <f:validator binding="#{bindings.Parcours.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.Idmode.inputValue}" label="Mode Enseignement"
+                            required="#{bindings.Idmode.hints.mandatory}" shortDesc="#{bindings.Idmode.hints.tooltip}"
+                            id="soc5" autoSubmit="true" contentStyle="margin-top:10px;">
+          <f:selectItems value="#{bindings.Idmode.items}" id="si6"/>
+          <f:validator binding="#{bindings.Idmode.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+    </af:panelBox>
+    <af:button id="b1" action="#{GroupeTdTpbean.onSearch}"
+               inlineStyle="margin-top:10px;margin-left:10px;margin-bottom:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#f5e6e6;margin-bottom:15px;" immediate="true"
+               icon="/images/rechercher.PNG"/>
+    <af:region value="#{bindings.dynamicRegion1.regionModel}" id="r1" partialTriggers="::b1"/>
+  </af:panelGroupLayout>
+</ui:composition>

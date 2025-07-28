@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <af:document title="etatts.jsf" id="d1">
+        <af:messages id="m1"/>
+        <af:form id="f1">
+            <af:table value="#{bindings.Parcours.collectionModel}" var="row" rows="#{bindings.Parcours.rangeSize}"
+                      emptyText="#{bindings.Parcours.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.Parcours.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.Parcours.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.Parcours.rangeSize}" filterModel="#{bindings.ParcoursQuery.queryDescriptor}"
+                      filterVisible="true" queryListener="#{bindings.ParcoursQuery.processQuery}" varStatus="vs"
+                      id="t1" columnStretching="last">
+                <af:column sortProperty="#{bindings.Parcours.hints.LibParcours.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.Parcours.hints.LibParcours.label}" id="c1">
+                    <af:outputText value="#{row.LibParcours}" shortDesc="#{bindings.Parcours.hints.LibParcours.tooltip}"
+                                   id="ot1"/>
+                </af:column>
+            </af:table>
+        </af:form>
+    </af:document>
+</f:view>

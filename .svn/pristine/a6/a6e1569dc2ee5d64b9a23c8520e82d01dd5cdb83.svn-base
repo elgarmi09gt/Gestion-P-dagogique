@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="validation_etabPageDef"
+                Package="ecolage.validation_etablissement">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="OperationAValEtabRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="OperationAValEtabROIterator"/>
+    <searchRegion Binds="OperationAValEtabROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="OperationAValEtabROQuery"/>
+    <iterator Binds="OperationValEtabRO" RangeSize="7" DataControl="ecolageAppDataControl"
+              id="OperationValEtabROIterator"/>
+    <searchRegion Binds="OperationValEtabROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="OperationValEtabROQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="OperationAValEtabROIterator" id="OperationAValEtabRO">
+      <nodeDefinition DefName="model.readOnlyView.OperationAValEtabROVO" Name="OperationAValEtabRO0">
+        <AttrNames>
+          <Item Value="DateOperation"/>
+          <Item Value="Montant"/>
+          <Item Value="NumeroRecu"/>
+          <Item Value="LibModePaie"/>
+          <Item Value="NumChqVir"/>
+          <Item Value="LibTypeCmpte"/>
+          <Item Value="Motif"/>
+          <Item Value="Proprietaire"/>
+          <Item Value="OpAnnule" Binds="OpAnnule"/>
+          <Item Value="OpValidee" Binds="OpValidee"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="OperationValEtabROIterator" id="OperationValEtabRO">
+      <nodeDefinition DefName="model.readOnlyView.OperationValEtabROVO" Name="OperationValEtabRO0">
+        <AttrNames>
+          <Item Value="DateOperation"/>
+          <Item Value="Montant"/>
+          <Item Value="NumeroRecu"/>
+          <Item Value="LibModePaie"/>
+          <Item Value="NumChqVir"/>
+          <Item Value="LibTypeCmpte"/>
+          <Item Value="Motif"/>
+          <Item Value="Proprietaire"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="OperationAValEtabROIterator" id="OpAnnule" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="OpAnnule"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="2"/>
+        <Item Value="1"/>
+      </ValueList>
+    </button>
+    <button IterBinding="OperationAValEtabROIterator" id="OpValidee" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="OpValidee"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="2"/>
+        <Item Value="1"/>
+      </ValueList>
+    </button>
+    <action IterBinding="OperationAValEtabROIterator" id="getOperationAValEtab"
+            InstanceName="ecolageAppDataControl.OperationAValEtabRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="OperationValEtabROIterator" id="getOperationValEtab"
+            InstanceName="ecolageAppDataControl.OperationValEtabRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="findAndUpdateValOperation" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findAndUpdateValOperation" IsViewObjectMethod="false" DataControl="ecolageAppDataControl"
+                  InstanceName="bindings.findAndUpdateValOperation.dataControl.dataProvider">
+      <NamedData NDName="id_oper" NDType="java.lang.Long"/>
+      <NamedData NDName="annule" NDType="java.lang.String"/>
+      <NamedData NDName="util" NDType="java.lang.String"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

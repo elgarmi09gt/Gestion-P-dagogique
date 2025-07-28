@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <af:document title="untitled1.jsf" id="d1">
+        <af:messages id="m1"/>
+        <af:form id="f1">
+            <af:panelFormLayout id="pfl1">
+                <af:inputText value="#{bindings.idpers_var.inputValue}" label="#{bindings.idpers_var.hints.label}"
+                              required="#{bindings.idpers_var.hints.mandatory}"
+                              columns="#{bindings.idpers_var.hints.displayWidth}"
+                              maximumLength="#{bindings.idpers_var.hints.precision}"
+                              shortDesc="#{bindings.idpers_var.hints.tooltip}" id="it1">
+                    <f:validator binding="#{bindings.idpers_var.validator}"/>
+                    <af:convertNumber groupingUsed="false" pattern="#{bindings.idpers_var.format}"/>
+                </af:inputText>
+                <af:button actionListener="#{bindings.ExecuteWithParams.execute}" text="ExecuteWithParams"
+                           disabled="#{!bindings.ExecuteWithParams.enabled}" id="b1"/>
+            </af:panelFormLayout>
+            <af:table value="#{bindings.Personnes.collectionModel}" var="row" rows="#{bindings.Personnes.rangeSize}"
+                      emptyText="#{bindings.Personnes.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" fetchSize="#{bindings.Personnes.rangeSize}" id="t1" partialTriggers="::b1">
+                <af:column headerText="#{bindings.Personnes.hints.Nom.label}" id="c1">
+                    <af:inputText value="#{row.bindings.Nom.inputValue}" label="#{bindings.Personnes.hints.Nom.label}"
+                                  required="#{bindings.Personnes.hints.Nom.mandatory}"
+                                  columns="#{bindings.Personnes.hints.Nom.displayWidth}"
+                                  maximumLength="#{bindings.Personnes.hints.Nom.precision}"
+                                  shortDesc="#{bindings.Personnes.hints.Nom.tooltip}" id="it2">
+                        <f:validator binding="#{row.bindings.Nom.validator}"/>
+                    </af:inputText>
+                </af:column>
+                <af:column headerText="#{bindings.Personnes.hints.NomMarital.label}" id="c2">
+                    <af:inputText value="#{row.bindings.NomMarital.inputValue}"
+                                  label="#{bindings.Personnes.hints.NomMarital.label}"
+                                  required="#{bindings.Personnes.hints.NomMarital.mandatory}"
+                                  columns="#{bindings.Personnes.hints.NomMarital.displayWidth}"
+                                  maximumLength="#{bindings.Personnes.hints.NomMarital.precision}"
+                                  shortDesc="#{bindings.Personnes.hints.NomMarital.tooltip}" id="it3">
+                        <f:validator binding="#{row.bindings.NomMarital.validator}"/>
+                    </af:inputText>
+                </af:column>
+                <af:column headerText="#{bindings.Personnes.hints.Prenoms.label}" id="c3">
+                    <af:inputText value="#{row.bindings.Prenoms.inputValue}"
+                                  label="#{bindings.Personnes.hints.Prenoms.label}"
+                                  required="#{bindings.Personnes.hints.Prenoms.mandatory}"
+                                  columns="#{bindings.Personnes.hints.Prenoms.displayWidth}"
+                                  maximumLength="#{bindings.Personnes.hints.Prenoms.precision}"
+                                  shortDesc="#{bindings.Personnes.hints.Prenoms.tooltip}" id="it4">
+                        <f:validator binding="#{row.bindings.Prenoms.validator}"/>
+                    </af:inputText>
+                </af:column>
+                <af:column headerText="#{bindings.Personnes.hints.DateNaissance.label}" id="c4">
+                    <af:inputDate value="#{row.bindings.DateNaissance.inputValue}"
+                                  label="#{bindings.Personnes.hints.DateNaissance.label}"
+                                  required="#{bindings.Personnes.hints.DateNaissance.mandatory}"
+                                  columns="#{bindings.Personnes.hints.DateNaissance.displayWidth}"
+                                  shortDesc="#{bindings.Personnes.hints.DateNaissance.tooltip}" id="id1">
+                        <f:validator binding="#{row.bindings.DateNaissance.validator}"/>
+                        <af:convertDateTime pattern="#{bindings.Personnes.hints.DateNaissance.format}"/>
+                    </af:inputDate>
+                </af:column>
+                <af:column headerText="#{bindings.Personnes.hints.LieuNaissance.label}" id="c5">
+                    <af:inputText value="#{row.bindings.LieuNaissance.inputValue}"
+                                  label="#{bindings.Personnes.hints.LieuNaissance.label}"
+                                  required="#{bindings.Personnes.hints.LieuNaissance.mandatory}"
+                                  columns="#{bindings.Personnes.hints.LieuNaissance.displayWidth}"
+                                  maximumLength="#{bindings.Personnes.hints.LieuNaissance.precision}"
+                                  shortDesc="#{bindings.Personnes.hints.LieuNaissance.tooltip}" id="it5">
+                        <f:validator binding="#{row.bindings.LieuNaissance.validator}"/>
+                    </af:inputText>
+                </af:column>
+                <af:column headerText="#{bindings.Personnes.hints.EmailInstitutionnel.label}" id="c6">
+                    <af:inputText value="#{row.bindings.EmailInstitutionnel.inputValue}"
+                                  label="#{bindings.Personnes.hints.EmailInstitutionnel.label}"
+                                  required="#{bindings.Personnes.hints.EmailInstitutionnel.mandatory}"
+                                  columns="#{bindings.Personnes.hints.EmailInstitutionnel.displayWidth}"
+                                  maximumLength="#{bindings.Personnes.hints.EmailInstitutionnel.precision}"
+                                  shortDesc="#{bindings.Personnes.hints.EmailInstitutionnel.tooltip}" id="it6">
+                        <f:validator binding="#{row.bindings.EmailInstitutionnel.validator}"/>
+                    </af:inputText>
+                </af:column>
+            </af:table>
+        </af:form>
+    </af:document>
+</f:view>

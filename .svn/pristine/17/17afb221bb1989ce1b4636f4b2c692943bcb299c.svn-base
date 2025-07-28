@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <af:panelGroupLayout id="pgl8" layout="scroll" valign="top">
+  <af:iterator value="#{DeliberatioUeBean.getEtudNoteModeEns(bindings.IdFiliereUeSemstreEc1.inputValue,bindings.IdTypeControle.inputValue,sessionScope.id_calendrier)}"
+               />
+    <c:if test="true"/>
+    <af:panelGridLayout id="pgl1"
+                        inlineStyle="border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-bottom-width:10px; background-color:White;margin-top:5px;margin-bottom:10px">
+      <af:gridRow marginTop="5px" height="auto" id="gr1">
+        <af:gridCell marginStart="5px" id="gc1" columnSpan="4">
+          <af:outputText value="Choix critères de saisies" id="ot1"
+                         inlineStyle="font-size:medium; font-weight:bolder;margin-left:10px;"/>
+        </af:gridCell>
+      </af:gridRow>
+      <af:gridRow marginTop="5px" height="auto" id="gr2">
+        <af:gridCell marginStart="5px" width="100px" id="gc5" rowSpan="3" halign="stretch" valign="stretch"/>
+        <af:gridCell marginStart="5px" width="500px" id="gc6">
+          <af:panelGroupLayout id="pgl2" layout="vertical">
+            <af:panelLabelAndMessage label="Unité d'enseignement" id="plam1"
+                                     inlineStyle="text-align:center; text-height:text-size;margin-top:20px"/>
+            <af:selectOneChoice value="#{bindings.UeEvalRO.inputValue}" required="#{bindings.UeEvalRO.hints.mandatory}"
+                                shortDesc="#{bindings.UeEvalRO.hints.tooltip}" id="soc1" inlineStyle="margin-top:20px;"
+                                autoSubmit="true"
+                                contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                binding="#{SaisieNotesbean.lib_ue}">
+              <f:selectItems value="#{bindings.UeEvalRO.items}" id="si1"/>
+              <f:validator binding="#{bindings.UeEvalRO.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:gridCell>
+        <af:gridCell marginStart="5px" width="300px" id="gc7">
+          <af:panelGroupLayout id="pgl3" layout="vertical">
+            <af:panelLabelAndMessage label="Eléments constitutifs" id="plam2" inlineStyle="margin-top:20px;"/>
+            <af:selectOneChoice value="#{bindings.EcEvalRO.inputValue}" required="#{bindings.EcEvalRO.hints.mandatory}"
+                                shortDesc="#{bindings.EcEvalRO.hints.tooltip}" id="soc2" inlineStyle="margin-top:20px;"
+                                partialTriggers="soc1"
+                                contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                autoSubmit="true">
+              <f:selectItems value="#{bindings.EcEvalRO.items}" id="si2"/>
+              <f:validator binding="#{bindings.EcEvalRO.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:gridCell>
+        <af:gridCell marginStart="5px" width="300px" marginEnd="5px" id="gc8">
+          <af:panelGroupLayout id="pgl4" layout="vertical">
+            <af:panelLabelAndMessage label="Type de contrôle" id="plam3" inlineStyle="margin-top:20px;"/>
+            <af:selectOneChoice value="#{bindings.EcEvalTypeCtrlRO.inputValue}"
+                                required="#{bindings.EcEvalTypeCtrlRO.hints.mandatory}"
+                                shortDesc="#{bindings.EcEvalTypeCtrlRO.hints.tooltip}" id="soc6"
+                                inlineStyle="margin-top:20px;"
+                                contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                autoSubmit="true">
+              <f:selectItems value="#{bindings.EcEvalTypeCtrlRO.items}" id="si6"/>
+              <f:validator binding="#{bindings.EcEvalTypeCtrlRO.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:gridCell>
+      </af:gridRow>
+      <af:gridRow marginTop="5px" height="auto" id="gr3">
+        <af:gridCell marginStart="5px" width="300px" id="gc9">
+          <af:panelGroupLayout id="pgl6" layout="vertical">
+            <af:panelLabelAndMessage label="Groupes de saisie" id="plam4" inlineStyle="margin-top:40px;"/>
+            <af:selectOneChoice value="#{bindings.SaisieNotesGroupesSaisieLOV.inputValue}"
+                                required="#{bindings.SaisieNotesGroupesSaisieLOV.hints.mandatory}"
+                                shortDesc="#{bindings.SaisieNotesGroupesSaisieLOV.hints.tooltip}" id="soc4"
+                                inlineStyle="margin-top:20px;"
+                                contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+              <f:selectItems value="#{bindings.SaisieNotesGroupesSaisieLOV.items}" id="si4"/>
+              <f:validator binding="#{bindings.SaisieNotesGroupesSaisieLOV.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:gridCell>
+        <af:gridCell marginStart="5px" width="300px" id="gc10">
+          <af:panelGroupLayout id="pgl5" layout="vertical">
+            <af:panelLabelAndMessage label="Filtre" id="plam5" inlineStyle="margin-top:40px;"/>
+            <af:selectOneChoice value="#{bindings.SaisieNotesFiltresLOV.inputValue}"
+                                required="#{bindings.SaisieNotesFiltresLOV.hints.mandatory}"
+                                shortDesc="#{bindings.SaisieNotesFiltresLOV.hints.tooltip}" id="soc5"
+                                inlineStyle="margin-top:20px;"
+                                contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px">
+              <f:selectItems value="#{bindings.SaisieNotesFiltresLOV.items}" id="si5"/>
+              <f:validator binding="#{bindings.SaisieNotesFiltresLOV.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:gridCell>
+        <af:gridCell marginStart="5px" width="300px" id="gc11"/>
+      </af:gridRow>
+      <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr4">
+        <af:gridCell marginStart="5px" marginEnd="5px" id="gc16" columnSpan="3"/>
+      </af:gridRow>
+    </af:panelGridLayout>
+    <af:panelGridLayout id="pgl7"
+                        inlineStyle="border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-bottom-width:10px; background-color:White;width:1852px;">
+      <af:gridRow marginTop="5px" height="auto" id="gr5">
+        <af:gridCell marginStart="10px" id="gc2" columnSpan="5">
+          <af:outputText value="Liste des étudiants" id="ot2"
+                         inlineStyle="font-size:medium; font-stretch:normal; font-weight:bolder;margin-top:10px;margin-bottom:20px;margin-left:10px;"/>
+        </af:gridCell>
+      </af:gridRow>
+      <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr6">
+        <af:gridCell marginStart="5px" width="100px" id="gc14" halign="stretch" valign="stretch" rowSpan="3"/>
+        <af:gridCell marginStart="5px" width="225px" id="gc15" columnSpan="3">
+          <af:button id="b2" icon="/images/export-excels.PNG" 
+                     inlineStyle="border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#f5e6e6;Width:130px;height:50px;margin-right:15px;margin-top:20px;"
+                     immediate="true" clientComponent="true">
+            <af:fileDownloadActionListener contentType="application/vnd.ms-excel"
+                                           filename="#{bindings.CodificationUE}_#{bindings.CodificationEC}_#{bindings.LibelleCourtCtrl}.xlsx"
+                                           method="#{SaisieNotesbean.exportToExcel}"/>
+            <af:setPropertyListener type="action" from="#{'1'}" to="#{sessionScope.ref}"/>
+          </af:button>
+          <af:button id="b3" icon="/images/import-excel.PNG"
+                     inlineStyle="border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#f5e6e6;Width:130px;height:50px;margin-right:15px;"
+                     disabled="#{sessionScope.isClosed == '1' ? true : false}">
+            <af:showPopupBehavior popupId="pimport"/>
+          </af:button>
+          <af:button id="b4" icon="/images/enregistrer-saisie-notes.PNG"
+                     inlineStyle="border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#f5e6e6;Width:130px;height:50px;margin-right:15px;"
+                     actionListener="#{SaisieNotesbean.onEnregistrer}"
+                     disabled="#{sessionScope.isClosed == '1' ? true : false}">
+            <af:showPopupBehavior popupId="penreg"/>
+          </af:button>
+          <af:button id="b5" icon="/images/cloturer-saisie-notes.PNG"
+                     inlineStyle="border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#f5e6e6;Width:130px;height:50px;"
+                     disabled="#{sessionScope.isClosed == '1' ? true : false}">
+            <af:showPopupBehavior popupId="pcloture"/>
+          </af:button>
+        </af:gridCell>
+        <af:gridCell marginStart="5px" width="225px" id="gc17">
+          <af:button text="button 1" id="b1"/>
+        </af:gridCell>
+      </af:gridRow>
+      <af:gridRow id="gr7">
+        <af:gridCell id="gc3" width="225px"/>
+        <af:gridCell id="gc4" width="225px"/>
+        <af:gridCell id="gc12" width="225px"/>
+        <af:gridCell id="gc13" width="225px"/>
+      </af:gridRow>
+      <af:gridRow id="gr8">
+        <af:gridCell id="gc21" columnSpan="4">
+          <af:panelGroupLayout id="pgl9" halign="center" inlineStyle="margin-top:20px;">
+            <af:table value="#{bindings.NotesModeEnseignement.collectionModel}" var="row"
+                      rows="#{bindings.NotesModeEnseignement.rangeSize}"
+                      emptyText="#{bindings.NotesModeEnseignement.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.NotesModeEnseignement.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.NotesModeEnseignement.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.NotesModeEnseignement.rangeSize}"
+                      filterModel="#{bindings.NotesModeEnseignementQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.NotesModeEnseignementQuery.processQuery}" varStatus="vs" id="t1"
+                      binding="#{SaisieNotesbean.tableSaisieNotes}" inlineStyle="margin-top:20px;">
+              <af:column sortProperty="Anonymat" filterable="true" sortable="true"
+                         headerText="#{bindings.NotesModeEnseignement.hints.Anonymat.label}" id="c2" width="150"
+                         visible="#{sessionScope.isAnonymat == '1' ? true : false}">
+                <af:inputText value="#{row.bindings.Anonymat.inputValue}"
+                              label="#{bindings.NotesModeEnseignement.hints.Anonymat.label}"
+                              required="#{bindings.NotesModeEnseignement.hints.Anonymat.mandatory}"
+                              columns="#{bindings.NotesModeEnseignement.hints.Anonymat.displayWidth}"
+                              maximumLength="#{bindings.NotesModeEnseignement.hints.Anonymat.precision}"
+                              shortDesc="#{bindings.NotesModeEnseignement.hints.Anonymat.tooltip}" id="it2">
+                  <f:validator binding="#{row.bindings.Anonymat.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column headerText="Numéro" id="c3" visible="#{sessionScope.isAnonymat == '0' ? true : false}">
+                <af:outputText value="#{row.Numero}" shortDesc="#{bindings.NotesModeEnseignement.hints.Numero.tooltip}"
+                               id="ot3"/>
+              </af:column>
+              <af:column headerText="Prénom &amp; Nom" id="c4"
+                         visible="#{sessionScope.isAnonymat == '0' ? true : false}" width="300">
+                <af:outputText value="#{row.PrenomNom}"
+                               shortDesc="#{bindings.NotesModeEnseignement.hints.PrenomNom.tooltip}" id="ot6"/>
+              </af:column>
+              <af:column headerText="Date Naissance" id="c5" visible="#{sessionScope.isAnonymat == '0' ? true : false}"
+                         width="110">
+                <af:outputText value="#{row.DateNaissance}"
+                               shortDesc="#{bindings.NotesModeEnseignement.hints.DateNaissance.tooltip}" id="ot7">
+                  <af:convertDateTime pattern="#{bindings.NotesModeEnseignement.hints.DateNaissance.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.NotesModeEnseignement.hints.Note.name}" filterable="true"
+                         sortable="true" headerText="#{bindings.NotesModeEnseignement.hints.Note.label}" id="c1"
+                         width="150">
+                <af:inputText value="#{row.bindings.Note.inputValue}"
+                              label="#{bindings.NotesModeEnseignement.hints.Note.label}"
+                              required="#{bindings.NotesModeEnseignement.hints.Note.mandatory}"
+                              columns="#{bindings.NotesModeEnseignement.hints.Note.displayWidth}"
+                              maximumLength="#{bindings.NotesModeEnseignement.hints.Note.precision}"
+                              shortDesc="#{bindings.NotesModeEnseignement.hints.Note.tooltip}" id="it1"
+                              readOnly="#{sessionScope.isClosed == '1' ? true : false}">
+                  <f:validator binding="#{row.bindings.Note.validator}"/>
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.NotesModeEnseignement.hints.Note.format}"/>
+                </af:inputText>
+              </af:column>
+            </af:table>
+          </af:panelGroupLayout>
+        </af:gridCell>
+      </af:gridRow>
+    </af:panelGridLayout>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="penreg" binding="#{SaisieNotesbean.popenrg}">
+    <af:dialog id="d1" title="Formulaire d'enregistrement" dialogListener="#{SaisieNotesbean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{SaisieNotesbean.onDialogCancel}"/>
+      <af:outputText value="Voulez-vous enregistrer la saisie?" id="ot5"
+                     inlineStyle="background-color:Yellow; font-size:large;"/>
+    </af:dialog>
+  </af:popup>
+      <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" id="pimport" autoCancel="disabled" binding="#{SaisieNotesbean.popImport}">
+    <af:dialog id="d2" title="Choisissez un fichier Excel" type="none">
+      <f:facet name="buttonBar"/>
+      <af:inputFile id="if1" value="#{requestScope.SaisieNotesbean.uploadedFile}" inlineStyle="margin-bottom:20px;"/>
+      <af:button text="Valider" id="b6" actionListener="#{SaisieNotesbean.onUploadExcel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="pcloture" binding="#{SaisieNotesbean.popClot}">
+    <af:dialog id="d3" title="Confirmation de la clôture" dialogListener="#{SaisieNotesbean.onDialogClot}">
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{SaisieNotesbean.onDialogCanClot}"/>
+      <af:outputText value="Voulez-vous clôturer la saisie?" id="ot4"
+                     inlineStyle="font-size:large; background-color:Yellow;"/>
+    </af:dialog>
+  </af:popup>
+        <af:resource type="javascript">
+      function onDialogClot(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+</ui:composition>

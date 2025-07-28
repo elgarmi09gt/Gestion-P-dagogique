@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="param_texts_loisPageDef"
+                Package="evaluation.texts_lois">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="TextLoisVO" RangeSize="10" DataControl="evaluationAppDataControl" id="TextLoisVOIterator"/>
+    <searchRegion Binds="TextLoisVOIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="TextLoisVOQuery"/>
+    <iterator Binds="IsUsedFormationText" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsUsedFormationTextIterator"/>
+    <iterator Binds="FormationByStructure" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="FormationByStructureIterator"/>
+    <iterator Binds="TextLoisByStructure" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="TextLoisByStructureIterator"/>
+    <iterator Binds="IsFormationTextIs" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsFormationTextIsIterator"/>
+    <iterator Binds="TextLoiFormationVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="TextLoiFormationVOIterator"/>
+    <searchRegion Binds="TextLoisByStructureIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="TextLoisByStructureQuery"/>
+    <iterator Binds="IsStructureTextExist" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsStructureTextExistIterator"/>
+    <iterator Binds="TextLoisHistoriqueStrVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="TextLoisHistoriqueStrVOIterator"/>
+    <iterator Binds="TextLoiFormationROVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="TextLoiFormationROVOIterator"/>
+    <searchRegion Binds="TextLoiFormationROVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="TextLoiFormationROVOQuery"/>
+  </executables>
+  <bindings>
+    <action IterBinding="TextLoisVOIterator" id="CreateTextLois" InstanceName="evaluationAppDataControl.TextLoisVO"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="TextLoisVOIterator" id="DeleteTextLois" InstanceName="evaluationAppDataControl.TextLoisVO"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="TextLoisVOIterator" id="Text">
+      <AttrNames>
+        <Item Value="Text"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="TextLoisVOIterator" id="TextLoisVO">
+      <nodeDefinition DefName="model.updatableview.TextLoisVO" Name="TextLoisVO0">
+        <AttrNames>
+          <Item Value="Text"/>
+          <Item Value="Deliberation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <listOfValues IterBinding="TextLoisVOIterator" StaticList="false" Uses="LOV_Deliberation" id="Deliberation"/>
+    <attributeValues IterBinding="TextLoisVOIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="TextLoisVOIterator" StaticList="false" Uses="LOV_Deliberation" id="Deliberation1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="TextLoisVOIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="IsUsedFormationTextIterator" id="IsFormationUsedText"
+            InstanceName="evaluationAppDataControl.IsUsedFormationText" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idtext" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="TextLoisVOIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TextLoisVOIterator" id="DateModification">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TextLoisVOIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="FormationByStructureIterator" ListOperMode="navigation" ListIter="FormationByStructureIterator"
+          id="FormationByStructure" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="TextLoisByStructureIterator" id="TextLoisByStruct"
+            InstanceName="evaluationAppDataControl.TextLoisByStructure" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_hs" NDValue="#{sessionScope.id_hs}" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="getSelectedLois" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getSelectedLois"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getSelectedLois.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getSelectedLois_getSelectedLois_dataControl_dataProvider_getSelectedLois_result"/>
+    <action IterBinding="IsFormationTextIsIterator" id="IsFormationTextIs"
+            InstanceName="evaluationAppDataControl.IsFormationTextIs" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_txt" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="id_fr" NDType="oracle.jbo.domain.Number"/>
+    </action>
+    <action IterBinding="TextLoiFormationVOIterator" id="CreateTextLoiFr"
+            InstanceName="evaluationAppDataControl.TextLoiFormationVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdTextLoi" NDType="java.lang.String"/>
+      <NamedData NDName="IdFormation" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+    </action>
+    <tree IterBinding="TextLoisByStructureIterator" id="TextLoisByStructure">
+      <nodeDefinition DefName="model.readOnlyView.TextLoisByStructure" Name="TextLoisByStructure0">
+        <AttrNames>
+          <Item Value="isSelected"/>
+          <Item Value="Text"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="TextLoisByStructureIterator" id="isSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <action IterBinding="IsStructureTextExistIterator" id="IsStructTextExist"
+            InstanceName="evaluationAppDataControl.IsStructureTextExist" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_txt" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_str" NDValue="#{sessionScope.id_hs}" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="TextLoisHistoriqueStrVOIterator" id="CreateTextLoiStruct"
+            InstanceName="evaluationAppDataControl.TextLoisHistoriqueStrVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <tree IterBinding="TextLoiFormationROVOIterator" id="TextLoiFormationROVO">
+      <nodeDefinition DefName="model.readOnlyView.TextLoiFormationROVO" Name="TextLoiFormationROVO0">
+        <AttrNames>
+          <Item Value="Text"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="TextLoiFormationROVOIterator" id="TextLoiFormation"
+            InstanceName="evaluationAppDataControl.TextLoiFormationROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_form" NDType="java.lang.Integer"/>
+    </action>
+    <attributeValues IterBinding="TextLoisHistoriqueStrVOIterator" id="IdHistoriquesStructure">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="TextLoisHistoriqueStrVOIterator" StaticList="false" Uses="LOV_IdTextLoi" id="IdTextLoi"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="TextLoisHistoriqueStrVOIterator" id="Ordre">
+      <AttrNames>
+        <Item Value="Ordre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TextLoisHistoriqueStrVOIterator" id="UtiCree1">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="TextLoisHistoriqueStrVOIterator" id="CreateWithParamsText"
+            InstanceName="evaluationAppDataControl.TextLoisHistoriqueStrVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdHistoriquesStructure" NDType="java.lang.String"/>
+      <NamedData NDName="IdTextLoi" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+      <NamedData NDName="Ordre" NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

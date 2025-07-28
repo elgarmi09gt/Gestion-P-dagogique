@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <af:document title="recherche-etud.jsf" id="d1">
+        <af:messages id="m1"/>
+        <af:form id="f1">
+            <af:panelGroupLayout layout="vertical" id="pgl1">
+                <af:panelHeader text="Recherche Eudiant" id="ph1">
+                    <af:query id="qryId1" headerText="Search" disclosed="true"
+                              value="#{bindings.EudiantPersonneROVOCriteriaQuery.queryDescriptor}"
+                              model="#{bindings.EudiantPersonneROVOCriteriaQuery.queryModel}"
+                              queryListener="#{bindings.EudiantPersonneROVOCriteriaQuery.processQuery}"
+                              queryOperationListener="#{bindings.EudiantPersonneROVOCriteriaQuery.processQueryOperation}"
+                              resultComponentId="::resId1" displayMode="compact"/>
+                </af:panelHeader>
+                <af:table value="#{bindings.EudiantPersonneRO.collectionModel}" var="row"
+                          rows="#{bindings.EudiantPersonneRO.rangeSize}"
+                          emptyText="#{bindings.EudiantPersonneRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0"
+                          selectedRowKeys="#{bindings.EudiantPersonneRO.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.EudiantPersonneRO.collectionModel.makeCurrent}"
+                          rowSelection="single" fetchSize="#{bindings.EudiantPersonneRO.rangeSize}"
+                          filterModel="#{bindings.EudiantPersonneROVOCriteriaQuery.queryDescriptor}"
+                          filterVisible="true" queryListener="#{bindings.EudiantPersonneROVOCriteriaQuery.processQuery}"
+                          varStatus="vs" id="resId1" scrollPolicy="page" binding="#{RechercheEtudbean.table}">
+                    <af:column sortProperty="#{bindings.EudiantPersonneRO.hints.Numero.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.EudiantPersonneRO.hints.Numero.label}"
+                               id="resId1c2">
+                        <af:outputText value="#{row.Numero}"
+                                       shortDesc="#{bindings.EudiantPersonneRO.hints.Numero.tooltip}" id="ot2"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.EudiantPersonneRO.hints.Nom.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.EudiantPersonneRO.hints.Nom.label}" id="resId1c3"
+                               width="200">
+                        <af:outputText value="#{row.Nom}" shortDesc="#{bindings.EudiantPersonneRO.hints.Nom.tooltip}"
+                                       id="ot3"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.EudiantPersonneRO.hints.Prenoms.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.EudiantPersonneRO.hints.Prenoms.label}"
+                               id="resId1c4" width="300">
+                        <af:outputText value="#{row.Prenoms}"
+                                       shortDesc="#{bindings.EudiantPersonneRO.hints.Prenoms.tooltip}" id="ot4"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.EudiantPersonneRO.hints.DateNaissance.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.EudiantPersonneRO.hints.DateNaissance.label}"
+                               id="resId1c5">
+                        <f:facet name="filter">
+                            <af:inputDate value="#{bindings.EudiantPersonneROVOCriteriaQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                                          id="id1">
+                                <af:convertDateTime pattern="#{bindings.EudiantPersonneRO.hints.DateNaissance.format}"/>
+                            </af:inputDate>
+                        </f:facet>
+                        <af:outputText value="#{row.DateNaissance}"
+                                       shortDesc="#{bindings.EudiantPersonneRO.hints.DateNaissance.tooltip}" id="ot5">
+                            <af:convertDateTime pattern="#{bindings.EudiantPersonneRO.hints.DateNaissance.format}"/>
+                        </af:outputText>
+                    </af:column>
+                </af:table>
+                <af:panelGroupLayout id="pgl2" layout="horizontal">
+                    <af:button text="Select" id="b1" action="#{RechercheEtudbean.onValueSelect}">
+                        <af:setPropertyListener from="#{'submit'}" type="action"
+                                                to="#{pageFlowScope.submitOrCancelFlag}"/>
+                    </af:button>
+                    <af:button text="Annuler" id="b2" action="return">
+                        <af:setPropertyListener to="#{pageFlowScope.submitOrCancelFlag}" type="action"
+                                                from="#{'cancel'}"/>
+                    </af:button>
+                </af:panelGroupLayout>
+            </af:panelGroupLayout>
+        </af:form>
+    </af:document>
+</f:view>

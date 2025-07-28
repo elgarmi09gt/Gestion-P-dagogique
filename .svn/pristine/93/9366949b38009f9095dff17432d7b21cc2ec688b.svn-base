@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listcohortesPageDef"
+                Package="parametrage.cohortes">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Cohortes" RangeSize="25" DataControl="parametrageAppDataControl" id="CohortesIterator"/>
+    <searchRegion Binds="CohortesIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="Cohortes1Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="CohortesIterator" id="Libelle">
+      <AttrNames>
+        <Item Value="Libelle"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CohortesIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CohortesIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CohortesIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="Rollback" DataControl="parametrageAppDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <action IterBinding="CohortesIterator" id="CreateInsert" InstanceName="parametrageAppDataControl.Cohortes"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="CohortesIterator" id="Delete" InstanceName="parametrageAppDataControl.Cohortes"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="CohortesIterator" id="Cohortes1">
+      <nodeDefinition DefName="model.updatableview.CohortesVO" Name="Cohortes10">
+        <AttrNames>
+          <Item Value="Libelle"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,484 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['viewcontroller.dap.dms.listdomainesBundle']}"/>
+  <!--oracle-jdev-comment:preferred-managed-bean-name:DomainesBean-->
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelGroupLayout id="pgl2" layout="vertical" inlineStyle="margin-bottom : 30px" halign="center" valign="middle">
+      <af:panelHeader text="Domaines" id="ph1" inlineStyle="border: solid 1px #006e8b;">
+        <f:facet name="context"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="menuBar"/>
+        <f:facet name="legend"/>
+        <f:facet name="info"/>
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t7">
+              <af:button id="b10" actionListener="#{DomainesBean.OnNewDomaineClick}" icon="/images/new_icon.png"/>
+              <af:button id="b11" actionListener="#{DomainesBean.OnEditDomaineClick}" icon="/images/edit_icon.png"/>
+            </af:toolbar>
+          </f:facet>
+          <af:table value="#{bindings.Domaines.collectionModel}" var="row" rows="#{bindings.Domaines.rangeSize}"
+                    emptyText="#{bindings.Domaines.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.Domaines.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.Domaines.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.Domaines.rangeSize}" filterModel="#{bindings.DomainesQuery.queryDescriptor}"
+                    filterVisible="true" queryListener="#{bindings.DomainesQuery.processQuery}" varStatus="vs" id="t2"
+                    binding="#{DomainesBean.domaineTable}" scrollPolicy="scroll" columnStretching="last">
+            <af:column sortProperty="#{bindings.Domaines.hints.LibelleLong.name}" filterable="true" sortable="true"
+                       headerText="#{viewcontrollerBundle.LIBELLE_LNG}" id="c1" minimumWidth="20" width="100%"
+                       inlineStyle="font-size:large;">
+              <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.Domaines.hints.LibelleLong.tooltip}"
+                             id="ot1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.Domaines.hints.LibelleCourt.name}" filterable="true" sortable="true"
+                       headerText="#{viewcontrollerBundle.LIBELLE_COURT}" id="c2" inlineStyle="font-size:large;">
+              <af:outputText value="#{row.LibelleCourt}" shortDesc="#{bindings.Domaines.hints.LibelleCourt.tooltip}"
+                             id="ot2"/>
+            </af:column>
+          </af:table>
+          <f:facet name="statusbar"/>
+        </af:panelCollection>
+      </af:panelHeader>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl3" layout="horizontal" valign="top" halign="left">
+      <af:panelHeader text="Mentions" id="ph2" inlineStyle="border: solid 1px #006e8b;">
+        <f:facet name="context"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="menuBar"/>
+        <f:facet name="legend"/>
+        <f:facet name="info"/>
+        <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t5">
+              <af:button id="b4" actionListener="#{DomainesBean.OnNewMentionClick}" icon="/images/new_icon.png"/>
+              <af:button id="b5" actionListener="#{DomainesBean.OnEditMentionClick}" icon="/images/edit_icon.png"/>
+              <af:button id="b6" action="#{DomainesBean.OnDeleteMentionClicked}" icon="/images/delete_icon.png">
+                <af:showPopupBehavior popupId="::popupDelete-mention"/>
+              </af:button>
+            </af:toolbar>
+          </f:facet>
+          <af:table value="#{bindings.MentionsDomaines.collectionModel}" var="row"
+                    rows="#{bindings.MentionsDomaines.rangeSize}"
+                    emptyText="#{bindings.MentionsDomaines.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.MentionsDomaines.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.MentionsDomaines.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.MentionsDomaines.rangeSize}"
+                    filterModel="#{bindings.MentionsDomainesQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.MentionsDomainesQuery.processQuery}" varStatus="vs" id="t3"
+                    scrollPolicy="scroll" columnStretching="last">
+            <af:column sortProperty="#{bindings.MentionsDomaines.hints.LibelleLong.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle.LIBELLE_LNG}" id="c5" width="100%"
+                       inlineStyle="font-size:large;">
+              <af:outputText value="#{row.LibelleLong}"
+                             shortDesc="#{bindings.MentionsDomaines.hints.LibelleLong.tooltip}" id="ot5"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.MentionsDomaines.hints.LibelleCourt.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle.LIBELLE_COURT}" id="c6"
+                       inlineStyle="font-size:large;">
+              <af:outputText value="#{row.LibelleCourt}"
+                             shortDesc="#{bindings.MentionsDomaines.hints.LibelleCourt.tooltip}" id="ot6"/>
+            </af:column>
+          </af:table>
+          <f:facet name="statusbar"/>
+        </af:panelCollection>
+      </af:panelHeader>
+      <af:spacer width="10" height="10" id="s1"/>
+      <af:panelHeader text="Specialités" id="ph3" inlineStyle="border: solid 1px #006e8b;">
+        <f:facet name="context"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="menuBar"/>
+        <f:facet name="legend"/>
+        <f:facet name="info"/>
+        <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t6">
+              <af:button id="b7" actionListener="#{DomainesBean.OnNewSpecialiteClick}" icon="/images/new_icon.png"/>
+              <af:button id="b8" actionListener="#{DomainesBean.OnEditSpecialiteClick}" icon="/images/edit_icon.png"/>
+              <af:button id="b9" action="#{DomainesBean.OnDeleteSpecialiteClicked}" icon="/images/delete_icon.png">
+                <af:showPopupBehavior popupId="::popupDelete-specialite"/>
+              </af:button>
+            </af:toolbar>
+          </f:facet>
+          <af:table value="#{bindings.SpecialitesMentions.collectionModel}" var="row"
+                    rows="#{bindings.SpecialitesMentions.rangeSize}"
+                    emptyText="#{bindings.SpecialitesMentions.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.SpecialitesMentions.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.SpecialitesMentions.collectionModel.makeCurrent}"
+                    rowSelection="single" fetchSize="#{bindings.SpecialitesMentions.rangeSize}"
+                    filterModel="#{bindings.SpecialitesMentionsQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.SpecialitesMentionsQuery.processQuery}" varStatus="vs" id="t4"
+                    scrollPolicy="page" columnStretching="last">
+            <af:column sortProperty="#{bindings.SpecialitesMentions.hints.LibelleLong.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle.LIBELLE_LNG}" id="c9" width="100%"
+                       inlineStyle="font-size:large;">
+              <af:outputText value="#{row.LibelleLong}"
+                             shortDesc="#{bindings.SpecialitesMentions.hints.LibelleLong.tooltip}" id="ot9"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.SpecialitesMentions.hints.LibelleCourt.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle.LIBELLE_COURT}" id="c10"
+                       inlineStyle="font-size:large;">
+              <af:outputText value="#{row.LibelleCourt}"
+                             shortDesc="#{bindings.SpecialitesMentions.hints.LibelleCourt.tooltip}" id="ot10"/>
+            </af:column>
+          </af:table>
+          <f:facet name="statusbar"/>
+        </af:panelCollection>
+      </af:panelHeader>
+      <!--af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width : 600px)"
+                           propertyName="layout"/-->
+      <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width : 1400px)"
+                             propertyName="layout"/>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-new-domaine" binding="#{DomainesBean.popupNewDomaine}" contentDelivery="lazyUncached">
+    <af:dialog id="d3" title="New Domaine" dialogListener="#{DomainesBean.OnDialogAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl1">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle.LIBELLE_LNG}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle.LIBELLE_COURT}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it3">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <af:clientListener type="dialog" method="OnDialogCancel"/>
+      <af:serverListener type="HandlerEvenDialogCancel" method="#{DomainesBean.OnDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-new-mention" binding="#{DomainesBean.popupNewMention}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d2" title="New Mention" dialogListener="#{DomainesBean.OnDialogAction}">
+      <af:panelFormLayout id="pfl6">
+        <af:selectOneChoice value="#{bindings.IdDomaine1.inputValue}" label="#{viewcontrollerBundle.DOMAINE__}"
+                            required="#{bindings.IdDomaine1.hints.mandatory}"
+                            shortDesc="#{bindings.IdDomaine1.hints.tooltip}" readOnly="true" id="soc5">
+          <f:selectItems value="#{bindings.IdDomaine1.items}" id="si5"/>
+          <f:validator binding="#{bindings.IdDomaine1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong1.inputValue}" label="#{viewcontrollerBundle.LIBELLE_LNG}"
+                      required="#{bindings.LibelleLong1.hints.mandatory}"
+                      columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it12">
+          <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt1.inputValue}" label="#{viewcontrollerBundle.LIBELLE_COURT}"
+                      required="#{bindings.LibelleCourt1.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt1.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt1.hints.tooltip}" id="it17">
+          <f:validator binding="#{bindings.LibelleCourt1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree1.inputValue}" label="#{bindings.UtiCree1.hints.label}"
+                      required="#{bindings.UtiCree1.hints.mandatory}" columns="#{bindings.UtiCree1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree1.hints.precision}"
+                      shortDesc="#{bindings.UtiCree1.hints.tooltip}" id="it19">
+          <f:validator binding="#{bindings.UtiCree1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree1.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:clientListener type="dialog" method="OnDialogCancel"/>
+      <af:serverListener type="HandlerEvenDialogCancel" method="#{DomainesBean.OnDialogMentionCancel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-new-specialite" binding="#{DomainesBean.popupNewSpecialite}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d1" title="New Specialite" dialogListener="#{DomainesBean.OnDialogAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl2">
+        <af:selectOneChoice value="#{bindings.IdMention.inputValue}" label="#{viewcontrollerBundle.MENTION___}"
+                            required="#{bindings.IdMention.hints.mandatory}"
+                            shortDesc="#{bindings.IdMention.hints.tooltip}" id="soc2" readOnly="true">
+          <f:selectItems value="#{bindings.IdMention.items}" id="si2"/>
+          <f:validator binding="#{bindings.IdMention.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong3.inputValue}" label="#{viewcontrollerBundle.LIBELLE_LNG}"
+                      required="#{bindings.LibelleLong3.hints.mandatory}"
+                      columns="#{bindings.LibelleLong3.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong3.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong3.hints.tooltip}" id="it4">
+          <f:validator binding="#{bindings.LibelleLong3.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt3.inputValue}" label="#{viewcontrollerBundle.LIBELLE_COURT}"
+                      required="#{bindings.LibelleCourt3.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt3.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt3.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt3.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.LibelleCourt3.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree3.inputValue}" label="#{bindings.UtiCree3.hints.label}"
+                      required="#{bindings.UtiCree3.hints.mandatory}" columns="#{bindings.UtiCree3.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree3.hints.precision}"
+                      shortDesc="#{bindings.UtiCree3.hints.tooltip}" id="it6">
+          <f:validator binding="#{bindings.UtiCree3.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree3.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <af:clientListener type="dialog" method="OnDialogCancel"/>
+      <af:serverListener type="HandlerEvenDialogCancel" method="#{DomainesBean.OnDialogSpecialiteCancel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+    function OnDialogCancel(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "HandlerEvenDialogCancel", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupEdit-domaine" binding="#{DomainesBean.popupEditDomaime}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d4" dialogListener="#{DomainesBean.OnDialogAction}" title="Edit Domaine">
+      <af:panelFormLayout id="pfl4">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle.LIBELLE_LNG}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it11">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle.LIBELLE_COURT}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it13">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it14">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupEdit-mention"
+            binding="#{DomainesBean.popupEditMention}" contentDelivery="lazyUncached">
+    <af:dialog id="d5" dialogListener="#{DomainesBean.OnDialogAction}" title="Edit Mention">
+      <af:panelFormLayout id="pfl5">
+        <af:inputText value="#{bindings.LibelleLong1.inputValue}" label="#{viewcontrollerBundle.LIBELLE_LNG}"
+                      required="#{bindings.LibelleLong1.hints.mandatory}"
+                      columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it15">
+          <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt1.inputValue}" label="#{viewcontrollerBundle.LIBELLE_COURT}"
+                      required="#{bindings.LibelleCourt1.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt1.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt1.hints.tooltip}" id="it16">
+          <f:validator binding="#{bindings.LibelleCourt1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree1.inputValue}" label="#{bindings.UtiCree1.hints.label}"
+                      required="#{bindings.UtiCree1.hints.mandatory}" columns="#{bindings.UtiCree1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree1.hints.precision}"
+                      shortDesc="#{bindings.UtiCree1.hints.tooltip}" id="it18">
+          <f:validator binding="#{bindings.UtiCree1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree1.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupEdit-specialite"
+            binding="#{DomainesBean.popupEditSpecialite}" contentDelivery="lazyUncached">
+    <af:dialog id="d6" dialogListener="#{DomainesBean.OnDialogAction}" title="Edit Specialite">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl3">
+        <af:selectOneChoice value="#{bindings.IdMention1.inputValue}" label="#{viewcontrollerBundle.MENTION___}"
+                            required="#{bindings.IdMention1.hints.mandatory}"
+                            shortDesc="#{bindings.IdMention1.hints.tooltip}" id="soc1">
+          <f:selectItems value="#{bindings.IdMention1.items}" id="si1"/>
+          <f:validator binding="#{bindings.IdMention1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong2.inputValue}" label="#{viewcontrollerBundle.LIBELLE_LNG}"
+                      required="#{bindings.LibelleLong2.hints.mandatory}"
+                      columns="#{bindings.LibelleLong2.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong2.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong2.hints.tooltip}" id="it8">
+          <f:validator binding="#{bindings.LibelleLong2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt2.inputValue}" label="#{viewcontrollerBundle.LIBELLE_COURT}"
+                      required="#{bindings.LibelleCourt2.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt2.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt2.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt2.hints.tooltip}" id="it9">
+          <f:validator binding="#{bindings.LibelleCourt2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree2.inputValue}" label="#{bindings.UtiCree2.hints.label}"
+                      required="#{bindings.UtiCree2.hints.mandatory}" columns="#{bindings.UtiCree2.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree2.hints.precision}"
+                      shortDesc="#{bindings.UtiCree2.hints.tooltip}" id="it10">
+          <f:validator binding="#{bindings.UtiCree2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree2.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupDelete-domaine"
+            binding="#{DomainesBean.popupDeleteDomaine}"/>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupDelete-mention"
+            binding="#{DomainesBean.popupDeleteMention}">
+    <af:dialog id="d8" type="yesNo" dialogListener="#{DomainesBean.OnDeleteMentionAction}" affirmativeTextAndAccessKey="OUI"
+               noTextAndAccessKey="NON" title="#{viewcontrollerBundle.CONFIRMER_SUPPRIMER}">
+      <af:panelFormLayout id="pfl8">
+        <af:inputText value="#{bindings.IdMention2.inputValue}" label="#{viewcontrollerBundle.MENTION___}"
+                      required="#{bindings.IdMention2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.IdMention2.hints.displayWidth}"
+                      maximumLength="#{bindings.IdMention2.hints.precision}"
+                      shortDesc="#{bindings.IdMention2.hints.tooltip}" id="it26">
+          <f:validator binding="#{bindings.IdMention2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.IdMention2.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleLong1.inputValue}" label="#{viewcontrollerBundle.LIBELLE_LNG}"
+                      required="#{bindings.LibelleLong1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it27">
+          <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt1.inputValue}" label="#{viewcontrollerBundle.LIBELLE_COURT}"
+                      required="#{bindings.LibelleCourt1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleCourt1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt1.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt1.hints.tooltip}" id="it28">
+          <f:validator binding="#{bindings.LibelleCourt1.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdDomaine1.inputValue}" label="#{viewcontrollerBundle.DOMAINE__}"
+                            required="#{bindings.IdDomaine1.hints.mandatory}"
+                            shortDesc="#{bindings.IdDomaine1.hints.tooltip}" readOnly="true" id="soc4">
+          <f:selectItems value="#{bindings.IdDomaine1.items}" id="si4"/>
+          <f:validator binding="#{bindings.IdDomaine1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputDate value="#{bindings.DateCreation1.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation1.hints.label}" required="#{bindings.DateCreation1.hints.mandatory}"
+                      columns="#{bindings.DateCreation1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation1.hints.tooltip}" id="id6">
+          <f:validator binding="#{bindings.DateCreation1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation1.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateModification1.inputValue}" readOnly="true"
+                      label="#{bindings.DateModification1.hints.label}"
+                      required="#{bindings.DateModification1.hints.mandatory}"
+                      columns="#{bindings.DateModification1.hints.displayWidth}"
+                      shortDesc="#{bindings.DateModification1.hints.tooltip}" id="id8">
+          <f:validator binding="#{bindings.DateModification1.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateModification1.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree1.inputValue}" label="#{bindings.UtiCree1.hints.label}"
+                      required="#{bindings.UtiCree1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiCree1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree1.hints.precision}"
+                      shortDesc="#{bindings.UtiCree1.hints.tooltip}" id="it29">
+          <f:validator binding="#{bindings.UtiCree1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree1.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie1.inputValue}" label="#{bindings.UtiModifie1.hints.label}"
+                      required="#{bindings.UtiModifie1.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiModifie1.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie1.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie1.hints.tooltip}" id="it30">
+          <f:validator binding="#{bindings.UtiModifie1.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie1.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupDelete-specialite"
+            binding="#{DomainesBean.popupDeleteSpecialite}" contentDelivery="lazyUncached">
+    <af:dialog id="d7" title="#{viewcontrollerBundle.CONFIRMER_SUPPRIMER}" type="yesNo" affirmativeTextAndAccessKey="OUI"
+               noTextAndAccessKey="NON" dialogListener="#{DomainesBean.OnDeleteSpecialiteAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl7">
+        <af:inputText value="#{bindings.IdSpecialite.inputValue}" label="#{viewcontrollerBundle.SPECIALITE___}"
+                      required="#{bindings.IdSpecialite.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.IdSpecialite.hints.displayWidth}"
+                      maximumLength="#{bindings.IdSpecialite.hints.precision}"
+                      shortDesc="#{bindings.IdSpecialite.hints.tooltip}" id="it7">
+          <f:validator binding="#{bindings.IdSpecialite.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.IdSpecialite.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleLong2.inputValue}" label="#{viewcontrollerBundle.LIBELLE_LNG}"
+                      required="#{bindings.LibelleLong2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleLong2.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong2.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong2.hints.tooltip}" id="it22">
+          <f:validator binding="#{bindings.LibelleLong2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt2.inputValue}" label="#{viewcontrollerBundle.LIBELLE_COURT}"
+                      required="#{bindings.LibelleCourt2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleCourt2.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt2.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt2.hints.tooltip}" id="it23">
+          <f:validator binding="#{bindings.LibelleCourt2.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdMention1.inputValue}" label="#{viewcontrollerBundle.MENTION___}"
+                            required="#{bindings.IdMention1.hints.mandatory}"
+                            shortDesc="#{bindings.IdMention1.hints.tooltip}" readOnly="true" id="soc3">
+          <f:selectItems value="#{bindings.IdMention1.items}" id="si3"/>
+          <f:validator binding="#{bindings.IdMention1.validator}"/>
+        </af:selectOneChoice>
+        <af:inputDate value="#{bindings.DateCreation.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation.hints.label}" required="#{bindings.DateCreation.hints.mandatory}"
+                      columns="#{bindings.DateCreation.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation.hints.tooltip}" id="id2">
+          <f:validator binding="#{bindings.DateCreation.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateModification.inputValue}" readOnly="true"
+                      label="#{bindings.DateModification.hints.label}"
+                      required="#{bindings.DateModification.hints.mandatory}"
+                      columns="#{bindings.DateModification.hints.displayWidth}"
+                      shortDesc="#{bindings.DateModification.hints.tooltip}" id="id4">
+          <f:validator binding="#{bindings.DateModification.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateModification.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree2.inputValue}" label="#{bindings.UtiCree2.hints.label}"
+                      required="#{bindings.UtiCree2.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiCree2.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree2.hints.precision}"
+                      shortDesc="#{bindings.UtiCree2.hints.tooltip}" id="it24">
+          <f:validator binding="#{bindings.UtiCree2.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree2.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie.inputValue}" label="#{bindings.UtiModifie.hints.label}"
+                      required="#{bindings.UtiModifie.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it25">
+          <f:validator binding="#{bindings.UtiModifie.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

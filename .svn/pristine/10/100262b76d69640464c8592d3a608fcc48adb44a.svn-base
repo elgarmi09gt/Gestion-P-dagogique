@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl2" layout="scroll">
+    <af:panelGroupLayout id="pgl3" layout="vertical">
+      <af:outputFormatted value="Parcours" id="of1" styleUsage="pageStamp" inlineStyle="font-size:x-large;"/>
+      <af:selectOneChoice value="#{bindings.Parcours.inputValue}"
+                          required="#{bindings.Parcours.hints.mandatory}" shortDesc="#{bindings.Parcours.hints.tooltip}"
+                          id="soc1" autoSubmit="true" valueChangeListener="#{AttestationsBean.OnParcoursValueChange}"
+                          contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:50px"
+                          inlineStyle="margin:10px">
+        <f:selectItems value="#{bindings.Parcours.items}" id="si1"/>
+        <f:validator binding="#{bindings.Parcours.validator}"/>
+      </af:selectOneChoice>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl1" layout="scroll">
+      <af:panelCollection id="pc1" binding="#{AttestationsBean.etuAttestation}" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t2">
+            <af:button text="Print" id="b1" actionListener="#{AttestationsBean.OnPrintAttestationClicked}"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.EtudiantAttestation.collectionModel}" var="row"
+                  rows="#{bindings.EtudiantAttestation.rangeSize}"
+                  emptyText="#{bindings.EtudiantAttestation.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.EtudiantAttestation.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.EtudiantAttestation.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.EtudiantAttestation.rangeSize}"
+                  filterModel="#{bindings.EtudiantAttestationQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.EtudiantAttestationQuery.processQuery}" varStatus="vs" id="t1">
+          <af:column sortProperty="#{bindings.EtudiantAttestation.hints.IdNiveauFormationParcours.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.EtudiantAttestation.hints.IdNiveauFormationParcours.label}" id="c1">
+            <af:outputText value="#{row.IdNiveauFormationParcours}"
+                           shortDesc="#{bindings.EtudiantAttestation.hints.IdNiveauFormationParcours.tooltip}" id="ot1">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.EtudiantAttestation.hints.IdNiveauFormationParcours.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Numero.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.EtudiantAttestation.hints.Numero.label}" id="c2">
+            <af:outputText value="#{row.Numero}" shortDesc="#{bindings.EtudiantAttestation.hints.Numero.tooltip}"
+                           id="ot2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Prenoms.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.EtudiantAttestation.hints.Prenoms.label}" id="c3">
+            <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.EtudiantAttestation.hints.Prenoms.tooltip}"
+                           id="ot3"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudiantAttestation.hints.Nom.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.EtudiantAttestation.hints.Nom.label}" id="c6">
+            <af:outputText value="#{row.Nom}" shortDesc="#{bindings.EtudiantAttestation.hints.Nom.tooltip}" id="ot4"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl4" layout="vertical">
+      <af:panelCollection id="pc2">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t4">
+            <af:button text="Print" id="b2" actionListener="#{AttestationsBean.Test}"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.Parcours1.collectionModel}" var="row" rows="#{bindings.Parcours1.rangeSize}"
+                  emptyText="#{bindings.Parcours1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.Parcours1.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.Parcours1.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.Parcours1.rangeSize}" filterModel="#{bindings.Parcours1Query.queryDescriptor}"
+                  filterVisible="true" queryListener="#{bindings.Parcours1Query.processQuery}" varStatus="vs" id="t3"
+                  columnStretching="last">
+          <af:column sortProperty="#{bindings.Parcours1.hints.IdHistoriquesStructure.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.Parcours1.hints.IdHistoriquesStructure.label}" id="c4">
+            <af:outputFormatted value="#{row.bindings.IdHistoriquesStructure.inputValue}" id="of2">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.Parcours1.hints.IdHistoriquesStructure.format}"/>
+            </af:outputFormatted>
+          </af:column>
+          <af:column sortProperty="#{bindings.Parcours1.hints.LibParcours.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.Parcours1.hints.LibParcours.label}" id="c5">
+            <af:outputFormatted value="#{row.bindings.LibParcours.inputValue}" id="of3"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</ui:composition>

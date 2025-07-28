@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="DelibSemInsPedSemUeROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.DelibSemInsPedSemUeROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="annee"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="sem"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="sess"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="num"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="fil_ue_sem"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[select distinct ipu.ID_INSCRIPTION_PED_SEM_UE           
+from  INSCRIPTION_PED_SEM_UE ipu           
+JOIN  INSCRIPTION_PED_SEMESTRE ips ON ips.ID_INSCRIPTION_PED_SEMESTRE=ipu.ID_INSCRIPTION_PED_SEMESTRE           
+JOIN  INSCRIPTIONS_PEDAGOGIQUES ip ON ip.ID_INSCRIPTION_PEDAGOGIQUE=ips.ID_INSCRIPTION_PEDAGOGIQUE           
+JOIN  INSCRIPTIONS_ADMIN ia ON ia.ID_INSCRIPTION_ADMIN=ip.ID_INSCRIPTION_ADMIN           
+JOIN  PARCOURS_MAQUETTE_ANNEE pm ON pm.ID_PARCOURS_MAQUET_ANNEE=ip.ID_PARCOURS_MAQUET_ANNEE and ia.ID_ANNEES_UNIVERS=pm.ID_ANNEES_UNIVERS           
+JOIN  NIVEAUX_FORMATION_PARCOURS nfp ON nfp.ID_NIVEAU_FORMATION_PARCOURS=pm.ID_NIVEAU_FORMATION_PARCOURS           
+--JOIN  MAQUETTES ma ON ma.ID_MAQUETTE=pm.ID_MAQUETTE           
+JOIN  ETUDIANTS etu ON etu.ID_ETUDIANT=ia.ID_ETUDIANT           
+JOIN  PERSONNES pers ON pers.ID_PERSONNE=etu.ID_PERSONNE           
+JOIN  FILIERE_UE_SEMSTRE fus ON fus.ID_FILIERE_UE_SEMSTRE=ipu.ID_FILIERE_UE_SEMSTRE AND fus.ID_SEMESTRE=ips.ID_SEMESTRE           
+JOIN  CALENDRIER_DELIBERATION cd ON cd.ID_NIVEAU_FORMATION_COHORTE = nfp.ID_NIVEAU_FORMATION_COHORTE and cd.ID_ANNEES_UNIVERS=pm.ID_ANNEES_UNIVERS        
+WHERE ia.ID_ANNEES_UNIVERS =:annee AND fus.ID_SEMESTRE=:sem AND cd.ID_SESSION=:sess    
+AND   etu.NUMERO=:num AND fus.ID_FILIERE_UE_SEMSTRE =:fil_ue_sem AND nfp.ID_NIVEAU_FORMATION_PARCOURS=:parcours]]></SQLQuery>
+  <ViewAttribute
+    Name="IdInscriptionPedSemUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_INSCRIPTION_PED_SEM_UE"
+    Expression="ID_INSCRIPTION_PED_SEM_UE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdInscriptionPedSemUe"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

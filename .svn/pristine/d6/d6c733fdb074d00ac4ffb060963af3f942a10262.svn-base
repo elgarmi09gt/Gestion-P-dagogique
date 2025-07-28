@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelStretchLayout id="psl1" dimensionsFrom="parent">
+    <f:facet name="start"/>
+    <f:facet name="end"/>
+    <f:facet name="top"/>
+    <f:facet name="bottom"/>
+    <f:facet name="center">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t2">
+            <af:button text="New" id="b1"/>
+            <af:button text="Edit" id="b2"/>
+            <af:button text="Delete" id="b3"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.VillesVO1.collectionModel}" var="row" rows="#{bindings.VillesVO1.rangeSize}"
+                  emptyText="#{bindings.VillesVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.VillesVO1.collectionModel.selectedRow}"
+                  rowSelection="multiple" fetchSize="#{bindings.VillesVO1.rangeSize}" id="t1">
+          <af:column headerText="#{bindings.VillesVO1.hints.IdVille.label}" id="c1">
+            <af:outputText value="#{row.IdVille}" shortDesc="#{bindings.VillesVO1.hints.IdVille.tooltip}" id="ot1">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.VillesVO1.hints.IdVille.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.VillesVO1.hints.Libelle.label}" id="c2">
+            <af:outputText value="#{row.Libelle}" shortDesc="#{bindings.VillesVO1.hints.Libelle.tooltip}" id="ot2"/>
+          </af:column>
+          <af:column headerText="#{bindings.VillesVO1.hints.Code.label}" id="c3">
+            <af:outputText value="#{row.Code}" shortDesc="#{bindings.VillesVO1.hints.Code.tooltip}" id="ot3"/>
+          </af:column>
+          <af:column headerText="#{bindings.VillesVO1.hints.IdRegion.label}" id="c4">
+            <af:outputText value="#{row.IdRegion}" shortDesc="#{bindings.VillesVO1.hints.IdRegion.tooltip}" id="ot4">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.VillesVO1.hints.IdRegion.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.VillesVO1.hints.DateCreation.label}" id="c5">
+            <af:outputText value="#{row.DateCreation}" shortDesc="#{bindings.VillesVO1.hints.DateCreation.tooltip}"
+                           id="ot5">
+              <af:convertDateTime pattern="#{bindings.VillesVO1.hints.DateCreation.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.VillesVO1.hints.DateModification.label}" id="c6">
+            <af:outputText value="#{row.DateModification}"
+                           shortDesc="#{bindings.VillesVO1.hints.DateModification.tooltip}" id="ot6">
+              <af:convertDateTime pattern="#{bindings.VillesVO1.hints.DateModification.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.VillesVO1.hints.UtiCree.label}" id="c7">
+            <af:outputText value="#{row.UtiCree}" shortDesc="#{bindings.VillesVO1.hints.UtiCree.tooltip}" id="ot7">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.VillesVO1.hints.UtiCree.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.VillesVO1.hints.UtiModifie.label}" id="c8">
+            <af:outputText value="#{row.UtiModifie}" shortDesc="#{bindings.VillesVO1.hints.UtiModifie.tooltip}"
+                           id="ot8">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.VillesVO1.hints.UtiModifie.format}"/>
+            </af:outputText>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </f:facet>
+  </af:panelStretchLayout>
+</ui:composition>

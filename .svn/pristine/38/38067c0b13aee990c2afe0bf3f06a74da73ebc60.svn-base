@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listanneesuniversPageDef"
+                Package="parametrage.annees_univers">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AnneesUnivers" RangeSize="25" DataControl="parametrageAppDataControl" id="AnneesUniversIterator"/>
+    <searchRegion Binds="AnneesUniversIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="AnneesUnivers1Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="AnneesUniversIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneesUniversIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneesUniversIterator" id="Precedent">
+      <AttrNames>
+        <Item Value="Precedent"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneesUniversIterator" id="Suivant">
+      <AttrNames>
+        <Item Value="Suivant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneesUniversIterator" id="AnneCarteAPuce">
+      <AttrNames>
+        <Item Value="AnneCarteAPuce"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="Rollback" DataControl="parametrageAppDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <action IterBinding="AnneesUniversIterator" id="CreateInsert" InstanceName="parametrageAppDataControl.AnneesUnivers"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="AnneesUniversIterator" id="Delete" InstanceName="parametrageAppDataControl.AnneesUnivers"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <list IterBinding="AnneesUniversIterator" StaticList="false" Uses="LOV_Active" id="Active1" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="AnneesUniversIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneesUniversIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneesUniversIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="AnneesUniversIterator" id="AnneesUnivers1">
+      <nodeDefinition DefName="model.updatableview.AnneesUniversVO" Name="AnneesUnivers10">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="Active"/>
+          <Item Value="Precedent"/>
+          <Item Value="Suivant"/>
+          <Item Value="AnneCarteAPuce"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="PaiementDIPEcolROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.PaiementDIPEcolROVORowImpl"
+  ComponentClass="model.readOnlyView.PaiementDIPEcolROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.PaiementDIPEcolROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_insc_ped"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_niv_form"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_form"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select ep.id_annees_univers ,   
+ep.id_echelon_paiement ,   
+ep.libelle_echelon ,   
+p.date_paiement ,   
+p.paye,   
+p.reparti ,   
+p.net_a_payer ,   
+p.id_paiement ,   
+p.id_inscription_pedagogique   
+  
+from paiements p   
+join echelons_paiement ep on ep.id_echelon_paiement = p.id_echelon_paiement and ep.id_annees_univers = p.id_annees_univers   
+join formations_modalites fm on ep.id_formation_modalite = fm.id_formation_modalite and fm.id_annees_univers = p.id_annees_univers  
+where p.id_inscription_pedagogique=:id_insc_ped  
+and p.id_annees_univers=:id_annee  
+and ep.niv_form=:id_niv_form  
+and fm.id_formation=:id_form  
+and ep.ordre = 0]]></SQLQuery>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdEchelonPaiement"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ECHELON_PAIEMENT"
+    Expression="ID_ECHELON_PAIEMENT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleEchelon"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_ECHELON"
+    Expression="LIBELLE_ECHELON"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DatePaiement"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_PAIEMENT"
+    Expression="DATE_PAIEMENT"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="Paye"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="PAYE"
+    Expression="PAYE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Reparti"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="REPARTI"
+    Expression="REPARTI"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="NetAPayer"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="7"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="NET_A_PAYER"
+    Expression="NET_A_PAYER"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdPaiement"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PAIEMENT"
+    Expression="ID_PAIEMENT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionPedagogique"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PEDAGOGIQUE"
+    Expression="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

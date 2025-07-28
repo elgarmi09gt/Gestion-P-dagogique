@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listeInsPedPageDef"
+                Package="inscription.processus_inscription">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="listeInsPed" RangeSize="25" DataControl="inscriptionAppDataControl" id="listeInsPedIterator"/>
+    <searchRegion Binds="listeInsPedIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="listeInsPedQuery"/>
+    <iterator Binds="InscriptionsPedagogiques" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptionsPedagogiquesIterator"/>
+    <taskFlow id="taskflowdetailcursus1"
+              taskFlowId="/inscription/cursus_etudiant/task-flow-detail-cursus.xml#task-flow-detail-cursus"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="detailhistoriqueinscription1"
+              taskFlowId="/inscription/historique_inscription/detail-historique-inscription.xml#detail-historique-inscription"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="tasketudbu1" taskFlowId="/inscription/etudiant_bu/task-etud-bu.xml#task-etud-bu" activation="deferred"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="paiementetudtk1" taskFlowId="/inscription/paiement_etudiant/paiement-etud-tk.xml#paiement-etud-tk"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="responsableetudtk1" taskFlowId="/inscription/responsable/responsable-etud-tk.xml#responsable-etud-tk"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <taskFlow id="etudianttictk1" taskFlowId="/inscription/etudiant_tic/etudiant-tic-tk.xml#etudiant-tic-tk"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <iterator Binds="Personnes" RangeSize="10" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="Etudiants" RangeSize="10" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="listeInsPedIterator" id="listeInsPed">
+      <nodeDefinition DefName="model.readOnlyView.listeInsPed" Name="listeInsPed0">
+        <AttrNames>
+          <Item Value="LibForm"/>
+          <Item Value="LibNivForm"/>
+          <Item Value="case_cocher" Binds="case_cocher"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="listeInsPedIterator" id="case_cocher" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="case_cocher"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="True"/>
+        <Item Value="False"/>
+      </ValueList>
+    </button>
+    <action IterBinding="InscriptionsPedagogiquesIterator" id="ExecuteWithParams"
+            InstanceName="inscriptionAppDataControl.InscriptionsPedagogiques" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idInspAdmmin" NDType="java.lang.Long"/>
+      <NamedData NDName="id_ins_ped" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="InscriptionsPedagogiquesIterator" id="IdHorairesTd">
+      <AttrNames>
+        <Item Value="IdHorairesTd"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="listeInsPedIterator" id="IdNiveauFormation">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantsIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

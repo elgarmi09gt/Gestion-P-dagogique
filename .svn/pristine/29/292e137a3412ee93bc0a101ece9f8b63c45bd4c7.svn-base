@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NivFormSpecOptionROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.NivFormSpecOptionROVORowImpl"
+  ComponentClass="model.readOnlyView.NivFormSpecOptionROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.NivFormSpecOptionROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="niv_form_spec_var"
+    Kind="viewcriteria"
+    Type="oracle.jbo.domain.Number"/>
+  <SQLQuery><![CDATA[SELECT  
+    op.LIBELLE_LONG,  
+    nfso.ID_NIV_FORM_SPEC_OPTION,  
+    nfso.ID_NIVEAU_FORMATION_SPECIALITE  
+FROM  
+    NIV_FORM_SPECIALITE_OPTION nfso  
+JOIN  
+    options op  
+ON  
+    op.ID_OPTION = nfso.ID_OPTION]]></SQLQuery>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdNivFormSpecOption"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="ID_NIV_FORM_SPEC_OPTION"
+    Expression="ID_NIV_FORM_SPEC_OPTION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormationSpecialite"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_SPECIALITE"
+    Expression="ID_NIVEAU_FORMATION_SPECIALITE"
+    SQLType="NUMERIC"/>
+  <ViewCriteria
+    Name="NivFormSpecOptionCriteria"
+    ViewObjectName="model.readOnlyView.NivFormSpecOptionROVO"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="NivFormSpecOptionCriteria_row_0"
+      UpperColumns="1"
+      Conjunction="AND">
+      <ViewCriteriaItem
+        Name="NivFormSpecOptionCriteria_NivFormSpecOptionCriteria_row_0_IdNivFormSpecOption"
+        ViewAttribute="IdNivFormSpecOption"
+        Operator="="
+        Conjunction="AND"
+        Value=":niv_form_spec_var"
+        IsBindVarValue="true"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNivFormSpecOption"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="detail_suspensionPageDef"
+                Package="inscription.suspension">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Suspension" RangeSize="25" DataControl="inscriptionAppDataControl" id="SuspensionIterator"/>
+    <iterator Binds="listeInsPed" RangeSize="10" DataControl="inscriptionAppDataControl" id="listeInsPedIterator"/>
+    <iterator Binds="ListeSuspensioneEtudRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="ListeSuspensioneEtudROIterator"/>
+    <searchRegion Binds="ListeSuspensioneEtudROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ListeSuspensioneEtudROQuery"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="SuspensionIterator" id="MotifSuspension">
+      <AttrNames>
+        <Item Value="MotifSuspension"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SuspensionIterator" id="Duree" ChangeEventPolicy="none">
+      <AttrNames>
+        <Item Value="Duree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SuspensionIterator" id="DateDebut">
+      <AttrNames>
+        <Item Value="DateDebut"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SuspensionIterator" id="DateFin">
+      <AttrNames>
+        <Item Value="DateFin"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="listeInsPedIterator" id="getListeInscPed"
+            InstanceName="inscriptionAppDataControl.listeInsPed" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Long"/>
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="SuspensionIterator" id="IdEtudiant">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="fingAndUpdateInsPed" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="fingAndUpdateInsPed" IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.fingAndUpdateInsPed.dataControl.dataProvider">
+      <NamedData NDName="id_ins_ped" NDType="java.lang.Long"/>
+      <NamedData NDName="etat" NDType="java.lang.Long"/>
+    </methodAction>
+    <tree IterBinding="ListeSuspensioneEtudROIterator" id="ListeSuspensioneEtudRO">
+      <nodeDefinition DefName="model.readOnlyView.ListeSuspensioneEtudROVO" Name="ListeSuspensioneEtudRO0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Duree"/>
+          <Item Value="MotifSuspension"/>
+          <Item Value="DateDebut"/>
+          <Item Value="DateFin"/>
+          <Item Value="LibAnnee"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ListeSuspensioneEtudROIterator" id="getListeSuspension"
+            InstanceName="inscriptionAppDataControl.ListeSuspensioneEtudRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="SuspensionIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+  </bindings>
+</pageDefinition>

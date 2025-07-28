@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+        <af:button text="Rechercher un Etudiant" id="b1"
+             inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;"
+             partialSubmit="false" disabled="true"/>
+        <af:panelFormLayout id="pfl1" rows="3"
+                            inlineStyle="border:solid  2px #2897e8;width:800px;margin-top:20px;margin-left:10px;">
+                <f:facet name="footer"/>
+                <af:inputText id="it13" autoSubmit="true" label="Numéro Etudiant"
+                              value="#{AnnulerSuspendreBean.numero_etud}">
+                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                <af:serverListener type="filterShuttle" method="#{AnnulerSuspendreBean.onChangeNumeroEtud}"/>
+                              </af:inputText>
+                <af:inputText id="it21" autoSubmit="true" label="Numéro d'identification Nationale"
+                              contentStyle="margin-bottom:5px;" value="#{AnnulerSuspendreBean.numero_cin}"
+                              disabled="#{sessionScope.etudNotNullAnn == '1' ? true : false}" partialTriggers="it13">
+                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                <af:serverListener type="filterShuttle" method="#{AnnulerSuspendreBean.onChangeNumeroCin}"/>
+                              </af:inputText>
+                <af:inputText id="it2" autoSubmit="true" converter="javax.faces.Integer" label="Numéro Table"
+                              value="#{AnnulerSuspendreBean.numero_table}"
+                              disabled="#{sessionScope.cinNotNullAnn == '1' or sessionScope.etudNotNullAnn == '1' ? true : false}"
+                              partialTriggers="it13 it21">
+                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                <af:serverListener type="filterShuttle" method="#{AnnulerSuspendreBean.onChangeNumeroTable}"/>
+                </af:inputText>
+                <af:inputText id="it29" label="Prénom" value="#{AnnulerSuspendreBean.prenom}"
+                              disabled="#{sessionScope.tableNotNullAnn == '1' or sessionScope.etudNotNullAnn == '1'  or sessionScope.cinNotNullAnn == '1' ? true : false}"
+                              partialTriggers="it13 it21 it2 "/>
+                <af:inputText id="it30" label="Nom" value="#{AnnulerSuspendreBean.nom}"
+                              disabled="#{sessionScope.tableNotNullAnn == '1' or sessionScope.etudNotNullAnn == '1'  or sessionScope.cinNotNullAnn == '1' ? true : false}"
+                              partialTriggers="it13 it21 it2 "/>
+                <af:inputDate id="it31" label="Date Naissance" value="#{AnnulerSuspendreBean.date_naiss}"
+                              disabled="#{sessionScope.tableNotNullAnn == '1' or sessionScope.etudNotNullAnn == '1'  or sessionScope.cinNotNullAnn == '1' ? true : false}"
+                              partialTriggers="it13 it21 it2 "/>
+         <af:resource type="javascript">
+    function catchKeyStroke(event) {
+        component = event.getSource();
+        //if(component.getSubmittedValue().length == 0 || component.getSubmittedValue().length > 1)
+        //{
+            AdfCustomEvent.queue(component, "filterShuttle", 
+            {
+                filterKey : component.getSubmittedValue()
+            },true);
+            event.cancel();
+        //}
+    }
+  </af:resource>       
+        </af:panelFormLayout>
+  <af:button text="Rechercher" id="b2"
+             inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:30px;"
+                   icon="/images/commit.png" action="#{AnnulerSuspendreBean.onValiderRecherche}"/>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+            binding="#{AnnulerSuspendreBean.popup}">
+    <af:dialog id="d1" title="Formulaire de confirmation" dialogListener="#{AnnulerSuspendreBean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:panelLabelAndMessage label="Voulez-vous annuler ou faire renoncer #{sessionScope.nb_valide} inscription(s)"
+                               id="plam1" inlineStyle="margin-top:10px;margin-bottom:20px;"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{AnnulerSuspendreBean.onDialogCan}"/>
+    </af:dialog>
+  </af:popup>
+    <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:panelSplitter id="ps1" dimensionsFrom="children" splitterPosition="850" secondBorder="all" firstBorder="all"
+                    disabled="true">
+    <f:facet name="first">
+      <af:panelGroupLayout id="pgl1" layout="vertical">
+        <af:button text="Liste des Inscriptions Pédagogiques" id="b5"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;"
+                   partialSubmit="false" disabled="true"/>
+        <af:table value="#{bindings.ListeInscPedAnnulDesistRO.collectionModel}" var="row"
+                  rows="#{bindings.ListeInscPedAnnulDesistRO.rangeSize}"
+                  emptyText="#{bindings.ListeInscPedAnnulDesistRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.ListeInscPedAnnulDesistRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ListeInscPedAnnulDesistRO.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.ListeInscPedAnnulDesistRO.rangeSize}"
+                  filterModel="#{bindings.ListeInscPedAnnulDesistROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.ListeInscPedAnnulDesistROQuery.processQuery}" varStatus="vs" id="t1"
+                  inlineStyle="margin-top:20px;margin-left:10px;margin-bottom:10px;" scrollPolicy="page">
+          <af:column sortProperty="#{bindings.ListeInscPedAnnulDesistRO.hints.LibAnnee.name}" filterable="true"
+                     sortable="true" headerText="Année Universitaire" id="c3" width="130">
+            <af:inputText value="#{row.bindings.LibAnnee.inputValue}"
+                          label="#{bindings.ListeInscPedAnnulDesistRO.hints.LibAnnee.label}"
+                          required="#{bindings.ListeInscPedAnnulDesistRO.hints.LibAnnee.mandatory}"
+                          columns="#{bindings.ListeInscPedAnnulDesistRO.hints.LibAnnee.displayWidth}"
+                          maximumLength="#{bindings.ListeInscPedAnnulDesistRO.hints.LibAnnee.precision}"
+                          shortDesc="#{bindings.ListeInscPedAnnulDesistRO.hints.LibAnnee.tooltip}" id="it4">
+              <f:validator binding="#{row.bindings.LibAnnee.validator}"/>
+            </af:inputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscPedAnnulDesistRO.hints.LibNivForm.name}" filterable="true"
+                     sortable="true" headerText="Niveau Formation" id="c1" width="450">
+            <af:inputText value="#{row.bindings.LibNivForm.inputValue}"
+                          label="#{bindings.ListeInscPedAnnulDesistRO.hints.LibNivForm.label}"
+                          required="#{bindings.ListeInscPedAnnulDesistRO.hints.LibNivForm.mandatory}"
+                          columns="#{bindings.ListeInscPedAnnulDesistRO.hints.LibNivForm.displayWidth}"
+                          maximumLength="#{bindings.ListeInscPedAnnulDesistRO.hints.LibNivForm.precision}"
+                          shortDesc="#{bindings.ListeInscPedAnnulDesistRO.hints.LibNivForm.tooltip}" id="it1">
+              <f:validator binding="#{row.bindings.LibNivForm.validator}"/>
+            </af:inputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscPedAnnulDesistRO.hints.Libelle.name}" filterable="true"
+                     sortable="true" headerText="Etat Inscription" id="c2" width="100">
+            <af:inputText value="#{row.bindings.Libelle.inputValue}"
+                          label="#{bindings.ListeInscPedAnnulDesistRO.hints.Libelle.label}"
+                          required="#{bindings.ListeInscPedAnnulDesistRO.hints.Libelle.mandatory}"
+                          columns="#{bindings.ListeInscPedAnnulDesistRO.hints.Libelle.displayWidth}"
+                          maximumLength="#{bindings.ListeInscPedAnnulDesistRO.hints.Libelle.precision}"
+                          shortDesc="#{bindings.ListeInscPedAnnulDesistRO.hints.Libelle.tooltip}" id="it3">
+              <f:validator binding="#{row.bindings.Libelle.validator}"/>
+            </af:inputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscPedAnnulDesistRO.hints.etat.name}" filterable="true"
+                     sortable="true" headerText="Action" id="c4" width="102">
+            <af:selectOneChoice value="#{row.bindings.etat.inputValue}" label="#{row.bindings.etat.label}"
+                                required="#{bindings.ListeInscPedAnnulDesistRO.hints.etat.mandatory}"
+                                shortDesc="#{bindings.ListeInscPedAnnulDesistRO.hints.etat.tooltip}" id="soc1"
+                                binding="#{AnnulerSuspendreBean.etat_bnd}" autoSubmit="true">
+              <f:selectItems value="#{row.bindings.etat.items}" id="si1"/>
+              <f:validator binding="#{row.bindings.etat.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+        </af:table>
+        <af:button text="Valider" id="b4"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                   icon="/images/commit.png" action="#{AnnulerSuspendreBean.onAnnulerSuspendre}"/>
+      </af:panelGroupLayout>
+    </f:facet>
+    <f:facet name="second">
+      <af:panelGroupLayout id="pgl2" layout="vertical">
+        <af:button text="Liste des Inscriptions Pédagogiques antérieures" id="b3"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;"
+                   partialSubmit="false" disabled="true"/>
+        <af:table value="#{bindings.ListeInsPedIsAnnulDesistRO.collectionModel}" var="row"
+                  rows="#{bindings.ListeInsPedIsAnnulDesistRO.rangeSize}"
+                  emptyText="#{bindings.ListeInsPedIsAnnulDesistRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.ListeInsPedIsAnnulDesistRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ListeInsPedIsAnnulDesistRO.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.ListeInsPedIsAnnulDesistRO.rangeSize}"
+                  filterModel="#{bindings.ListeInsPedIsAnnulDesistROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.ListeInsPedIsAnnulDesistROQuery.processQuery}" varStatus="vs" id="t2"
+                  inlineStyle="margin-top:20px;margin-left:10px;margin-bottom:10px;" scrollPolicy="page">
+          <af:column sortProperty="#{bindings.ListeInsPedIsAnnulDesistRO.hints.LibAnnee.name}" filterable="true"
+                     sortable="true" headerText="Année Universitaire" id="c7" width="130">
+            <af:outputText value="#{row.LibAnnee}"
+                           shortDesc="#{bindings.ListeInsPedIsAnnulDesistRO.hints.LibAnnee.tooltip}" id="ot3"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInsPedIsAnnulDesistRO.hints.LibNivForm.name}" filterable="true"
+                     sortable="true" headerText="Niveau Formation" id="c5" width="450">
+            <af:outputText value="#{row.LibNivForm}"
+                           shortDesc="#{bindings.ListeInsPedIsAnnulDesistRO.hints.LibNivForm.tooltip}" id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInsPedIsAnnulDesistRO.hints.Libelle.name}" filterable="true"
+                     sortable="true" headerText="Etat Inscription" id="c6">
+            <af:outputText value="#{row.Libelle}"
+                           shortDesc="#{bindings.ListeInsPedIsAnnulDesistRO.hints.Libelle.tooltip}" id="ot2"/>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:panelSplitter>
+</ui:composition>

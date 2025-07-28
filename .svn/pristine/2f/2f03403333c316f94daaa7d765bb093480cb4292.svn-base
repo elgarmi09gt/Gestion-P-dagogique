@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NiveauFormationMaquetteAnneVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  SelectListFlags="1"
+  FromListFlags="1"
+  WhereFlags="1"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  SelectAllAttributes="false"
+  PageIterMode="Full">
+  <ViewAccessor
+    Name="MaquettesROVO"
+    ViewObjectName="model.readOnlyView.MaquettesROVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="NiveauFormationROVO1"
+    ViewObjectName="model.readOnlyView.NiveauFormationROVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="AnneeUniverROVO1"
+    ViewObjectName="model.readOnlyView.AnneeUniverROVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="NivFormSpecialiteROVO"
+    ViewObjectName="model.readOnlyView.NivFormSpecialiteROVO"
+    RowLevelBinds="true">
+    <ViewCriteriaUsage
+      Name="NivFormSpecialiteROVOCriteria"
+      FullName="model.readOnlyView.NivFormSpecialiteROVO.NivFormSpecialiteROVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="id_form_var">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[IdNiveauFormation]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="NivFormSpecOptionROVO"
+    ViewObjectName="model.readOnlyView.NivFormSpecOptionROVO"
+    RowLevelBinds="true">
+    <ViewCriteriaUsage
+      Name="NivFormSpecOptionCriteria"
+      FullName="model.readOnlyView.NivFormSpecOptionROVO.NivFormSpecOptionCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="niv_form_spec_var">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[IdNiveauFormationSpecialite]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ListBinding
+    Name="LOV_IdMaquette"
+    ListVOName="MaquettesROVO"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdMaquette"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdMaquette"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_IdNiveauFormation"
+    ListVOName="NiveauFormationROVO1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdNiveauFormation"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdNiveauFormation"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleCourt"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_IdAnneesUnivers"
+    ListVOName="AnneeUniverROVO1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdAnneesUnivers"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdAnneesUnivers"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleCourt"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_IdNiveauFormationSpecialite"
+    ListVOName="NivFormSpecialiteROVO"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdNiveauFormationSpecialite"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdNiveauFormationSpecialite"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_IdNivFormSpecOption"
+    ListVOName="NivFormSpecOptionROVO"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdNivFormSpecOption"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdNivFormSpecOption"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage
+    Name="NiveauFormationMaquetteAnneE1"
+    Entity="model.entities.NiveauFormationMaquetteAnneEO"/>
+  <ViewAttribute
+    Name="IdNivFormationMaquetteAnne"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IdNivFormationMaquetteAnne"
+    EntityUsage="NiveauFormationMaquetteAnneE1"
+    AliasName="ID_NIV_FORMATION_MAQUETTE_ANNE"
+    IsUpdateable="while_insert"/>
+  <ViewAttribute
+    Name="IdNiveauFormation"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IdNiveauFormation"
+    EntityUsage="NiveauFormationMaquetteAnneE1"
+    AliasName="ID_NIVEAU_FORMATION"
+    LOVName="LOV_IdNiveauFormation">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IdAnneesUnivers"
+    EntityUsage="NiveauFormationMaquetteAnneE1"
+    AliasName="ID_ANNEES_UNIVERS"
+    LOVName="LOV_IdAnneesUnivers">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdMaquette"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IdMaquette"
+    EntityUsage="NiveauFormationMaquetteAnneE1"
+    AliasName="ID_MAQUETTE"
+    LOVName="LOV_IdMaquette">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateCreation"
+    PrecisionRule="true"
+    EntityAttrName="DateCreation"
+    EntityUsage="NiveauFormationMaquetteAnneE1"
+    AliasName="DATE_CREATION"/>
+  <ViewAttribute
+    Name="DateModification"
+    PrecisionRule="true"
+    EntityAttrName="DateModification"
+    EntityUsage="NiveauFormationMaquetteAnneE1"
+    AliasName="DATE_MODIFICATION"/>
+  <ViewAttribute
+    Name="UtiCree"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="UtiCree"
+    EntityUsage="NiveauFormationMaquetteAnneE1"
+    AliasName="UTI_CREE"/>
+  <ViewAttribute
+    Name="UtiModifie"
+    PrecisionRule="true"
+    EntityAttrName="UtiModifie"
+    EntityUsage="NiveauFormationMaquetteAnneE1"
+    AliasName="UTI_MODIFIE"/>
+  <ViewAttribute
+    Name="IdNiveauFormationSpecialite"
+    PrecisionRule="true"
+    EntityAttrName="IdNiveauFormationSpecialite"
+    EntityUsage="NiveauFormationMaquetteAnneE1"
+    AliasName="ID_NIVEAU_FORMATION_SPECIALITE"
+    LOVName="LOV_IdNiveauFormationSpecialite">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdNivFormSpecOption"
+    PrecisionRule="true"
+    EntityAttrName="IdNivFormSpecOption"
+    EntityUsage="NiveauFormationMaquetteAnneE1"
+    AliasName="ID_NIV_FORM_SPEC_OPTION"
+    LOVName="LOV_IdNivFormSpecOption">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewLinkAccessor
+    Name="MaquettesVO"
+    ViewLink="model.viewlink.MaquetteToNivForMaqAnVL"
+    Type="oracle.jbo.server.ViewRowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+</ViewObject>

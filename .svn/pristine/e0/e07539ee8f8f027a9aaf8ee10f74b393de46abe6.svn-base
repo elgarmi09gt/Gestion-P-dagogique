@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="listcalendrierdeliberationPageDef" Package="evaluation.calendrierDeliberation"
+                SkipValidation="true">
+    <parameters/>
+    <executables>
+        <variableIterator id="variables"/>
+        <iterator Binds="CalendrierDeliberations" RangeSize="5" DataControl="evaluationAppDataControl"
+                  id="CalendrierDeliberationsIterator"/>
+        <iterator Binds="NiveauFormationParcours" RangeSize="25" DataControl="evaluationAppDataControl"
+                  id="NiveauFormationParcoursIterator"/>
+        <searchRegion Binds="NiveauFormationParcoursIterator" Criteria=""
+                      Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                      id="NiveauFormationParcoursQuery"/>
+        <iterator Binds="CalendrierDeliberationVO" RangeSize="25" DataControl="evaluationAppDataControl"
+                  id="CalendrierDeliberationVOIterator"/>
+        <iterator Binds="CalParcoursAnnee" RangeSize="10" DataControl="evaluationAppDataControl"
+                  id="CalParcoursAnneeIterator"/>
+        <iterator Binds="IsCalExist" RangeSize="10" DataControl="evaluationAppDataControl" id="IsCalExistIterator"/>
+        <iterator Binds="IsDelibCalendier" RangeSize="10" DataControl="evaluationAppDataControl"
+                  id="IsDelibCalendierIterator"/>
+        <iterator Binds="IsAnParcoursClosed" RangeSize="10" DataControl="evaluationAppDataControl"
+                  id="IsAnParcoursClosedIterator"/>
+        <iterator Binds="IsDelibProvStart" RangeSize="10" DataControl="evaluationAppDataControl"
+                  id="IsDelibProvStartIterator"/>
+        <iterator Binds="IsDelibProvEnd" RangeSize="10" DataControl="evaluationAppDataControl"
+                  id="IsDelibProvEndIterator"/>
+        <iterator Binds="IsDelibDefEnd" RangeSize="10" DataControl="evaluationAppDataControl"
+                  id="IsDelibDefEndIterator"/>
+        <iterator Binds="IsDelibDefStart" RangeSize="10" DataControl="evaluationAppDataControl"
+                  id="IsDelibDefStartIterator"/>
+        <iterator Binds="IsReclStart" RangeSize="10" DataControl="evaluationAppDataControl" id="IsReclStartIterator"/>
+        <iterator Binds="IsReclEnd" RangeSize="10" DataControl="evaluationAppDataControl" id="IsReclEndIterator"/>
+    </executables>
+    <bindings>
+        <attributeValues IterBinding="CalendrierDeliberationsIterator" id="DateFinDelibProvisoir">
+            <AttrNames>
+                <Item Value="DateFinDelibProvisoir"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationsIterator" id="DateDebutDelibDefinitive">
+            <AttrNames>
+                <Item Value="DateDebutDelibDefinitive"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationsIterator" id="DateFinDelibDefinitive">
+            <AttrNames>
+                <Item Value="DateFinDelibDefinitive"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationsIterator" id="DateDebutReclammation">
+            <AttrNames>
+                <Item Value="DateDebutReclammation"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationsIterator" id="DateFinReclammation">
+            <AttrNames>
+                <Item Value="DateFinReclammation"/>
+            </AttrNames>
+        </attributeValues>
+        <list IterBinding="CalendrierDeliberationsIterator" StaticList="false" Uses="LOV_IdAnneesUnivers"
+              id="IdAnneesUnivers" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+        <list IterBinding="CalendrierDeliberationsIterator" StaticList="false" Uses="LOV_IdSession" id="IdSession"
+              DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+        <list IterBinding="CalendrierDeliberationsIterator" StaticList="false" Uses="LOV_IdSemestre" id="IdSemestre"
+              DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+        <action IterBinding="CalendrierDeliberationVOIterator" id="CreateCalendrierDelib"
+                InstanceName="evaluationAppDataControl.CalendrierDeliberationVO" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="createInsertRow"/>
+        <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true"
+                Action="commitTransaction"/>
+        <action IterBinding="CalendrierDeliberationVOIterator" id="Delete"
+                InstanceName="evaluationAppDataControl.CalendrierDeliberationVO" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="false" Action="removeCurrentRow"/>
+        <list IterBinding="CalendrierDeliberationVOIterator" StaticList="false" Uses="LOV_IdNiveauFormationCohorte"
+              id="IdNiveauFormationCohorte1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+        <list IterBinding="CalendrierDeliberationVOIterator" StaticList="false" Uses="LOV_IdAnneesUnivers"
+              id="IdAnneesUnivers1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="LibelleLong1">
+            <AttrNames>
+                <Item Value="LibelleLong"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="LibelleCourt1">
+            <AttrNames>
+                <Item Value="LibelleCourt"/>
+            </AttrNames>
+        </attributeValues>
+        <list IterBinding="CalendrierDeliberationVOIterator" StaticList="false" Uses="LOV_IdSession" id="IdSession1"
+              DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+        <list IterBinding="CalendrierDeliberationVOIterator" StaticList="false" Uses="LOV_IdSemestre" id="IdSemestre1"
+              DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="DateDebutDelibProvisoir1">
+            <AttrNames>
+                <Item Value="DateDebutDelibProvisoir"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="DateFinDelibProvisoir1">
+            <AttrNames>
+                <Item Value="DateFinDelibProvisoir"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="DateDebutDelibDefinitive1">
+            <AttrNames>
+                <Item Value="DateDebutDelibDefinitive"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="DateFinDelibDefinitive1">
+            <AttrNames>
+                <Item Value="DateFinDelibDefinitive"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="DateDebutReclammation1">
+            <AttrNames>
+                <Item Value="DateDebutReclammation"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="DateFinReclammation1">
+            <AttrNames>
+                <Item Value="DateFinReclammation"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="UtiCree1">
+            <AttrNames>
+                <Item Value="UtiCree"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="DateCreation">
+            <AttrNames>
+                <Item Value="DateCreation"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="DateModification">
+            <AttrNames>
+                <Item Value="DateModification"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="UtiModifie">
+            <AttrNames>
+                <Item Value="UtiModifie"/>
+            </AttrNames>
+        </attributeValues>
+        
+    <tree IterBinding="CalendrierDeliberationVOIterator" id="CalendrierDeliberationVO1">
+      <nodeDefinition DefName="model.updatableview.CalendrierDeliberationVO" Name="CalendrierDeliberationVO10">
+        <AttrNames>
+          <Item Value="IdSemestre"/>
+          <Item Value="IdSession"/>
+          <Item Value="DateDebutDelibProvisoir"/>
+          <Item Value="DateDebutDelibDefinitive"/>
+          <Item Value="DateDebutReclammation"/>
+          <Item Value="DateFinDelibProvisoir"/>
+          <Item Value="DateFinReclammation"/>
+          <Item Value="DateFinDelibDefinitive"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="NiveauFormationParcoursIterator" id="NiveauFormationParcours1">
+      <nodeDefinition DefName="model.readOnlyView.NiveauFormationParcours" Name="NiveauFormationParcours10">
+        <AttrNames>
+          <Item Value="Niveauformationparcours"/>
+          <Item Value="IdAnneesUnivers"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree><action IterBinding="CalParcoursAnneeIterator" id="CalParcoursAnnee"
+                InstanceName="evaluationAppDataControl.CalParcoursAnnee" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="annee" NDType="oracle.jbo.domain.Number"/>
+            <NamedData NDName="parcours" NDType="oracle.jbo.domain.Number"/>
+        </action>
+        <action IterBinding="IsCalExistIterator" id="IsCalExist" InstanceName="evaluationAppDataControl.IsCalExist"
+                DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="annee" NDType="java.lang.Integer"/>
+            <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+            <NamedData NDName="sem" NDType="java.lang.Integer"/>
+            <NamedData NDName="sess" NDType="java.lang.Integer"/>
+        </action>
+        <action IterBinding="IsDelibCalendierIterator" id="IsDelibarateCalendar"
+                InstanceName="evaluationAppDataControl.IsDelibCalendier" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="idcalendrier" NDType="java.lang.Integer"/>
+        </action>
+    <attributeValues IterBinding="CalendrierDeliberationVOIterator" id="IdCalendrierDeliberation">
+      <AttrNames>
+                <Item Value="IdCalendrierDeliberation"/>
+            </AttrNames>
+    </attributeValues>
+        <action IterBinding="IsAnParcoursClosedIterator" id="IsAnParcoursClosed"
+                InstanceName="evaluationAppDataControl.IsAnParcoursClosed" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="id_annee" NDType="java.lang.Integer"/>
+            <NamedData NDName="parcours_id" NDType="java.lang.Integer"/>
+        </action>
+        <attributeValues IterBinding="NiveauFormationParcoursIterator" id="IdNiveauFormationParcours">
+            <AttrNames>
+                <Item Value="IdNiveauFormationParcours"/>
+            </AttrNames>
+        </attributeValues>
+        <action IterBinding="IsDelibProvStartIterator" id="IsDelibProvStart"
+                InstanceName="evaluationAppDataControl.IsDelibProvStart" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="calendrier_id" NDType="java.lang.Integer"/>
+        </action>
+        <action IterBinding="IsDelibProvEndIterator" id="IsDelibProvEnd"
+                InstanceName="evaluationAppDataControl.IsDelibProvEnd" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="calendrier_id" NDType="java.lang.Integer"/>
+        </action>
+        <action IterBinding="IsDelibDefStartIterator" id="IsDelibDefStart"
+                InstanceName="evaluationAppDataControl.IsDelibDefStart" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="calendrier_id" NDType="java.lang.Integer"/>
+        </action>
+        <action IterBinding="IsDelibDefEndIterator" id="IsDelibDefEnd"
+                InstanceName="evaluationAppDataControl.IsDelibDefEnd" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="calendrier_id" NDType="java.lang.Integer"/>
+        </action>
+        <action IterBinding="IsReclStartIterator" id="IsReclStart"
+                InstanceName="evaluationAppDataControl.IsReclStart" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="calendrier_id" NDType="java.lang.Integer"/>
+        </action>
+        <action IterBinding="IsReclEndIterator" id="IsReclEnd"
+                InstanceName="evaluationAppDataControl.IsReclEnd" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="calendrier_id" NDType="java.lang.Integer"/>
+        </action>
+    </bindings>
+</pageDefinition>

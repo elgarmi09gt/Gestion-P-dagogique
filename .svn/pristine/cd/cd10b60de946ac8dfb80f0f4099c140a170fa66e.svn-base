@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="AnneeUniversPasseeROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.AnneeUniversPasseeROVORowImpl"
+  ComponentClass="model.readOnlyView.AnneeUniversPasseeROVOImpl"
+  FetchMode="FETCH_AS_NEEDED"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.AnneeUniversPasseeROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select anne_passee.id_annees_univers as id_annee_passe , anne_passee.libelle_long as id_lib_long_passe , anne_passee.libelle_court as id_lib_court_passe , anne_passee.active as annee_pass_active, anne_cours.id_annees_univers as id_annee_cours , anne_cours.libelle_long as id_lib_long_cours  
+from annees_univers anne_passee ,( select * from annees_univers )  anne_cours  
+  
+where  to_number(SUBSTR(anne_cours.libelle_long,1,4)) = to_number(SUBSTR(anne_passee.libelle_long,-4))  
+and  anne_cours.id_annees_univers=:id_annee]]></SQLQuery>
+  <ViewAttribute
+    Name="IdAnneePasse"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_ANNEE_PASSE"
+    Expression="ID_ANNEE_PASSE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdLibLongPasse"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ID_LIB_LONG_PASSE"
+    Expression="ID_LIB_LONG_PASSE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdLibCourtPasse"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="75"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ID_LIB_COURT_PASSE"
+    Expression="ID_LIB_COURT_PASSE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="AnneePassActive"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ANNEE_PASS_ACTIVE"
+    Expression="ANNEE_PASS_ACTIVE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdAnneeCours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEE_COURS"
+    Expression="ID_ANNEE_COURS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdLibLongCours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ID_LIB_LONG_COURS"
+    Expression="ID_LIB_LONG_COURS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

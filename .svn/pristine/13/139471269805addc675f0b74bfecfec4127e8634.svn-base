@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:dvt="http://xmlns.oracle.com/dss/adf/faces">
+
+    <af:iterator value="#{DeliberationSemestrielleBean.isOperationsSem()}"
+               id="i6"/>
+    <af:panelGroupLayout id="pgl2" layout="vertical" inlineStyle="background-color:InfoText;">
+        <af:panelGroupLayout id="pgl6" halign="center" layout="horizontal">
+            <af:outputText value="Délibération semestre #{sessionScope.id_smstre}" id="ot1"
+                           inlineStyle="font-size:medium; font-weight:bolder; line-height:50px; text-align:center; font-style:italic; color:White;"/>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl3" layout="vertical"
+                             inlineStyle="background-color:White; border-collapse:collapse; border-left-style:solid; border-right-style:solid; border-top-style:solid; border-bottom-style:solid;">
+            <af:panelGroupLayout id="pgl4" layout="horizontal" styleClass="AFStretchWidth" halign="left"
+                                 binding="#{DeliberationSemestrielleBean.panelbtn}">
+                <af:panelGroupLayout id="pgl17" halign="center" layout="horizontal">
+                    <af:button id="b1"
+                               inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                               icon="/images/Finance-Pos-Terminal-icon.png"
+                               binding="#{DeliberationSemestrielleBean.deliberationBtn}"
+                               actionListener="#{DeliberationSemestrielleBean.Deliberer}" iconPosition="leading" partialSubmit="true"
+                               shortDesc="Délibérer"
+                               visible='#{securityContext.userInRole["Admin,Responsable-niv-formation,Responsable-formation"]}'
+                               disabled="#{sessionScope.isclosedsem == '0' ? false : true}"/>
+                               
+                    <af:button id="b3"
+                               inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                               icon="/images/Microsoft-Excel-2013-icon-small.png" shortDesc="PV Provisoire"
+                               disabled="#{sessionScope.isdelibsem == '0' ? true : false}">
+                        <af:exportCollectionActionListener type="excelHTML" exportedId="pc1:t1"
+                                                           filename="PvSemestreParcoursAnnee.xls"
+                                                           title="Pv Provisoir Semestre Parcours Annee"/>
+                    </af:button>
+                    <af:button id="b4"
+                               inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                               icon="/images/Close-icon-small.png" binding="#{DeliberationSemestrielleBean.clotureBtn}"
+                               actionListener="#{DeliberationSemestrielleBean.Cloturer}" partialSubmit="true"
+                               shortDesc="Clôturer"
+                               visible='#{securityContext.userInRole["Admin,Responsable-niv-formation,Responsable-formation"]}'
+                               disabled="#{sessionScope.isdelibsem == '0' ? true : false}"/>
+                    <af:button id="b2"
+                               inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                               icon="/images/compensed_icon_48px.png"
+                               binding="#{DeliberationSemestrielleBean.compensationBtn}" partialSubmit="true"
+                               shortDesc="Publier" disabled="#{sessionScope.isclosedsem == '0' ? true : false}">
+                        <af:showPopupBehavior popupId="p12"/>
+                    </af:button>
+
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl10" layout="horizontal" halign="center" valign="middle">
+                    <af:link text="Voir régles de calcul" id="l1"
+                             inlineStyle="text-align:center; font-style:italic; font-size:large;"/>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl5" layout="horizontal" halign="right" valign="top">
+                    <!--af:outputFormatted value="Details Sur les Ues" id="of1"
+                                            inlineStyle="text-align:center; font-style:italic; font-size:large;color:#2898e8"/-->
+                    <af:button id="b6"
+                               inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                               icon="/images/close_sess_icone_48px.png"
+                               actionListener="#{DeliberationSemestrielleBean.OnCloseAllUeAction}"
+                               shortDesc="Clôturer les UEs"
+                               visible='#{securityContext.userInRole["Admin,Responsable-niv-formation,Responsable-formation"]}'
+                               disabled="#{sessionScope.isSemClosed == '1' ? true : sessionScope.isSemDelib == '1' ? true : false}">
+                        <af:showPopupBehavior popupId="popup-confirm-close-all-ue"/>
+                    </af:button>
+                </af:panelGroupLayout>
+            </af:panelGroupLayout>
+        </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl16" layout="scroll">
+        <af:spacer height="30" id="s1"/>
+        <af:panelGroupLayout id="pgl1" layout="scroll" inlineStyle="background:#fff;" halign="right">
+            <af:button id="b5" icon="/images/excel.png" iconPosition="trailing"/>
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                binding="#{DeliberationSemestrielleBean.pancolDelibSem}"
+                                partialTriggers=":::b1 :::b2 :::b4">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="statusbar"/>
+                <af:table value="#{DeliberatioUeBean.getStudents()}" var="row" rowBandingInterval="0" id="t1"
+                          columnStretching="last" binding="#{DeliberationSemestrielleBean.deliberationTable}"
+                          scrollPolicy="page" styleClass="mytab" partialTriggers=":::b1 :::b2 :::b4">
+                    <af:column headerText="Info Etudiant" align="center" styleClass="mytab.mycol" id="c8">
+                        <af:column sortable="false" headerText="Numero" id="c1" align="center" width="100">
+                            <af:outputText value="#{row.numero}" id="ot5"/>
+                        </af:column>
+                        <af:column sortable="false" headerText="PrenomNom" id="c3" width="124" align="center"
+                                   inlineStyle="border-left: solid 1px;">
+                            <af:outputText value="#{row.prenomNom}" id="ot3"/>
+                        </af:column>
+                    </af:column>
+                    <af:forEach items="#{DeliberationSemestrielleBean.getUeParcousAnSemSess()}" var="ues">
+                        <af:column sortable="false" headerText="#{ues.ue}" id="c5" align="center">
+                            <af:forEach items="#{DeliberationSemestrielleBean.getEcParcousAnSemSess(ues.id_ue)}"
+                                        var="ecs">
+                                <af:column sortable="false" headerText="#{ecs.ec}" id="c2" align="center" width="51"
+                                           inlineStyle="border-left: solid 1px;">
+                                    <af:outputText value="#{DeliberationSemestrielleBean.getNote(DeliberationSemestrielleBean.getInsPedSemUe(row.numero ,ues.id_ue), ues.id_ue, ecs.id_ec)}"
+                                                   id="ot2"/>
+                                </af:column>
+                                <af:column sortable="false" headerText="Coeficient" id="c4" align="center" width="60"
+                                           inlineStyle="border-left: solid 1px;">
+                                    <af:outputText value="#{ecs.coef}" id="ot6"/>
+                                </af:column>
+                            </af:forEach>
+                            <af:forEach items="#{DeliberationSemestrielleBean.getResultUe(DeliberationSemestrielleBean.getInsPedSemUe(row.numero ,ues.id_ue))}"
+                                        var="res">
+                                <af:forEach items="#{res}" var="r">
+                                    <af:column sortable="false" headerText="#{r.key}" id="c6" align="center" width="50"
+                                               inlineStyle="border-left: solid 1px;">
+                                        <af:outputText value="#{r.value}" id="ot4" inlineStyle="font-weight:bold;"/>
+                                    </af:column>
+                                </af:forEach>
+                            </af:forEach>
+                        </af:column>
+                    </af:forEach><!-- Resultat Semestre de l'etudiant : moyenne_semestriel, credit, resultat --><!-- Une fonction getInspedSem(Numero) qui retourne l'inspedSem de l'etudiant-->
+                    <af:column sortable="false" headerText="Resultat Semestre" id="c7" align="center"
+                               inlineStyle="font-size:large; text-align:center; font-weight:bold;">
+                        <af:forEach items="#{DeliberationSemestrielleBean.getResultSmstre(DeliberationSemestrielleBean.getInsPedSem(row.numero))}"
+                                    var="res">
+                            <af:forEach items="#{res}" var="rs">
+                                <af:column sortable="false" headerText="#{rs.key}" id="c9" align="center" width="65"
+                                           inlineStyle="font-size:large; text-align:center; font-weight:bold;border-left: solid 2px;">
+                                    <af:outputText value="#{rs.value}" id="ot7" inlineStyle="font-weight:bold;"/>
+                                </af:column>
+                            </af:forEach>
+                        </af:forEach>
+                    </af:column>
+                </af:table>
+            </af:panelCollection>
+            <af:panelCollection id="pc2" styleClass="AFStretchWidth" inlineStyle="height:160px">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="statusbar"/>
+            </af:panelCollection>
+        </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <!--oracle-jdev-comment:preferred-managed-bean-name:DeliberationSemestrielleBean-->
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3"
+              binding="#{DeliberationSemestrielleBean.popupShowSuccessDelibSem}">
+        <af:dialog id="d3" title="Info !!!" type="cancel" inlineStyle="text-align:center; color:Lime;"
+                   cancelTextAndAccessKey="Fermer">
+            <af:panelGroupLayout id="pgl15" layout="vertical">
+                <af:icon name="info" id="i8"/>
+                <af:outputFormatted value="Délibération avec succes !!!" id="of4"
+                                    inlineStyle="font-size:x-large; color:Lime;"/>
+            </af:panelGroupLayout>
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+              binding="#{DeliberationSemestrielleBean.popupShowDetAnClosed}">
+        <af:dialog id="d2" title="Info !!!" type="cancel" inlineStyle="font-size:x-large; color:Red; text-align:center;"
+                   cancelTextAndAccessKey="Fermer">
+            <af:panelGroupLayout id="pgl14" layout="vertical">
+                <af:icon name="error" id="i7"/>
+                <af:outputFormatted value="Désolé !!! l'année a dèja été cloturée !!!" id="of3"/>
+            </af:panelGroupLayout>
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+              binding="#{DeliberationSemestrielleBean.popupShowDetNotUeDelibaretedAll}">
+        <af:dialog id="d1" type="cancel" title="Info !!!" inlineStyle="font-size:x-large; text-align:center;"
+                   cancelTextAndAccessKey="Fermer">
+            <af:panelGroupLayout id="pgl13" layout="vertical">
+                <af:icon name="error" id="i17"/>
+                <af:outputFormatted value="Toutes les ues devrons etre cloturer avant  la déliberation du semestre !!!"
+                                    id="of2" inlineStyle="color:Red;"/>
+            </af:panelGroupLayout>
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p4"
+              binding="#{DeliberationSemestrielleBean.popupShowDetNotSemCompensed}">
+        <af:dialog id="d4" title="Info !!!" type="cancel" inlineStyle="text-align:center;" cancelTextAndAccessKey="Fermer">
+            <af:panelGroupLayout id="pgl12" layout="vertical">
+                <af:icon name="error" id="i5"/>
+                <af:outputFormatted value="Le semestre doit etre compenser avant de le cloturer" id="of5"
+                                    inlineStyle="color:Red; font-size:x-large;"/>
+            </af:panelGroupLayout>
+            <f:facet name="buttonBar">
+                
+            </f:facet>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p5"
+              binding="#{DeliberationSemestrielleBean.popupClosedSemOk}">
+        <af:dialog id="d5" type="cancel" title="Info !!!" inlineStyle="text-align:center;" cancelTextAndAccessKey="Fermer">
+            <af:panelGroupLayout id="pgl11" layout="vertical">
+                <af:icon name="info" id="i4"/>
+                <af:outputFormatted value="Semestre Cloturer  avec Succes!!!" id="of6"
+                                    inlineStyle="color:Lime; font-size:x-large;"/>
+            </af:panelGroupLayout>
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p6"
+              binding="#{DeliberationSemestrielleBean.popupSemNotDelib}">
+        <af:dialog id="d6" title="Info !!!" type="cancel" inlineStyle="font-size:x-large; color:Red; text-align:center;"
+                   cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl9" layout="vertical">
+                <af:icon name="error" id="i3"/>
+                <af:outputFormatted value="Semestre pas encore délibéré !!!" id="of7"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p7"
+              binding="#{DeliberationSemestrielleBean.popupCompensedSemOk}">
+        <af:dialog id="d7" inlineStyle="font-size:x-large; color:lime; text-align:center;" title="Info !!!"
+                   type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl8" layout="vertical">
+                <af:icon name="info" id="i2"/>
+                <af:outputFormatted value="Compensation éffectué avec succée" id="of8"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p8"
+              binding="#{DeliberationSemestrielleBean.popupCompensedSemFailed}">
+        <af:dialog id="d8" inlineStyle="font-size:x-large; color:red; text-align:center;" title="Alert !!!"
+                   type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl7" layout="vertical">
+                <af:icon name="error" id="i1"/>
+                <af:outputFormatted value="Erreur de compensation !!!" id="of9"/>
+                <af:outputFormatted value="Reessayez s'il vout plait !!!" id="of10"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p12"
+              binding="#{DeliberationSemestrielleBean.popupConfirmPublishSem}">
+        <af:dialog id="d14" title="Confirmer Publication" type="yesNo" affirmativeTextAndAccessKey="PUBLIER"
+                   noTextAndAccessKey="ANNULER" inlineStyle="border-radius:10px"
+                   dialogListener="#{DeliberationSemestrielleBean.OnPublishDialogAction}">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl23" layout="vertical" inlineStyle="text-align:center;">
+                <af:icon name="info" id="i13"/>
+                <af:outputFormatted value="Voulez-vous vraiment publié les resultats ?" id="of15"
+                                    inlineStyle="color:#2898e8; font-size:large;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p13"
+              binding="#{DeliberationSemestrielleBean.popupSemNotClosedYet}">
+        <af:dialog id="d15" type="cancel" cancelTextAndAccessKey="FERMER" inlineStyle="border-radius:10px" title="Info">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl24" layout="vertical" inlineStyle="text-align:center;">
+                <af:icon name="error" id="i14"/>
+                <af:outputFormatted value="Semestre pas encore clôturer !" id="of16" inlineStyle="font-size:large; color:Red;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p14"
+              binding="#{DeliberationSemestrielleBean.popupSemPublishSucced}">
+        <af:dialog id="d16" type="cancel" cancelTextAndAccessKey="FERMER" title="Info" inlineStyle="border-radius:10px">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl25" layout="vertical" inlineStyle="text-align:center; font-weight:bold;">
+                <af:icon name="info" id="i15"/>
+                <af:outputFormatted value="Semestre bien publié" id="of17" inlineStyle="font-size:large; color:Green;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p15"
+              binding="#{DeliberationSemestrielleBean.getPopupsess1notclosed}">
+        <af:dialog id="d17" title="Info">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl26" layout="vertical" halign="center"
+                                 inlineStyle="font-size:large; color:Orange;">
+                <af:icon name="warning" id="i16"/>
+                <af:outputFormatted value="La session 1 n'est pas encore cloturée !!!" id="of18"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-confirm-close-all-ue">
+        <af:dialog id="d9" type="yesNo" title="Confirmer clôture" noTextAndAccessKey="Annuler"
+                   affirmativeTextAndAccessKey="Clôturer"
+                   dialogListener="#{DeliberationSemestrielleBean.onCloseAllUeAction}">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl18" inlineStyle="text-align:center;" layout="vertical">
+                <af:icon name="warning" id="i9" inlineStyle="color:#2898e8;"/>
+                <af:outputFormatted value="Etes-vous sûre de vouloir clôturer tous les UEs ?" id="of1"
+                                    inlineStyle="font-size:large; color:#2898e8; font-weight:bold;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-calcul-rules">
+        <af:dialog id="d13" type="cancel" title="Régles de calcules" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl22" layout="vertical">
+                <af:outputFormatted value="Moyenne Semestre = " id="of14"
+                                    inlineStyle="font-size:large; color:#2898e8; text-align:center; font-weight:bold; font-style:italic;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+</ui:composition>

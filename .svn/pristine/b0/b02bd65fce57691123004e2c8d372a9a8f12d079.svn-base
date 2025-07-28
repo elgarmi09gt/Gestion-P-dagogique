@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listcyclesPageDef"
+                Package="parametrage.cycle">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Cycles" RangeSize="25" DataControl="parametrageAppDataControl" id="CyclesIterator"/>
+    <searchRegion Binds="CyclesIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="Cycles1Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="CyclesIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CyclesIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CyclesIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CyclesIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CyclesIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="Rollback" DataControl="parametrageAppDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <action IterBinding="CyclesIterator" id="CreateInsert" InstanceName="parametrageAppDataControl.Cycles"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="CyclesIterator" id="Delete" InstanceName="parametrageAppDataControl.Cycles"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="CyclesIterator" id="Cycles1">
+      <nodeDefinition DefName="model.updatableview.CyclesVO" Name="Cycles10">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

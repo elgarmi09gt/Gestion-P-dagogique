@@ -1,0 +1,1056 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listmaquettesueecPageDef"
+                Package="dap.maquettes" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Ues" RangeSize="25" DataControl="gestdapAppDataControl" id="UesIterator"/>
+    <searchRegion Binds="UesIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="UesQuery"/>
+    <iterator Binds="Ecs" RangeSize="25" DataControl="gestdapAppDataControl" id="EcsIterator"/>
+    <searchRegion Binds="EcsIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="EcsQuery"/>
+    <iterator Binds="Maquettes" RangeSize="10" DataControl="gestdapAppDataControl" id="MaquettesIterator"/>
+    <searchRegion Binds="MaquettesIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="MaquettesQuery"/>
+    <iterator Binds="FiliereUeSemstres" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="FiliereUeSemstresIterator"/>
+    <searchRegion Binds="FiliereUeSemstresIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FiliereUeSemstresQuery"/>
+    <iterator Binds="NiveauFormationMaquetteAnnes" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="NiveauFormationMaquetteAnnesIterator"/>
+    <searchRegion Binds="NiveauFormationMaquetteAnnesIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="NiveauFormationMaquetteAnnesQuery"/>
+    <iterator Binds="FiliereUeSemstreEc" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="FiliereUeSemstreEcIterator"/>
+    <searchRegion Binds="FiliereUeSemstreEcIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FiliereUeSemstreEcQuery"/>
+    <iterator Binds="ParcoursMaquetteAnneeVO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="ParcoursMaquetteAnneeVOIterator"/>
+    <searchRegion Binds="ParcoursMaquetteAnneeVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ParcoursMaquetteAnneeVOQuery"/>
+    <iterator Binds="IsMaquetteUsedROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsMaquetteUsedROVOIterator"/>
+    <iterator Binds="TypeSections" RangeSize="10" DataControl="gestdapAppDataControl" id="TypeSectionsIterator"/>
+    <iterator Binds="isSectionExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isSectionExistROVOIterator"/>
+    <iterator Binds="isEtabExistROVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isEtabExistROVO1Iterator"/>
+    <iterator Binds="IsUeExistROVO1" RangeSize="10" DataControl="gestdapAppDataControl" id="IsUeExistROVO1Iterator"/>
+    <iterator Binds="isEcExistROVO1" RangeSize="10" DataControl="gestdapAppDataControl" id="isEcExistROVO1Iterator"/>
+    <iterator Binds="isDeptExist1" RangeSize="10" DataControl="gestdapAppDataControl" id="isDeptExist1Iterator"/>
+    <iterator Binds="isDomaineExistROVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isDomaineExistROVO1Iterator"/>
+    <iterator Binds="isMentionExist1" RangeSize="10" DataControl="gestdapAppDataControl" id="isMentionExist1Iterator"/>
+    <iterator Binds="isSpecialiteExistROVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isSpecialiteExistROVO1Iterator"/>
+    <iterator Binds="isFormationExistROVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isFormationExistROVO1Iterator"/>
+    <iterator Binds="isNivFormExistROVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isNivFormExistROVO1Iterator"/>
+    <iterator Binds="isMaquetteExist1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isMaquetteExist1Iterator"/>
+    <iterator Binds="isFilUeExistROVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isFilUeExistROVO1Iterator"/>
+    <iterator Binds="isFilEcExistROVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isFilEcExistROVO1Iterator"/>
+    <iterator Binds="isNivFormMaqAnneeExistROVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isNivFormMaqAnneeExistROVO1Iterator"/>
+    <iterator Binds="Structures" RangeSize="10" DataControl="evaluationAppDataControl" id="StructuresIterator"/>
+    <iterator Binds="Structures" RangeSize="10" DataControl="gestdapAppDataControl" id="StructuresIterator1"/>
+    <iterator Binds="HistoriquesStructuresStruct" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="HistoriquesStructuresStructIterator"/>
+    <iterator Binds="Domaines" RangeSize="10" DataControl="gestdapAppDataControl" id="DomainesIterator"/>
+    <iterator Binds="MentionsDomaines" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="MentionsDomainesIterator"/>
+    <iterator Binds="SpecialitesMentions" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="SpecialitesMentionsIterator"/>
+    <iterator Binds="FormationsVO1" RangeSize="25" DataControl="gestdapAppDataControl" id="FormationsVO1Iterator"/>
+    <iterator Binds="NiveauxFormations" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="NiveauxFormationsIterator"/>
+    <iterator Binds="getGrade1" RangeSize="10" DataControl="gestdapAppDataControl" id="getGrade1Iterator"/>
+    <iterator Binds="getCycleROVO1" RangeSize="10" DataControl="gestdapAppDataControl" id="getCycleROVO1Iterator"/>
+    <iterator Binds="getTypeFormROVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="getTypeFormROVO1Iterator"/>
+    <iterator Binds="isNiveauExist1" RangeSize="10" DataControl="gestdapAppDataControl" id="isNiveauExist1Iterator"/>
+    <iterator Binds="getCategorieUE1" RangeSize="10" DataControl="gestdapAppDataControl" id="getCategorieUE1Iterator"/>
+    <iterator Binds="getNatureUe1" RangeSize="10" DataControl="gestdapAppDataControl" id="getNatureUe1Iterator"/>
+    <iterator Binds="getFilUeROVO1" RangeSize="10" DataControl="gestdapAppDataControl" id="getFilUeROVO1Iterator"/>
+    <iterator Binds="getNatureEc1" RangeSize="10" DataControl="gestdapAppDataControl" id="getNatureEc1Iterator"/>
+    <iterator Binds="getModePaiement1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="getModePaiement1Iterator"/>
+    <iterator Binds="getPays1" RangeSize="10" DataControl="gestdapAppDataControl" id="getPays1Iterator"/>
+    <iterator Binds="DroitNiveauPaysVO" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="DroitNiveauPaysVOIterator"/>
+    <iterator Binds="isDroitNiveauPaysExist1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isDroitNiveauPaysExist1Iterator"/>
+    <iterator Binds="GetMention1" RangeSize="10" DataControl="gestdapAppDataControl" id="GetMention1Iterator"/>
+    <iterator Binds="getFormation1" RangeSize="10" DataControl="gestdapAppDataControl" id="getFormation1Iterator"/>
+    <iterator Binds="getNivForm1" RangeSize="10" DataControl="gestdapAppDataControl" id="getNivForm1Iterator"/>
+    <iterator Binds="getAnneeUnivers1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="getAnneeUnivers1Iterator"/>
+    <iterator Binds="GradesFormation" RangeSize="10" DataControl="gestdapAppDataControl" id="GradesFormationIterator"/>
+    <iterator Binds="OptionsSpecialites" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="OptionsSpecialitesIterator"/>
+    <iterator Binds="GetSpecialiteROVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="GetSpecialiteROVO1Iterator"/>
+    <iterator Binds="IsOptionExist1" RangeSize="10" DataControl="gestdapAppDataControl" id="IsOptionExist1Iterator"/>
+    <iterator Binds="FormationsSpecialites" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="FormationsSpecialitesIterator"/>
+    <iterator Binds="isFormSpecExist1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isFormSpecExist1Iterator"/>
+    <iterator Binds="FormationsSpecialitesVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="FormationsSpecialitesVO1Iterator"/>
+    <iterator Binds="IsFilUeExist" RangeSize="10" DataControl="gestdapAppDataControl" id="IsFilUeExistIterator"/>
+    <iterator Binds="IsFilEcExist" RangeSize="10" DataControl="gestdapAppDataControl" id="IsFilEcExistIterator"/>
+    <iterator Binds="IsFilUeMaquetteExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsFilUeMaquetteExistIterator"/>
+    <iterator Binds="IsNivFromMaqAnnMaquetteExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsNivFromMaqAnnMaquetteExistIterator"/>
+    <iterator Binds="IsPercMaqAnnMaquetteExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsPercMaqAnnMaquetteExistIterator"/>
+    <iterator Binds="IsFilUeSemEcFilUeExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsFilUeSemEcFilUeExistIterator"/>
+    <iterator Binds="IsInsPedSemUeFilUeExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsInsPedSemUeFilUeExistIterator"/>
+    <iterator Binds="IsValidationFilUeExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsValidationFilUeExistIterator"/>
+    <iterator Binds="IsAccessFilUeExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsAccessFilUeExistIterator"/>
+    <iterator Binds="IsAccesFilEcExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsAccesFilEcExistIterator"/>
+    <iterator Binds="IsModeCntrlEcFilEcExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsModeCntrlEcFilEcExistIterator"/>
+    <iterator Binds="IsResultatFilEcExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsResultatFilEcExistIterator"/>
+    <iterator Binds="IsValidationFilEcExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsValidationFilEcExistIterator"/>
+    <iterator Binds="IsNoteModeEnsFilEcExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="IsNoteModeEnsFilEcExistIterator"/>
+    <iterator Binds="AnneeUniversRO" RangeSize="25" DataControl="gestdapAppDataControl" id="AnneeUniverROVOIterator"/>
+    <iterator Binds="NiveauFormationRO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="NiveauFormationROIterator"/>
+    <iterator Binds="MaquetteNivFormRO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="MaquetteNivFormROIterator"/>
+    <iterator Binds="NivFormParcoursRO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="NivFormParcoursROIterator"/>
+    <searchRegion Binds="NivFormParcoursROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NivFormParcoursROQuery"/>
+    <iterator Binds="ParcoursMaquetteAnneeVO1" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="ParcoursMaquetteAnneeVO1Iterator"/>
+    <iterator Binds="isMaquetteParcoursExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isMaquetteParcoursExistIterator"/>
+    <iterator Binds="MaquettesParcoursRO" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="MaquettesParcoursROIterator"/>
+    <searchRegion Binds="MaquettesParcoursROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="MaquettesParcoursROQuery"/>
+    <iterator Binds="isNivFormMaqAnnExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isNivFormMaqAnnExistIterator"/>
+    <iterator Binds="NiveauFormationMaquetteAnneVO" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="NiveauFormationMaquetteAnneVOIterator"/>
+    <iterator Binds="AnneeUniversRO" RangeSize="25" DataControl="gestdapAppDataControl" id="AnneeUniversROIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="UesIterator" id="Ues">
+      <nodeDefinition DefName="model.updatableview.UeVO" Name="Ues0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="Prefixe"/>
+          <Item Value="Commentaire"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="EcsIterator" id="Ecs">
+      <nodeDefinition DefName="model.updatableview.EcVO" Name="Ecs0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="Prefixe"/>
+          <Item Value="Commentaire"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="MaquettesIterator" id="Maquettes">
+      <nodeDefinition DefName="model.updatableview.MaquettesVO" Name="Maquettes0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+          <Item Value="IdMaquette"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FiliereUeSemstresIterator" id="FiliereUeSemstres">
+      <nodeDefinition DefName="model.updatableview.FiliereUeSemstreVO" Name="FiliereUeSemstres0">
+        <AttrNames>
+          <Item Value="IdSemestre"/>
+          <Item Value="IdCategorieUe"/>
+          <Item Value="IdNatureUe"/>
+          <Item Value="IdUe"/>
+          <Item Value="Codification"/>
+          <Item Value="Compensable"/>
+          <Item Value="Coefficient"/>
+          <Item Value="MoyenneValidation"/>
+          <Item Value="MoyenneEliminatoire"/>
+          <Item Value="Credit"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FiliereUeSemstreEcIterator" id="FiliereUeSemstreEc">
+      <nodeDefinition DefName="model.updatableview.FiliereUeSemstreEcVO" Name="FiliereUeSemstreEc0">
+        <AttrNames>
+          <Item Value="IdNatureEc"/>
+          <Item Value="IdEc"/>
+          <Item Value="Codification"/>
+          <Item Value="IdLangue"/>
+          <Item Value="Coefficient"/>
+          <Item Value="HeuresCm"/>
+          <Item Value="HeuresStage"/>
+          <Item Value="HeuresTd"/>
+          <Item Value="HeuresTp"/>
+          <Item Value="HeuresTpe"/>
+          <Item Value="MoyenneValidation"/>
+          <Item Value="MoyenneEliminatoire"/>
+          <Item Value="PourcentageCc"/>
+          <Item Value="PourcentageCt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Commit" DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="EcsIterator" id="CreateEc" InstanceName="gestdapAppDataControl.Ecs"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="EcsIterator" id="DeleteEc" InstanceName="gestdapAppDataControl.Ecs"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="UesIterator" id="CreateUe" InstanceName="gestdapAppDataControl.Ues"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="UesIterator" id="DeleteUe" InstanceName="gestdapAppDataControl.Ues"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="MaquettesIterator" id="CreateMaquette" InstanceName="gestdapAppDataControl.Maquettes"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="MaquettesIterator" id="DeleteMaquette" InstanceName="gestdapAppDataControl.Maquettes"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="FiliereUeSemstresIterator" id="CreateFiliereUeSemestre" InstanceName="gestdapAppDataControl.FiliereUeSemstres"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="FiliereUeSemstresIterator" id="DeleteFiliereUeSemestre" InstanceName="gestdapAppDataControl.FiliereUeSemstres"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="FiliereUeSemstreEcIterator" id="CreateFiliereUeSemestreEc" InstanceName="gestdapAppDataControl.FiliereUeSemstreEc"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="FiliereUeSemstreEcIterator" id="DeleteFiliereUeSemestreEc" InstanceName="gestdapAppDataControl.FiliereUeSemstreEc"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="UesIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UesIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UesIterator" id="Prefixe">
+      <AttrNames>
+        <Item Value="Prefixe"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UesIterator" id="Commentaire">
+      <AttrNames>
+        <Item Value="Commentaire"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UesIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcsIterator" id="LibelleLong1">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcsIterator" id="LibelleCourt1">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcsIterator" id="Prefixe1">
+      <AttrNames>
+        <Item Value="Prefixe"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcsIterator" id="Commentaire1">
+      <AttrNames>
+        <Item Value="Commentaire"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcsIterator" id="UtiCree1">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaquettesIterator" id="LibelleLong2">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaquettesIterator" id="LibelleCourt2">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaquettesIterator" id="UtiCree2">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="FiliereUeSemstresIterator" StaticList="false" Uses="LOV_IdMaquette" id="IdMaquette"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FiliereUeSemstresIterator" StaticList="false" Uses="LOV_IdUe" id="IdUe" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="FiliereUeSemstresIterator" id="Codification">
+      <AttrNames>
+        <Item Value="Codification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstresIterator" id="Credit">
+      <AttrNames>
+        <Item Value="Credit"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstresIterator" id="Coefficient">
+      <AttrNames>
+        <Item Value="Coefficient"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstresIterator" id="MoyenneValidation">
+      <AttrNames>
+        <Item Value="MoyenneValidation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstresIterator" id="MoyenneEliminatoire">
+      <AttrNames>
+        <Item Value="MoyenneEliminatoire"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstresIterator" id="Compensable">
+      <AttrNames>
+        <Item Value="Compensable"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstresIterator" id="UtiCree3">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="FiliereUeSemstreEcIterator" StaticList="false" Uses="LOV_IdFiliereUeSemstre"
+          id="IdFiliereUeSemstre" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FiliereUeSemstreEcIterator" StaticList="false" Uses="LOV_IdEc" id="IdEc" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="IdNatureEc">
+      <AttrNames>
+        <Item Value="IdNatureEc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="Codification1">
+      <AttrNames>
+        <Item Value="Codification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="Coefficient1">
+      <AttrNames>
+        <Item Value="Coefficient"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="MoyenneValidation1">
+      <AttrNames>
+        <Item Value="MoyenneValidation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="MoyenneEliminatoire1">
+      <AttrNames>
+        <Item Value="MoyenneEliminatoire"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="PourcentageCc">
+      <AttrNames>
+        <Item Value="PourcentageCc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="PourcentageCt">
+      <AttrNames>
+        <Item Value="PourcentageCt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="HeuresCm">
+      <AttrNames>
+        <Item Value="HeuresCm"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="HeuresTp">
+      <AttrNames>
+        <Item Value="HeuresTp"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="HeuresTd">
+      <AttrNames>
+        <Item Value="HeuresTd"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="HeuresTpe">
+      <AttrNames>
+        <Item Value="HeuresTpe"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="HeuresStage">
+      <AttrNames>
+        <Item Value="HeuresStage"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="UtiCree4">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="IdLangue">
+      <AttrNames>
+        <Item Value="IdLangue"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="FiliereUeSemstresIterator" StaticList="false" Uses="LOV_IdSemestre" id="IdSemestre1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FiliereUeSemstresIterator" StaticList="false" Uses="LOV_IdCategorieUe" id="IdCategorieUe1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FiliereUeSemstresIterator" StaticList="false" Uses="LOV_IdNatureUe" id="IdNatureUe1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FiliereUeSemstreEcIterator" StaticList="false" Uses="LOV_IdNatureEc" id="IdNatureEc1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FiliereUeSemstreEcIterator" StaticList="false" Uses="LOV_IdLangue" id="IdLangue1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="UesIterator" id="IdUe1">
+      <AttrNames>
+        <Item Value="IdUe"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UesIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UesIterator" id="DateModification">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UesIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcsIterator" id="IdEc1">
+      <AttrNames>
+        <Item Value="IdEc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcsIterator" id="DateCreation1">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcsIterator" id="DateModification1">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcsIterator" id="UtiModifie1">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaquettesIterator" id="IdMaquette1">
+      <AttrNames>
+        <Item Value="IdMaquette"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaquettesIterator" id="DateCreation2">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaquettesIterator" id="DateModification2">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaquettesIterator" id="UtiModifie2">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="NiveauFormationMaquetteAnnesIterator" id="CreateNivForm"
+            InstanceName="gestdapAppDataControl.NiveauFormationMaquetteAnnes" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="NiveauFormationMaquetteAnnesIterator" id="DeleteNivForm"
+            InstanceName="gestdapAppDataControl.NiveauFormationMaquetteAnnes" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="NiveauFormationMaquetteAnnesIterator" id="IdNiveauFormation">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationMaquetteAnnesIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="NiveauFormationMaquetteAnnesIterator" StaticList="false" Uses="LOV_IdMaquette" id="IdMaquette2"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="NiveauFormationMaquetteAnnesIterator" id="UtiCree5">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationMaquetteAnnesIterator" id="IdNiveauFormationSpecialite">
+      <AttrNames>
+        <Item Value="IdNiveauFormationSpecialite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationMaquetteAnnesIterator" id="IdNivFormSpecOption">
+      <AttrNames>
+        <Item Value="IdNivFormSpecOption"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationMaquetteAnnesIterator" id="IdNivFormationMaquetteAnne">
+      <AttrNames>
+        <Item Value="IdNivFormationMaquetteAnne"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationMaquetteAnnesIterator" id="DateCreation3">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationMaquetteAnnesIterator" id="DateModification3">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationMaquetteAnnesIterator" id="UtiModifie3">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="NiveauFormationMaquetteAnnesIterator" StaticList="false" Uses="LOV_IdNiveauFormation"
+          id="IdNiveauFormation1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="NiveauFormationMaquetteAnnesIterator" StaticList="false" Uses="LOV_IdAnneesUnivers"
+          id="IdAnneesUnivers1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <button IterBinding="FiliereUeSemstresIterator" id="Compensable1" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="Compensable"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="1"/>
+        <Item Value="0"/>
+      </ValueList>
+    </button>
+    <list IterBinding="FiliereUeSemstresIterator" StaticList="false" Uses="LOV_Compensable" id="Compensable2"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <tree IterBinding="NiveauFormationMaquetteAnnesIterator" id="NiveauFormationMaquetteAnnes1">
+      <nodeDefinition DefName="model.updatableview.NiveauFormationMaquetteAnneVO" Name="NiveauFormationMaquetteAnnes10">
+        <AttrNames>
+          <Item Value="IdNiveauFormation"/>
+          <Item Value="IdAnneesUnivers"/>
+          <Item Value="IdNiveauFormationSpecialite"/>
+          <Item Value="IdNivFormSpecOption"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="NiveauFormationMaquetteAnnesIterator" StaticList="false" Uses="LOV_IdNiveauFormationSpecialite"
+          id="IdNiveauFormationSpecialite1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="NiveauFormationMaquetteAnnesIterator" StaticList="false" Uses="LOV_IdNivFormSpecOption"
+          id="IdNivFormSpecOption1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <tree IterBinding="ParcoursMaquetteAnneeVOIterator" id="ParcoursMaquetteAnneeVO">
+      <nodeDefinition DefName="model.updatableview.ParcoursMaquetteAnneeVO" Name="ParcoursMaquetteAnneeVO0">
+        <AttrNames>
+          <Item Value="IdNiveauFormationParcours"/>
+          <Item Value="IdAnneesUnivers"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ParcoursMaquetteAnneeVOIterator" id="CreateParcousMaqAnn"
+            InstanceName="gestdapAppDataControl.ParcoursMaquetteAnneeVO" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <list IterBinding="ParcoursMaquetteAnneeVOIterator" StaticList="false" Uses="LOV_IdNiveauFormationParcours"
+          id="IdNiveauFormationParcours" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="ParcoursMaquetteAnneeVOIterator" StaticList="false" Uses="LOV_IdAnneesUnivers"
+          id="IdAnneesUnivers2" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="ParcoursMaquetteAnneeVOIterator" id="UtiCree8">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ParcoursMaquetteAnneeVOIterator" id="IdMaquette3">
+      <AttrNames>
+        <Item Value="IdMaquette"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ParcoursMaquetteAnneeVOIterator" id="UtiModifie7">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ParcoursMaquetteAnneeVOIterator" StaticList="false" Uses="LOV_IdMaquette" id="IdMaquette4"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <action IterBinding="IsMaquetteUsedROVOIterator" id="IsMaquetteUsed"
+            InstanceName="evaluationAppDataControl.IsMaquetteUsedROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="maquette" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="TypeSectionsIterator" id="CreateTypeSection" InstanceName="gestdapAppDataControl.TypeSections"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="isSectionExistROVOIterator" id="isSectionExist"
+            InstanceName="gestdapAppDataControl.isSectionExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="isEtabExistROVO1Iterator" id="isEtabExist"
+            InstanceName="gestdapAppDataControl.isEtabExistROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="IsUeExistROVO1Iterator" id="isUeExist"
+            InstanceName="gestdapAppDataControl.IsUeExistROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="isEcExistROVO1Iterator" id="isEcExist"
+            InstanceName="gestdapAppDataControl.isEcExistROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="isDeptExist1Iterator" id="isDeptExist" InstanceName="gestdapAppDataControl.isDeptExist1"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="isDomaineExistROVO1Iterator" id="isDomaineExist"
+            InstanceName="gestdapAppDataControl.isDomaineExistROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="isMentionExist1Iterator" id="isMentionExist"
+            InstanceName="gestdapAppDataControl.isMentionExist1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+      <NamedData NDName="domaine_id" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="isSpecialiteExistROVO1Iterator" id="isSpecExist"
+            InstanceName="gestdapAppDataControl.isSpecialiteExistROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+      <NamedData NDName="mention_id" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="isFormationExistROVO1Iterator" id="isFormationExist"
+            InstanceName="gestdapAppDataControl.isFormationExistROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+      <NamedData NDName="mnt_id" NDType="java.lang.Long"/>
+      <NamedData NDName="hs_id" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="isNivFormExistROVO1Iterator" id="isNivFormExist"
+            InstanceName="gestdapAppDataControl.isNivFormExistROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+      <NamedData NDName="form_id" NDType="java.lang.Long"/>
+      <NamedData NDName="niv" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="isMaquetteExist1Iterator" id="isMaquetteExist"
+            InstanceName="gestdapAppDataControl.isMaquetteExist1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="isFilUeExistROVO1Iterator" id="isFilUeExist"
+            InstanceName="gestdapAppDataControl.isFilUeExistROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="ue" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="mq" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="isFilEcExistROVO1Iterator" id="isFilEcExist"
+            InstanceName="gestdapAppDataControl.isFilEcExistROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fs" NDType="java.lang.Integer"/>
+      <NamedData NDName="ec" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="isNivFormMaqAnneeExistROVO1Iterator" id="isNivFormMaqAnneeExist"
+            InstanceName="gestdapAppDataControl.isNivFormMaqAnneeExistROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="niv" NDType="java.lang.Integer"/>
+      <NamedData NDName="anne" NDType="java.lang.Integer"/>
+      <NamedData NDName="maq" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="StructuresIterator1" id="CreateStructure" InstanceName="gestdapAppDataControl.Structures"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="HistoriquesStructuresStructIterator" id="CreateHStructure"
+            InstanceName="gestdapAppDataControl.HistoriquesStructuresStruct" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="DomainesIterator" id="CreateDomaine" InstanceName="gestdapAppDataControl.Domaines"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="MentionsDomainesIterator" id="CreateMention"
+            InstanceName="gestdapAppDataControl.MentionsDomaines" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="SpecialitesMentionsIterator" id="CreateSpec"
+            InstanceName="gestdapAppDataControl.SpecialitesMentions" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="FormationsVO1Iterator" id="CreateFormation" InstanceName="gestdapAppDataControl.FormationsVO1"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="NiveauxFormationsIterator" id="CreateNivFormation"
+            InstanceName="gestdapAppDataControl.NiveauxFormations" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="getGrade1Iterator" id="getGrade" InstanceName="gestdapAppDataControl.getGrade1"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="getCycleROVO1Iterator" id="getCycle"
+            InstanceName="gestdapAppDataControl.getCycleROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="getTypeFormROVO1Iterator" id="getTypeForm"
+            InstanceName="gestdapAppDataControl.getTypeFormROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="isNiveauExist1Iterator" id="isNiveauExist"
+            InstanceName="gestdapAppDataControl.isNiveauExist1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="getCategorieUE1Iterator" id="getCategorieUe"
+            InstanceName="gestdapAppDataControl.getCategorieUE1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="getNatureUe1Iterator" id="getNatureUe" InstanceName="gestdapAppDataControl.getNatureUe1"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="getFilUeROVO1Iterator" id="getFilUe"
+            InstanceName="gestdapAppDataControl.getFilUeROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="cod" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="getNatureEc1Iterator" id="getNatureEc" InstanceName="gestdapAppDataControl.getNatureEc1"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="getModePaiement1Iterator" id="getModePaie"
+            InstanceName="gestdapAppDataControl.getModePaiement1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="getPays1Iterator" id="getPays" InstanceName="gestdapAppDataControl.getPays1"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="DroitNiveauPaysVOIterator" id="CreateDroitNiveauPays"
+            InstanceName="gestdapAppDataControl.DroitNiveauPaysVO" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="isDroitNiveauPaysExist1Iterator" id="isDroitNivPaysExist"
+            InstanceName="gestdapAppDataControl.isDroitNiveauPaysExist1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="pays_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="niv_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="GetMention1Iterator" id="getMention" InstanceName="gestdapAppDataControl.GetMention1"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="getFormation1Iterator" id="getFromation"
+            InstanceName="gestdapAppDataControl.getFormation1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="getNivForm1Iterator" id="getNivForm" InstanceName="gestdapAppDataControl.getNivForm1"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="getAnneeUnivers1Iterator" id="getAnnee"
+            InstanceName="gestdapAppDataControl.getAnneeUnivers1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="GradesFormationIterator" id="CreateGradeForm"
+            InstanceName="gestdapAppDataControl.GradesFormation" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="OptionsSpecialitesIterator" id="CreateOpt"
+            InstanceName="gestdapAppDataControl.OptionsSpecialites" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="GetSpecialiteROVO1Iterator" id="getSpecialite"
+            InstanceName="gestdapAppDataControl.GetSpecialiteROVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="IsOptionExist1Iterator" id="isOptionExist"
+            InstanceName="gestdapAppDataControl.IsOptionExist1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib" NDType="java.lang.String"/>
+      <NamedData NDName="spec_id" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="FormationsSpecialitesIterator" id="CreateFormSpec"
+            InstanceName="gestdapAppDataControl.FormationsSpecialites" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="isFormSpecExist1Iterator" id="isFormSpecExist"
+            InstanceName="gestdapAppDataControl.isFormSpecExist1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="form_id" NDType="java.lang.Long"/>
+      <NamedData NDName="spec_id" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="MaquettesIterator" id="Maquettes1">
+      <nodeDefinition DefName="model.updatableview.MaquettesVO" Name="Maquettes10">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="IsFilUeExistIterator" id="IsFilUeExist" InstanceName="gestdapAppDataControl.IsFilUeExist"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="ue_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsFilEcExistIterator" id="IsFilEcExist" InstanceName="gestdapAppDataControl.IsFilEcExist"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="ec_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsFilUeMaquetteExistIterator" id="IsFilUeMaquetteExist"
+            InstanceName="gestdapAppDataControl.IsFilUeMaquetteExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="mq_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsNivFromMaqAnnMaquetteExistIterator" id="IsNivFromMaqAnnMaquetteExist"
+            InstanceName="gestdapAppDataControl.IsNivFromMaqAnnMaquetteExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="mq_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsPercMaqAnnMaquetteExistIterator" id="IsPercMaqAnnMaquetteExist"
+            InstanceName="gestdapAppDataControl.IsPercMaqAnnMaquetteExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="mq_id" NDType="java.lang.Integer"/>
+    </action>
+    <attributeValues IterBinding="FiliereUeSemstresIterator" id="DateCreation4">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="DateCreation5">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstresIterator" id="IdFiliereUeSemstre1">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="IdFiliereUeSemstreEc">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstreEc"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="IsFilUeSemEcFilUeExistIterator" id="IsFilUeSemEcFilUeExist"
+            InstanceName="gestdapAppDataControl.IsFilUeSemEcFilUeExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fs_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsInsPedSemUeFilUeExistIterator" id="IsInsPedSemUeFilUeExist"
+            InstanceName="gestdapAppDataControl.IsInsPedSemUeFilUeExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fs_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsValidationFilUeExistIterator" id="IsValidationFilUeExist"
+            InstanceName="gestdapAppDataControl.IsValidationFilUeExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fs_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsAccessFilUeExistIterator" id="IsAccessFilUeExist"
+            InstanceName="gestdapAppDataControl.IsAccessFilUeExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fs_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsAccesFilEcExistIterator" id="IsAccesFilEcExist"
+            InstanceName="gestdapAppDataControl.IsAccesFilEcExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fec_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsModeCntrlEcFilEcExistIterator" id="IsModeCntrlEcFilEcExist"
+            InstanceName="gestdapAppDataControl.IsModeCntrlEcFilEcExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fec_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsResultatFilEcExistIterator" id="IsResultatFilEcExist"
+            InstanceName="gestdapAppDataControl.IsResultatFilEcExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fec_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsValidationFilEcExistIterator" id="IsValidationFilEcExist"
+            InstanceName="gestdapAppDataControl.IsValidationFilEcExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fec_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsNoteModeEnsFilEcExistIterator" id="IsNoteModeEnsFilEcExist"
+            InstanceName="gestdapAppDataControl.IsNoteModeEnsFilEcExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fec_id" NDType="java.lang.Integer"/>
+    </action>
+    <list IterBinding="AnneeUniversROIterator" ListOperMode="navigation" ListIter="AnneeUniverROVOIterator"
+          id="AnneeUniverROVO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="NiveauFormationROIterator" ListOperMode="navigation" ListIter="NiveauFormationROIterator"
+          id="NiveauFormationRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="NivFormParcoursROIterator" id="NivFormParcoursRO">
+      <nodeDefinition DefName="model.readOnlyView.NivFormParcoursRO" Name="NivFormParcoursRO0">
+        <AttrNames>
+          <Item Value="isSelected"/>
+          <Item Value="Niveauformationparcours"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="NivFormParcoursROIterator" id="isSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="AnneeUniversROIterator" id="IdAnneesUnivers3">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaquetteNivFormROIterator" id="IdMaquette5">
+      <AttrNames>
+        <Item Value="IdMaquette"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="getSelectedParcours" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getSelectedParcours" IsViewObjectMethod="false" DataControl="gestdapAppDataControl"
+                  InstanceName="bindings.getSelectedParcours.dataControl.dataProvider"
+                  ReturnName="data.gestdapAppDataControl.methodResults.getSelectedParcours_getSelectedParcours_dataControl_dataProvider_getSelectedParcours_result"/>
+    <action IterBinding="ParcoursMaquetteAnneeVO1Iterator" id="createParcoursMaquetteAnn"
+            InstanceName="gestdapAppDataControl.ParcoursMaquetteAnneeVO1" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdNiveauFormationParcours" NDType="java.lang.String"/>
+      <NamedData NDName="IdAnneesUnivers" NDType="java.lang.String"/>
+      <NamedData NDName="IdMaquette" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="isMaquetteParcoursExistIterator" id="isMaquetteParcoursExist"
+            InstanceName="gestdapAppDataControl.isMaquetteParcoursExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_an" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_prcrs" NDType="java.lang.Integer"/>
+    </action>
+    <list IterBinding="MaquetteNivFormROIterator" ListOperMode="navigation" ListIter="MaquetteNivFormROIterator"
+          id="MaquetteNivFormRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="NivFormParcoursROIterator" id="Niveauformationparcours">
+      <AttrNames>
+        <Item Value="Niveauformationparcours"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="MaquettesParcoursROIterator" id="MaquettesParcours"
+            InstanceName="gestdapAppDataControl.MaquettesParcoursRO" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_prcrs" NDType="java.lang.Integer"/>
+    </action>
+    <tree IterBinding="MaquettesParcoursROIterator" id="MaquettesParcoursRO">
+      <nodeDefinition DefName="model.readOnlyView.MaquettesParcoursRO" Name="MaquettesParcoursRO0">
+        <AttrNames>
+          <Item Value="Annee"/>
+          <Item Value="Maquette"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="MaquettesIterator" ListOperMode="navigation" ListIter="MaquettesIterator" id="Maquettes2"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="NiveauFormationROIterator" id="IdNiveauFormation2">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormParcoursROIterator" id="IdNiveauFormation3">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaquettesIterator" id="LibelleLong4">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationROIterator" id="LibelleLong5">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneeUniversROIterator" id="LibelleLong6">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="isNivFormMaqAnnExistIterator" id="isNivFormMaqAnnExist"
+            InstanceName="gestdapAppDataControl.isNivFormMaqAnnExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="nivform_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="an_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="mq_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="NiveauFormationMaquetteAnneVOIterator" id="createNivFormMaqAnn"
+            InstanceName="gestdapAppDataControl.NiveauFormationMaquetteAnneVO" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdNiveauFormation" NDType="java.lang.String"/>
+      <NamedData NDName="IdAnneesUnivers" NDType="java.lang.String"/>
+      <NamedData NDName="IdMaquette" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+    </action>
+    <attributeValues IterBinding="NivFormParcoursROIterator" id="IdNiveauFormationParcours1">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="AnneeUniversROIterator" ListOperMode="navigation" ListIter="AnneeUniversROIterator"
+          id="AnneeUniversRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="FiliereUeSemstresIterator" id="UtiModifie4">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FiliereUeSemstreEcIterator" id="UtiModifie5">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

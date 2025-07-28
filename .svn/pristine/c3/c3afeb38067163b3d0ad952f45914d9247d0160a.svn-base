@@ -1,0 +1,112 @@
+package view.beans.login;
+
+import java.util.Map;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
+import javax.security.auth.Subject;
+import javax.security.auth.login.FailedLoginException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import javax.servlet.http.HttpSession;
+
+import oracle.adf.share.ADFContext;
+import oracle.adf.share.security.SecurityContext;
+
+import weblogic.security.URLCallbackHandler;
+import weblogic.security.services.Authentication;
+
+import weblogic.servlet.security.ServletAuthentication; 
+
+import javax.faces.context.ExternalContext;  
+ 
+public class LoginBean {
+    private String _username, _password;
+
+    public LoginBean() {
+    }
+
+    public void setUsername(String _username) {
+        this._username = _username;
+    }
+
+    public String getUsername() {
+        return _username;
+    }
+
+    public void setPassword(String _password) {
+        this._password = _password;
+    }
+
+    public String getPassword() {
+        return _password;
+    }
+
+    @SuppressWarnings("unchecked")
+    public String Login() {
+        String un = _username;
+        byte[] pw = _password.getBytes();
+
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) fctx.getExternalContext().getRequest();
+        Subject mySubject;
+        try {
+            mySubject = Authentication.login(new URLCallbackHandler(un, pw));
+            ServletAuthentication.runAs(mySubject, request);
+            ServletAuthentication.generateNewSessionID(request);
+
+            ADFContext adfCtx = ADFContext.getCurrent();
+            SecurityContext secCntx = adfCtx.getSecurityContext();
+            //String user = secCntx.getUserPrincipal().getName();
+            //System.out.println("User : " + user);
+            Map sessionApp = adfCtx.getSessionScope();
+            sessionApp.put("userName", un);
+            System.out.println("UserName : " + un);
+            String loginUrl = "/adfAuthentication?success_url=/faces/menu.jsf";
+            //System.out.println("UserName : " + un);
+            //String loginUrl = "/adfAuthentication?success_url=/faces/index.jsf";
+            HttpServletResponse response = (HttpServletResponse) fctx.getExternalContext().getResponse();
+            RequestDispatcher dispatcher = request.getRequestDispatcher(loginUrl);
+            dispatcher.forward(request, response);
+            fctx.responseComplete();
+            //System.out.println("UserName : " + un);
+        } catch (FailedLoginException e) {
+            FacesMessage msg =
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login ou Mot de pass incorrecte",
+                                 "Login ou Mot de pass incorrecte");
+            fctx.addMessage(null, msg);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public String Logout() {
+        FacesContext fctx = FacesContext.getCurrentInstance();  
+             ExternalContext ectx = fctx.getExternalContext();  
+             String url = ectx.getRequestContextPath() + "/adfAuthentication?logout=true&end_url=/faces/login.jsf";  
+               
+             HttpSession session = (HttpSession)ectx.getSession(false);  
+             session.invalidate();  
+               
+             HttpServletRequest request = (HttpServletRequest)ectx.getRequest();  
+             ServletAuthentication.logout(request);
+             ServletAuthentication.invalidateAll(request);
+             ServletAuthentication.killCookie(request);
+             this.setUsername("");
+             this.setPassword("");
+             try{  
+               ectx.redirect(url);  
+             }  
+             catch(Exception e){  
+               e.printStackTrace();  
+             }  
+             fctx.responseComplete();  
+               
+        return null;
+    }
+}

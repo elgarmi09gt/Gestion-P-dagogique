@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <af:panelStretchLayout id="psl1" dimensionsFrom="children" endWidth="51px">
+        <f:facet name="start"/>
+        <f:facet name="end"/>
+        <f:facet name="top">
+            <af:panelGroupLayout id="pgl1">
+                <af:button text="Typte Compte" id="b1"
+                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:0px;"
+                           disabled="true"/>
+            </af:panelGroupLayout>
+        </f:facet>
+        <f:facet name="bottom"/>
+        <f:facet name="center">
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth" inlineStyle="width:626px;">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar">
+                    <af:toolbar id="t4">
+                        <af:button id="b5" icon="/images/new_icon.png"
+                                   actionListener="#{TypeCompteBean.onTypeCompteNew}"/>
+                        <af:button id="b6" icon="/images/edit_icon.png"
+                                   actionListener="#{TypeCompteBean.onTypeCompteEdit}"/>
+                        <af:button id="b7" icon="/images/delete_icon.png"
+                                   actionListener="#{TypeCompteBean.onTypeCompteDel}"/>
+                    </af:toolbar>
+                </f:facet>
+                <f:facet name="statusbar"/>
+                <af:table value="#{bindings.TypeCompteRO.collectionModel}" var="row"
+                          rows="#{bindings.TypeCompteRO.rangeSize}"
+                          emptyText="#{bindings.TypeCompteRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0" selectedRowKeys="#{bindings.TypeCompteRO.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.TypeCompteRO.collectionModel.makeCurrent}" rowSelection="single"
+                          fetchSize="#{bindings.TypeCompteRO.rangeSize}"
+                          filterModel="#{bindings.TypeCompteROQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.TypeCompteROQuery.processQuery}" varStatus="vs" id="t1" width="626">
+                    <af:column sortProperty="#{bindings.TypeCompteRO.hints.LibelleType.name}" filterable="true"
+                               sortable="true" headerText="Libellé" id="c2" width="400">
+                        <af:outputText value="#{row.LibelleType}"
+                                       shortDesc="#{bindings.TypeCompteRO.hints.LibelleType.tooltip}" id="ot2"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.TypeCompteRO.hints.LibCourtType.name}" filterable="true"
+                               sortable="true" headerText="Abréviation" id="c1" width="200">
+                        <af:outputText value="#{row.LibCourtType}"
+                                       shortDesc="#{bindings.TypeCompteRO.hints.LibCourtType.tooltip}" id="ot1"/>
+                    </af:column>
+                </af:table>
+            </af:panelCollection>
+        </f:facet>
+    </af:panelStretchLayout>
+    <af:resource type="javascript">
+      function onDialog(evt) {
+          var outcome = evt.getOutcome();
+          if (outcome == AdfDialogEvent.OUTCOME_CANCEL) {
+              //call server
+              var eventSource = evt.getSource();
+              var immediate = true;
+              AdfCustomEvent.queue(eventSource, "onDialogEvent", 
+              {
+              },
+              immediate);
+              evt.cancel();
+          }
+      }
+    </af:resource>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+              binding="#{TypeCompteBean.popNewType}">
+        <af:dialog id="d1" title="Formulaire d'Ajout Type Compte" dialogListener="#{TypeCompteBean.onDialogType}">
+            <af:panelFormLayout id="pfl1">
+                <af:inputText value="#{bindings.LibelleLong.inputValue}" label="Libellé"
+                              required="#{bindings.LibelleLong.hints.mandatory}"
+                              columns="#{bindings.LibelleLong.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleLong.hints.precision}"
+                              shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1">
+                    <f:validator binding="#{bindings.LibelleLong.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="Abréviation"
+                              required="#{bindings.LibelleCourt.hints.mandatory}"
+                              columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                              shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2">
+                    <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+                </af:inputText>
+            </af:panelFormLayout>
+            <f:facet name="buttonBar"/>
+            <af:clientListener method="onDialog" type="dialog"/>
+            <af:serverListener type="onDialogEvent" method="#{TypeCompteBean.onDialogCanNew}"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" contentDelivery="lazyUncached"
+              binding="#{TypeCompteBean.popEditType}">
+        <af:dialog id="d2" title="Formulaire de modifications" dialogListener="#{TypeCompteBean.onDialogType}">
+            <af:panelFormLayout id="pfl2">
+                <af:inputText value="#{bindings.LibelleLong.inputValue}" label="Libellé"
+                              required="#{bindings.LibelleLong.hints.mandatory}"
+                              columns="#{bindings.LibelleLong.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleLong.hints.precision}"
+                              shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it3">
+                    <f:validator binding="#{bindings.LibelleLong.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="Abréviation"
+                              required="#{bindings.LibelleCourt.hints.mandatory}"
+                              columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                              shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it4">
+                    <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+                </af:inputText>
+            </af:panelFormLayout>
+            <f:facet name="buttonBar"/>
+            <af:clientListener method="onDialog" type="dialog"/>
+            <af:serverListener type="onDialogEvent" method="#{TypeCompteBean.onDialogCanEdit}"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p11" binding="#{TypeCompteBean.popEditTypErr}">
+        <af:dialog id="d11" type="ok" title="Info Modification" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Veuillez ajouter au moins un type compte avant de modifier" id="of5"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p6" contentDelivery="lazyUncached"
+              binding="#{TypeCompteBean.popDelType}">
+        <af:dialog id="d6" title="Formulaire de suppression" dialogListener="#{TypeCompteBean.onDialogDelType}">
+            <f:facet name="buttonBar"/>
+            <af:clientListener method="onDialog" type="dialog"/>
+            <af:serverListener type="onDialogEvent" method="#{TypeCompteBean.onDialogTypeCanDel}"/>
+            
+            <af:outputFormatted value="Voulez-vous supprimer le type de compte :#{bindings.LibelleLong}" id="of1"
+                                inlineStyle="font-size:large; color:#3131ff;"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p12" binding="#{TypeCompteBean.popDelTypErr}">
+        <af:dialog id="d12" type="ok" title="Info Suppression" inlineStyle="text-align:center;">
+            <f:facet name="buttonBar"/>
+            <af:outputFormatted value="Veuillez ajouter au moins un type compte avant de supprimer" id="of6"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+        </af:dialog>
+    </af:popup>
+</ui:composition>

@@ -1,0 +1,365 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+        <af:button text="Rechercher un Etudiant" id="b1"
+             inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;"
+             partialSubmit="false" disabled="true"/>
+        <af:panelFormLayout id="pfl1" rows="3"
+                            inlineStyle="border:solid  2px #2897e8;width:800px;margin-top:20px;margin-left:10px;">
+                <f:facet name="footer"/>
+                <af:inputText id="it13" autoSubmit="true" label="Numéro Etudiant"
+                              value="#{ExonerationBean.numero_etud}">
+                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                <af:serverListener type="filterShuttle" method="#{ExonerationBean.onChangeNumeroEtud}"/>
+                              </af:inputText>
+                <af:inputText id="it21" autoSubmit="true" label="Numéro d'identification Nationale"
+                              contentStyle="margin-bottom:5px;" value="#{ExonerationBean.numero_cin}"
+                              disabled="#{sessionScope.etudNotNull == '1' ? true : false}" partialTriggers="it13">
+                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                <af:serverListener type="filterShuttle" method="#{ExonerationBean.onChangeNumeroCin}"/>
+                              </af:inputText>
+                <af:inputText id="it2" autoSubmit="true" converter="javax.faces.Integer" label="Numéro Table"
+                              value="#{ExonerationBean.numero_table}"
+                              disabled="#{sessionScope.cinNotNull == '1' or sessionScope.etudNotNull == '1' ? true : false}"
+                              partialTriggers="it13 it21">
+                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                <af:serverListener type="filterShuttle" method="#{ExonerationBean.onChangeNumeroTable}"/>
+                </af:inputText>
+                <af:inputText id="it29" label="Prénom" value="#{ExonerationBean.prenom}"
+                              disabled="#{sessionScope.tableNotNull == '1' or sessionScope.etudNotNull == '1'  or sessionScope.cinNotNull == '1' ? true : false}"
+                              partialTriggers="it13 it21 it2 b2"/>
+                <af:inputText id="it30" label="Nom" value="#{ExonerationBean.nom}"
+                              disabled="#{sessionScope.tableNotNull == '1' or sessionScope.etudNotNull == '1'  or sessionScope.cinNotNull == '1' ? true : false}"
+                              partialTriggers="it13 it21 it2 b2"/>
+                <af:inputDate id="it31" label="Date Naissance" value="#{ExonerationBean.date_naiss}"
+                              disabled="#{sessionScope.tableNotNull == '1' or sessionScope.etudNotNull == '1'  or sessionScope.cinNotNull == '1' ? true : false}"
+                              partialTriggers="it13 it21 it2 b2"/>
+         <af:resource type="javascript">
+    function catchKeyStroke(event) {
+        component = event.getSource();
+        //if(component.getSubmittedValue().length == 0 || component.getSubmittedValue().length > 1)
+        //{
+            AdfCustomEvent.queue(component, "filterShuttle", 
+            {
+                filterKey : component.getSubmittedValue()
+            },true);
+            event.cancel();
+        //}
+    }
+  </af:resource>       
+        </af:panelFormLayout>
+        <af:button text="Rechercher" id="b2"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                   icon="/images/commit.png" action="#{ExonerationBean.onValiderRecherche}"/>
+        <af:panelSplitter id="ps1" dimensionsFrom="children" splitterPosition="600" firstBorder="all"
+                          secondBorder="all" disabled="true">
+                <f:facet name="first">
+                        <af:panelGroupLayout id="pgl2" layout="vertical">
+                                <af:button text="Liste des Inscriptions Pédagogiques" id="b5"
+                                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;"
+                                           partialSubmit="false" disabled="true"/>
+                                <af:table value="#{bindings.ListeInsPedExonerationRO.collectionModel}" var="row"
+                                          rows="#{bindings.ListeInsPedExonerationRO.rangeSize}"
+                                          emptyText="#{bindings.ListeInsPedExonerationRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                          rowBandingInterval="0"
+                                          selectedRowKeys="#{bindings.ListeInsPedExonerationRO.collectionModel.selectedRow}"
+                                          selectionListener="#{bindings.ListeInsPedExonerationRO.collectionModel.makeCurrent}"
+                                          rowSelection="single"
+                                          fetchSize="#{bindings.ListeInsPedExonerationRO.rangeSize}"
+                                          filterModel="#{bindings.ListeInsPedExonerationROQuery.queryDescriptor}"
+                                          filterVisible="true"
+                                          queryListener="#{bindings.ListeInsPedExonerationROQuery.processQuery}"
+                                          varStatus="vs" id="t1" inlineStyle="margin-top:20px;margin-left:10px;"
+                                          partialTriggers="::b4" scrollPolicy="page">
+                                        <af:column sortProperty="#{bindings.ListeInsPedExonerationRO.hints.LibNivForm.name}"
+                                                   filterable="true" sortable="true" headerText="Niveau Formation"
+                                                   id="c1" width="300">
+                                                <af:outputText value="#{row.LibNivForm}"
+                                                               shortDesc="#{bindings.ListeInsPedExonerationRO.hints.LibNivForm.tooltip}"
+                                                               id="ot1"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ListeInsPedExonerationRO.hints.DroitInsAdm.name}"
+                                                   filterable="true" sortable="true"
+                                                   headerText="Droit Inscription Administrative" id="c2" width="90">
+                                                <af:outputText value="#{row.DroitInsAdm}"
+                                                               shortDesc="#{bindings.ListeInsPedExonerationRO.hints.DroitInsAdm.tooltip}"
+                                                               id="ot2">
+                                                        <af:convertNumber groupingUsed="false"
+                                                                          pattern="#{bindings.ListeInsPedExonerationRO.hints.DroitInsAdm.format}"/>
+                                                </af:outputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ListeInsPedExonerationRO.hints.DroitInsPed.name}"
+                                                   filterable="true" sortable="true"
+                                                   headerText="Droit Inscription Pédagogique" id="c3" width="75">
+                                                <af:outputText value="#{row.DroitInsPed}"
+                                                               shortDesc="#{bindings.ListeInsPedExonerationRO.hints.DroitInsPed.tooltip}"
+                                                               id="ot3">
+                                                        <af:convertNumber groupingUsed="false"
+                                                                          pattern="#{bindings.ListeInsPedExonerationRO.hints.DroitInsPed.format}"/>
+                                                </af:outputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ListeInsPedExonerationRO.hints.CoutFormation.name}"
+                                                   filterable="true" sortable="true" headerText="Coût Formation"
+                                                   id="c4" width="75">
+                                                <af:outputText value="#{row.CoutFormation}"
+                                                               shortDesc="#{bindings.ListeInsPedExonerationRO.hints.CoutFormation.tooltip}"
+                                                               id="ot4">
+                                                        <af:convertNumber groupingUsed="false"
+                                                                          pattern="#{bindings.ListeInsPedExonerationRO.hints.CoutFormation.format}"/>
+                                                </af:outputText>
+                                        </af:column>
+                                        <af:clientListener method="handleTableClick" type="click"/><af:serverListener type="TableClickEvent"
+                                                                                                                      method="#{ExonerationBean.handleTableClick}"/>
+                                </af:table>
+                                <af:resource type="javascript">
+                                  function handleTableClick(evt){   
+                                     var table = evt.getSource();
+                                     AdfCustomEvent.queue(table, "TableClickEvent",{}, true);         
+                                     evt.cancel();
+                                  }
+                                 </af:resource>
+                        </af:panelGroupLayout>
+    
+                </f:facet>
+                <f:facet name="second">
+                        <af:panelGroupLayout id="pgl1" layout="vertical">
+                                <af:button text="Exonération" id="b6"
+                                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;"
+                                           partialSubmit="false" disabled="true"/>
+                                <af:table value="#{bindings.Exoneration.collectionModel}" var="row"
+                                          rows="#{bindings.Exoneration.rangeSize}"
+                                          emptyText="#{bindings.Exoneration.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                          rowBandingInterval="0"
+                                          selectedRowKeys="#{bindings.Exoneration.collectionModel.selectedRow}"
+                                          selectionListener="#{bindings.Exoneration.collectionModel.makeCurrent}"
+                                          rowSelection="single" fetchSize="#{bindings.Exoneration.rangeSize}"
+                                          filterModel="#{bindings.ExonerationQuery.queryDescriptor}"
+                                          filterVisible="true" queryListener="#{bindings.ExonerationQuery.processQuery}"
+                                          varStatus="vs" id="t2" scrollPolicy="page"
+                                          inlineStyle="margin-top:20px;margin-left:10px;">
+                                        <af:column headerText="Année Universitaire" id="c12">
+                                                <af:outputText value="#{row.LibelleAnnee}"
+                                                               shortDesc="#{bindings.Exoneration.hints.LibelleAnnee.tooltip}"
+                                                               id="ot6"/>
+                                        </af:column>
+                                        <af:column headerText="Niveau Formation" id="c8" width="300">
+                                                <af:outputText value="#{row.LibelleFormation}"
+                                                               shortDesc="#{bindings.Exoneration.hints.LibelleFormation.tooltip}"
+                                                               id="ot5"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.Exoneration.hints.IdTypeExoneration.name}"
+                                                   filterable="true" sortable="true" headerText="Type Exoneration"
+                                                   id="c5" width="115">
+                                                <af:selectOneChoice value="#{row.bindings.IdTypeExoneration.inputValue}"
+                                                                    label="#{row.bindings.IdTypeExoneration.label}"
+                                                                    required="#{bindings.Exoneration.hints.IdTypeExoneration.mandatory}"
+                                                                    shortDesc="#{bindings.Exoneration.hints.IdTypeExoneration.tooltip}"
+                                                                    id="soc1" autoSubmit="true">
+                                                        <f:selectItems value="#{row.bindings.IdTypeExoneration.items}"
+                                                                       id="si1"/>
+                                                        <f:validator binding="#{row.bindings.IdTypeExoneration.validator}"/>
+                                                </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.Exoneration.hints.IdNatureExoneration.name}"
+                                                   filterable="true" sortable="true" headerText="Nature Exoneration"
+                                                   id="c6" width="95">
+                                                <af:selectOneChoice value="#{row.bindings.IdNatureExoneration.inputValue}"
+                                                                    label="#{row.bindings.IdNatureExoneration.label}"
+                                                                    required="#{bindings.Exoneration.hints.IdNatureExoneration.mandatory}"
+                                                                    shortDesc="#{bindings.Exoneration.hints.IdNatureExoneration.tooltip}"
+                                                                    id="soc2" autoSubmit="true"
+                                                                    valueChangeListener="#{ExonerationBean.onChangerListenerNature}">
+                                                        <f:selectItems value="#{row.bindings.IdNatureExoneration.items}"
+                                                                       id="si2"/>
+                                                        <f:validator binding="#{row.bindings.IdNatureExoneration.validator}"/>
+                                                </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.Exoneration.hints.IdMotifExoneration.name}"
+                                                   filterable="true" sortable="true" headerText="Motif Exoneration"
+                                                   id="c7" width="150">
+                                                <af:selectOneChoice value="#{row.bindings.IdMotifExoneration.inputValue}"
+                                                                    label="#{row.bindings.IdMotifExoneration.label}"
+                                                                    required="#{bindings.Exoneration.hints.IdMotifExoneration.mandatory}"
+                                                                    shortDesc="#{bindings.Exoneration.hints.IdMotifExoneration.tooltip}"
+                                                                    id="soc3" autoSubmit="true"
+                                                                    valueChangeListener="#{ExonerationBean.onChangerListenerMotif}">
+                                                        <f:selectItems value="#{row.bindings.IdMotifExoneration.items}"
+                                                                       id="si3"/>
+                                                        <f:validator binding="#{row.bindings.IdMotifExoneration.validator}"/>
+                                                </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.Exoneration.hints.Taux.name}"
+                                                   filterable="true" sortable="true"
+                                                   headerText="#{bindings.Exoneration.hints.Taux.label}" id="c9"
+                                                   width="75">
+                                                <af:inputText value="#{row.bindings.Taux.inputValue}"
+                                                              label="#{bindings.Exoneration.hints.Taux.label}"
+                                                              required="#{bindings.Exoneration.hints.Taux.mandatory}"
+                                                              columns="#{bindings.Exoneration.hints.Taux.displayWidth}"
+                                                              maximumLength="#{bindings.Exoneration.hints.Taux.precision}"
+                                                              shortDesc="#{bindings.Exoneration.hints.Taux.tooltip}"
+                                                              id="it3"
+                                                              disabled="#{sessionScope.par_montant == '1' ? true : false}">
+                                                        <!--f:validator binding="#{row.bindings.Taux.validator}"/!-->
+                                                        <af:validateDoubleRange minimum="0" maximum="100"
+                                                                                messageDetailNotInRange="Le taux doit etre compris entre 0 et 100"/>
+                                                        <af:convertNumber groupingUsed="false"
+                                                                          pattern="#{bindings.Exoneration.hints.Taux.format}"/>
+                                                </af:inputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.Exoneration.hints.Montant.name}"
+                                                   filterable="true" sortable="true"
+                                                   headerText="#{bindings.Exoneration.hints.Montant.label}" id="c10"
+                                                   width="75">
+                                                <af:inputText value="#{row.bindings.Montant.inputValue}"
+                                                              label="#{bindings.Exoneration.hints.Montant.label}"
+                                                              required="#{bindings.Exoneration.hints.Montant.mandatory}"
+                                                              columns="#{bindings.Exoneration.hints.Montant.displayWidth}"
+                                                              maximumLength="#{bindings.Exoneration.hints.Montant.precision}"
+                                                              shortDesc="#{bindings.Exoneration.hints.Montant.tooltip}"
+                                                              id="it4"
+                                                              disabled="#{sessionScope.par_taux == '1' ? true : false}">
+                                                        <f:validator binding="#{row.bindings.Montant.validator}"/>
+                                                        <af:convertNumber groupingUsed="false"
+                                                                          pattern="#{bindings.Exoneration.hints.Montant.format}"/>
+                                                </af:inputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.Exoneration.hints.RefExo.name}"
+                                                   filterable="true" sortable="true" headerText="Rérérence" id="c11"
+                                                   width="200">
+                                                <af:inputText value="#{row.bindings.RefExo.inputValue}"
+                                                              label="#{bindings.Exoneration.hints.RefExo.label}"
+                                                              required="#{bindings.Exoneration.hints.RefExo.mandatory}"
+                                                              columns="#{bindings.Exoneration.hints.RefExo.displayWidth}"
+                                                              maximumLength="#{bindings.Exoneration.hints.RefExo.precision}"
+                                                              shortDesc="#{bindings.Exoneration.hints.RefExo.tooltip}"
+                                                              id="it5" contentStyle="height:75px;" rows="2">
+                                                        <f:validator binding="#{row.bindings.RefExo.validator}"/>
+                                                </af:inputText>
+                                        </af:column>
+                                </af:table>
+                                <af:button text="Valider" id="b4" action="#{ExonerationBean.onValiderExo}"
+                                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:5px;"
+                                           icon="/images/commit.png"/>
+                        </af:panelGroupLayout>
+                </f:facet>
+        </af:panelSplitter>
+        <af:button text="Liste des Exonérations antérieures" id="b3"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;"
+                   partialSubmit="false" disabled="true"/>
+        <af:table value="#{bindings.InfoExonerationAnterieurRO.collectionModel}" var="row"
+                  rows="#{bindings.InfoExonerationAnterieurRO.rangeSize}"
+                  emptyText="#{bindings.InfoExonerationAnterieurRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.InfoExonerationAnterieurRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.InfoExonerationAnterieurRO.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.InfoExonerationAnterieurRO.rangeSize}"
+                  filterModel="#{bindings.InfoExonerationAnterieurROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.InfoExonerationAnterieurROQuery.processQuery}" varStatus="vs" id="t3"
+                  inlineStyle="margin-top:10px;" scrollPolicy="page">
+                <af:column sortProperty="#{bindings.InfoExonerationAnterieurRO.hints.LibAnnee.name}" filterable="true"
+                           sortable="true" headerText="Année Universitaire"
+                           id="c13">
+                        <af:outputText value="#{row.LibAnnee}"
+                                       shortDesc="#{bindings.InfoExonerationAnterieurRO.hints.LibAnnee.tooltip}"
+                                       id="ot7"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.InfoExonerationAnterieurRO.hints.LibForm.name}" filterable="true"
+                           sortable="true" headerText="Niveau Formation" id="c20" width="400">
+                        <af:outputText value="#{row.LibForm}"
+                                       shortDesc="#{bindings.InfoExonerationAnterieurRO.hints.LibForm.tooltip}"
+                                       id="ot11"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.InfoExonerationAnterieurRO.hints.IdTypeExoneration.name}"
+                           filterable="true" sortable="true" headerText="Type Exoneration" id="c16">
+                        <af:selectOneChoice value="#{row.bindings.IdTypeExoneration.inputValue}"
+                                            label="#{row.bindings.IdTypeExoneration.label}"
+                                            required="#{bindings.InfoExonerationAnterieurRO.hints.IdTypeExoneration.mandatory}"
+                                            shortDesc="#{bindings.InfoExonerationAnterieurRO.hints.IdTypeExoneration.tooltip}"
+                                            readOnly="true" id="soc6">
+                                <f:selectItems value="#{row.bindings.IdTypeExoneration.items}" id="si6"/>
+                                <f:validator binding="#{row.bindings.IdTypeExoneration.validator}"/>
+                        </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.InfoExonerationAnterieurRO.hints.IdNatureExoneration.name}"
+                           filterable="true" sortable="true" headerText="Nature Exoneration" id="c15">
+                        <af:selectOneChoice value="#{row.bindings.IdNatureExoneration.inputValue}"
+                                            label="#{row.bindings.IdNatureExoneration.label}"
+                                            required="#{bindings.InfoExonerationAnterieurRO.hints.IdNatureExoneration.mandatory}"
+                                            shortDesc="#{bindings.InfoExonerationAnterieurRO.hints.IdNatureExoneration.tooltip}"
+                                            readOnly="true" id="soc5">
+                                <f:selectItems value="#{row.bindings.IdNatureExoneration.items}" id="si5"/>
+                                <f:validator binding="#{row.bindings.IdNatureExoneration.validator}"/>
+                        </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.InfoExonerationAnterieurRO.hints.IdMotifExoneration.name}"
+                           filterable="true" sortable="true"
+                           headerText="Motif Exoneration" id="c14" width="175">
+                        <af:selectOneChoice value="#{row.bindings.IdMotifExoneration.inputValue}"
+                                            label="#{row.bindings.IdMotifExoneration.label}"
+                                            required="#{bindings.InfoExonerationAnterieurRO.hints.IdMotifExoneration.mandatory}"
+                                            shortDesc="#{bindings.InfoExonerationAnterieurRO.hints.IdMotifExoneration.tooltip}"
+                                            readOnly="true" id="soc4">
+                                <f:selectItems value="#{row.bindings.IdMotifExoneration.items}" id="si4"/>
+                                <f:validator binding="#{row.bindings.IdMotifExoneration.validator}"/>
+                        </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.InfoExonerationAnterieurRO.hints.Montant.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.InfoExonerationAnterieurRO.hints.Montant.label}"
+                           id="c17">
+                        <af:outputText value="#{row.Montant}"
+                                       shortDesc="#{bindings.InfoExonerationAnterieurRO.hints.Montant.tooltip}"
+                                       id="ot8">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.InfoExonerationAnterieurRO.hints.Montant.format}"/>
+                        </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.InfoExonerationAnterieurRO.hints.Taux.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.InfoExonerationAnterieurRO.hints.Taux.label}"
+                           id="c19" width="75">
+                        <af:outputText value="#{row.Taux}"
+                                       shortDesc="#{bindings.InfoExonerationAnterieurRO.hints.Taux.tooltip}" id="ot10">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.InfoExonerationAnterieurRO.hints.Taux.format}"/>
+                        </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.InfoExonerationAnterieurRO.hints.RefExo.name}" filterable="true"
+                           sortable="true" headerText="Référence" id="c18" width="365">
+                        <af:outputText value="#{row.RefExo}"
+                                       shortDesc="#{bindings.InfoExonerationAnterieurRO.hints.RefExo.tooltip}"
+                                       id="ot9"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.InfoExonerationAnterieurRO.hints.DroitInsAdm.name}"
+                           filterable="true" sortable="true"
+                           headerText="Droit Inscription Administrative" id="c21" width="100">
+                        <af:outputText value="#{row.DroitInsAdm}"
+                                       shortDesc="#{bindings.InfoExonerationAnterieurRO.hints.DroitInsAdm.tooltip}"
+                                       id="ot12">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.InfoExonerationAnterieurRO.hints.DroitInsAdm.format}"/>
+                        </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.InfoExonerationAnterieurRO.hints.DroitInsPed.name}"
+                           filterable="true" sortable="true"
+                           headerText="Droit Inscription Pédagogique" id="c22" width="100">
+                        <af:outputText value="#{row.DroitInsPed}"
+                                       shortDesc="#{bindings.InfoExonerationAnterieurRO.hints.DroitInsPed.tooltip}"
+                                       id="ot13">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.InfoExonerationAnterieurRO.hints.DroitInsPed.format}"/>
+                        </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.InfoExonerationAnterieurRO.hints.CoutFormation.name}"
+                           filterable="true" sortable="true"
+                           headerText="Coût Formation" id="c23" width="75">
+                        <af:outputText value="#{row.CoutFormation}"
+                                       shortDesc="#{bindings.InfoExonerationAnterieurRO.hints.CoutFormation.tooltip}"
+                                       id="ot14">
+                                <af:convertNumber groupingUsed="false"
+                                                  pattern="#{bindings.InfoExonerationAnterieurRO.hints.CoutFormation.format}"/>
+                        </af:outputText>
+                </af:column>
+        </af:table>
+
+</ui:composition>

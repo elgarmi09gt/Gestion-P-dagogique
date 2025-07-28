@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="levee-suspension-tk">
+    <default-activity>Execute</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__4">
+      <managed-bean-name>LeveeSuspenduBean</managed-bean-name>
+      <managed-bean-class>levee_suspension.LeveeSuspenduBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="levee_suspension">
+      <page>/inscription/levee_suspension/levee_suspension.jsff</page>
+    </view>
+    <method-call id="Execute">
+      <method>#{bindings.Execute.execute}</method>
+      <outcome>
+        <fixed-outcome>Execute</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__1">
+      <from-activity-id>Execute</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>Execute</from-outcome>
+        <to-activity-id>levee_suspension</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

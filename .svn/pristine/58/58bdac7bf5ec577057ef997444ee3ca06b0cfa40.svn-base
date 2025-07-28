@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="releveTF_releveTF_ExecuteWithParamsPageDef" Package="evaluation.releves" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="EtudiantReleves" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="EtudiantRelevesIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="EtudiantRelevesIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="anne" NDValue="#{pageFlowScope.id_annee}" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDValue="#{pageFlowScope.id_parcours}" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_hs" NDValue="#{pageFlowScope.id_structure}" NDType="java.lang.Integer"/>
+    </action>
+  </bindings>
+</pageDefinition>

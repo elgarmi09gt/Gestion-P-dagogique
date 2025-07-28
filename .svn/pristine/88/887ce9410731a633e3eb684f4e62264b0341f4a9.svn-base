@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="evalconnectionPageDef"
+                Package="evaluation">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Sessions" RangeSize="25" DataControl="evaluationAppDataControl" id="SessionsIterator"/>
+    <iterator Binds="Semestres" RangeSize="25" DataControl="evaluationAppDataControl" id="SemestresIterator"/>
+    <iterator Binds="AnneeUnivers" RangeSize="25" DataControl="evaluationAppDataControl" id="AnneeUniversIterator"/>
+    <iterator Binds="HistoriquesStructures" DataControl="evaluationAppDataControl"
+              id="HistoriquesStructuresIterator"/>
+    <iterator Binds="Parcours" RangeSize="25" DataControl="evaluationAppDataControl" id="ParcoursIterator"/>
+    <iterator id="CalendrierDeliberationsIterator" Binds="CalendrierDeliberationsRO"
+              DataControl="evaluationAppDataControl" RangeSize="25"/>
+    <iterator Binds="UserByUserName" RangeSize="10" DataControl="evaluationAppDataControl" id="UserByUserNameIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="SessionsIterator" ListOperMode="navigation" ListIter="SessionsIterator" id="Sessions"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="SemestresIterator" ListOperMode="navigation" ListIter="SemestresIterator" id="Semestres"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="AnneeUniversIterator" ListOperMode="navigation" ListIter="AnneeUniversIterator"
+          id="AnneeUnivers" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="HistoriquesStructuresIterator" ListOperMode="navigation" ListIter="HistoriquesStructuresIterator"
+          id="HistoriquesStructures" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="ParcoursIterator" id="ExecuteWithParams" InstanceName="evaluationAppDataControl.Parcours"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_user" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="idDept" NDType="oracle.jbo.domain.Number"/>
+    </action>
+    <list IterBinding="ParcoursIterator" ListOperMode="navigation" ListIter="ParcoursIterator" id="Parcours"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="CalendrierDeliberationsIterator" id="ExecuteWithParamsCalendrier"
+            InstanceName="evaluationAppDataControl.CalendrierDeliberationsRO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="id_session" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="id_niv_form" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="id_smstre" NDType="oracle.jbo.domain.Number"/>
+    </action>
+    <action IterBinding="UserByUserNameIterator" id="UserByUserName"
+            InstanceName="evaluationAppDataControl.UserByUserName" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="userName" NDValue="#{sessionScope.userName}" NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

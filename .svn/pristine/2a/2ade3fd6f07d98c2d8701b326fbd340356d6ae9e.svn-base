@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="paiement_etudPageDef"
+                Package="inscription.paiement_etudiant">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="HistoPaiementEtudRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="HistoPaiementEtudROIterator"/>
+    <iterator Binds="FormPaiementEtudRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="FormPaiementEtudROIterator"/>
+    <iterator Binds="Personnes" RangeSize="25" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="PaiementEtudiant" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="PaiementEtudiantIterator"/>
+    <iterator Binds="Etudiants" RangeSize="10" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="EtudPaiementRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="EtudPaiementROIterator"/>
+  </executables>
+  <bindings>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="HistoPaiementEtudROIterator" id="IdHistoriquesStructure">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormPaiementEtudROIterator" id="IdNiveauFormationParcours">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoPaiementEtudROIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoPaiementEtudROIterator" id="IdEtudiant">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoPaiementEtudROIterator" id="IdInscriptionPedagogique">
+      <AttrNames>
+        <Item Value="IdInscriptionPedagogique"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="IdAnneesUnivers1">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="IdHistoriquesStructure1">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="IdEtudiant1">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="IdInscriptionPedagogique1">
+      <AttrNames>
+        <Item Value="IdInscriptionPedagogique"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="IdModePaiement1">
+      <AttrNames>
+        <Item Value="IdModePaiement"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="IdNiveauFormationParcours1">
+      <AttrNames>
+        <Item Value="IdNiveauFormationParcours"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantsIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudPaiementROIterator" id="DatePaiement">
+      <AttrNames>
+        <Item Value="DatePaiement"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudPaiementROIterator" id="NumQuittance">
+      <AttrNames>
+        <Item Value="NumQuittance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudPaiementROIterator" id="Montant">
+      <AttrNames>
+        <Item Value="Montant"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="EtudPaiementROIterator" StaticList="false" Uses="LOV_CodeNationalite" id="CodeNationalite"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="EtudPaiementROIterator" id="DroitAdm">
+      <AttrNames>
+        <Item Value="DroitAdm"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudPaiementROIterator" id="DroitPed">
+      <AttrNames>
+        <Item Value="DroitPed"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="EtudPaiementROIterator" StaticList="false" Uses="LOV_IdModePaiement" id="IdModePaiement"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="EtudPaiementROIterator" StaticList="false" Uses="LOV_IdOperateur" id="IdOperateur"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="EtudPaiementROIterator" id="MontantPercu">
+      <AttrNames>
+        <Item Value="MontantPercu"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="DatePaiement1">
+      <AttrNames>
+        <Item Value="DatePaiement"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="NumQuittance1">
+      <AttrNames>
+        <Item Value="NumQuittance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="Montant1">
+      <AttrNames>
+        <Item Value="Montant"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="PaiementEtudiantIterator" StaticList="false" Uses="LOV_CodeNationalite" id="CodeNationalite1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="DroitAdm1">
+      <AttrNames>
+        <Item Value="DroitAdm"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="DroitPed1">
+      <AttrNames>
+        <Item Value="DroitPed"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="PaiementEtudiantIterator" StaticList="false" Uses="LOV_IdModePaiement" id="IdModePaiement2"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="PaiementEtudiantIterator" StaticList="false" Uses="LOV_IdOperateur" id="IdOperateur1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="PaiementEtudiantIterator" id="MontantPercu1">
+      <AttrNames>
+        <Item Value="MontantPercu"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

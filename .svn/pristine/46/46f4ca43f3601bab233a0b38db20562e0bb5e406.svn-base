@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="liste_etudiant_mob_tk_liste_etudiant_mob_tk_ExecuteWithParamsPageDef"
+                Package="inscription.etudiant_mobilite" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="listeEtudMobiliteRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="listeEtudMobiliteROIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="listeEtudMobiliteROIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams" InstanceName="inscriptionAppDataControl.listeEtudMobiliteRO"
+            DataControl="inscriptionAppDataControl">
+      <NamedData NDName="id_annee" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sem" NDValue="#{sessionScope.id_smstre}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

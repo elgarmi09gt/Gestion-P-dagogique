@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl2" binding="#{MaquetteBean.panimport}">
+    <af:panelGroupLayout id="pgl1" layout="vertical">
+      <af:button text="Importer" id="b25" icon="/images/import_48px.png"
+                 inlineStyle="font-size:large; color:White; font-family:cursive; border-radius:8px  ; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8;"
+                 actionListener="#{MaquetteBean.OnImportEtudiantAction}">
+        <af:showPopupBehavior popupId="p2"/>
+      </af:button>
+      <af:outputFormatted value="Import des étudiants dans les parcours corespondants " id="of1"
+                          inlineStyle="color:Navy; font-size:small; font-style:italic;"/>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{MaquetteBean.popupImportEtu}"
+              contentDelivery="lazyUncached">
+      <af:dialog id="d22" title="Import Etudiant" inlineStyle="text-align:center;border-radius:8px"
+                 affirmativeTextAndAccessKey="Enregistrer" cancelTextAndAccessKey="Annuler" noTextAndAccessKey="Fermer"
+                 type="none">
+        <f:facet name="buttonBar"/>
+        <af:panelGroupLayout id="pgl7" layout="vertical" inlineStyle="text-align:center;">
+          <af:inputFile label="Selectionner" id="if1" value="#{MaquetteBean.uploadEtuFile}"/>
+          <af:panelGroupLayout id="pgl8" inlineStyle="line-height:normal;">
+            <af:button text="Enregistrer" id="b26" actionListener="#{MaquetteBean.OnImportEtuValideAction}"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</ui:composition>

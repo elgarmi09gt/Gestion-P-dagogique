@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl4" halign="center" layout="scroll"
+                       inlineStyle="background-color:#fff;margin-top:150px" valign="middle">
+    <af:outputFormatted value="Paramétres de Connexion" id="of7"
+                        inlineStyle="font-size:x-large; color:#2897e8; font-weight:bolder;"/>
+    <af:panelGroupLayout id="pgl3" layout="vertical"
+                         inlineStyle="border: solid 3px  #2897e8; border-radius:13px ; margin-left:100px; line-height:50px; margin-right:100px; font-size:large; background-color:#2897e8;margin-top:30px; width:1000px">
+      <af:panelGroupLayout id="pgl5" layout="horizontal" inlineStyle="width: 850px;">
+        <af:panelGroupLayout id="pgl1" layout="horizontal">
+          <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:985px)"
+                                 propertyName="layout"/>
+          <af:panelGroupLayout id="pgl6" halign="left" inlineStyle="width: 200px;" layout="vertical">
+            <af:outputFormatted value="Année Universitaire" id="of1"
+                                inlineStyle="font-size:large; color:White; font-weight:bolder; "/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl7" halign="left" layout="vertical" inlineStyle="width: 200px;">
+            <af:selectOneChoice value="#{bindings.AnneeUnivers.inputValue}"
+                                required="#{bindings.AnneeUnivers.hints.mandatory}"
+                                shortDesc="#{bindings.AnneeUnivers.hints.tooltip}" id="soc1"
+                                unselectedLabel="Selectionnez Une Année"
+                                contentStyle="font-size:large;width: 200px;  border-radius: 8px;">
+              <f:selectItems value="#{bindings.AnneeUnivers.items}" id="si1"/>
+              <f:validator binding="#{bindings.AnneeUnivers.validator}"/>
+            </af:selectOneChoice>
+            <!--af:matchMediaBehavior matchedPropertyValue="center" mediaQuery="screen and (max-width:985px)"
+                                 propertyName="Halign"/-->
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl2" layout="horizontal">
+        <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:985px)"
+                                 propertyName="layout"/>
+        <!--af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:850px)"
+                                 propertyName="layout"/-->
+          <af:panelGroupLayout id="pgl8" halign="left" layout="vertical" inlineStyle="width: 150px;">
+            <af:outputFormatted value="Session" id="of2"
+                                inlineStyle="font-size:large; color:White; font-weight:bolder; width: 200px;"/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl9" halign="left" layout="vertical" inlineStyle="width: 200px;">
+            <af:selectOneChoice value="#{bindings.Sessions.inputValue}" required="#{bindings.Sessions.hints.mandatory}"
+                                shortDesc="#{bindings.Sessions.hints.tooltip}" id="soc2"
+                                unselectedLabel="Selectionnez Une Session"
+                                contentStyle="font-size:large;width: 200px;  border-radius: 8px;">
+              <f:selectItems value="#{bindings.Sessions.items}" id="si2"/>
+              <f:validator binding="#{bindings.Sessions.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:1325px)"
+                               propertyName="layout"/>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl10" layout="horizontal" inlineStyle="width: 850px;">
+        <af:panelGroupLayout id="pgl11" layout="horizontal">
+        <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:985px)"
+                                 propertyName="layout"/>
+          <af:panelGroupLayout id="pgl16" halign="left" inlineStyle="width: 190px;" layout="vertical">
+            <af:outputFormatted value="Etablissement" id="of3"
+                                inlineStyle="font-size:large; color:White; font-weight:bolder;"/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl17" halign="left" layout="vertical" inlineStyle="width: 200px;">
+            <af:selectOneChoice value="#{bindings.Structures.inputValue}"
+                                required="#{bindings.Structures.hints.mandatory}"
+                                shortDesc="#{bindings.Structures.hints.tooltip}" id="soc3" autoSubmit="true"
+                                unselectedLabel="Selectionnez Un Etablissement"
+                                contentStyle="font-size:large;width: 200px;  border-radius: 8px;">
+              <f:selectItems value="#{bindings.Structures.items}" id="si3"/>
+              <f:validator binding="#{bindings.Structures.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl13" layout="horizontal">
+        <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:985px)"
+                                 propertyName="layout"/>
+          <af:panelGroupLayout id="pgl12" halign="left" inlineStyle="width: 150px;" layout="vertical">
+            <af:outputFormatted value="Departement" id="of4"
+                                inlineStyle="font-size:large; color:White; font-weight:bolder; width: 200px;"/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl14" halign="left" layout="vertical" inlineStyle="width: 220px;">
+            <af:selectOneChoice value="#{bindings.HistoriquesStructuresVO1.inputValue}" autoSubmit="true"
+                                valueChangeListener="#{ConnectionEvalBean.OnDepartementValueChange}"
+                                unselectedLabel="Selectionnez Un Departement"
+                                contentStyle="font-size:large;width: 200px;  border-radius: 8px;" required="false"
+                                id="soc7">
+              <?audit suppress oracle.adf.faces.compnotlabelled?>
+              <f:selectItems value="#{bindings.HistoriquesStructuresVO1.items}" id="si7"/>
+              <f:validator binding="#{bindings.HistoriquesStructuresVO1.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:1230px)"
+                               propertyName="layout"/>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl15" layout="horizontal" inlineStyle="width: 850px;">
+        <af:panelGroupLayout id="pgl21" layout="horizontal">
+          <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:985px)"
+                                 propertyName="layout"/>
+          <af:panelGroupLayout id="pgl18" halign="left" inlineStyle="width: 200px;" layout="vertical">
+            <af:outputFormatted value="Parcours" id="of5"
+                                inlineStyle="font-size:large; color:White; font-weight:bolder;"/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl19" halign="left" layout="vertical" inlineStyle="width: 200px;">
+            <af:selectOneChoice value="#{bindings.Parcours.inputValue}" required="#{bindings.Parcours.hints.mandatory}"
+                                shortDesc="#{bindings.Parcours.hints.tooltip}" id="soc4"
+                                unselectedLabel="Selectionnez un Parcours"
+                                contentStyle="font-size:large;width: 200px;  border-radius: 8px;"
+                                partialTriggers="soc3">
+              <f:selectItems value="#{bindings.Parcours.items}" id="si4"/>
+              <f:validator binding="#{bindings.Parcours.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl22" layout="horizontal">
+          <af:matchMediaBehavior matchedPropertyValue="vertical" mediaQuery="screen and (max-width:985px)"
+                                 propertyName="layout"/>
+          <af:panelGroupLayout id="pgl23" halign="left" layout="vertical" inlineStyle="width: 150px;">
+            <af:outputFormatted value="Semestre" id="of6"
+                                inlineStyle="font-size:large; color:White; font-weight:bolder; width: 200px;"/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl24" halign="left" layout="vertical" inlineStyle="width: 200px;">
+            <af:selectOneChoice value="#{bindings.Semestres.inputValue}"
+                                required="#{bindings.Semestres.hints.mandatory}"
+                                shortDesc="#{bindings.Semestres.hints.tooltip}" id="soc6"
+                                unselectedLabel="Selectionnez Un Semestre"
+                                contentStyle="font-size:large;width: 200px;  border-radius: 8px;"
+                                inlineStyle="z-index: -1;">
+              <f:selectItems value="#{bindings.Semestres.items}" id="si6"/>
+              <f:validator binding="#{bindings.Semestres.validator}"/>
+            </af:selectOneChoice>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:matchMediaBehavior mediaQuery="screen and (max-width:1230px)" matchedPropertyValue="vertical"
+                               propertyName="layout"/>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl20">
+        <af:button id="b1" actionListener="#{ConnectionEvalBean.OnContinuAction}"
+                   inlineStyle="font-size:large; text-align:center; background-color:Blue; width:100px; border-radius:13px  ; line-height:30px;"
+                   iconPosition="leading" text="Continuer" useWindow="true"/>
+      </af:panelGroupLayout>
+      <!--af:matchMediaBehavior matchedPropertyValue="600px" mediaQuery="screen and (max-width:1325px)"
+                             propertyName="width"/-->
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+            binding="#{ConnectionEvalBean.popupNoCalDefineDetails}">
+    <af:dialog id="d1" title="Info" inlineStyle="text-align:center; color:Red;font-size:x-large;" type="ok">
+      <af:outputFormatted value="Pas de Calendrier pour ce parcours !!!" id="of8" inlineStyle="font-size:small;"/>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{ConnectionEvalBean.popupSuccessConnect}">
+    <af:dialog id="d2" type="ok" title="Info !!!">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Vos paramétres sont enregistrées avec success" id="of9"
+                          inlineStyle="color:Green; font-size:small;"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

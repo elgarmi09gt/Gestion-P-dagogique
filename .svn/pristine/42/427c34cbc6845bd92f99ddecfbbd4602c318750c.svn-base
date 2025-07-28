@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="isDroitNiveauPaysExist"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.isDroitNiveauPaysExistRowImpl"
+  ComponentClass="model.readOnlyView.isDroitNiveauPaysExistImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.isDroitNiveauPaysExist_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="pays_id"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="niv_id"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[Select ID_DNP  
+from DROIT_NIVEAU_PAYS  
+where ID_NIVEAU=:niv_id  
+and ID_PAYS=:pays_id]]></SQLQuery>
+  <ViewAttribute
+    Name="IdDnp"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_DNP"
+    Expression="ID_DNP"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdDnp"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

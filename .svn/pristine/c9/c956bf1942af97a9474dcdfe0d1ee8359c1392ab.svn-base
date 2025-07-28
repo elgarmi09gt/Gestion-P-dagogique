@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="ecs_accesPageDef"
+                Package="parametrageSup.acces_ecs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UtilisateurStructure" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="UtilisateurStructureIterator"/>
+    <iterator Binds="EcNiveauFormationUtilisateurROVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="EcNiveauFormationUtilisateurROVOIterator"/>
+    <searchRegion Binds="EcNiveauFormationUtilisateurROVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="EcNiveauFormationUtilisateurROVOQuery"/>
+    <iterator Binds="AccesEcList" RangeSize="25" DataControl="evaluationAppDataControl" id="AccesEcListIterator"/>
+    <iterator Binds="UtilisFiliereUeSemestreEcVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="UtilisFiliereUeSemestreEcVOIterator"/>
+    <iterator Binds="UtilisateursAccesEcsROVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="UtilisateursAccesEcsROVOIterator"/>
+    <searchRegion Binds="UtilisateursAccesEcsROVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UtilisateursAccesEcsROVOQuery"/>
+    <iterator Binds="IsEcAccesAllowedROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsEcAccesAllowedROVOIterator"/>
+    <iterator Binds="IsEcResponsableExist" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsEcResponsableExistIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="UtilisateurStructureIterator" ListOperMode="navigation" ListIter="UtilisateurStructureIterator"
+          id="UtilisateurStructure" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Prenomnom"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="EcNiveauFormationUtilisateurROVOIterator" id="EcNiveauFormationUtilisateurROVO">
+      <nodeDefinition DefName="model.readOnlyView.EcNiveauFormationUtilisateurROVO"
+                      Name="EcNiveauFormationUtilisateurROVO0">
+        <AttrNames>
+          <Item Value="isEcSelected"/>
+          <Item Value="Ec"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="EcNiveauFormationUtilisateurROVOIterator" id="isEcSelected" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="isEcSelected"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <action IterBinding="EcNiveauFormationUtilisateurROVOIterator" id="GetEcsAcces"
+            InstanceName="evaluationAppDataControl.EcNiveauFormationUtilisateurROVO"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="uti" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="s_id" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="getSelectedEcs" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getSelectedEcs"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getSelectedEcs.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getSelectedEcs_getSelectedEcs_dataControl_dataProvider_getSelectedEcs_result"/>
+    <list IterBinding="AccesEcListIterator" ListOperMode="navigation" ListIter="AccesEcListIterator" id="AccesEcList"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Libelle"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="UtilisFiliereUeSemestreEcVOIterator" id="AllowedAccessTo"
+            InstanceName="evaluationAppDataControl.UtilisFiliereUeSemestreEcVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="IdUtilisateur" NDType="java.lang.String"/>
+      <NamedData NDName="IdFiliereUeSemstreEc" NDType="java.lang.String"/>
+      <NamedData NDName="Role" NDType="java.lang.String"/>
+      <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+    </action>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="UtilisateursAccesEcsROVOIterator" id="GetAccesEc"
+            InstanceName="evaluationAppDataControl.UtilisateursAccesEcsROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_hs" NDValue="#{sessionScope.id_hs}" NDType="java.lang.Integer"/>
+      <NamedData NDName="uti" NDType="java.lang.Integer"/>
+    </action>
+    <attributeValues IterBinding="UtilisateurStructureIterator" id="Prenomnom">
+      <AttrNames>
+        <Item Value="Prenomnom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UtilisateurStructureIterator" id="IdUtilisateur">
+      <AttrNames>
+        <Item Value="IdUtilisateur"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="UtilisateursAccesEcsROVOIterator" id="UtilisateursAccesEcsROVO">
+      <nodeDefinition DefName="model.readOnlyView.UtilisateursAccesEcsROVO" Name="UtilisateursAccesEcsROVO0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="Role"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="IsEcAccesAllowedROVOIterator" id="IsEcAccesAllowed"
+            InstanceName="evaluationAppDataControl.IsEcAccesAllowedROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="s_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="uti" NDType="java.lang.Integer"/>
+      <NamedData NDName="fil_ec" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsEcResponsableExistIterator" id="IsEcResponsableExist"
+            InstanceName="evaluationAppDataControl.IsEcResponsableExist" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="s_id" NDType="java.lang.Integer"/>
+      <NamedData NDName="fil_ec" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="UpdateResponsableEc" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="UpdateResponsableEc" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.UpdateResponsableEc.dataControl.dataProvider">
+      <NamedData NDName="idUser" NDType="java.lang.Integer"/>
+      <NamedData NDName="idFilEc" NDType="java.lang.Integer"/>
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="utimodif" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_uti_fil_ec" NDType="java.lang.Integer"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

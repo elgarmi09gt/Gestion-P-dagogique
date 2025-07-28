@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ModulesEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="MODULES"
+  AliasName="ModulesEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdModule"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_MODULE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="MODULES"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="LibelleLong"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="200"
+    ColumnName="LIBELLE_LONG"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="MODULES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="LibelleCourt"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="75"
+    ColumnName="LIBELLE_COURT"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="MODULES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="MODULES"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="MODULES"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="MODULES"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="MODULES"/>
+  <Attribute
+    Name="IdApplication"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_APPLICATION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="MODULES"/>
+  <Attribute
+    Name="CheminImage"
+    Precision="255"
+    ColumnName="CHEMIN_IMAGE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="MODULES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="255"/>
+    </DesignTime>
+  </Attribute>
+  <Key
+    Name="PkModules"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_MODULES"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ModulesEO.IdModule"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqModulLibelleCourt">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_MODUL_LIBELLE_COURT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ModulesEO.LibelleCourt"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqModulLibelleLong">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_MODUL_LIBELLE_LONG"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ModulesEO.LibelleLong"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkModulUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_MODUL_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ModulesEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkModulUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_MODUL_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ModulesEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkModuleAppli">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_APPLICATION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_MODULE_APPLI"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ModulesEO.IdApplication"/>
+    </AttrArray>
+  </Key>
+</Entity>

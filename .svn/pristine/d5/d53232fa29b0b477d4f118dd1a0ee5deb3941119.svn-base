@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="OperateursEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="OPERATEURS"
+  AliasName="OperateursEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdOperateur"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_OPERATEUR"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="OPERATEURS"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="LibelleLong"
+    IsUnique="true"
+    Precision="200"
+    ColumnName="LIBELLE_LONG"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="OPERATEURS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="LibelleCourt"
+    IsUnique="true"
+    Precision="75"
+    ColumnName="LIBELLE_COURT"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="OPERATEURS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IdOrganisme"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ORGANISME"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="OPERATEURS"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="OPERATEURS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="OPERATEURS"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="OPERATEURS"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="OPERATEURS"/>
+  <AccessorAttribute
+    Name="PaiementEtudiantEO"
+    Association="model.entities.FkPaiementEtudiantOperAssoc"
+    AssociationEnd="model.entities.FkPaiementEtudiantOperAssoc.PaiementEtudiantEO"
+    AssociationOtherEnd="model.entities.FkPaiementEtudiantOperAssoc.OperateursEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkOperateurs"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_OPERATEURS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OperateursEO.IdOperateur"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqOperateurLibelleCourt">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_OPERATEUR_LIBELLE_COURT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OperateursEO.LibelleCourt"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqOperateurLibelleLong">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_OPERATEUR_LIBELLE_LONG"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OperateursEO.LibelleLong"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkOperateurOrganisme">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ORGANISMES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_OPERATEUR_ORGANISME"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OperateursEO.IdOrganisme"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkOperateurUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_OPERATEUR_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OperateursEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkOperateurUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_OPERATEUR_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OperateursEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

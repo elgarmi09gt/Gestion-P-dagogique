@@ -1,0 +1,783 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="viewcontrollerBundle2" value="#{adfBundle['view.ViewControllerBundle']}"/>
+    <c:set var="viewcontrollerBundle1" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+    <c:set var="viewcontrollerBundle" value="#{adfBundle['viewcontroller.dap.structures.liststructureBundle']}"/>
+    <af:panelGroupLayout id="pgl1" layout="scroll">
+        <af:panelGroupLayout id="pgl2" layout="scroll">
+            <af:panelHeader text="Etablissements" id="ph1">
+                <f:facet name="context"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="menuBar"/>
+                <f:facet name="legend"/>
+                <f:facet name="info"/>
+                <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+                    <f:facet name="menus"/>
+                    <f:facet name="toolbar">
+                        <af:toolbar id="t2">
+                            <af:button id="b2" actionListener="#{StructureBean.OnNewStructureClicked}"
+                                       icon="/images/new_icon.png"
+                                       visible="#{securityContext.userInRole['Dap,Admin']}"/>
+                            <af:button id="b3" actionListener="#{StructureBean.OnEditStructureClicked}"
+                                       icon="/images/edit_icon.png" visible="#{securityContext.userInRole['Dap,Admin']}"/>
+                            <af:button id="b1" action="#{StructureBean.OnDeleteStructureClicked}"
+                                       icon="/images/delete_icon.png" visible="#{securityContext.userInRole['Dap,Admin']}">
+                                <af:showPopupBehavior popupId="::popup-delete-structure"/>
+                            </af:button>
+                        </af:toolbar>
+                    </f:facet>
+                    <af:table value="#{bindings.Structures.collectionModel}" var="row"
+                              rows="#{bindings.Structures.rangeSize}"
+                              emptyText="#{bindings.Structures.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.Structures.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.Structures.collectionModel.makeCurrent}"
+                              rowSelection="single" fetchSize="#{bindings.Structures.rangeSize}"
+                              filterModel="#{bindings.StructuresQuery.queryDescriptor}" filterVisible="true"
+                              queryListener="#{bindings.StructuresQuery.processQuery}" varStatus="vs" id="t1"
+                              binding="#{StructureBean.structureTable}" scrollPolicy="page" columnStretching="last">
+                        <af:column sortProperty="#{bindings.Structures.hints.LibelleLong.name}" filterable="true"
+                                   sortable="true" headerText="#{viewcontrollerBundle2.LIBELLE}" id="c1"
+                                   width="500px">
+                            <af:outputText value="#{row.LibelleLong}"
+                                           shortDesc="#{bindings.Structures.hints.LibelleLong.tooltip}" id="ot1"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.Structures.hints.LibelleCourt.name}" filterable="true"
+                                   sortable="true" headerText="#{viewcontrollerBundle2.ABREVIATION}" id="c2"
+                                   width="150px">
+                            <af:outputText value="#{row.LibelleCourt}"
+                                           shortDesc="#{bindings.Structures.hints.LibelleCourt.tooltip}" id="ot2"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.Structures.hints.Adresse.name}" filterable="true"
+                                   sortable="true" headerText="#{viewcontrollerBundle2.ABREVIATION}" id="c3"
+                                   width="300px">
+                            <af:outputText value="#{row.Adresse}"
+                                           shortDesc="#{bindings.Structures.hints.Adresse.tooltip}" id="ot3"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.Structures.hints.Email.name}" filterable="true"
+                                   sortable="true" headerText="#{viewcontrollerBundle2.EMAIL}" id="c4"
+                                   width="300px">
+                            <af:outputText value="#{row.Email}" shortDesc="#{bindings.Structures.hints.Email.tooltip}"
+                                           id="ot4"/>
+                        </af:column>
+                        <af:column id="c7" width="100">
+                            <af:link text="Details" id="l1" partialSubmit="true">
+                                <af:showPopupBehavior popupId=":::p3" triggerType="action" align="endAfter"
+                                                      alignId="l1"/>
+                            </af:link>
+                        </af:column>
+                        <f:facet name="contextMenu">
+                            <af:popup childCreation="deferred" autoCancel="disabled" id="p1">
+                                <af:menu text="menu 1" id="m1">
+                                    <af:commandMenuItem id="cmi1"
+                                                        actionListener="#{StructureBean.OnNewStructureClicked}"
+                                                        icon="/images/new_icon.png"/>
+                                    <af:commandMenuItem id="cmi2"
+                                                        actionListener="#{StructureBean.OnEditStructureClicked}"
+                                                        icon="/images/edit_icon.png"/>
+                                    <af:commandMenuItem id="cmi3" action="#{StructureBean.OnDeleteStructureClicked}"
+                                                        icon="/images/delete_icon.png">
+                                        <af:showPopupBehavior popupId=":::popup-delete-structure"/>
+                                    </af:commandMenuItem>
+                                </af:menu>
+                            </af:popup>
+                        </f:facet>
+                    </af:table>
+                    <f:facet name="statusbar"/>
+                </af:panelCollection>
+            </af:panelHeader>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl3" layout="scroll">
+            <af:panelHeader text="Departements" id="ph2">
+                <f:facet name="context"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="menuBar"/>
+                <f:facet name="legend"/>
+                <f:facet name="info"/>
+                <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+                    <f:facet name="menus"/>
+                    <f:facet name="toolbar">
+                        <af:toolbar id="t4">
+                            <af:button id="b4" actionListener="#{StructureBean.OnNewHStructClicked}"
+                                       icon="/images/new_icon.png" visible="#{securityContext.userInRole['Dap,Admin']}"/>
+                            <af:button id="b5" actionListener="#{StructureBean.OnEditHStructClick}"
+                                       icon="/images/edit_icon.png" visible="#{securityContext.userInRole['Dap,Admin']}"/>
+                            <af:button id="b6" action="#{StructureBean.OnDeleteHStructClicked}"
+                                       icon="/images/delete_icon.png" visible="#{securityContext.userInRole['Dap,Admin']}">
+                                <af:showPopupBehavior popupId="::popup-delete-hstruct"/>
+                            </af:button>
+                        </af:toolbar>
+                    </f:facet>
+                    <f:facet name="statusbar"/>
+                    <af:table value="#{bindings.HistoriquesStructuresStruct.collectionModel}" var="row"
+                              rows="#{bindings.HistoriquesStructuresStruct.rangeSize}"
+                              emptyText="#{bindings.HistoriquesStructuresStruct.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.HistoriquesStructuresStruct.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.HistoriquesStructuresStruct.collectionModel.makeCurrent}"
+                              rowSelection="single" fetchSize="#{bindings.HistoriquesStructuresStruct.rangeSize}"
+                              filterModel="#{bindings.HistoriquesStructuresStructQuery.queryDescriptor}"
+                              filterVisible="true"
+                              queryListener="#{bindings.HistoriquesStructuresStructQuery.processQuery}" varStatus="vs"
+                              id="t3" binding="#{StructureBean.hstructureTable}" scrollPolicy="page"
+                              columnStretching="last">
+                        <af:column sortProperty="#{bindings.HistoriquesStructuresStruct.hints.LibelleLong.name}"
+                                   filterable="true" sortable="true" headerText="#{viewcontrollerBundle2.LIBELLE}"
+                                   id="c13" width="100%">
+                            <af:outputText value="#{row.LibelleLong}"
+                                           shortDesc="#{bindings.HistoriquesStructuresStruct.hints.LibelleLong.tooltip}"
+                                           id="ot12"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.HistoriquesStructuresStruct.hints.LibelleCourt.name}"
+                                   filterable="true" sortable="true" headerText="#{viewcontrollerBundle2.ABREVIATION}"
+                                   id="c14">
+                            <af:outputText value="#{row.LibelleCourt}"
+                                           shortDesc="#{bindings.HistoriquesStructuresStruct.hints.LibelleCourt.tooltip}"
+                                           id="ot13"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.HistoriquesStructuresStruct.hints.DateDebut.name}"
+                                   filterable="true" sortable="true" headerText="#{viewcontrollerBundle2.DATE_DEBUT}"
+                                   id="c15">
+                            <f:facet name="filter">
+                                <af:inputDate value="#{bindings.HistoriquesStructuresStructQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateDebut.value}"
+                                              id="id4">
+                                    <af:convertDateTime pattern="#{bindings.HistoriquesStructuresStruct.hints.DateDebut.format}"/>
+                                </af:inputDate>
+                            </f:facet>
+                            <af:outputText value="#{row.DateDebut}"
+                                           shortDesc="#{bindings.HistoriquesStructuresStruct.hints.DateDebut.tooltip}"
+                                           id="ot14">
+                                <af:convertDateTime pattern="#{bindings.HistoriquesStructuresStruct.hints.DateDebut.format}"/>
+                            </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.HistoriquesStructuresStruct.hints.DateFin.name}"
+                                   filterable="true" sortable="true" headerText="#{viewcontrollerBundle2.DATE_FIN}"
+                                   id="c16">
+                            <f:facet name="filter">
+                                <af:inputDate value="#{bindings.HistoriquesStructuresStructQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateFin.value}"
+                                              id="id5">
+                                    <af:convertDateTime pattern="#{bindings.HistoriquesStructuresStruct.hints.DateFin.format}"/>
+                                </af:inputDate>
+                            </f:facet>
+                            <af:outputText value="#{row.DateFin}"
+                                           shortDesc="#{bindings.HistoriquesStructuresStruct.hints.DateFin.tooltip}"
+                                           id="ot15">
+                                <af:convertDateTime pattern="#{bindings.HistoriquesStructuresStruct.hints.DateFin.format}"/>
+                            </af:outputText>
+                        </af:column>
+                        <f:facet name="contextMenu">
+                            <af:popup childCreation="deferred" autoCancel="disabled" id="p2">
+                                <af:menu text="menu 2" id="m2">
+                                    <af:commandMenuItem id="cmi4" actionListener="#{StructureBean.OnNewHStructClicked}"
+                                                        icon="/images/new_icon.png"/>
+                                    <af:commandMenuItem id="cmi5" actionListener="#{StructureBean.OnEditHStructClick}"
+                                                        icon="/images/edit_icon.png"/>
+                                    <af:commandMenuItem id="cmi6" action="#{StructureBean.OnDeleteHStructClicked}"
+                                                        icon="/images/delete_icon.png">
+                                        <af:showPopupBehavior popupId=":::popup-delete-hstruct"/>
+                                    </af:commandMenuItem>
+                                </af:menu>
+                            </af:popup>
+                        </f:facet>
+                    </af:table>
+                </af:panelCollection>
+            </af:panelHeader>
+        </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-new-structure"
+              binding="#{StructureBean.popupNewStructure}" contentDelivery="lazyUncached">
+        <af:dialog id="d1" title="#{viewcontrollerBundle2.FORMULAIRE_DE_SAISIE}" dialogListener="#{StructureBean.OnDialogAction}">
+            <af:panelFormLayout id="pfl1">
+                <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle2.LIBELLE}"
+                              required="#{bindings.LibelleLong.hints.mandatory}"
+                              columns="#{bindings.LibelleLong.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleLong.hints.precision}"
+                              shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1">
+                    <f:validator binding="#{bindings.LibelleLong.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle2.ABREVIATION}"
+                              required="#{bindings.LibelleCourt.hints.mandatory}"
+                              columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                              shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2">
+                    <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Adresse.inputValue}" label="#{viewcontrollerBundle2.ADDRESSE}"
+                              required="#{bindings.Adresse.hints.mandatory}"
+                              columns="#{bindings.Adresse.hints.displayWidth}"
+                              maximumLength="#{bindings.Adresse.hints.precision}"
+                              shortDesc="#{bindings.Adresse.hints.tooltip}" id="it3">
+                    <f:validator binding="#{bindings.Adresse.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Email.inputValue}" label="#{viewcontrollerBundle2.EMAIL}"
+                              required="#{bindings.Email.hints.mandatory}"
+                              columns="#{bindings.Email.hints.displayWidth}"
+                              maximumLength="#{bindings.Email.hints.precision}"
+                              shortDesc="#{bindings.Email.hints.tooltip}" id="it4">
+                    <f:validator binding="#{bindings.Email.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Telephone.inputValue}" label="#{viewcontrollerBundle2.TELEPHONE}"
+                              required="#{bindings.Telephone.hints.mandatory}"
+                              columns="#{bindings.Telephone.hints.displayWidth}"
+                              maximumLength="#{bindings.Telephone.hints.precision}"
+                              shortDesc="#{bindings.Telephone.hints.tooltip}" id="it5">
+                    <f:validator binding="#{bindings.Telephone.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Fax.inputValue}" label="#{viewcontrollerBundle2.FAX}"
+                              required="#{bindings.Fax.hints.mandatory}" columns="#{bindings.Fax.hints.displayWidth}"
+                              maximumLength="#{bindings.Fax.hints.precision}" shortDesc="#{bindings.Fax.hints.tooltip}"
+                              id="it6">
+                    <f:validator binding="#{bindings.Fax.validator}"/>
+                </af:inputText>
+                <af:selectOneChoice value="#{bindings.IdTypeSection.inputValue}"
+                                    label="#{viewcontrollerBundle2.TYPE}"
+                                    required="#{bindings.IdTypeSection.hints.mandatory}"
+                                    shortDesc="#{bindings.IdTypeSection.hints.tooltip}" id="soc3">
+                    <f:selectItems value="#{bindings.IdTypeSection.items}" id="si3"/>
+                    <f:validator binding="#{bindings.IdTypeSection.validator}"/>
+                </af:selectOneChoice>
+                <af:selectOneChoice value="#{bindings.StructureParent.inputValue}"
+                                    label="#{viewcontrollerBundle2.STRUCTURE_PARENT}"
+                                    required="#{bindings.StructureParent.hints.mandatory}"
+                                    shortDesc="#{bindings.StructureParent.hints.tooltip}" id="soc2">
+                    <f:selectItems value="#{bindings.StructureParent.items}" id="si2"/>
+                    <f:validator binding="#{bindings.StructureParent.validator}"/>
+                </af:selectOneChoice>
+                <af:inputText value="#{bindings.Niveau.inputValue}" label="#{viewcontrollerBundle2.NIVEAU}"
+                              required="#{bindings.Niveau.hints.mandatory}"
+                              columns="#{bindings.Niveau.hints.displayWidth}"
+                              maximumLength="#{bindings.Niveau.hints.precision}"
+                              shortDesc="#{bindings.Niveau.hints.tooltip}" id="it7">
+                    <f:validator binding="#{bindings.Niveau.validator}"/>
+                    <af:convertNumber groupingUsed="false" pattern="#{bindings.Niveau.format}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Url.inputValue}" label="#{viewcontrollerBundle2.URL}"
+                              required="#{bindings.Url.hints.mandatory}" columns="#{bindings.Url.hints.displayWidth}"
+                              maximumLength="#{bindings.Url.hints.precision}" shortDesc="#{bindings.Url.hints.tooltip}"
+                              id="it8">
+                    <f:validator binding="#{bindings.Url.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.HoraireTravail.inputValue}"
+                              label="#{viewcontrollerBundle2.HORAIRE_TRAVAIL}"
+                              required="#{bindings.HoraireTravail.hints.mandatory}"
+                              columns="#{bindings.HoraireTravail.hints.displayWidth}"
+                              maximumLength="#{bindings.HoraireTravail.hints.precision}"
+                              shortDesc="#{bindings.HoraireTravail.hints.tooltip}" id="it9">
+                    <f:validator binding="#{bindings.HoraireTravail.validator}"/>
+                </af:inputText>
+                <af:selectOneChoice value="#{bindings.IdSignataire.inputValue}"
+                                    label="#{viewcontrollerBundle2.SIGNATAIRE}"
+                                    required="#{bindings.IdSignataire.hints.mandatory}"
+                                    shortDesc="#{bindings.IdSignataire.hints.tooltip}" id="soc4">
+                    <f:selectItems value="#{bindings.IdSignataire.items}" id="si4"/>
+                    <f:validator binding="#{bindings.IdSignataire.validator}"/>
+                </af:selectOneChoice>
+                <!--af:inputText value="#{bindings.Signature.inputValue}" label="#{bindings.Signature.hints.label}"
+                              required="#{bindings.Signature.hints.mandatory}"
+                              columns="#{bindings.Signature.hints.displayWidth}"
+                              maximumLength="#{bindings.Signature.hints.precision}"
+                              shortDesc="#{bindings.Signature.hints.tooltip}" id="it11">
+                    <f:validator binding="#{bindings.Signature.validator}"/>
+                </af:inputText-->
+            </af:panelFormLayout>
+            <f:facet name="buttonBar"/>
+            <af:clientListener type="dialog" method="OnDialogCancel"/>
+            <af:serverListener type="HandlerEvenDialogCancel" method="#{StructureBean.OnStructureDialogCancel}"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-edti-structure"
+              binding="#{StructureBean.popupEditStructure}">
+        <af:dialog id="d2" dialogListener="#{StructureBean.OnDialogAction}"
+                   title="#{viewcontrollerBundle2.FORMULAIRE_DE_MODIFICATIONS}">
+            <af:panelFormLayout id="pfl2">
+                <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle2.LIBELLE}"
+                              required="#{bindings.LibelleLong.hints.mandatory}"
+                              columns="#{bindings.LibelleLong.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleLong.hints.precision}"
+                              shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it12">
+                    <f:validator binding="#{bindings.LibelleLong.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle2.ABREVIATION}"
+                              required="#{bindings.LibelleCourt.hints.mandatory}"
+                              columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                              shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it13">
+                    <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Adresse.inputValue}" label="#{viewcontrollerBundle2.ADDRESSE}"
+                              required="#{bindings.Adresse.hints.mandatory}"
+                              columns="#{bindings.Adresse.hints.displayWidth}"
+                              maximumLength="#{bindings.Adresse.hints.precision}"
+                              shortDesc="#{bindings.Adresse.hints.tooltip}" id="it14">
+                    <f:validator binding="#{bindings.Adresse.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Email.inputValue}" label="#{viewcontrollerBundle2.EMAIL}"
+                              required="#{bindings.Email.hints.mandatory}"
+                              columns="#{bindings.Email.hints.displayWidth}"
+                              maximumLength="#{bindings.Email.hints.precision}"
+                              shortDesc="#{bindings.Email.hints.tooltip}" id="it15">
+                    <f:validator binding="#{bindings.Email.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Telephone.inputValue}" label="#{viewcontrollerBundle2.TELEPHONE}"
+                              required="#{bindings.Telephone.hints.mandatory}"
+                              columns="#{bindings.Telephone.hints.displayWidth}"
+                              maximumLength="#{bindings.Telephone.hints.precision}"
+                              shortDesc="#{bindings.Telephone.hints.tooltip}" id="it16">
+                    <f:validator binding="#{bindings.Telephone.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Fax.inputValue}" label="#{viewcontrollerBundle2.FAX}"
+                              required="#{bindings.Fax.hints.mandatory}" columns="#{bindings.Fax.hints.displayWidth}"
+                              maximumLength="#{bindings.Fax.hints.precision}" shortDesc="#{bindings.Fax.hints.tooltip}"
+                              id="it17">
+                    <f:validator binding="#{bindings.Fax.validator}"/>
+                </af:inputText>
+                <af:selectOneChoice value="#{bindings.StructureParent.inputValue}"
+                                    label="#{viewcontrollerBundle2.STRUCTURE_PARENT}"
+                                    required="#{bindings.StructureParent.hints.mandatory}"
+                                    shortDesc="#{bindings.StructureParent.hints.tooltip}" id="soc5">
+                    <f:selectItems value="#{bindings.StructureParent.items}" id="si5"/>
+                    <f:validator binding="#{bindings.StructureParent.validator}"/>
+                </af:selectOneChoice>
+                <af:selectOneChoice value="#{bindings.IdTypeSection.inputValue}"
+                                    label="#{viewcontrollerBundle2.TYPE}"
+                                    required="#{bindings.IdTypeSection.hints.mandatory}"
+                                    shortDesc="#{bindings.IdTypeSection.hints.tooltip}" id="soc6">
+                    <f:selectItems value="#{bindings.IdTypeSection.items}" id="si6"/>
+                    <f:validator binding="#{bindings.IdTypeSection.validator}"/>
+                </af:selectOneChoice>
+                <af:inputText value="#{bindings.Niveau.inputValue}" label="#{viewcontrollerBundle2.NIVEAU}"
+                              required="#{bindings.Niveau.hints.mandatory}"
+                              columns="#{bindings.Niveau.hints.displayWidth}"
+                              maximumLength="#{bindings.Niveau.hints.precision}"
+                              shortDesc="#{bindings.Niveau.hints.tooltip}" id="it18">
+                    <f:validator binding="#{bindings.Niveau.validator}"/>
+                    <af:convertNumber groupingUsed="false" pattern="#{bindings.Niveau.format}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Url.inputValue}" label="#{viewcontrollerBundle2.URL}"
+                              required="#{bindings.Url.hints.mandatory}" columns="#{bindings.Url.hints.displayWidth}"
+                              maximumLength="#{bindings.Url.hints.precision}" shortDesc="#{bindings.Url.hints.tooltip}"
+                              id="it19">
+                    <f:validator binding="#{bindings.Url.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.HoraireTravail.inputValue}"
+                              label="#{viewcontrollerBundle2.HORAIRE_TRAVAIL}"
+                              required="#{bindings.HoraireTravail.hints.mandatory}"
+                              columns="#{bindings.HoraireTravail.hints.displayWidth}"
+                              maximumLength="#{bindings.HoraireTravail.hints.precision}"
+                              shortDesc="#{bindings.HoraireTravail.hints.tooltip}" id="it20">
+                    <f:validator binding="#{bindings.HoraireTravail.validator}"/>
+                </af:inputText>
+                <af:selectOneChoice value="#{bindings.IdSignataire.inputValue}"
+                                    label="#{viewcontrollerBundle2.SIGNATAIRE}"
+                                    required="#{bindings.IdSignataire.hints.mandatory}"
+                                    shortDesc="#{bindings.IdSignataire.hints.tooltip}" id="soc7">
+                    <f:selectItems value="#{bindings.IdSignataire.items}" id="si7"/>
+                    <f:validator binding="#{bindings.IdSignataire.validator}"/>
+                </af:selectOneChoice>
+                <!--af:inputText value="#{bindings.Signature.inputValue}" label="#{bindings.Signature.hints.label}"
+                              required="#{bindings.Signature.hints.mandatory}"
+                              columns="#{bindings.Signature.hints.displayWidth}"
+                              maximumLength="#{bindings.Signature.hints.precision}"
+                              shortDesc="#{bindings.Signature.hints.tooltip}" id="it22">
+                    <f:validator binding="#{bindings.Signature.validator}"/>
+                </af:inputText-->
+            </af:panelFormLayout>
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-delete-structure"
+              binding="#{StructureBean.popupDeleteStructure}" contentDelivery="lazyUncached">
+        <af:dialog id="d3" dialogListener="#{StructureBean.OnDeleteStructureAction}" type="yesNo"
+                   title="#{viewcontrollerBundle2.CONFIM_Supp}" affirmativeTextAndAccessKey="SUPPRIMER"
+                   noTextAndAccessKey="ANNULER">
+            <af:panelFormLayout id="pfl3">
+                <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle2.LIBELLE}"
+                              required="#{bindings.LibelleLong.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.LibelleLong.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleLong.hints.precision}"
+                              shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it24">
+                    <f:validator binding="#{bindings.LibelleLong.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle2.ABREVIATION}"
+                              required="#{bindings.LibelleCourt.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                              shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it25">
+                    <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Adresse.inputValue}" label="#{viewcontrollerBundle2.ADDRESSE}"
+                              required="#{bindings.Adresse.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.Adresse.hints.displayWidth}"
+                              maximumLength="#{bindings.Adresse.hints.precision}"
+                              shortDesc="#{bindings.Adresse.hints.tooltip}" id="it26">
+                    <f:validator binding="#{bindings.Adresse.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Email.inputValue}" label="#{viewcontrollerBundle2.EMAIL}"
+                              required="#{bindings.Email.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.Email.hints.displayWidth}"
+                              maximumLength="#{bindings.Email.hints.precision}"
+                              shortDesc="#{bindings.Email.hints.tooltip}" id="it27">
+                    <f:validator binding="#{bindings.Email.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Telephone.inputValue}" label="#{viewcontrollerBundle2.TELEPHONE}"
+                              required="#{bindings.Telephone.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.Telephone.hints.displayWidth}"
+                              maximumLength="#{bindings.Telephone.hints.precision}"
+                              shortDesc="#{bindings.Telephone.hints.tooltip}" id="it28">
+                    <f:validator binding="#{bindings.Telephone.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Fax.inputValue}" label="#{viewcontrollerBundle2.FAX}"
+                              required="#{bindings.Fax.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.Fax.hints.displayWidth}"
+                              maximumLength="#{bindings.Fax.hints.precision}" shortDesc="#{bindings.Fax.hints.tooltip}"
+                              id="it29">
+                    <f:validator binding="#{bindings.Fax.validator}"/>
+                </af:inputText>
+                <af:selectOneChoice value="#{bindings.StructureParent.inputValue}"
+                                    label="#{viewcontrollerBundle2.STRUCTURE_PARENT}"
+                                    required="#{bindings.StructureParent.hints.mandatory}"
+                                    shortDesc="#{bindings.StructureParent.hints.tooltip}" readOnly="true" id="soc8">
+                    <f:selectItems value="#{bindings.StructureParent.items}" id="si8"/>
+                    <f:validator binding="#{bindings.StructureParent.validator}"/>
+                </af:selectOneChoice>
+                <af:selectOneChoice value="#{bindings.IdTypeSection.inputValue}" label="#{viewcontrollerBundle2.TYPE}"
+                                    required="#{bindings.IdTypeSection.hints.mandatory}"
+                                    shortDesc="#{bindings.IdTypeSection.hints.tooltip}" readOnly="true" id="soc9">
+                    <f:selectItems value="#{bindings.IdTypeSection.items}" id="si9"/>
+                    <f:validator binding="#{bindings.IdTypeSection.validator}"/>
+                </af:selectOneChoice>
+                <af:inputText value="#{bindings.Niveau.inputValue}" label="#{viewcontrollerBundle2.NIVEAU}"
+                              required="#{bindings.Niveau.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.Niveau.hints.displayWidth}"
+                              maximumLength="#{bindings.Niveau.hints.precision}"
+                              shortDesc="#{bindings.Niveau.hints.tooltip}" id="it30">
+                    <f:validator binding="#{bindings.Niveau.validator}"/>
+                    <af:convertNumber groupingUsed="false" pattern="#{bindings.Niveau.format}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.Url.inputValue}" label="#{viewcontrollerBundle2.URL}"
+                              required="#{bindings.Url.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.Url.hints.displayWidth}"
+                              maximumLength="#{bindings.Url.hints.precision}" shortDesc="#{bindings.Url.hints.tooltip}"
+                              id="it31">
+                    <f:validator binding="#{bindings.Url.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.HoraireTravail.inputValue}"
+                              label="#{viewcontrollerBundle2.HORAIRE_TRAVAIL}"
+                              required="#{bindings.HoraireTravail.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.HoraireTravail.hints.displayWidth}"
+                              maximumLength="#{bindings.HoraireTravail.hints.precision}"
+                              shortDesc="#{bindings.HoraireTravail.hints.tooltip}" id="it32">
+                    <f:validator binding="#{bindings.HoraireTravail.validator}"/>
+                </af:inputText>
+                <af:inputDate value="#{bindings.DateCreation.inputValue}" readOnly="true"
+                              label="#{viewcontrollerBundle2.DATE_CREATION}"
+                              required="#{bindings.DateCreation.hints.mandatory}"
+                              columns="#{bindings.DateCreation.hints.displayWidth}"
+                              shortDesc="#{bindings.DateCreation.hints.tooltip}" id="id2">
+                    <f:validator binding="#{bindings.DateCreation.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.DateCreation.format}"/>
+                </af:inputDate>
+                <af:selectOneChoice value="#{bindings.IdSignataire.inputValue}"
+                                    label="#{viewcontrollerBundle2.SIGNATAIRE}"
+                                    required="#{bindings.IdSignataire.hints.mandatory}"
+                                    shortDesc="#{bindings.IdSignataire.hints.tooltip}" readOnly="true" id="soc10">
+                    <f:selectItems value="#{bindings.IdSignataire.items}" id="si10"/>
+                    <f:validator binding="#{bindings.IdSignataire.validator}"/>
+                </af:selectOneChoice>
+                <!--af:inputText value="#{bindings.Signature.inputValue}" label="#{bindings.Signature.hints.label}"
+                              required="#{bindings.Signature.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.Signature.hints.displayWidth}"
+                              maximumLength="#{bindings.Signature.hints.precision}"
+                              shortDesc="#{bindings.Signature.hints.tooltip}" id="it35">
+                    <f:validator binding="#{bindings.Signature.validator}"/>
+                </af:inputText-->
+            </af:panelFormLayout>
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:resource type="javascript">function OnDialogCancel(evt){ var outcome = evt.getOutcome(); if (outcome ==
+                                   AdfDialogEvent.OUTCOME_CANCEL){ //call server var eventSource = evt.getSource(); var
+                                   immediate = true; AdfCustomEvent.queue(eventSource, "HandlerEvenDialogCancel",
+                                   {},immediate); evt.cancel(); } }</af:resource>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-new-hstruct"
+              binding="#{StructureBean.popupNewHStruct}" contentDelivery="lazyUncached">
+        <af:dialog id="d4" dialogListener="#{StructureBean.OnDialogAction}"
+                   title="#{viewcontrollerBundle2.FORMULAIRE_DE_SAISIE}">
+            <af:panelFormLayout id="pfl4">
+                <af:selectOneChoice value="#{bindings.IdStructures.inputValue}"
+                                    label="#{viewcontrollerBundle2.STRUCTURE}"
+                                    required="#{bindings.IdStructures.hints.mandatory}"
+                                    shortDesc="#{bindings.IdStructures.hints.tooltip}" readOnly="true" id="soc11">
+                    <f:selectItems value="#{bindings.IdStructures.items}" id="si11"/>
+                    <f:validator binding="#{bindings.IdStructures.validator}"/>
+                </af:selectOneChoice>
+                <af:inputText value="#{bindings.LibelleLong1.inputValue}" label="#{viewcontrollerBundle2.LIBELLE}"
+                              required="#{bindings.LibelleLong1.hints.mandatory}"
+                              columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                              shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it36">
+                    <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.LibelleCourt1.inputValue}" label="#{viewcontrollerBundle2.ABREVIATION}"
+                              required="#{bindings.LibelleCourt1.hints.mandatory}"
+                              columns="#{bindings.LibelleCourt1.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleCourt1.hints.precision}"
+                              shortDesc="#{bindings.LibelleCourt1.hints.tooltip}" id="it37">
+                    <f:validator binding="#{bindings.LibelleCourt1.validator}"/>
+                </af:inputText>
+                <af:inputDate value="#{bindings.DateDebut.inputValue}" label="#{viewcontrollerBundle2.DATE_DEBUT}"
+                              required="#{bindings.DateDebut.hints.mandatory}"
+                              columns="#{bindings.DateDebut.hints.displayWidth}"
+                              shortDesc="#{bindings.DateDebut.hints.tooltip}" id="id7">
+                    <f:validator binding="#{bindings.DateDebut.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.DateDebut.format}"/>
+                </af:inputDate>
+                <af:inputDate value="#{bindings.DateFin.inputValue}" label="#{viewcontrollerBundle2.DATE_FIN}"
+                              required="#{bindings.DateFin.hints.mandatory}"
+                              columns="#{bindings.DateFin.hints.displayWidth}"
+                              shortDesc="#{bindings.DateFin.hints.tooltip}" id="id8">
+                    <f:validator binding="#{bindings.DateFin.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.DateFin.format}"/>
+                </af:inputDate>
+                <!--af:inputText value="#{bindings.UtiCree1.inputValue}" label="#{bindings.UtiCree1.hints.label}"
+                              required="#{bindings.UtiCree1.hints.mandatory}"
+                              columns="#{bindings.UtiCree1.hints.displayWidth}"
+                              maximumLength="#{bindings.UtiCree1.hints.precision}"
+                              shortDesc="#{bindings.UtiCree1.hints.tooltip}" id="it38">
+                    <f:validator binding="#{bindings.UtiCree1.validator}"/>
+                    <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree1.format}"/>
+                </af:inputText-->
+            </af:panelFormLayout>
+            <f:facet name="buttonBar"/>
+            <af:serverListener type="HandlerEvenDialogCancel" method="#{StructureBean.OnHStructDialogCancel}"/>
+            <af:clientListener method="OnDialogCancel" type="dialog"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-edit-hstruct"
+              binding="#{StructureBean.popupEditHStructure}" contentDelivery="lazyUncached">
+        <af:dialog id="d5" dialogListener="#{StructureBean.OnDialogAction}"
+                   title="#{viewcontrollerBundle2.FORMULAIRE_DE_MODIFICATIONS}">
+            <af:panelFormLayout id="pfl5">
+                <af:selectOneChoice value="#{bindings.IdStructures.inputValue}"
+                                    label="#{viewcontrollerBundle2.STRUCTURE}"
+                                    required="#{bindings.IdStructures.hints.mandatory}"
+                                    shortDesc="#{bindings.IdStructures.hints.tooltip}" readOnly="true" id="soc12">
+                    <f:selectItems value="#{bindings.IdStructures.items}" id="si12"/>
+                    <f:validator binding="#{bindings.IdStructures.validator}"/>
+                </af:selectOneChoice>
+                <af:inputText value="#{bindings.LibelleLong1.inputValue}" label="#{viewcontrollerBundle2.LIBELLE}"
+                              required="#{bindings.LibelleLong1.hints.mandatory}"
+                              columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                              shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it39">
+                    <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.LibelleCourt1.inputValue}" label="#{viewcontrollerBundle2.ABREVIATION}"
+                              required="#{bindings.LibelleCourt1.hints.mandatory}"
+                              columns="#{bindings.LibelleCourt1.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleCourt1.hints.precision}"
+                              shortDesc="#{bindings.LibelleCourt1.hints.tooltip}" id="it40">
+                    <f:validator binding="#{bindings.LibelleCourt1.validator}"/>
+                </af:inputText>
+                <af:inputDate value="#{bindings.DateDebut.inputValue}" label="#{viewcontrollerBundle2.DATE_DEBUT}"
+                              required="#{bindings.DateDebut.hints.mandatory}"
+                              columns="#{bindings.DateDebut.hints.displayWidth}"
+                              shortDesc="#{bindings.DateDebut.hints.tooltip}" id="id9">
+                    <f:validator binding="#{bindings.DateDebut.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.DateDebut.format}"/>
+                </af:inputDate>
+                <af:inputDate value="#{bindings.DateFin.inputValue}" label="#{viewcontrollerBundle2.DATE_FIN}"
+                              required="#{bindings.DateFin.hints.mandatory}"
+                              columns="#{bindings.DateFin.hints.displayWidth}"
+                              shortDesc="#{bindings.DateFin.hints.tooltip}" id="id10">
+                    <f:validator binding="#{bindings.DateFin.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.DateFin.format}"/>
+                </af:inputDate>
+                <!--af:inputText value="#{bindings.UtiCree1.inputValue}" label="#{bindings.UtiCree1.hints.label}"
+                              required="#{bindings.UtiCree1.hints.mandatory}"
+                              columns="#{bindings.UtiCree1.hints.displayWidth}"
+                              maximumLength="#{bindings.UtiCree1.hints.precision}"
+                              shortDesc="#{bindings.UtiCree1.hints.tooltip}" id="it41">
+                    <f:validator binding="#{bindings.UtiCree1.validator}"/>
+                    <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree1.format}"/>
+                </af:inputText-->
+            </af:panelFormLayout>
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-delete-hstruct"
+              binding="#{StructureBean.popupDeleteHStructure}" contentDelivery="lazyUncached">
+        <af:dialog affirmativeTextAndAccessKey="SUPPRIMER" id="d6" noTextAndAccessKey="ANNULER"
+                   dialogListener="#{StructureBean.OnDeleteHStructAction}" title="#{viewcontrollerBundle2.CONFIM_Supp}"
+                   type="yesNo">
+            <af:panelFormLayout id="pfl6">
+                <af:inputText value="#{bindings.LibelleLong1.inputValue}" label="#{viewcontrollerBundle2.LIBELLE}"
+                              required="#{bindings.LibelleLong1.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                              shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it43">
+                    <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+                </af:inputText>
+                <af:inputText value="#{bindings.LibelleCourt1.inputValue}" label="#{viewcontrollerBundle2.ABREVIATION}"
+                              required="#{bindings.LibelleCourt1.hints.mandatory}" readOnly="true"
+                              columns="#{bindings.LibelleCourt1.hints.displayWidth}"
+                              maximumLength="#{bindings.LibelleCourt1.hints.precision}"
+                              shortDesc="#{bindings.LibelleCourt1.hints.tooltip}" id="it44">
+                    <f:validator binding="#{bindings.LibelleCourt1.validator}"/>
+                </af:inputText>
+                <af:inputDate value="#{bindings.DateDebut.inputValue}" readOnly="true"
+                              label="#{viewcontrollerBundle2.DATE_DEBUT}" required="#{bindings.DateDebut.hints.mandatory}"
+                              columns="#{bindings.DateDebut.hints.displayWidth}"
+                              shortDesc="#{bindings.DateDebut.hints.tooltip}" id="id11">
+                    <f:validator binding="#{bindings.DateDebut.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.DateDebut.format}"/>
+                </af:inputDate>
+                <af:inputDate value="#{bindings.DateFin.inputValue}" readOnly="true"
+                              label="#{viewcontrollerBundle2.DATE_FIN}" required="#{bindings.DateFin.hints.mandatory}"
+                              columns="#{bindings.DateFin.hints.displayWidth}"
+                              shortDesc="#{bindings.DateFin.hints.tooltip}" id="id12">
+                    <f:validator binding="#{bindings.DateFin.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.DateFin.format}"/>
+                </af:inputDate>
+                <af:inputDate value="#{bindings.DateCreation1.inputValue}" readOnly="true"
+                              label="#{viewcontrollerBundle2.DATE_CREATION}"
+                              required="#{bindings.DateCreation1.hints.mandatory}"
+                              columns="#{bindings.DateCreation1.hints.displayWidth}"
+                              shortDesc="#{bindings.DateCreation1.hints.tooltip}" id="id13">
+                    <f:validator binding="#{bindings.DateCreation1.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.DateCreation1.format}"/>
+                </af:inputDate>
+            </af:panelFormLayout>
+            <f:facet name="buttonBar"/>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3" contentDelivery="lazyUncached">
+        <af:noteWindow id="nw1">
+            <af:panelFormLayout id="pfl7">
+                <af:panelGroupLayout id="pgl12" layout="vertical" halign="center">
+                    <af:panelGroupLayout id="pgl4" layout="horizontal" styleClass="AFStretchWidth">
+                        <af:panelGroupLayout id="pgl8" layout="horizontal">
+                            <af:outputFormatted value="Telephone : " id="of1" inlineStyle=" font-size:large;"/>
+                            <af:inputText value="#{bindings.Telephone.inputValue}"
+                                          required="#{bindings.Telephone.hints.mandatory}" readOnly="true"
+                                          columns="#{bindings.Telephone.hints.displayWidth}"
+                                          maximumLength="#{bindings.Telephone.hints.precision}"
+                                          shortDesc="#{bindings.Telephone.hints.tooltip}" id="it23"
+                                          inlineStyle="margin:10px;" contentStyle=" font-size:large;"
+                                          labelStyle=" font-size:large;">
+                                <f:validator binding="#{bindings.Telephone.validator}"/>
+                            </af:inputText>
+                        </af:panelGroupLayout>
+                        <af:panelGroupLayout id="pgl9" layout="horizontal">
+                            <af:outputFormatted value="Type : " id="of2" inlineStyle=" font-size:large;"/>
+                            <af:selectOneChoice value="#{bindings.IdTypeSection.inputValue}"
+                                                required="#{bindings.IdTypeSection.hints.mandatory}"
+                                                shortDesc="#{bindings.IdTypeSection.hints.tooltip}" readOnly="true"
+                                                id="soc1" contentStyle=" font-size:large;"
+                                                labelStyle=" font-size:large;">
+                                <f:selectItems value="#{bindings.IdTypeSection.items}" id="si1"/>
+                                <f:validator binding="#{bindings.IdTypeSection.validator}"/>
+                            </af:selectOneChoice>
+                        </af:panelGroupLayout>
+                    </af:panelGroupLayout>
+                    <af:panelGroupLayout id="pgl5" layout="horizontal" styleClass="AFStretchWidth">
+                        <af:panelGroupLayout id="pgl10" layout="horizontal" styleClass="AFStretchWidth">
+                            <af:outputFormatted value="Niveau : " id="of4" inlineStyle=" font-size:large;"/>
+                            <af:inputText value="#{bindings.Niveau.inputValue}"
+                                          required="#{bindings.Niveau.hints.mandatory}" readOnly="true"
+                                          columns="#{bindings.Niveau.hints.displayWidth}"
+                                          maximumLength="#{bindings.Niveau.hints.precision}"
+                                          shortDesc="#{bindings.Niveau.hints.tooltip}" id="it33"
+                                          inlineStyle="margin:10px" contentStyle=" font-size:large;"
+                                          labelStyle=" font-size:large;">
+                                <f:validator binding="#{bindings.Niveau.validator}"/>
+                                <af:convertNumber groupingUsed="false" pattern="#{bindings.Niveau.format}"/>
+                            </af:inputText>
+                        </af:panelGroupLayout>
+                        <af:panelGroupLayout id="pgl11" layout="horizontal" styleClass="AFStretchWidth">
+                            <af:outputFormatted value="Url : " id="of3" inlineStyle=" font-size:large;"/>
+                            <af:inputText value="#{bindings.Url.inputValue}" required="#{bindings.Url.hints.mandatory}"
+                                          readOnly="true" columns="#{bindings.Url.hints.displayWidth}"
+                                          maximumLength="#{bindings.Url.hints.precision}"
+                                          shortDesc="#{bindings.Url.hints.tooltip}" id="it34"
+                                          contentStyle=" font-size:large;" labelStyle=" font-size:large;">
+                                <f:validator binding="#{bindings.Url.validator}"/>
+                            </af:inputText>
+                        </af:panelGroupLayout>
+                    </af:panelGroupLayout>
+                    <af:panelGroupLayout id="pgl6" layout="horizontal" styleClass="AFStretchWidth">
+                        <af:panelGroupLayout id="pgl13" layout="horizontal">
+                            <af:outputFormatted value="Horaires : " id="of5" inlineStyle=" font-size:large;"/>
+                            <af:inputText value="#{bindings.HoraireTravail.inputValue}"
+                                          required="#{bindings.HoraireTravail.hints.mandatory}" readOnly="true"
+                                          columns="#{bindings.HoraireTravail.hints.displayWidth}"
+                                          maximumLength="#{bindings.HoraireTravail.hints.precision}"
+                                          shortDesc="#{bindings.HoraireTravail.hints.tooltip}" id="it42"
+                                          inlineStyle="margin:10px" contentStyle=" font-size:large;"
+                                          labelStyle=" font-size:large;">
+                                <f:validator binding="#{bindings.HoraireTravail.validator}"/>
+                            </af:inputText>
+                        </af:panelGroupLayout>
+                        <af:panelGroupLayout id="pgl14" layout="horizontal">
+                            <af:outputFormatted value="Signataires : " id="of6" inlineStyle=" font-size:large;"/>
+                            <af:selectOneChoice value="#{bindings.IdSignataire.inputValue}"
+                                                required="#{bindings.IdSignataire.hints.mandatory}"
+                                                shortDesc="#{bindings.IdSignataire.hints.tooltip}" readOnly="true"
+                                                id="soc14" contentStyle=" font-size:large;"
+                                                labelStyle=" font-size:large;">
+                                <f:selectItems value="#{bindings.IdSignataire.items}" id="si14"/>
+                                <f:validator binding="#{bindings.IdSignataire.validator}"/>
+                            </af:selectOneChoice>
+                        </af:panelGroupLayout>
+                    </af:panelGroupLayout>
+                </af:panelGroupLayout>
+            </af:panelFormLayout>
+        </af:noteWindow>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{StructureBean.popupDeptExist}">
+        <af:dialog id="d7" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl7" layout="vertical" halign="center">
+                <af:icon name="warning" id="i1"/>
+                <af:outputFormatted value="Des départements sont dans cet établissement" id="of7"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p5" binding="#{StructureBean.popupUtiExist}">
+        <af:dialog id="d8" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl15" layout="vertical" halign="center">
+                <af:icon name="warning" id="i2"/>
+                <af:outputFormatted value="Des utilisateurs sont dans cet établissement" id="of8"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p6" binding="#{StructureBean.popupFormExist}">
+        <af:dialog id="d9" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl16" layout="vertical" halign="center">
+                <af:icon name="warning" id="i3"/>
+                <af:outputFormatted value="Des formations sont dans ce département" id="of9"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p7" binding="#{StructureBean.popupStructExist}">
+        <af:dialog id="d10" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl17" layout="vertical" halign="center">
+                <af:icon name="warning" id="i4"/>
+                <af:outputFormatted value="Etablissement existant" id="of10"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p8" binding="#{StructureBean.popupDeptExistYet}">
+        <af:dialog id="d11" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl18" layout="vertical" halign="center">
+                <af:icon name="warning" id="i5"/>
+                <af:outputFormatted value="Département existant" id="of11"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+</ui:composition>

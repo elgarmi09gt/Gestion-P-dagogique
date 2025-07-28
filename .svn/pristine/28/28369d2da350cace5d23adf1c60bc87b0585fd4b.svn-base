@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NiveauFormationSupROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.NiveauFormationSupROVORowImpl"
+  ComponentClass="model.readOnlyView.NiveauFormationSupROVOImpl"
+  FetchMode="FETCH_AS_NEEDED"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.NiveauFormationSupROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="niv"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_form"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[Select pm.id_parcours_maquet_annee ,nf.libelle_long as lib_niv_form, nf.libelle_court as lib_court_niv_form , nv.id_grade ,nv.id_niveau ,nv.niveau   
+  from PARCOURS_MAQUETTE_ANNEE pm                   
+    join NIVEAUX_FORMATION_PARCOURS nfp on nfp.ID_NIVEAU_FORMATION_PARCOURS=pm.ID_NIVEAU_FORMATION_PARCOURS  
+    join NIVEAU_FORMATION_COHORTES nfc on nfc.ID_NIVEAU_FORMATION_COHORTE = nfp.ID_NIVEAU_FORMATION_COHORTE  
+    join NIVEAUX_FORMATIONS nf on nf.ID_NIVEAU_FORMATION = nfc.ID_NIVEAU_FORMATION  
+    join NIVEAUX nv on nf.ID_NIVEAU = nv.ID_NIVEAU  
+    WHERE nv.NIVEAU=:niv and pm.ID_ANNEES_UNIVERS=:id_annee and nf.ID_FORMATION=:id_form]]></SQLQuery>
+  <ViewAttribute
+    Name="IdParcoursMaquetAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_PARCOURS_MAQUET_ANNEE"
+    Expression="ID_PARCOURS_MAQUET_ANNEE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibNivForm"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_NIV_FORM"
+    Expression="LIB_NIV_FORM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibCourtNivForm"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="75"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_COURT_NIV_FORM"
+    Expression="LIB_COURT_NIV_FORM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdGrade"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_GRADE"
+    Expression="ID_GRADE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveau"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU"
+    Expression="ID_NIVEAU"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Niveau"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="NIVEAU"
+    Expression="NIVEAU"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

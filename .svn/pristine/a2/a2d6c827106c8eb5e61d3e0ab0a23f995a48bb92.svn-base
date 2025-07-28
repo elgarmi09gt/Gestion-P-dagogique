@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="TextLoisVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  SelectListFlags="1"
+  FromListFlags="1"
+  WhereFlags="1"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  SelectAllAttributes="false"
+  PageIterMode="Full">
+  <ViewAccessor
+    Name="DeliberationStaticList1"
+    ViewObjectName="model.readOnlyView.DeliberationStaticList"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_Deliberation"
+    ListVOName="DeliberationStaticList1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Deliberation"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="idDeliberation"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="libelle"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage
+    Name="TextLoisEO"
+    Entity="model.entities.TextLoisEO"/>
+  <ViewAttribute
+    Name="IdTextLoi"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IdTextLoi"
+    EntityUsage="TextLoisEO"
+    AliasName="ID_TEXT_LOI"/>
+  <ViewAttribute
+    Name="Text"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Text"
+    EntityUsage="TextLoisEO"
+    AliasName="TEXT">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+        <DISPLAYHEIGHT
+          Value="3"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleCourt"
+    PrecisionRule="true"
+    EntityAttrName="LibelleCourt"
+    EntityUsage="TextLoisEO"
+    AliasName="LIBELLE_COURT"/>
+  <ViewAttribute
+    Name="DateCreation"
+    PrecisionRule="true"
+    EntityAttrName="DateCreation"
+    EntityUsage="TextLoisEO"
+    AliasName="DATE_CREATION"/>
+  <ViewAttribute
+    Name="DateModification"
+    PrecisionRule="true"
+    EntityAttrName="DateModification"
+    EntityUsage="TextLoisEO"
+    AliasName="DATE_MODIFICATION"/>
+  <ViewAttribute
+    Name="UtiCree"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="UtiCree"
+    EntityUsage="TextLoisEO"
+    AliasName="UTI_CREE"/>
+  <ViewAttribute
+    Name="UtiModifie"
+    PrecisionRule="true"
+    EntityAttrName="UtiModifie"
+    EntityUsage="TextLoisEO"
+    AliasName="UTI_MODIFIE"/>
+  <ViewAttribute
+    Name="Deliberation"
+    PrecisionRule="true"
+    EntityAttrName="Deliberation"
+    EntityUsage="TextLoisEO"
+    AliasName="DELIBERATION"
+    LOVName="LOV_Deliberation">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

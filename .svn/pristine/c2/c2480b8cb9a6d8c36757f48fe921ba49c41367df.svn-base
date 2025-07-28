@@ -1,0 +1,447 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  
+    <af:iterator value="#{ClesRepartitionBean.repartition_configurer()}" 
+         id="i6" rendered="#{empty sessionScope.editer or sessionScope.editer eq 0}"/>
+    <af:iterator value="#{ClesRepartitionBean.repartition_configurer_editer()}" 
+         id="i1" rendered="#{not empty sessionScope.editer or sessionScope.editer eq 1}"/>
+         
+     <af:selectOneChoice value="#{bindings.FormationPayanteRO.inputValue}" label="Formation Payante :"
+          required="#{bindings.FormationPayanteRO.hints.mandatory}"
+          shortDesc="#{bindings.FormationPayanteRO.hints.tooltip}" id="soc1"
+          contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+          labelStyle="font-size:large;" inlineStyle="margin-top:30px;" autoSubmit="true">
+    <f:selectItems value="#{bindings.FormationPayanteRO.items}" id="si1"/>
+    <f:validator binding="#{bindings.FormationPayanteRO.validator}"/>
+  </af:selectOneChoice>
+  
+    <af:panelFormLayout id="pfl1" rows="2"
+                      inlineStyle="border:solid  2px #2897e8;width:1200px;margin-top:20px;margin-left:10px;margin-bottom:20px;">
+    <f:facet name="footer"/>
+    <af:inputText value="#{bindings.LibDomaine.inputValue}" label="Domaine :"
+                  required="#{bindings.LibDomaine.hints.mandatory}" columns="#{bindings.LibDomaine.hints.displayWidth}"
+                  maximumLength="#{bindings.LibDomaine.hints.precision}"
+                  shortDesc="#{bindings.LibDomaine.hints.tooltip}" id="it1" disabled="true">
+      <f:validator binding="#{bindings.LibDomaine.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.LibEtab.inputValue}" label="Etablissement:"
+                  required="#{bindings.LibEtab.hints.mandatory}" columns="#{bindings.LibEtab.hints.displayWidth}"
+                  maximumLength="#{bindings.LibEtab.hints.precision}" shortDesc="#{bindings.LibEtab.hints.tooltip}"
+                  id="it2" disabled="true">
+      <f:validator binding="#{bindings.LibEtab.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.LibCourtMention.inputValue}" label="Mention :"
+                  required="#{bindings.LibCourtMention.hints.mandatory}"
+                  columns="#{bindings.LibCourtMention.hints.displayWidth}"
+                  maximumLength="#{bindings.LibCourtMention.hints.precision}"
+                  shortDesc="#{bindings.LibCourtMention.hints.tooltip}" id="it4" disabled="true">
+      <f:validator binding="#{bindings.LibCourtMention.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.LibDept.inputValue}" label="Département:"
+                  required="#{bindings.LibDept.hints.mandatory}" columns="#{bindings.LibDept.hints.displayWidth}"
+                  maximumLength="#{bindings.LibDept.hints.precision}" shortDesc="#{bindings.LibDept.hints.tooltip}"
+                  id="it3" disabled="true">
+      <f:validator binding="#{bindings.LibDept.validator}"/>
+    </af:inputText>
+  </af:panelFormLayout>
+  
+   <af:panelGroupLayout id="pgl1" layout="vertical">
+    <af:panelGroupLayout id="pgl2" layout="horizontal" styleClass="AFStretchWidth"
+                         inlineStyle="border:solid  2px #2897e8;">
+      <af:panelGroupLayout id="pgl3" inlineStyle="border:solid  1px #2897e8;width:900px;" layout="vertical">
+        <af:panelStretchLayout id="psl1" dimensionsFrom="children">
+          <f:facet name="start"/>
+          <f:facet name="end"/>
+          <f:facet name="top">
+            <af:panelGroupLayout id="pgl4">
+              <af:button text="Editer Clés Répartition" id="b8"
+                         inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                         visible="#{sessionScope.var_form_rep_existe == '1' ? true : false}" partialTriggers="b1"
+                         action="#{ClesRepartitionBean.onEditerClesRep}"/>
+            </af:panelGroupLayout>
+          </f:facet>
+          <f:facet name="bottom"/>
+          <f:facet name="center">
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{ClesRepartitionBean.tableCollectRep}">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar">
+                <af:toolbar id="t2">
+                  <af:button id="b2" icon="/images/new_icon.png"
+                             actionListener="#{ClesRepartitionBean.onNewRepartition}"/>
+                  <af:button id="b3" icon="/images/edit_icon.png"
+                             actionListener="#{ClesRepartitionBean.onEditerRepartition}"/>
+                  <af:button id="b4" icon="/images/delete_icon.png"
+                             actionListener="#{ClesRepartitionBean.onDeleteRepartition}"/>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.RepartitionRO.collectionModel}" var="row"
+                        rows="#{bindings.RepartitionRO.rangeSize}"
+                        emptyText="#{bindings.RepartitionRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" selectedRowKeys="#{bindings.RepartitionRO.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.RepartitionRO.collectionModel.makeCurrent}" rowSelection="single"
+                        fetchSize="#{bindings.RepartitionRO.rangeSize}"
+                        filterModel="#{bindings.RepartitionROQuery.queryDescriptor}" filterVisible="true"
+                        queryListener="#{bindings.RepartitionROQuery.processQuery}" varStatus="vs" id="t1">
+                <af:column headerText="Action" id="c6" width="50">
+                  <af:selectBooleanCheckbox value="#{row.bindings.case_cocher.inputValue}"
+                                            label="#{row.bindings.case_cocher.label}"
+                                            shortDesc="#{bindings.RepartitionRO.hints.case_cocher.tooltip}" id="sbc1"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.RepartitionRO.hints.LibelleLong.name}" filterable="true"
+                           sortable="true" headerText="Libellé" id="c1"
+                           width="300">
+                  <af:outputText value="#{row.LibelleLong}"
+                                 shortDesc="#{bindings.RepartitionRO.hints.LibelleLong.tooltip}" id="ot1"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.RepartitionRO.hints.LibelleCourt.name}" filterable="true"
+                           sortable="true" headerText="Abréviation" id="c2" width="200">
+                  <af:outputText value="#{row.LibelleCourt}"
+                                 shortDesc="#{bindings.RepartitionRO.hints.LibelleCourt.tooltip}" id="ot2"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.RepartitionRO.hints.Actif.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.RepartitionRO.hints.Actif.label}" id="c3" width="50">
+                  <af:selectOneChoice value="#{row.bindings.Actif.inputValue}" label="#{row.bindings.Actif.label}"
+                                      required="#{bindings.RepartitionRO.hints.Actif.mandatory}"
+                                      shortDesc="#{bindings.RepartitionRO.hints.Actif.tooltip}" readOnly="true"
+                                      id="soc2">
+                    <f:selectItems value="#{row.bindings.Actif.items}" id="si2"/>
+                    <f:validator binding="#{row.bindings.Actif.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.RepartitionRO.hints.DateDebut.name}" filterable="true"
+                           sortable="true" headerText="Date Debut" id="c4">
+                  <f:facet name="filter">
+                    <af:inputDate value="#{bindings.RepartitionROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateDebut.value}"
+                                  id="id1">
+                      <af:convertDateTime pattern="#{bindings.RepartitionRO.hints.DateDebut.format}"/>
+                    </af:inputDate>
+                  </f:facet>
+                  <af:outputText value="#{row.DateDebut}" shortDesc="#{bindings.RepartitionRO.hints.DateDebut.tooltip}"
+                                 id="ot3">
+                    <af:convertDateTime pattern="#{bindings.RepartitionRO.hints.DateDebut.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.RepartitionRO.hints.DateFin.name}" filterable="true" sortable="true"
+                           headerText="Date Fin" id="c5">
+                  <f:facet name="filter">
+                    <af:inputDate value="#{bindings.RepartitionROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateFin.value}"
+                                  id="id2">
+                      <af:convertDateTime pattern="#{bindings.RepartitionRO.hints.DateFin.format}"/>
+                    </af:inputDate>
+                  </f:facet>
+                  <af:outputText value="#{row.DateFin}" shortDesc="#{bindings.RepartitionRO.hints.DateFin.tooltip}"
+                                 id="ot4">
+                    <af:convertDateTime pattern="#{bindings.RepartitionRO.hints.DateFin.format}"/>
+                  </af:outputText>
+                </af:column>
+              </af:table>
+              <f:facet name="statusbar"/>
+            </af:panelCollection>
+          </f:facet>
+        </af:panelStretchLayout>
+      </af:panelGroupLayout>
+      <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+      <af:panelStretchLayout id="psl2" startWidth="50px" dimensionsFrom="children">
+        <f:facet name="start"/>
+        <f:facet name="end"/>
+        <f:facet name="top"/>
+        <f:facet name="bottom"/>
+        <f:facet name="center">
+          <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar">
+              <af:toolbar id="t4">
+                <af:button id="b5" icon="/images/new_icon.png" actionListener="#{ClesRepartitionBean.onTypeCompteNew}"/>
+                <af:button id="b6" icon="/images/edit_icon.png"
+                           actionListener="#{ClesRepartitionBean.onTypeCompteEdit}"/>
+                <af:button id="b7" icon="/images/delete_icon.png"
+                           actionListener="#{ClesRepartitionBean.onTypeCompteDel}"
+                           disabled="#{sessionScope.var_form_rep_existe == '1' ? true : false}"
+                           partialTriggers="::b1 ::b8"/>
+              </af:toolbar>
+            </f:facet>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.TypeCompteRO.collectionModel}" var="row"
+                      rows="#{bindings.TypeCompteRO.rangeSize}"
+                      emptyText="#{bindings.TypeCompteRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.TypeCompteRO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.TypeCompteRO.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.TypeCompteRO.rangeSize}"
+                      filterModel="#{bindings.TypeCompteROQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.TypeCompteROQuery.processQuery}" varStatus="vs" id="t3"
+                      inlineStyle="margin-left:10px;" scrollPolicy="page" partialTriggers=":::b1">
+              <af:column headerText="Sélection" id="c10" width="60">
+                <af:selectBooleanCheckbox value="#{row.bindings.case_cocher1.inputValue}"
+                                          label="#{row.bindings.case_cocher1.label}"
+                                          shortDesc="#{bindings.TypeCompteRO.hints.cocher.tooltip}" id="sbc2"
+                                          disabled="#{sessionScope.var_form_rep_existe == '1' ? true : false}"/>
+                <f:facet name="header">
+                  <af:selectBooleanCheckbox text="Tout" id="sbc3" binding="#{ClesRepartitionBean.chek_all}"
+                                            autoSubmit="true" valueChangeListener="#{ClesRepartitionBean.onSelectAll}"
+                                            disabled="#{sessionScope.var_form_rep_existe == '1' ? true : false}"/>
+                </f:facet>
+              </af:column>
+              <af:column headerText="Libellé" id="c11" width="250">
+                <af:outputText value="#{row.LibelleType}" shortDesc="#{bindings.TypeCompteRO.hints.LibelleType.tooltip}"
+                               id="ot6"/>
+              </af:column>
+              <af:column headerText="Abréviation" id="c12" width="160">
+                <af:outputText value="#{row.LibCourtType}"
+                               shortDesc="#{bindings.TypeCompteRO.hints.LibCourtType.tooltip}" id="ot7"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.TypeCompteRO.hints.pourcentage.name}" filterable="true"
+                         sortable="true" headerText="Pourcentage" id="c9">
+                <af:inputText value="#{row.bindings.pourcentage.inputValue}"
+                              label="#{bindings.TypeCompteRO.hints.pourcentage.label}"
+                              required="#{bindings.TypeCompteRO.hints.pourcentage.mandatory}"
+                              columns="#{bindings.TypeCompteRO.hints.pourcentage.displayWidth}"
+                              maximumLength="5"
+                              disabled="#{sessionScope.var_form_rep_existe == '1' ? true : false}"
+                              shortDesc="#{bindings.TypeCompteRO.hints.pourcentage.tooltip}" id="it11"
+                              >
+                  <!--<f:validator binding="#{row.bindings.pourcentage.validator}"/>!-->
+                  
+                  <f:validateDoubleRange minimum="0" maximum="100" />
+                </af:inputText>
+              </af:column>
+              <af:column headerText="#{bindings.TypeCompteRO.hints.pourcentage.label}" id="c7" visible="false">
+                <af:inputText value="#{row.bindings.pourcentage.inputValue}"
+                              label="#{bindings.TypeCompteRO.hints.pourcentage.label}"
+                              required="#{bindings.TypeCompteRO.hints.pourcentage.mandatory}"
+                              columns="#{bindings.TypeCompteRO.hints.pourcentage.displayWidth}"
+                              maximumLength="#{bindings.TypeCompteRO.hints.pourcentage.precision}"
+                              shortDesc="#{bindings.TypeCompteRO.hints.pourcentage.tooltip}" id="it14">
+                  <f:validator binding="#{row.bindings.pourcentage.validator}"/>
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.TypeCompteRO.hints.pourcentage.format}"/>
+                </af:inputText>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </f:facet>
+      </af:panelStretchLayout>
+    </af:panelGroupLayout>
+    <af:button text="Valider" id="b1"
+               inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;"
+               icon="/images/commit.png" action="#{ClesRepartitionBean.onValiderCleRepartition}" partialTriggers="b1 b8"
+               disabled="#{sessionScope.var_form_rep_existe == '1' ? true : false}"/>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+            binding="#{ClesRepartitionBean.popNew}">
+    <af:dialog id="d1" title="Formulaire d'Ajout d'une Répartition" dialogListener="#{ClesRepartitionBean.onDialogNew}">
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{ClesRepartitionBean.onDialogCanNew}"/>
+      <af:panelFormLayout id="pfl2">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="Libellé"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="Abréviation"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it6">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputDate value="#{bindings.DateDebut.inputValue}" label="Date Debut"
+                      required="#{bindings.DateDebut.hints.mandatory}"
+                      columns="#{bindings.DateDebut.hints.displayWidth}" shortDesc="#{bindings.DateDebut.hints.tooltip}"
+                      id="id3">
+          <f:validator binding="#{bindings.DateDebut.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateDebut.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateFin.inputValue}" label="Date Fin"
+                      required="#{bindings.DateFin.hints.mandatory}" columns="#{bindings.DateFin.hints.displayWidth}"
+                      shortDesc="#{bindings.DateFin.hints.tooltip}" id="id4">
+          <f:validator binding="#{bindings.DateFin.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateFin.format}"/>
+        </af:inputDate>
+        <af:selectOneRadio value="#{bindings.Actif.inputValue}" label="#{bindings.Actif.label}"
+                           required="#{bindings.Actif.hints.mandatory}" shortDesc="#{bindings.Actif.hints.tooltip}"
+                           id="sor1" layout="horizontal">
+          <f:selectItems value="#{bindings.Actif.items}" id="si3"/>
+          <f:validator binding="#{bindings.Actif.validator}"/>
+        </af:selectOneRadio>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" contentDelivery="lazyUncached"
+            binding="#{ClesRepartitionBean.popEdit}">
+    <af:dialog id="d2" title="Formulaire de modifications" dialogListener="#{ClesRepartitionBean.onDialogNew}">
+      <f:facet name="buttonBar"/>
+      <af:serverListener type="onDialogEvent" method="#{ClesRepartitionBean.onDialogCanEdit}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:panelFormLayout id="pfl3">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="Libellé"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it7">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="Abréviation"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it8">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputDate value="#{bindings.DateDebut.inputValue}" label="Date Debut"
+                      required="#{bindings.DateDebut.hints.mandatory}"
+                      columns="#{bindings.DateDebut.hints.displayWidth}" shortDesc="#{bindings.DateDebut.hints.tooltip}"
+                      id="id5">
+          <f:validator binding="#{bindings.DateDebut.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateDebut.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateFin.inputValue}" label="Date Fin"
+                      required="#{bindings.DateFin.hints.mandatory}" columns="#{bindings.DateFin.hints.displayWidth}"
+                      shortDesc="#{bindings.DateFin.hints.tooltip}" id="id6">
+          <f:validator binding="#{bindings.DateFin.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateFin.format}"/>
+        </af:inputDate>
+        <af:selectOneRadio value="#{bindings.Actif.inputValue}" label="#{bindings.Actif.label}"
+                           required="#{bindings.Actif.hints.mandatory}" shortDesc="#{bindings.Actif.hints.tooltip}"
+                           id="sor2" layout="horizontal">
+          <f:selectItems value="#{bindings.Actif.items}" id="si4"/>
+          <f:validator binding="#{bindings.Actif.validator}"/>
+        </af:selectOneRadio>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p3" contentDelivery="lazyUncached"
+            binding="#{ClesRepartitionBean.popDel}">
+    <af:dialog id="d3" title="Formulaire de Suppression" dialogListener="#{ClesRepartitionBean.onDialogDel}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous supprimer la répartition : #{bindings.LibelleLong}" id="ot5"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{ClesRepartitionBean.onDialogCanDel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p4" contentDelivery="lazyUncached"
+            binding="#{ClesRepartitionBean.popNewType}">
+    <af:dialog id="d4" title="Formulaire d'Ajout d'un Type de Compte"
+               dialogListener="#{ClesRepartitionBean.onDialogTypeNew}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl4">
+        <af:inputText value="#{bindings.LibelleLong2.inputValue}" label="Libellé"
+                      required="#{bindings.LibelleLong2.hints.mandatory}"
+                      columns="#{bindings.LibelleLong2.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong2.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong2.hints.tooltip}" id="it9">
+          <f:validator binding="#{bindings.LibelleLong2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt2.inputValue}" label="Abréviation"
+                      required="#{bindings.LibelleCourt2.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt2.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt2.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt2.hints.tooltip}" id="it10">
+          <f:validator binding="#{bindings.LibelleCourt2.validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <af:serverListener type="onDialogEvent" method="#{ClesRepartitionBean.onDialogTypeCanNew}"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p5" contentDelivery="lazyUncached"
+            binding="#{ClesRepartitionBean.popEditType}">
+    <af:dialog id="d5" title="Formulaire de modifications" dialogListener="#{ClesRepartitionBean.onDialogTypeNew}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl5">
+        <af:inputText value="#{bindings.LibelleLong2.inputValue}" label="Libellé"
+                      required="#{bindings.LibelleLong2.hints.mandatory}"
+                      columns="#{bindings.LibelleLong2.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong2.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong2.hints.tooltip}" id="it12">
+          <f:validator binding="#{bindings.LibelleLong2.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt2.inputValue}" label="Abréviation"
+                      required="#{bindings.LibelleCourt2.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt2.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt2.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt2.hints.tooltip}" id="it13">
+          <f:validator binding="#{bindings.LibelleCourt2.validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{ClesRepartitionBean.onDialogTypeCanEdit}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p6" contentDelivery="lazyUncached"
+            binding="#{ClesRepartitionBean.popDelType}">
+    <af:dialog id="d6" title="Formulaire de suppression" dialogListener="#{ClesRepartitionBean.onDialogDelType}">
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{ClesRepartitionBean.onDialogTypeCanDel}"/>
+      <af:outputText value="Voulez-vous supprimer le type de compte :#{bindings.LibelleType}" id="ot8"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p7" 
+            binding="#{ClesRepartitionBean.popErrNew}">
+    <af:dialog id="d7" type="ok" title="Formulaire d'Ajout" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Une Répartition est déjà ajoutée pour la formation: #{bindings.LibForm}" id="of3"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p8" binding="#{ClesRepartitionBean.popImpDelRep}">
+    <af:dialog id="d8" type="ok" title="Impossible de Supprimer la Répartition" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Répartition est déjà attachée à la formation: #{bindings.LibForm} " id="of1"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p9" binding="#{ClesRepartitionBean.popDelRepVide}">
+    <af:dialog id="d9" type="ok" title="Info Suppression" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Veuillez ajouter au moins une répartition avant de supprimer"
+                          id="of2"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p10" binding="#{ClesRepartitionBean.popErrEdit}">
+    <af:dialog id="d10" type="ok" title="Info Modification" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Veuillez ajouter au moins une répartition avant de modifier"
+                          id="of4"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="p11" binding="#{ClesRepartitionBean.popEditTypErr}">
+    <af:dialog id="d11" type="ok" title="Info Modification" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Veuillez ajouter au moins un type compte avant de modifier"
+                          id="of5"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p12" binding="#{ClesRepartitionBean.popDelTypErr}">
+    <af:dialog id="d12" type="ok" title="Info Suppression" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Veuillez ajouter au moins un type compte avant de supprimer"
+                          id="of6"
+                                inlineStyle="font-size:x-large; color:Red;"/>
+      
+    </af:dialog>
+  </af:popup>
+</ui:composition>

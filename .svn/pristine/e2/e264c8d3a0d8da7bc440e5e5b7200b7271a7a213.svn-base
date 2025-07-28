@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listsaisienotesmodeensPageDef"
+                Package="evaluation.saisie_notes_mode_ens">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UeEvalRO" RangeSize="25" DataControl="evaluationAppDataControl" id="UeEvalROIterator"/>
+    <iterator Binds="EcEvalRO" RangeSize="15" DataControl="evaluationAppDataControl" id="EcEvalROIterator"/>
+    <iterator Binds="EcEvalTypeCtrlRO" RangeSize="25" DataControl="evaluationAppDataControl" id="TypeControleIterator"/>
+    <iterator Binds="SaisieNotesGroupesSaisieLOV" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="SaisieNotesGroupesSaisieLOVIterator"/>
+    <iterator Binds="SaisieNotesFiltresLOV" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="SaisieNotesFiltresLOVIterator"/>
+    <iterator Binds="NotesModeEnseignement" RangeSize="15" DataControl="evaluationAppDataControl"
+              id="NotesModeEnseignementIterator" RefreshCondition="#{sessionScope.ref ne '0'}" Refresh="prepareModel"/>
+    <iterator Binds="GenAnonymatVO" RangeSize="10" DataControl="evaluationAppDataControl" id="GenAnonymatVOIterator"/>
+    <iterator Binds="GenAnonymatROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="GenAnonymatROVOIterator"/>
+    <iterator Binds="AnonymatExecuteRO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="AnonymatExecuteROIterator"/>
+    <iterator Binds="NoteModeEnsInterGenAnonymRO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="NoteModeEnsInterGenAnonymROIterator"/>
+    <iterator Binds="NoteModeEnsGenAnonymROVO2" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="NoteModeEnsGenAnonymROVO2Iterator"/>
+    <iterator Binds="GenAnonymatNewRO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="GenAnonymatNewROIterator"/>
+    <searchRegion Binds="NotesModeEnseignementIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NotesModeEnseignementQuery"/>
+    <iterator Binds="Etudiants" RangeSize="10" DataControl="evaluationAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="AnneesUniversVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="AnneesUniversVOIterator"/>
+    <iterator Binds="AllInteFilEcROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="AllInteFilEcROVOIterator"/>
+    <iterator Binds="isNoteModeEnsInterExist1" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="isNoteModeEnsInterExist1Iterator"/>
+    <iterator Binds="IsResponsableFilUe" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsResponsableFilUeIterator"/>
+    <iterator Binds="IsResponsableFilEc" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="IsResponsableFilEcIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="UeEvalROIterator" ListOperMode="navigation" ListIter="UeEvalROIterator" id="UeEvalRO"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="EcEvalROIterator" ListOperMode="navigation" ListIter="EcEvalROIterator" id="EcEvalRO"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="SaisieNotesGroupesSaisieLOVIterator" ListOperMode="navigation"
+          ListIter="SaisieNotesGroupesSaisieLOVIterator" id="SaisieNotesGroupesSaisieLOV" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="libelle"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="SaisieNotesFiltresLOVIterator" ListOperMode="navigation" ListIter="SaisieNotesFiltresLOVIterator"
+          id="SaisieNotesFiltresLOV" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="libelle"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="NotesModeEnseignementIterator" id="ExecuteWithParams"
+            InstanceName="evaluationAppDataControl.NotesModeEnseignement" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_type_ctrl_var" NDType="java.lang.Long"/>
+      <NamedData NDName="id_cal_delib_var" NDType="java.lang.Long"/>
+      <NamedData NDName="id_fil_ec" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="NotesModeEnseignementIterator" id="IdNoteModeEnseignement">
+      <AttrNames>
+        <Item Value="IdNoteModeEnseignement"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <methodAction id="clotureSaisieNotes" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="clotureSaisieNotes" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.clotureSaisieNotes.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.clotureSaisieNotes_clotureSaisieNotes_dataControl_dataProvider_clotureSaisieNotes_result">
+      <NamedData NDName="fil_sem_ec" NDType="java.lang.Long"/>
+      <NamedData NDName="type_control" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="NotesModeEnseignementIterator" id="IdFiliereUeSemstreEc">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstreEc"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="findAndUpdateNote" RequiresUpdateModel="true" Action="invokeMethod" MethodName="findAndUpdateNote"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.findAndUpdateNote.dataControl.dataProvider">
+      <NamedData NDName="idNoteModeEns" NDType="java.lang.Long"/>
+      <NamedData NDName="note" NDType="java.lang.Float"/>
+    </methodAction>
+    <attributeValues IterBinding="EcEvalROIterator" id="IdFiliereUeSemstreEc1">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstreEc"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isClosedSaisieNotes" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isClosedSaisieNotes" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isClosedSaisieNotes.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isClosedSaisieNotes_isClosedSaisieNotes_dataControl_dataProvider_isClosedSaisieNotes_result">
+      <NamedData NDName="fil_sem_ec" NDType="java.lang.Long"/>
+      <NamedData NDName="type_control" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="UeEvalROIterator" id="IdFiliereUeSemstre">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstre"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="GenAnonymatVOIterator" id="getAnonymat"
+            InstanceName="evaluationAppDataControl.GenAnonymatVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="anonymat_var" NDType="java.lang.String"/>
+    </action>
+    <attributeValues IterBinding="GenAnonymatVOIterator" id="IdEtudiant">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="TypeControleIterator" ListOperMode="navigation" ListIter="TypeControleIterator"
+          id="EcEvalTypeCtrlRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibTypeCtrl"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="TypeControleIterator" id="IdTypeControle">
+      <AttrNames>
+        <Item Value="IdTypeControle"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="GenAnonymatROVOIterator" id="ExecuteWithParams1"
+            InstanceName="evaluationAppDataControl.GenAnonymatROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="sessions" NDType="java.lang.Long"/>
+      <NamedData NDName="anne" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="CalculMoyenneEcFinalProc" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CalculMoyenneEcFinalProc" IsViewObjectMethod="false"
+                  DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CalculMoyenneEcFinalProc.dataControl.dataProvider">
+      <NamedData NDName="anne" NDType="java.lang.Integer"/>
+      <NamedData NDName="semestre" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="fileUesem" NDType="java.lang.Integer"/>
+      <NamedData NDName="idFilieUeSemEc" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrDelib" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="NoteModeEnsGenAnonymROVO2Iterator" id="getIdNoteModeEns"
+            InstanceName="evaluationAppDataControl.NoteModeEnsGenAnonymROVO2" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Long"/>
+      <NamedData NDName="id_parc" NDValue="#{sessionScope.id_niv_form_parcours}" NDType="java.lang.Long"/>
+      <NamedData NDName="id_sem" NDValue="#{sessionScope.id_smstre}" NDType="java.lang.Long"/>
+      <NamedData NDName="id_fil_ue_sem" NDType="java.lang.Long"/>
+      <NamedData NDName="id_fil_ue_sem_ec" NDType="java.lang.Long"/>
+      <NamedData NDName="id_type_ctrl" NDType="java.lang.Long"/>
+      <NamedData NDName="id_calendrier" NDValue="#{sessionScope.id_calendrier}" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="NoteModeEnsGenAnonymROVO2Iterator" id="IdNoteModeEnseignement1">
+      <AttrNames>
+        <Item Value="IdNoteModeEnseignement"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="getIdAnonymat" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdAnonymat"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.getIdAnonymat.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.getIdAnonymat_getIdAnonymat_dataControl_dataProvider_getIdAnonymat_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="anne" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="sessions" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="GenAnonymatNewROIterator" id="getAnonymatDecrypte"
+            InstanceName="evaluationAppDataControl.GenAnonymatNewRO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="sessions" NDType="java.lang.Long"/>
+      <NamedData NDName="anne" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="EcEvalROIterator" id="IdFiliereUeSemstreEc2">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstreEc"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isGenereAnonymat" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isGenereAnonymat" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isGenereAnonymat.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isGenereAnonymat_isGenereAnonymat_dataControl_dataProvider_isGenereAnonymat_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="anne" NDType="java.lang.Long"/>
+      <NamedData NDName="semestre" NDType="java.lang.Long"/>
+      <NamedData NDName="sessions" NDType="java.lang.Long"/>
+    </methodAction>
+    <tree IterBinding="NotesModeEnseignementIterator" id="NotesModeEnseignement">
+      <nodeDefinition DefName="model.updatableview.NotesModeEnseignementVO" Name="NotesModeEnseignement0">
+        <AttrNames>
+          <Item Value="Note"/>
+          <Item Value="Anonymat"/>
+          <Item Value="Numero"/>
+          <Item Value="PrenomNom"/>
+          <Item Value="DateNaissance"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="UeEvalROIterator" id="LibNivForm">
+      <AttrNames>
+        <Item Value="LibNivForm"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UeEvalROIterator" id="CodificationUE">
+      <AttrNames>
+        <Item Value="Codification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcEvalROIterator" id="CodificationEC">
+      <AttrNames>
+        <Item Value="Codification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeControleIterator" id="LibelleCourtCtrl">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="EtudiantsIterator" id="getEtudiant" InstanceName="evaluationAppDataControl.Etudiants"
+            DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </action>
+    <attributeValues IterBinding="EtudiantsIterator" id="IdEtudiant1">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UeEvalROIterator" id="LibAnnee">
+      <AttrNames>
+        <Item Value="LibAnnee"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneesUniversVOIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="AnneesUniversVOIterator" id="getIdAnne"
+            InstanceName="evaluationAppDataControl.AnneesUniversVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="lib_annee" NDType="java.lang.String"/>
+    </action>
+    <attributeValues IterBinding="AnneesUniversVOIterator" id="IdAnneesUnivers1">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="clotureSaisieNotesInter" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="clotureSaisieNotesInter" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.clotureSaisieNotesInter.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.clotureSaisieNotesInter_clotureSaisieNotesInter_dataControl_dataProvider_clotureSaisieNotesInter_result">
+      <NamedData NDName="fil_sem_ec" NDType="java.lang.Long"/>
+      <NamedData NDName="type_control" NDType="java.lang.Long"/>
+      <NamedData NDName="mode_control" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="AllInteFilEcROVOIterator" id="GetAllInterFilEc"
+            InstanceName="evaluationAppDataControl.AllInteFilEcROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_fil_ec" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="calculMoyenneEc" RequiresUpdateModel="true" Action="invokeMethod" MethodName="calculMoyenneEc"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.calculMoyenneEc.dataControl.dataProvider">
+      <NamedData NDName="anne" NDType="java.lang.Integer"/>
+      <NamedData NDName="semestre" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="fileUesem" NDType="java.lang.Integer"/>
+      <NamedData NDName="idFilieUeSemEc" NDType="java.lang.Integer"/>
+      <NamedData NDName="typeControle" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrDelib" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="isNoteModeEnsInterExist1Iterator" id="isNoteModeEnsInterExist"
+            InstanceName="evaluationAppDataControl.isNoteModeEnsInterExist1" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fil_ec_id" NDType="java.lang.Integer"/>
+    </action>
+    <methodAction id="reouvrirSaisieNotes" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="reouvrirSaisieNotes" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.reouvrirSaisieNotes.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.reouvrirSaisieNotes_reouvrirSaisieNotes_dataControl_dataProvider_reouvrirSaisieNotes_result">
+      <NamedData NDName="parcours" NDType="java.lang.Long"/>
+      <NamedData NDName="fil_ue" NDType="java.lang.Long"/>
+      <NamedData NDName="fil_sem_ec" NDType="java.lang.Long"/>
+      <NamedData NDName="type_control" NDType="java.lang.Long"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="IsResponsableFilUeIterator" id="IsRespUe"
+            InstanceName="evaluationAppDataControl.IsResponsableFilUe" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fil_ue" NDType="java.lang.Integer"/>
+      <NamedData NDName="user_id" NDType="java.lang.Integer"/>
+    </action>
+    <action IterBinding="IsResponsableFilEcIterator" id="IsRespEC"
+            InstanceName="evaluationAppDataControl.IsResponsableFilEc" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="fil_ec" NDType="java.lang.Integer"/>
+      <NamedData NDName="user_id" NDType="java.lang.Integer"/>
+    </action>
+  </bindings>
+</pageDefinition>

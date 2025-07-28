@@ -1,0 +1,329 @@
+package view.beans.paramSup.accesec;
+
+import java.util.ArrayList;
+
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCIteratorBinding;
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.data.RichTable;
+import oracle.adf.view.rich.component.rich.input.RichSelectBooleanCheckbox;
+import oracle.adf.view.rich.component.rich.input.RichSelectOneRadio;
+import oracle.adf.view.rich.context.AdfFacesContext;
+
+import oracle.binding.AttributeBinding;
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+import oracle.jbo.RowSetIterator;
+
+public class EcsAccesBean {
+    private RichTable ecTable;
+    private RichSelectOneRadio ecCheked;
+    private RichSelectOneRadio roleChecked;
+    private RichTable accesEcTable;
+    Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    private Integer anne_univers = Integer.parseInt(sessionScope.get("id_annee").toString());
+    private Integer utilisateur = Integer.parseInt(sessionScope.get("id_user").toString());
+    private Integer id_hs = Integer.parseInt(sessionScope.get("id_hs").toString());
+    private RichSelectBooleanCheckbox selecAll;
+
+    public EcsAccesBean() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnStudentValueChangeListener(ValueChangeEvent valueChangeEvent) {
+        BindingContainer container = BindingContext.getCurrent().getCurrentBindingsEntry();
+        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+        AttributeBinding attrIdBinding = (AttributeBinding) container.getControlBinding("IdUtilisateur");
+        Integer Id = (Integer.parseInt(attrIdBinding.getInputValue().toString()));
+        System.out.println("Id "+Id);
+        OperationBinding lesEcs = BindingContext.getCurrent()
+                                                .getCurrentBindingsEntry()
+                                                .getOperationBinding("GetEcsAcces");
+        lesEcs.getParamsMap().put("annee", getAnne_univers());
+        lesEcs.getParamsMap().put("uti", Id);
+        lesEcs.getParamsMap().put("s_id", getId_hs());
+        lesEcs.execute();
+        
+        OperationBinding lesAcces = BindingContext.getCurrent()
+                                                  .getCurrentBindingsEntry()
+                                                  .getOperationBinding("GetAccesEc");
+        lesAcces.getParamsMap().put("annee", getAnne_univers());
+        lesAcces.getParamsMap().put("uti", Id);
+        lesAcces.execute();
+
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getEcTable());
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getAccesEcTable());
+    }
+
+    public void setEcTable(RichTable ecTable) {
+        this.ecTable = ecTable;
+    }
+
+    public RichTable getEcTable() {
+        return ecTable;
+    }
+    
+    public BindingContainer getBindings() {
+        return BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnSaveClicked(ActionEvent actionEvent) {
+        // Il peut etre important de verifier si l'acces n'est pas encore autorisé avant d'enregistrer une autorisation
+        BindingContainer bindings = getBindings();
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("UtilisateursROVO1Iterator");
+        Row currentuser = iter.getCurrentRow();
+        Integer IdUser = Integer.parseInt(currentuser.getAttribute("IdUtilisateur").toString());
+        
+        DCIteratorBinding iterNiv_form = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("UtilisateurNiveauFormationRO1Iterator");
+        Row currentniv = iterNiv_form.getCurrentRow();
+        Integer niv_form_id = Integer.parseInt(currentniv.getAttribute("IdNiveauFormation").toString());
+        
+        try {
+            OperationBinding ecsSelected = bindings.getOperationBinding("getSelectedEcs");
+            ArrayList<Long> ecs = (ArrayList<Long>) ecsSelected.execute();
+            System.out.println("Size ec "+ecs.size());
+            if (ecs.size() != 0) { 
+                // Pour chaque utilisateur lui accorder les accees choisies
+                for (int eccounter = 0; eccounter < ecs.size(); eccounter++) {
+                    //Verifier si l'utilisateur a deja acces a cet ec
+                    OperationBinding isAllowAcces = bindings.getOperationBinding("IsEcAccesAllowed");
+                    isAllowAcces.getParamsMap().put("s_id", getId_hs());
+                    isAllowAcces.getParamsMap().put("uti", IdUser);
+                    isAllowAcces.getParamsMap().put("fil_ec", ecs.get(eccounter));
+                    isAllowAcces.getParamsMap().put("annee", getAnne_univers());
+                    Object resul = isAllowAcces.execute();
+                    
+                    DCIteratorBinding is_allowed_iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                             .getCurrentBindingsEntry()
+                                                             .get("IsEcAccesAllowedROVOIterator");
+                    Row crnt_is = is_allowed_iter.getCurrentRow();
+                    if (crnt_is == null) {
+                        // l'utilisateur n'a pas d'acces sur cet ec
+                        // Verifier le type d'acces
+                        if(this.getRoleChecked().getValue().toString().equals("RESPNSABLE EC")){
+                            // Verifier si l'ec n'a pas de responsable déja
+                            OperationBinding is_resp_ec = bindings.getOperationBinding("IsEcResponsableExist");
+                            is_resp_ec.getParamsMap().put("s_id", getId_hs());
+                            //is_resp_ec.getParamsMap().put("uti", IdUser);
+                            is_resp_ec.getParamsMap().put("fil_ec", ecs.get(eccounter));
+                            is_resp_ec.getParamsMap().put("annee", getAnne_univers());
+                            is_resp_ec.execute();
+                            iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                     .getCurrentBindingsEntry()
+                                                                     .get("IsEcResponsableExistIterator");
+                            Row is_exist_resp = iter.getCurrentRow();
+                            if (is_exist_resp == null) {
+                                // Pas de responsable pour cet ec
+                                OperationBinding opAllowAcces = bindings.getOperationBinding("AllowedAccessTo");
+                                opAllowAcces.getParamsMap().put("IdUtilisateur", IdUser);
+                                opAllowAcces.getParamsMap().put("UtiCree", getUtilisateur());
+                                opAllowAcces.getParamsMap().put("IdFiliereUeSemstreEc", ecs.get(eccounter));
+                                opAllowAcces.getParamsMap().put("Role", this.getRoleChecked().getValue().toString());
+                                resul = opAllowAcces.execute();
+                            }else{
+                                // Cet ec a deja un responsble
+                                System.out.println("Responsable existant pour cet ec");
+                            }
+                            
+                        }else{
+                            // Role Simple
+                            OperationBinding opAllowAcces = bindings.getOperationBinding("AllowedAccessTo");
+                            opAllowAcces.getParamsMap().put("IdUtilisateur", IdUser);
+                            opAllowAcces.getParamsMap().put("UtiCree", getUtilisateur());
+                            opAllowAcces.getParamsMap().put("IdFiliereUeSemstreEc", ecs.get(eccounter));
+                            opAllowAcces.getParamsMap().put("Role", this.getRoleChecked().getValue().toString());
+                            resul = opAllowAcces.execute();
+                            }
+                        }else{
+                            // if new role = RESPNSABLE EC et old role = ACCES SIMPLE
+                            if(!(crnt_is.getAttribute("Role").toString().equals("RESPNSABLE EC")) && 
+                               (this.getRoleChecked().getValue().toString().equals("RESPNSABLE EC"))){
+                                // Update possible
+                                // Verifier si l'ec a un responsable
+                                OperationBinding is_resp_ec = bindings.getOperationBinding("IsEcResponsableExist");
+                                is_resp_ec.getParamsMap().put("s_id", getId_hs());
+                                //is_resp_ec.getParamsMap().put("uti", IdUser);
+                                is_resp_ec.getParamsMap().put("fil_ec", ecs.get(eccounter));
+                                is_resp_ec.getParamsMap().put("annee", getAnne_univers());
+                                is_resp_ec.execute();
+                                iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                         .getCurrentBindingsEntry()
+                                                                         .get("IsEcResponsableExistIterator");
+                                Row is_exist_resp = iter.getCurrentRow();
+                                if (is_exist_resp == null) {
+                                    // Pas de responsable pour ce Ec
+                                    // Update current user role to RESPNSABLE EC
+                                    System.out.println("Update role required from ACCES SIMPLE to RESPNSABLE EC !!!");
+                                    OperationBinding updateRole = bindings.getOperationBinding("UpdateResponsableEc");
+                                    updateRole.getParamsMap().put("idUser", IdUser);
+                                    updateRole.getParamsMap().put("idFilEc", ecs.get(eccounter));
+                                    updateRole.getParamsMap().put("role", this.getRoleChecked().getValue().toString());
+                                    updateRole.getParamsMap().put("utimodif", getUtilisateur());
+                                    updateRole.getParamsMap().put("id_uti_fil_ec", Integer.parseInt(crnt_is.getAttribute("IdUtilisFilierUeSemEc").toString()));
+                                    resul = updateRole.execute();
+                                    
+                                }else{
+                                    System.out.println("Responsable deja defini pour cet ec !!!");
+                                }
+                            }else{
+                                System.out.println("Acces déja autorisé !!!");
+                            }
+                    }
+                }
+                // Tout ce passe bien On commit
+                OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object result = operationCommit.execute();
+                // Réexecuter les VO pour actualiser les tableaux    
+                OperationBinding lesEcs = BindingContext.getCurrent()
+                                                        .getCurrentBindingsEntry()
+                                                        .getOperationBinding("GetEcsAcces");
+                lesEcs.getParamsMap().put("annee", getAnne_univers());
+                lesEcs.getParamsMap().put("uti", IdUser);
+                lesEcs.getParamsMap().put("s_id", getId_hs());
+                lesEcs.getParamsMap().put("niv_form", niv_form_id);
+                lesEcs.execute();
+                
+                OperationBinding lesAcces = BindingContext.getCurrent()
+                                                          .getCurrentBindingsEntry()
+                                                          .getOperationBinding("GetAccesEc");
+                lesAcces.getParamsMap().put("annee", getAnne_univers());
+                lesAcces.getParamsMap().put("uti", IdUser);
+                lesAcces.getParamsMap().put("id_hs", getId_hs());
+                lesAcces.getParamsMap().put("niv_form", niv_form_id);
+                lesAcces.execute();
+
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getEcTable());
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getAccesEcTable());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void setEcCheked(RichSelectOneRadio ecCheked) {
+        this.ecCheked = ecCheked;
+    }
+
+    public RichSelectOneRadio getEcCheked() {
+        return ecCheked;
+    }
+
+    public void setRoleChecked(RichSelectOneRadio roleChecked) {
+        this.roleChecked = roleChecked;
+    }
+
+    public RichSelectOneRadio getRoleChecked() {
+        return roleChecked;
+    }
+
+    public void setAccesEcTable(RichTable accesEcTable) {
+        this.accesEcTable = accesEcTable;
+    }
+
+    public RichTable getAccesEcTable() {
+        return accesEcTable;
+    }
+
+    public void setAnne_univers(Integer anne_univers) {
+        this.anne_univers = anne_univers;
+    }
+
+    public Integer getAnne_univers() {
+        return anne_univers;
+    }
+
+    public void setUtilisateur(Integer utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Integer getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setId_hs(Integer id_hs) {
+        this.id_hs = id_hs;
+    }
+
+    public Integer getId_hs() {
+        return id_hs;
+    }
+
+    public void setSelecAll(RichSelectBooleanCheckbox selecAll) {
+        this.selecAll = selecAll;
+    }
+
+    public RichSelectBooleanCheckbox getSelecAll() {
+        return selecAll;
+    }
+
+    public void OnSelectDiselectAll(ValueChangeEvent valueChangeEvent) {
+        //voName
+        //String voName = (String)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("EcNiveauFormationUtilisateurROVO");
+        //System.out.println("Selected all : "+Boolean.parseBoolean(selecAll.getValue().toString()));
+        System.out.println("New valu : " + ((Boolean) valueChangeEvent.getNewValue()).booleanValue());
+        boolean isSelected = ((Boolean) valueChangeEvent.getNewValue()).booleanValue();
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("EcNiveauFormationUtilisateurROVOIterator");
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        rsi.reset();
+        while (rsi.hasNext()) {
+            Row nextRow = rsi.next();
+            if (isSelected) {
+                nextRow.setAttribute("isEcSelected", Boolean.TRUE);
+            } else {
+                nextRow.setAttribute("isEcSelected", Boolean.FALSE);
+            }
+            System.out.println("isEcSelected : "+nextRow.getAttribute("isEcSelected"));
+        }
+        rsi.closeRowSetIterator();
+
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getEcTable());
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnNiveauFormationChange(ValueChangeEvent valueChangeEvent) {
+        // Add event code here...
+        BindingContainer container = BindingContext.getCurrent().getCurrentBindingsEntry();
+        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+        AttributeBinding attrIdBinding = (AttributeBinding) container.getControlBinding("IdUtilisateur");
+        Integer user_id = (Integer.parseInt(attrIdBinding.getInputValue().toString()));
+        
+        AttributeBinding attrnivformBinding = (AttributeBinding) container.getControlBinding("IdNiveauFormation");
+        Integer niv_form_id = (Integer.parseInt(attrnivformBinding.getInputValue().toString()));
+        
+        OperationBinding lesEcs = BindingContext.getCurrent()
+                                                .getCurrentBindingsEntry()
+                                                .getOperationBinding("GetEcsAcces");
+        lesEcs.getParamsMap().put("annee", getAnne_univers());
+        lesEcs.getParamsMap().put("uti", user_id);
+        lesEcs.getParamsMap().put("s_id", getId_hs());
+        lesEcs.getParamsMap().put("niv_form", niv_form_id);
+        lesEcs.execute();
+        
+        OperationBinding lesAcces = BindingContext.getCurrent()
+                                                  .getCurrentBindingsEntry()
+                                                  .getOperationBinding("GetAccesEc");
+        lesAcces.getParamsMap().put("annee", getAnne_univers());
+        lesAcces.getParamsMap().put("uti", user_id);
+        lesAcces.getParamsMap().put("id_hs", getId_hs());
+        lesAcces.getParamsMap().put("niv_form", niv_form_id);
+        lesAcces.execute();
+
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getEcTable());
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getAccesEcTable());
+    }
+}

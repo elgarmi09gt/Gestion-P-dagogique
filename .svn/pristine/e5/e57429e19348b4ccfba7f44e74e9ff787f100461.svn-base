@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl2" layout="scroll">
+    <af:panelFormLayout id="pfl1" rows="2"
+                      inlineStyle="border:solid  2px #2897e8;width:700px;margin-top:20px;margin-left:10px;">
+    <af:inputText value="#{bindings.Numero.inputValue}" label="#{bindings.Numero.hints.label}"
+                  required="#{bindings.Numero.hints.mandatory}" columns="#{bindings.Numero.hints.displayWidth}"
+                  maximumLength="#{bindings.Numero.hints.precision}" shortDesc="#{bindings.Numero.hints.tooltip}"
+                  id="it1" readOnly="true">
+      <f:validator binding="#{bindings.Numero.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                  required="#{bindings.Nom.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Nom.hints.displayWidth}" maximumLength="#{bindings.Nom.hints.precision}"
+                  shortDesc="#{bindings.Nom.hints.tooltip}" id="it2">
+      <f:validator binding="#{bindings.Nom.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Prenoms.inputValue}" label="#{bindings.Prenoms.hints.label}"
+                  required="#{bindings.Prenoms.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Prenoms.hints.displayWidth}" maximumLength="#{bindings.Prenoms.hints.precision}"
+                  shortDesc="#{bindings.Prenoms.hints.tooltip}" id="it3">
+      <f:validator binding="#{bindings.Prenoms.validator}"/>
+    </af:inputText>
+    <af:inputDate value="#{bindings.DateNaissance.inputValue}" readOnly="true"
+                  label="#{bindings.DateNaissance.hints.label}" required="#{bindings.DateNaissance.hints.mandatory}"
+                  columns="#{bindings.DateNaissance.hints.displayWidth}"
+                  shortDesc="#{bindings.DateNaissance.hints.tooltip}" id="id1">
+      <f:validator binding="#{bindings.DateNaissance.validator}"/>
+      <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+    </af:inputDate>
+  </af:panelFormLayout>
+    
+    <af:panelHeader text="Historique des inscriptions :" id="ph1" inlineStyle="margin-top:20px;margin-left:10px;">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:table value="#{bindings.NivFormHistoInscRO1.collectionModel}" var="row"
+                rows="#{bindings.NivFormHistoInscRO1.rangeSize}"
+                emptyText="#{bindings.NivFormHistoInscRO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.NivFormHistoInscRO1.collectionModel.selectedRow}"
+                selectionListener="#{bindings.NivFormHistoInscRO1.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.NivFormHistoInscRO1.rangeSize}"
+                filterModel="#{bindings.NivFormHistoInscRO1Query.queryDescriptor}"
+                queryListener="#{bindings.NivFormHistoInscRO1Query.processQuery}" varStatus="vs" id="t1"
+                inlineStyle="margin-top:10px;" scrollPolicy="scroll">
+        <af:column sortProperty="#{bindings.NivFormHistoInscRO1.hints.AnneeUnivers.name}" filterable="true"
+                   headerText="Annee Univers." id="c1">
+          <af:outputText value="#{row.AnneeUnivers}"
+                         shortDesc="#{bindings.NivFormHistoInscRO1.hints.AnneeUnivers.tooltip}" id="ot1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.NivFormHistoInscRO1.hints.Libform.name}" filterable="true"
+                   headerText="Niveau Formation" id="c2" width="400">
+          <af:outputText value="#{row.Libform}" shortDesc="#{bindings.NivFormHistoInscRO1.hints.Libform.tooltip}"
+                         id="ot2"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.NivFormHistoInscRO1.hints.IdOption.name}" filterable="true"
+                   headerText="Option" id="c5" width="300">
+          <af:selectOneChoice value="#{row.bindings.IdOption.inputValue}" label="#{row.bindings.IdOption.label}"
+                              required="#{bindings.NivFormHistoInscRO1.hints.IdOption.mandatory}"
+                              shortDesc="#{bindings.NivFormHistoInscRO1.hints.IdOption.tooltip}" readOnly="true"
+                              id="soc3">
+            <f:selectItems value="#{row.bindings.IdOption.items}" id="si3"/>
+            <f:validator binding="#{row.bindings.IdOption.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.NivFormHistoInscRO1.hints.IdCohorte.name}" filterable="true"
+                   headerText="Cohorte" id="c9">
+          <af:selectOneChoice value="#{row.bindings.IdCohorte.inputValue}" label="#{row.bindings.IdCohorte.label}"
+                              required="#{bindings.NivFormHistoInscRO1.hints.IdCohorte.mandatory}"
+                              shortDesc="#{bindings.NivFormHistoInscRO1.hints.IdCohorte.tooltip}" readOnly="true"
+                              id="soc7">
+            <f:selectItems value="#{row.bindings.IdCohorte.items}" id="si7"/>
+            <f:validator binding="#{row.bindings.IdCohorte.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.NivFormHistoInscRO1.hints.IdHorairesTd.name}" filterable="true"
+                   headerText="Horaires Td" id="c4">
+          <af:selectOneChoice value="#{row.bindings.IdHorairesTd.inputValue}" label="#{row.bindings.IdHorairesTd.label}"
+                              required="#{bindings.NivFormHistoInscRO1.hints.IdHorairesTd.mandatory}"
+                              shortDesc="#{bindings.NivFormHistoInscRO1.hints.IdHorairesTd.tooltip}" readOnly="true"
+                              id="soc2">
+            <f:selectItems value="#{row.bindings.IdHorairesTd.items}" id="si2"/>
+            <f:validator binding="#{row.bindings.IdHorairesTd.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.NivFormHistoInscRO1.hints.NbInsc.name}" filterable="true"
+                   headerText="Nbr. Inscriptions" id="c8">
+          <af:selectOneChoice value="#{row.bindings.NbInsc.inputValue}" label="#{row.bindings.NbInsc.label}"
+                              required="#{bindings.NivFormHistoInscRO1.hints.NbInsc.mandatory}"
+                              shortDesc="#{bindings.NivFormHistoInscRO1.hints.NbInsc.tooltip}" readOnly="true"
+                              id="soc6">
+            <f:selectItems value="#{row.bindings.NbInsc.items}" id="si6"/>
+            <f:validator binding="#{row.bindings.NbInsc.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+      </af:table>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+</ui:composition>

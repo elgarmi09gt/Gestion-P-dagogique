@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="listeEtudMobiliteROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.listeEtudMobiliteROVORowImpl"
+  ComponentClass="model.readOnlyView.listeEtudMobiliteROVOImpl"
+  FetchMode="FETCH_AS_NEEDED"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.listeEtudMobiliteROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_sem"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select distinct p.id_personne , p.lieu_naissance, p.prenoms , p.nom , p.date_naissance , e.numero , e.id_etudiant ,ips.id_semestre ,ip.id_inscription_pedagogique  
+from etudiants e      
+join personnes p on e.id_personne = p.id_personne      
+join inscriptions_admin ia on ia.id_etudiant = e.id_etudiant      
+join inscriptions_pedagogiques ip on ip.id_inscription_admin = ia.id_inscription_admin   
+join inscription_ped_semestre ips on ip.id_inscription_pedagogique = ips.id_inscription_pedagogique      
+where ia.id_annees_univers=:id_annee and ips.id_semestre=:id_sem and e.mobilite=1]]></SQLQuery>
+  <ViewAttribute
+    Name="IdPersonne"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_PERSONNE"
+    Expression="ID_PERSONNE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LieuNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIEU_NAISSANCE"
+    Expression="LIEU_NAISSANCE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenoms"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMS"
+    Expression="PRENOMS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_NAISSANCE"
+    Expression="DATE_NAISSANCE"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SEMESTRE"
+    Expression="ID_SEMESTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionPedagogique"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PEDAGOGIQUE"
+    Expression="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"/>
+  <ViewLinkAccessor
+    Name="listeEtudMobUeROVO"
+    ViewLink="model.viewlink.EtudiantModEtudModUeVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

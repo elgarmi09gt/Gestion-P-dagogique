@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="getNatureUe"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.getNatureUeRowImpl"
+  ComponentClass="model.readOnlyView.getNatureUeImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.getNatureUe_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="lib"
+    Kind="where"
+    Type="java.lang.String"/>
+  <SQLQuery><![CDATA[Select ID_NATURE_UE 
+FROM NATURE_UE 
+WHERE LIBELLE_LONG =:lib]]></SQLQuery>
+  <ViewAttribute
+    Name="IdNatureUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_NATURE_UE"
+    Expression="ID_NATURE_UE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNatureUe"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

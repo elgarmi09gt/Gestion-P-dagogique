@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="list_maquettes_ue_ec_list_maquettes_ue_ec_ExecuteWithParamsPageDef" Package="dap.maquettes"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="NiveauFormationRO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="NiveauFormationROIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="NiveauFormationROIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="hs_id" NDValue="#{sessionScope.id_hs}" NDType="java.lang.Integer"/>
+    </action>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="OptionsEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="OPTIONS"
+  AliasName="OptionsEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdOption"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_OPTION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="OPTIONS"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="LibelleLong"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="200"
+    ColumnName="LIBELLE_LONG"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="OPTIONS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="LibelleCourt"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="75"
+    ColumnName="LIBELLE_COURT"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="OPTIONS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IdSpecialite"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_SPECIALITE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="OPTIONS"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="OPTIONS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="OPTIONS"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="OPTIONS"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="OPTIONS"/>
+  <!--AccessorAttribute
+    Name="NivFormSpecialiteOptionEO"
+    Association="model.entities.FkNivformspOptioOptioAssoc"
+    AssociationEnd="model.entities.FkNivformspOptioOptioAssoc.NivFormSpecialiteOptionEO"
+    AssociationOtherEnd="model.entities.FkNivformspOptioOptioAssoc.OptionsEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/-->
+  <AccessorAttribute
+    Name="FormationsOptionsEO"
+    Association="model.assoc.OptionsToFormationsOptionsAssoc"
+    AssociationEnd="model.assoc.OptionsToFormationsOptionsAssoc.FormationsOptionsEO"
+    AssociationOtherEnd="model.assoc.OptionsToFormationsOptionsAssoc.OptionsEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <AccessorAttribute
+    Name="InscriptionAncienneEO"
+    Association="model.assoc.InscriptionAncienToOptionAssoc"
+    AssociationEnd="model.assoc.InscriptionAncienToOptionAssoc.InscriptionAncienneEO"
+    AssociationOtherEnd="model.assoc.InscriptionAncienToOptionAssoc.OptionsEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="SpecialitesVO"
+    ViewLink="model.viewlink.SpectialiteToOption"
+    ViewLinkEnd="model.viewlink.SpectialiteToOption.SpecialitesVO"
+    ViewLinkOtherEnd="model.viewlink.SpectialiteToOption.OptionsVO"
+    Type="oracle.jbo.server.ViewRowImpl"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="FormationsOptionsVO"
+    ViewLink="model.viewlink.OptionsToFormationsOptionsVL"
+    ViewLinkEnd="model.viewlink.OptionsToFormationsOptionsVL.FormationsOptionsVO"
+    ViewLinkOtherEnd="model.viewlink.OptionsToFormationsOptionsVL.OptionsVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="OptionsIdOptionCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"ID_OPTION" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="OPTIONS_ID_OPTION_CHECK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OptionsEO.IdOption"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="OptionsIdSpecialiteCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"ID_SPECIALITE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="OPTIONS_ID_SPECIALITE_CHECK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OptionsEO.IdSpecialite"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="PkOptions"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_OPTIONS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OptionsEO.IdOption"/>
+      <Item Value="model.entities.OptionsEO.IdSpecialite"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkOptionSpecialite">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_SPECIALITES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_OPTION_SPECIALITE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OptionsEO.IdSpecialite"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkOptionUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_OPTION_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OptionsEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkOptionUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_OPTION_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.OptionsEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

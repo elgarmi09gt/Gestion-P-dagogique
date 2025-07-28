@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NivFormParcoursRO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.NivFormParcoursRORowImpl"
+  ComponentClass="model.readOnlyView.NivFormParcoursROImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.NivFormParcoursRO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT DISTINCT                           
+  nfp.ID_NIVEAU_FORMATION_PARCOURS,  
+  nfc.ID_NIVEAU_FORMATION ,    
+  (nf.LIBELLE_LONG||' '||  decode(crt.ID_COHORTE, null, '', crt.LIBELLE) ) NiveauFormationParcours                                               
+FROM   NIVEAU_FORMATION_COHORTES nfc                                   
+JOIN   COHORTES crt ON nfc.ID_COHORTE = crt.ID_COHORTE                               
+JOIN   NIVEAUX_FORMATIONS nf ON nf.ID_NIVEAU_FORMATION = nfc.ID_NIVEAU_FORMATION                                                            
+JOIN   NIVEAUX_FORMATION_PARCOURS nfp On nfp.ID_NIVEAU_FORMATION_COHORTE = nfc.ID_NIVEAU_FORMATION_COHORTE                                              
+join FORMATIONS fr on fr.id_formation = nf.ID_FORMATION                                
+join HISTORIQUES_STRUCTURES hs on hs.ID_HISTORIQUES_STRUCTURE= fr.ID_HISTORIQUES_STRUCTURE]]></SQLQuery>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION"
+    Expression="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Niveauformationparcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="301"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NIVEAUFORMATIONPARCOURS"
+    Expression="NIVEAUFORMATIONPARCOURS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="301"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="isSelected"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="VIEW_ATTR"
+    SQLType="BIT">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNiveauFormationParcours"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="NiveauFormationRO"
+    ViewLink="model.viewlink.NivFormRoToNivFormPrcrsRoVL"
+    Type="model.readOnlyView.NiveauFormationRORowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

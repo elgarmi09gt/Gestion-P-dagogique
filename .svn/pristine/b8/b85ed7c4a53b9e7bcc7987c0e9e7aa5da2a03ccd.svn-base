@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="etudiant_bu_editPageDef"
+                Package="inscription.etudiant_bu">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="EtudiantBu" RangeSize="25" DataControl="inscriptionAppDataControl" id="EtudiantBuIterator"/>
+    <iterator Binds="Etudiants" RangeSize="25" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="Personnes" RangeSize="25" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="StructureEtudBuRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="StructureEtudBuROIterator"/>
+  </executables>
+  <bindings>
+  <attributeValues IterBinding="EtudiantsIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="EtudiantBuIterator" id="EnRegle" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="EnRegle"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="1"/>
+        <Item Value="0"/>
+      </ValueList>
+    </button>
+    <list IterBinding="StructureEtudBuROIterator" ListOperMode="navigation" ListIter="StructureEtudBuROIterator"
+          id="StructureEtudBuRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+  </bindings>
+</pageDefinition>

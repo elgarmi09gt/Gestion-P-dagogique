@@ -1,0 +1,1231 @@
+package view.bean.formations;
+
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCIteratorBinding;
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPopup;
+import oracle.adf.view.rich.component.rich.output.RichPanelCollection;
+import oracle.adf.view.rich.context.AdfFacesContext;
+import oracle.adf.view.rich.event.DialogEvent;
+import oracle.adf.view.rich.event.DialogEvent.Outcome;
+import oracle.adf.view.rich.render.ClientEvent;
+
+import oracle.binding.AttributeBinding;
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+
+import org.apache.myfaces.trinidad.event.PollEvent;
+
+public class FormationsBean {
+    private RichPanelCollection collectionFormations;
+    private RichPanelCollection collectionFormationSpec;
+    private RichPanelCollection collectionFormationOption;
+    private RichPopup popFromNew;
+    final String OLD_CURR_KEY_VIEWSCOPE_ATTR = "__oldCurrentRowKey__";
+    private RichPopup popFormSpcNew;
+    private RichPopup popFormOptNew;
+    private RichPanelCollection collectionFormationAcces;
+    private RichPopup popFormAccesNew;
+    private RichPanelCollection collectionFromCondition;
+    private RichPopup popFormCondAccesNew;
+    private RichPanelCollection collectionFormLang;
+    private RichPopup popFLgNew;
+    private RichPopup popCondAc;
+    private RichPanelCollection collectionFormOrg;
+    private RichPopup popOrgEtude;
+    private RichPanelCollection collectionFormInstitut;
+    private RichPopup popFromInst;
+    private RichPanelCollection collectionNiveauxForm;
+    private RichPopup popNivForm;
+    private RichPanelCollection collectionNivFormCohorte;
+    private RichPanelCollection collectionFormParcours;
+    private RichPopup popNivFormCoh;
+    private RichPopup popNivFormParc;
+    private RichPopup popInfoForm;
+    private RichPopup popInfoNiv;
+    ADFContext adfCtx = ADFContext.getCurrent();
+    Map sessionScope = adfCtx.getSessionScope();
+    Long utilisateur = Long.parseLong(sessionScope.get("id_user").toString());
+    private RichPopup popupFormEdit;
+    private RichPopup popupEditNf;
+    private RichPopup popEditNivFormCohorte;
+    private RichPopup popEditNivFormPrcrs;
+    private RichPopup popConfirmDeleteFormation;
+    private RichPopup popFormSpecEdit;
+    private RichPopup popFormOptEdit;
+
+    public FormationsBean() {
+    }
+
+    public void setCollectionFormations(RichPanelCollection collectionFormations) {
+        this.collectionFormations = collectionFormations;
+    }
+
+    public RichPanelCollection getCollectionFormations() {
+        return collectionFormations;
+    }
+    
+    public BindingContainer getBindings(){
+        return BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+    
+    public void onFormationsNew(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationsVO1Iterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree");
+        if(oldCcurrentRow!=null)
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsertForm");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopFromNew();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+    public void setCollectionFormationSpec(RichPanelCollection collectionFormationSpec) {
+        this.collectionFormationSpec = collectionFormationSpec;
+    }
+
+    public RichPanelCollection getCollectionFormationSpec() {
+        return collectionFormationSpec;
+    }
+
+    public void setCollectionFormationOption(RichPanelCollection collectionFormationOption) {
+        this.collectionFormationOption = collectionFormationOption;
+    }
+
+    public RichPanelCollection getCollectionFormationOption() {
+        return collectionFormationOption;
+    }
+
+    public void onFormationsSpecNew(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree4");
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationsSpecialitesVO1Iterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        if(oldCcurrentRow!=null)
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsertFormSpc");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopFormSpcNew();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+    public void onFormationOptNew(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree5");
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationsOptionsIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        if(oldCcurrentRow!=null)
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsertFormOpt");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopFormOptNew();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+    public void onDialog(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            AttributeBinding utimodif = (AttributeBinding) getBindings().getControlBinding("UtiModifie");
+            utimodif.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopupFormEdit().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+        }
+    }
+
+    public void setPopFromNew(RichPopup popFromNew) {
+        this.popFromNew = popFromNew;
+    }
+
+    public RichPopup getPopFromNew() {
+        return popFromNew;
+    }
+
+    public void onDialogCancel(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        RichPopup popup = this.getPopFromNew();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationsVO1Iterator");
+        Row currentRow = dciter.getCurrentRow();
+        dciter.removeCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void onDeleteFromation(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            BindingContainer bindings = this.getBindings();
+            OperationBinding operationDelete = bindings.getOperationBinding("DeleteForm");
+            Object result = operationDelete.execute();
+            if (!operationDelete.getErrors().isEmpty()) {
+                return;
+            }
+            else{
+               OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object commitResult = operationCommit.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+                this.getPopConfirmDeleteFormation().hide();
+                return ;
+            }
+        }
+    }
+
+    public void setPopFormSpcNew(RichPopup popFormSpcNew) {
+        this.popFormSpcNew = popFormSpcNew;
+    }
+
+    public RichPopup getPopFormSpcNew() {
+        return popFormSpcNew;
+    }
+
+    public void onDialogCancelSpc(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        RichPopup popup = this.getPopFormSpcNew();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationsSpecialitesVO1Iterator");
+        Row currentRow = dciter.getCurrentRow();
+        dciter.removeCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        if(oldCurrentRowKey != null){
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormationSpec());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void onDeleteFromSpec(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            BindingContainer bindings = this.getBindings();
+            OperationBinding operationDelete = bindings.getOperationBinding("DeleteFormSpc");
+            Object result = operationDelete.execute();
+            if (!operationDelete.getErrors().isEmpty()) {
+                return;
+            }
+            else{
+               OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object commitResult = operationCommit.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormationSpec());
+                return ;
+            }
+            
+        }
+    }
+
+    public void onDialogCancelOpt(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        RichPopup popup = this.getPopFormOptNew();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationsOptionsIterator");
+        Row currentRow = dciter.getCurrentRow();
+        if(currentRow!=null)
+            dciter.removeCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        if(oldCurrentRowKey != null){
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormationOption());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void onDeleteFormOption(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            BindingContainer bindings = this.getBindings();
+            OperationBinding operationDelete = bindings.getOperationBinding("DeleteFormOpt");
+            Object result = operationDelete.execute();
+            if (!operationDelete.getErrors().isEmpty()) {
+                return;
+            }
+            else{
+               OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object commitResult = operationCommit.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormationOption());
+                return ;
+            }
+            
+        }
+    }
+
+    public void setPopFormOptNew(RichPopup popFormOptNew) {
+        this.popFormOptNew = popFormOptNew;
+    }
+
+    public RichPopup getPopFormOptNew() {
+        return popFormOptNew;
+    }
+
+    public void setCollectionFormationAcces(RichPanelCollection collectionFormationAcces) {
+        this.collectionFormationAcces = collectionFormationAcces;
+    }
+
+    public RichPanelCollection getCollectionFormationAcces() {
+        return collectionFormationAcces;
+    }
+
+    public void onFormationAccesNew(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree6");
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationAccesIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        if(oldCcurrentRow!=null)
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsertFormAcces");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopFormAccesNew();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+    public void onDialogCancelFormAcces(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        RichPopup popup = this.getPopFormAccesNew();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationAccesIterator");
+        Row currentRow = dciter.getCurrentRow();
+        if(currentRow!=null)
+            dciter.removeCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        if(oldCurrentRowKey != null){
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormationAcces());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void onDeleteFormAcces(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            BindingContainer bindings = this.getBindings();
+            OperationBinding operationDelete = bindings.getOperationBinding("DeleteFormAcces");
+            Object result = operationDelete.execute();
+            if (!operationDelete.getErrors().isEmpty()) {
+                return;
+            }
+            else{
+               OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object commitResult = operationCommit.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormationAcces());
+                return ;
+            }
+            
+        }
+    }
+
+    public void setPopFormAccesNew(RichPopup popFormAccesNew) {
+        this.popFormAccesNew = popFormAccesNew;
+    }
+
+    public RichPopup getPopFormAccesNew() {
+        return popFormAccesNew;
+    }
+
+    public void setCollectionFromCondition(RichPanelCollection collectionFromCondition) {
+        this.collectionFromCondition = collectionFromCondition;
+    }
+
+    public RichPanelCollection getCollectionFromCondition() {
+        return collectionFromCondition;
+    }
+
+    public void onFormationConditionNew(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree7");
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormCondAccesIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        if(oldCcurrentRow!=null)
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsertFormCondAcces");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopCondAc();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+    public void setPopFormCondAccesNew(RichPopup popFormCondAccesNew) {
+        this.popFormCondAccesNew = popFormCondAccesNew;
+    }
+
+    public RichPopup getPopFormCondAccesNew() {
+        return popFormCondAccesNew;
+    }
+
+    public void onDeleteFormCondAcces(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            BindingContainer bindings = this.getBindings();
+            OperationBinding operationDelete = bindings.getOperationBinding("DeleteFormCondAcces");
+            Object result = operationDelete.execute();
+            if (!operationDelete.getErrors().isEmpty()) {
+                return;
+            }
+            else{
+               OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object commitResult = operationCommit.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFromCondition());
+                return ;
+            }
+            
+        }
+    }
+
+    public void setCollectionFormLang(RichPanelCollection collectionFormLang) {
+        this.collectionFormLang = collectionFormLang;
+    }
+
+    public RichPanelCollection getCollectionFormLang() {
+        return collectionFormLang;
+    }
+
+    public void onFormLangueNew(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree8");
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationLangueIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        if(oldCcurrentRow!=null)
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsertFormLang");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopFLgNew();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+    public void setPopFLgNew(RichPopup popFLgNew) {
+        this.popFLgNew = popFLgNew;
+    }
+
+    public RichPopup getPopFLgNew() {
+        return popFLgNew;
+    }
+
+    public void onDialogCancelFLang(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        RichPopup popup = this.getPopFLgNew();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationLangueIterator");
+        Row currentRow = dciter.getCurrentRow();
+        if(currentRow!=null)
+            dciter.removeCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        if(oldCurrentRowKey != null){
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormLang());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void onDeleteFLang(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            BindingContainer bindings = this.getBindings();
+            OperationBinding operationDelete = bindings.getOperationBinding("DeleteFormLang");
+            Object result = operationDelete.execute();
+            if (!operationDelete.getErrors().isEmpty()) {
+                return;
+            }
+            else{
+               OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object commitResult = operationCommit.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormLang());
+                return ;
+            }
+            
+        }
+    }
+
+    public void onDialogCanCondAc(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        RichPopup popup = this.getPopCondAc();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormCondAccesIterator");
+        Row currentRow = dciter.getCurrentRow();
+        if(currentRow != null)
+            dciter.removeCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        if(oldCurrentRowKey != null){
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFromCondition());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void setPopCondAc(RichPopup popCondAc) {
+        this.popCondAc = popCondAc;
+    }
+
+    public RichPopup getPopCondAc() {
+        return popCondAc;
+    }
+
+    public void setCollectionFormOrg(RichPanelCollection collectionFormOrg) {
+        this.collectionFormOrg = collectionFormOrg;
+    }
+
+    public RichPanelCollection getCollectionFormOrg() {
+        return collectionFormOrg;
+    }
+
+    public void onFormOrgEtudeNew(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree11");
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationOrganisatioEtudeIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        if(oldCcurrentRow!=null)
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsertOrgEtude");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopOrgEtude();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+    public void setPopOrgEtude(RichPopup popOrgEtude) {
+        this.popOrgEtude = popOrgEtude;
+    }
+
+    public RichPopup getPopOrgEtude() {
+        return popOrgEtude;
+    }
+
+    public void onDialogCancelOrgEtude(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        RichPopup popup = this.getPopOrgEtude();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationOrganisatioEtudeIterator");
+        Row currentRow = dciter.getCurrentRow();
+        if(currentRow != null)
+            dciter.removeCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        if(oldCurrentRowKey != null){
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormOrg());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void onDeleteOrgEtude(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            BindingContainer bindings = this.getBindings();
+            OperationBinding operationDelete = bindings.getOperationBinding("DeleteOrgEtude");
+            Object result = operationDelete.execute();
+            if (!operationDelete.getErrors().isEmpty()) {
+                return;
+            }
+            else{
+               OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object commitResult = operationCommit.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormOrg());
+                return ;
+            }
+            
+        }
+    }
+
+    public void setCollectionFormInstitut(RichPanelCollection collectionFormInstitut) {
+        this.collectionFormInstitut = collectionFormInstitut;
+    }
+
+    public RichPanelCollection getCollectionFormInstitut() {
+        return collectionFormInstitut;
+    }
+
+    public void onFormInstNew(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree12");
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationInstitutsIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        if(oldCcurrentRow!=null)
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsertFormInst");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopFromInst();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+    public void setPopFromInst(RichPopup popFromInst) {
+        this.popFromInst = popFromInst;
+    }
+
+    public RichPopup getPopFromInst() {
+        return popFromInst;
+    }
+
+    public void onDialogCancelInst(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        RichPopup popup = this.getPopFromInst();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("FormationInstitutsIterator");
+        Row currentRow = dciter.getCurrentRow();
+        if(currentRow != null)
+            dciter.removeCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        if(oldCurrentRowKey != null){
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormInstitut());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void onDeleteInstitut(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            BindingContainer bindings = this.getBindings();
+            OperationBinding operationDelete = bindings.getOperationBinding("DeleteFormInst");
+            Object result = operationDelete.execute();
+            if (!operationDelete.getErrors().isEmpty()) {
+                return;
+            }
+            else{
+               OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object commitResult = operationCommit.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormInstitut());
+                return ;
+            }
+            
+        }
+    }
+
+    public void setCollectionNiveauxForm(RichPanelCollection collectionNiveauxForm) {
+        this.collectionNiveauxForm = collectionNiveauxForm;
+    }
+
+    public RichPanelCollection getCollectionNiveauxForm() {
+        return collectionNiveauxForm;
+    }
+
+    public void onNiveauxFormNew(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("NiveauxFormationsIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree1");
+        if(oldCcurrentRow!=null)
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsertNivForm");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopNivForm();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+    public void setPopNivForm(RichPopup popNivForm) {
+        this.popNivForm = popNivForm;
+    }
+
+    public RichPopup getPopNivForm() {
+        return popNivForm;
+    }
+
+    public void onDialogCancelNivForm(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        RichPopup popup = this.getPopNivForm();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("NiveauxFormationsIterator");
+        Row currentRow = dciter.getCurrentRow();
+        if(currentRow != null)
+            dciter.removeCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        if(oldCurrentRowKey != null){
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionNiveauxForm());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void onDeleteNivForm(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            BindingContainer bindings = this.getBindings();
+            OperationBinding operationDelete = bindings.getOperationBinding("DeleteNivForm");
+            Object result = operationDelete.execute();
+            if (!operationDelete.getErrors().isEmpty()) {
+                return;
+            }
+            else{
+               OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object commitResult = operationCommit.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionNiveauxForm());
+                return ;
+            }
+            
+        }
+    }
+
+    public void setCollectionNivFormCohorte(RichPanelCollection collectionNivFormCohorte) {
+        this.collectionNivFormCohorte = collectionNivFormCohorte;
+    }
+
+    public RichPanelCollection getCollectionNivFormCohorte() {
+        return collectionNivFormCohorte;
+    }
+
+    public void onNivFormCohorteNew(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("NiveauFormationCohortesIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree2");
+        AttributeBinding nivForm = (AttributeBinding) getBindings().getControlBinding("IdNiveauFormation");
+        if(oldCcurrentRow!=null){
+            //IdNiveauFormation
+            nivForm.setInputValue(oldCcurrentRow.getAttribute("IdNiveauFormation"));
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+            
+        }
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsertNivFormCoh");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopNivFormCoh();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+    public void setCollectionFormParcours(RichPanelCollection collectionFormParcours) {
+        this.collectionFormParcours = collectionFormParcours;
+    }
+
+    public RichPanelCollection getCollectionFormParcours() {
+        return collectionFormParcours;
+    }
+
+    public void onNivFormParcours(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("NiveauxFormationParcoursIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree3");
+        if(oldCcurrentRow!=null)
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsertNivFormParc");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        }
+
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopNivFormParc();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        popup.show(hints);
+    }
+
+    public void onDialogCancelNivFormCoh(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        RichPopup popup = this.getPopNivFormCoh();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("NiveauFormationCohortesIterator");
+        Row currentRow = dciter.getCurrentRow();
+        if(currentRow != null)
+            dciter.removeCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        if(oldCurrentRowKey != null){
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionNivFormCohorte());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void onDeleteNivFromCoh(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            BindingContainer bindings = this.getBindings();
+            OperationBinding operationDelete = bindings.getOperationBinding("DeleteNivFormCoh");
+            Object result = operationDelete.execute();
+            if (!operationDelete.getErrors().isEmpty()) {
+                return;
+            }
+            else{
+               OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object commitResult = operationCommit.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionNivFormCohorte());
+                return ;
+            }
+            
+        }
+    }
+
+    public void setPopNivFormCoh(RichPopup popNivFormCoh) {
+        this.popNivFormCoh = popNivFormCoh;
+    }
+
+    public RichPopup getPopNivFormCoh() {
+        return popNivFormCoh;
+    }
+
+    public void setPopNivFormParc(RichPopup popNivFormParc) {
+        this.popNivFormParc = popNivFormParc;
+    }
+
+    public RichPopup getPopNivFormParc() {
+        return popNivFormParc;
+    }
+
+    public void onDialogCancelNivFormParc(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = this.getBindings();
+        RichPopup popup = this.getPopNivFormParc();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("NiveauxFormationParcoursIterator");
+        Row currentRow = dciter.getCurrentRow();
+        if(currentRow != null)
+            dciter.removeCurrentRow();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        if(oldCurrentRowKey != null){
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormParcours());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void onDeleteNivFormParc(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            BindingContainer bindings = this.getBindings();
+            OperationBinding operationDelete = bindings.getOperationBinding("DeleteNivFormParc");
+            Object result = operationDelete.execute();
+            if (!operationDelete.getErrors().isEmpty()) {
+                return;
+            }
+            else{
+               OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                Object commitResult = operationCommit.execute();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormParcours());
+                return ;
+            }
+            
+        }
+    }
+
+    public void setPopInfoForm(RichPopup popInfoForm) {
+        this.popInfoForm = popInfoForm;
+    }
+
+    public RichPopup getPopInfoForm() {
+        return popInfoForm;
+    }
+
+    public void onClosePoll(PollEvent pollEvent) {
+        // Add event code here...
+        popInfoForm.hide();
+    }
+
+    public void onClosePollNiv(PollEvent pollEvent) {
+        // Add event code here...
+        popInfoNiv.hide();
+    }
+
+    public void setPopInfoNiv(RichPopup popInfoNiv) {
+        this.popInfoNiv = popInfoNiv;
+    }
+
+    public RichPopup getPopInfoNiv() {
+        return popInfoNiv;
+    }
+
+    public void setUtilisateur(Long utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Long getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setPopupFormEdit(RichPopup popupFormEdit) {
+        this.popupFormEdit = popupFormEdit;
+    }
+
+    public RichPopup getPopupFormEdit() {
+        return popupFormEdit;
+    }
+
+   
+    public void setPopupEditNf(RichPopup popupEditNf) {
+        this.popupEditNf = popupEditNf;
+    }
+
+    public RichPopup getPopupEditNf() {
+        return popupEditNf;
+    }
+
+    public void onDialogNewFormation(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            //AttributeBinding uticre= (AttributeBinding) getBindings().getControlBinding("UtiCree");
+            //uticre.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopFromNew().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+        }
+    }
+    
+    public void onDialogEditFormation(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            AttributeBinding utimodif = (AttributeBinding) getBindings().getControlBinding("UtiModifie");
+            utimodif.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopupFormEdit().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+        }
+    }
+
+     public void onDialogNewNF(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            //AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree8");
+            //uticre.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopNivForm().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+        }
+    }
+    public void onDialogEditNF(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            AttributeBinding utimodif = (AttributeBinding) getBindings().getControlBinding("UtiModifie1");
+            utimodif.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopupEditNf().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+        }
+    }
+
+    public void onDialogNewParcous(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            //AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree9");
+            //uticre.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopNivFormParc().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+        }
+    }
+
+    public void onDialogEditParcours(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            AttributeBinding utimodif = (AttributeBinding) getBindings().getControlBinding("UtiModifie2");
+            utimodif.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopEditNivFormPrcrs().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+        }
+    }
+
+    public void onDialogNewCohorte(DialogEvent dialogEvent) {
+        // Add event code here...UtiCree10
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            //AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree10");
+            //uticre.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopNivFormCoh().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+        }
+    }
+
+    public void onDialogEditNivFormCohorte(DialogEvent dialogEvent) {
+        // Add event code here...UtiModifie9
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            AttributeBinding utimodif = (AttributeBinding) getBindings().getControlBinding("UtiModifie3");
+            utimodif.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopEditNivFormCohorte().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+        }
+    }
+
+    public void setPopEditNivFormCohorte(RichPopup popEditNivFormCohorte) {
+        this.popEditNivFormCohorte = popEditNivFormCohorte;
+    }
+
+    public RichPopup getPopEditNivFormCohorte() {
+        return popEditNivFormCohorte;
+    }
+
+    public void setPopEditNivFormPrcrs(RichPopup popEditNivFormPrcrs) {
+        this.popEditNivFormPrcrs = popEditNivFormPrcrs;
+    }
+
+    public RichPopup getPopEditNivFormPrcrs() {
+        return popEditNivFormPrcrs;
+    }
+    
+    public void onDialogEditSpecialite(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.yes) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            AttributeBinding utimodif = (AttributeBinding) getBindings().getControlBinding("UtiModifie4");
+            utimodif.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopFormSpecEdit().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormationSpec());
+        }
+    }
+
+    public void onDialogEditOption(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.yes) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            AttributeBinding utimodif = (AttributeBinding) getBindings().getControlBinding("UtiModifie5");
+            utimodif.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopEditNivFormCohorte().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormationOption());
+        }
+    }
+
+    public void onDialogEditAccesFormation(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.yes) {
+            //commit
+            BindingContainer bindings = this.getBindings();
+            AttributeBinding utimodif = (AttributeBinding) getBindings().getControlBinding("UtiModifie3");
+            utimodif.setInputValue(getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopEditNivFormCohorte().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCollectionFormations());
+        }
+    }
+
+
+    public void setPopConfirmDeleteFormation(RichPopup popConfirmDeleteFormation) {
+        this.popConfirmDeleteFormation = popConfirmDeleteFormation;
+    }
+
+    public RichPopup getPopConfirmDeleteFormation() {
+        return popConfirmDeleteFormation;
+    }
+
+    public void setPopFormSpecEdit(RichPopup popFormSpecEdit) {
+        this.popFormSpecEdit = popFormSpecEdit;
+    }
+
+    public RichPopup getPopFormSpecEdit() {
+        return popFormSpecEdit;
+    }
+
+    public void setPopFormOptEdit(RichPopup popFormOptEdit) {
+        this.popFormOptEdit = popFormOptEdit;
+    }
+
+    public RichPopup getPopFormOptEdit() {
+        return popFormOptEdit;
+    }
+}

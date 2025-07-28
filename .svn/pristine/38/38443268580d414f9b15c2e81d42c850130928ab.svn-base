@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="deliberationannuellePageDef"
+                Package="evaluation.deliberationannuelle">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="DélibérationAnnuelle" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DélibérationAnnuelleIterator"/>
+    <searchRegion Binds="DélibérationAnnuelleIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="DélibérationAnnuelleQuery"/>
+    <iterator Binds="FiltreAnuelleROVO1" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="FiltreAnuelleROVO1Iterator"/>
+    <iterator Binds="FiltreModeDelibAn1" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="FiltreModeDelibAn1Iterator"/>
+    <methodIterator Binds="DeliberationAnnuelle.result" DataControl="evaluationAppDataControl" RangeSize="25"
+                    id="DeliberationAnnuelleIterator" Refresh="deferred"/>
+  </executables>
+  <bindings>
+    <list IterBinding="FiltreAnuelleROVO1Iterator" ListOperMode="navigation" ListIter="FiltreAnuelleROVO1Iterator"
+          id="FiltreAnuelleROVO1" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="libelle"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="FiltreModeDelibAn1Iterator" ListOperMode="navigation" ListIter="FiltreModeDelibAn1Iterator"
+          id="FiltreModeDelibAn1" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="libelle"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="DélibérationAnnuelleIterator" id="DélibérationAnnuelle">
+      <nodeDefinition DefName="model.readOnlyView.EtudiantResultAnnuelDelibROVO" Name="DélibérationAnnuelle10">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="PrenomNom"/>
+          <Item Value="Moyenne"/>
+          <Item Value="Credit"/>
+          <Item Value="Resultat"/>
+          <Item Value="Mention"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="SortByCredit" RequiresUpdateModel="true" Action="invokeMethod" MethodName="SortByCredit"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.SortByCredit.dataControl.dataProvider">
+      <NamedData NDName="credit1" NDType="java.lang.Integer"/>
+      <NamedData NDName="credit2" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="SortByMoyenne" RequiresUpdateModel="true" Action="invokeMethod" MethodName="SortByMoyenne"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.SortByMoyenne.dataControl.dataProvider">
+      <NamedData NDName="moyenne1" NDType="java.lang.Integer"/>
+      <NamedData NDName="moyenne2" NDType="java.lang.Integer"/>
+    </methodAction>
+    <action IterBinding="DélibérationAnnuelleIterator" id="ExecuteWithParams"
+            InstanceName="evaluationAppDataControl.DélibérationAnnuelle" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="cred1" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="cred2" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="moy1" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="moy2" NDType="oracle.jbo.domain.Number"/>
+    </action>
+    <methodAction id="CalculMoyenneAnnuel" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CalculMoyenneAnnuel" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CalculMoyenneAnnuel.dataControl.dataProvider">
+      <NamedData NDName="anne_univers" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <tree IterBinding="DélibérationAnnuelleIterator" id="DélibérationAnnuelle1">
+      <nodeDefinition DefName="model.readOnlyView.EtudiantResultAnnuelDelibROVO" Name="DélibérationAnnuelle10">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="PrenomNom"/>
+          <Item Value="Moyenne"/>
+          <Item Value="Credit"/>
+          <Item Value="Resultat"/>
+          <Item Value="Mention"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="isCosedAllSemestre" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isCosedAllSemestre" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isCosedAllSemestre.dataControl.dataProvider">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="session" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="DeliberationAnnuelle" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="DeliberationAnnuelle" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.DeliberationAnnuelle.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.DeliberationAnnuelle_DeliberationAnnuelle_dataControl_dataProvider_DeliberationAnnuelle_result">
+      <NamedData NDName="anne" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDValue="#{sessionScope.id_niv_form_parcours}" NDType="java.lang.Integer"/>
+      <NamedData NDName="session" NDValue="#{sessionScope.id_session}" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="isPublishedAllSemestre" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isPublishedAllSemestre" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.isPublishedAllSemestre.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.isPublishedAllSemestre_isPublishedAllSemestre_dataControl_dataProvider_isPublishedAllSemestre_result">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="session" NDType="java.lang.Integer"/>
+    </methodAction>
+    <tree IterBinding="DeliberationAnnuelleIterator" id="return">
+      <nodeDefinition Name="return0"/>
+    </tree>
+    <methodAction id="UpdateResultat" RequiresUpdateModel="true" Action="invokeMethod" MethodName="UpdateResultat"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.UpdateResultat.dataControl.dataProvider">
+      <NamedData NDName="anne_univers" NDType="java.lang.Integer"/>
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="publierAnnee" RequiresUpdateModel="true" Action="invokeMethod" MethodName="publierAnnee"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.publierAnnee.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.publierAnnee_publierAnnee_dataControl_dataProvider_publierAnnee_result">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="action" NDType="java.lang.String"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

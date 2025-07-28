@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="FiliereUeSemestreROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.FiliereUeSemestreROVORowImpl"
+  ComponentClass="model.readOnlyView.FiliereUeSemestreROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.FiliereUeSemestreROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewAccessor
+    Name="UeROVO1"
+    ViewObjectName="model.readOnlyView.UeROVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="SemestreROVO1"
+    ViewObjectName="model.readOnlyView.SemestreROVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_IdUe"
+    ListVOName="UeROVO1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdUe"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdUe"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_IdSemestre"
+    ListVOName="SemestreROVO1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdSemestre"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdSemestre"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[SELECT  
+    FILIERE_UE_SEMSTRE.ID_FILIERE_UE_SEMSTRE ID_FILIERE_UE_SEMSTRE,  
+    FILIERE_UE_SEMSTRE.CODIFICATION CODIFICATION,  
+    FILIERE_UE_SEMSTRE.ID_UE ID_UE,  
+    FILIERE_UE_SEMSTRE.ID_SEMESTRE ID_SEMESTRE,  
+    FILIERE_UE_SEMSTRE.ID_MAQUETTE ID_MAQUETTE  
+FROM  
+    FILIERE_UE_SEMSTRE]]></SQLQuery>
+  <ViewAttribute
+    Name="IdFiliereUeSemstre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="ID_FILIERE_UE_SEMSTRE"
+    Expression="ID_FILIERE_UE_SEMSTRE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Codification"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CODIFICATION"
+    Expression="CODIFICATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_UE"
+    Expression="ID_UE"
+    SQLType="NUMERIC"
+    LOVName="LOV_IdUe">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdSemestre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SEMESTRE"
+    Expression="ID_SEMESTRE"
+    SQLType="NUMERIC"
+    LOVName="LOV_IdSemestre">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdMaquette"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_MAQUETTE"
+    Expression="ID_MAQUETTE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdFiliereUeSemstre"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="ParcoursParamSaisieNoteEc"
+    ViewLink="model.viewlink.ParcoursParamSaisieNoteEcToFiliereUeSemestre"
+    Type="oracle.jbo.server.ViewRowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="FiliereUeSemestreEcROVO"
+    ViewLink="model.viewlink.FiliereUeSemestreToFiliereUeSemestreEc"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

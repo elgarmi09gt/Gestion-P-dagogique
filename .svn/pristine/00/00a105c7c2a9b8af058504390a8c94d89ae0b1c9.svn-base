@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="CompteEtabDecaisseRechROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.CompteEtabDecaisseRechROVORowImpl"
+  ComponentClass="model.readOnlyView.CompteEtabDecaisseRechROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.CompteEtabDecaisseRechROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_hs"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_util"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select distinct r.id_repartition ,            
+r.id_structure,            
+r.libelle_long as lib_rep ,           
+c.id_compte ,            
+c.id_formation ,            
+c.id_historiques_structure ,             
+c.id_type_compte ,            
+c.numero_compte ,            
+cr.pourcentage ,            
+fr.id_formation as id_form_frep,            
+sc.id_annees_univers ,             
+sc.id_solde_compte ,            
+sc.solde_actuel ,            
+sc.solde_initial ,               
+tc.libelle_long as lib_type_cmpte ,    
+s.libelle_long as lib_strc    
+from repartition r           
+join formation_repartition fr on fr.id_repartition = r.id_repartition          
+join cle_repartition cr on cr.id_repartition = r.id_repartition            
+join type_compte tc on tc.id_type_compte = cr.id_type_compte           
+join comptes c on c.id_type_compte = tc.id_type_compte           
+join soldes_comptes sc on sc.id_compte = c.id_compte and sc.id_annees_univers = c.id_annees_univers and c.id_annees_univers = fr.id_annees_univers           
+join formations f on f.id_formation = fr.id_formation                  
+join (select id_structures from historiques_structures where id_historiques_structure=:id_hs)  str  on r.id_structure=str.id_structures              
+join utilisateur_structures us on us.id_structure = str.id_structures         
+join structures s on s.id_structure = str.id_structures     
+    
+where fr.id_annees_univers=:id_annee           
+and us.id_utilisateur=:id_util        
+and c.id_historiques_structure is null        
+and c.id_formation is null]]></SQLQuery>
+  <ViewAttribute
+    Name="IdRepartition"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_REPARTITION"
+    Expression="ID_REPARTITION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdStructure"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_STRUCTURE"
+    Expression="ID_STRUCTURE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibRep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_REP"
+    Expression="LIB_REP"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdCompte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_COMPTE"
+    Expression="ID_COMPTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_FORMATION"
+    Expression="ID_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdHistoriquesStructure"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_HISTORIQUES_STRUCTURE"
+    Expression="ID_HISTORIQUES_STRUCTURE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdTypeCompte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_TYPE_COMPTE"
+    Expression="ID_TYPE_COMPTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="NumeroCompte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO_COMPTE"
+    Expression="NUMERO_COMPTE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Pourcentage"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="POURCENTAGE"
+    Expression="POURCENTAGE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdFormFrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_FORM_FREP"
+    Expression="ID_FORM_FREP"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdSoldeCompte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SOLDE_COMPTE"
+    Expression="ID_SOLDE_COMPTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="SoldeActuel"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="SOLDE_ACTUEL"
+    Expression="SOLDE_ACTUEL"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="SoldeInitial"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="SOLDE_INITIAL"
+    Expression="SOLDE_INITIAL"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibTypeCmpte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_TYPE_CMPTE"
+    Expression="LIB_TYPE_CMPTE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibStrc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_STRC"
+    Expression="LIB_STRC"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NiveauFormationCohortesEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="NIVEAU_FORMATION_COHORTES"
+  AliasName="NiveauFormationCohortesEO"
+  BindingStyle="OracleName"
+  RowClass="model.entities.NiveauFormationCohortesEOImpl">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Attribute
+    Name="IdNiveauFormationCohorte"
+    Precision="10"
+    ColumnName="ID_NIVEAU_FORMATION_COHORTE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_COHORTES"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    Scale="0"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdCohorte"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_COHORTE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_COHORTES"/>
+  <Attribute
+    Name="IdNiveauFormation"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_COHORTES"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="NombreEtudiant"
+    Precision="5"
+    Scale="0"
+    ColumnName="NOMBRE_ETUDIANT"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_COHORTES"/>
+  <Attribute
+    Name="Actif"
+    Precision="1"
+    Scale="0"
+    ColumnName="ACTIF"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_COHORTES"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="NIVEAU_FORMATION_COHORTES"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="NIVEAU_FORMATION_COHORTES"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_COHORTES"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NIVEAU_FORMATION_COHORTES"/>
+  <Attribute
+    Name="idformation"
+    ColumnName="IDFORMATION"
+    SQLType="FLOAT"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    IsPersistent="false"
+    IsQueriable="false">
+    <TransientExpression
+      Name="ExpressionScript"
+      trustMode="untrusted"
+      CodeSourceName="NiveauFormationCohortesEORow"/>
+  </Attribute>
+  <AccessorAttribute
+    Name="NiveauxFormationParcoursEO"
+    Association="model.assoc.NiveauFormationsCohortesToNiveauxFormationParcoursAssoc"
+    AssociationEnd="model.assoc.NiveauFormationsCohortesToNiveauxFormationParcoursAssoc.NiveauxFormationParcoursEO"
+    AssociationOtherEnd="model.assoc.NiveauFormationsCohortesToNiveauxFormationParcoursAssoc.NiveauFormationCohortesEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <AccessorAttribute
+    Name="NiveauxFormationsEO"
+    Association="model.assoc.NiveauxFormationsToNiveauFormationsCohortesAssoc"
+    AssociationEnd="model.assoc.NiveauxFormationsToNiveauFormationsCohortesAssoc.NiveauxFormationsEO"
+    AssociationOtherEnd="model.assoc.NiveauxFormationsToNiveauFormationsCohortesAssoc.NiveauFormationCohortesEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <ViewLinkAccessor
+    Name="NiveauxFormationsVO"
+    ViewLink="model.viewlink.NiveauxFormationsToNiveauFormationsCohortesVL"
+    ViewLinkEnd="model.viewlink.NiveauxFormationsToNiveauFormationsCohortesVL.NiveauxFormationsVO"
+    ViewLinkOtherEnd="model.viewlink.NiveauxFormationsToNiveauFormationsCohortesVL.NiveauFormationCohortesVO"
+    Type="oracle.jbo.server.ViewRowImpl"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="NiveauxFormationParcoursVO"
+    ViewLink="model.viewlink.NiveauFormationsCohortesToNiveauxFormationParcoursVL"
+    ViewLinkEnd="model.viewlink.NiveauFormationsCohortesToNiveauxFormationParcoursVL.NiveauxFormationParcoursVO"
+    ViewLinkOtherEnd="model.viewlink.NiveauFormationsCohortesToNiveauxFormationParcoursVL.NiveauFormationCohortesVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkNiveauFormationCohortes"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_NIVEAU_FORMATION_COHORTES"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationCohortesEO.IdNiveauFormationCohorte"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormCohorteCohorte">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_COHORTES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORM_COHORTE_COHORTE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationCohortesEO.IdCohorte"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormCohorteNivForm">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAUX_FORMATIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORM_COHORTE_NIV_FORM"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationCohortesEO.IdNiveauFormation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormCohorteUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORM_COHORTE_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationCohortesEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNivFormCohorteUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NIV_FORM_COHORTE_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NiveauFormationCohortesEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

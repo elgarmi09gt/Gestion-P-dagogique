@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NoteModeEnsGenAnonymROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.NoteModeEnsGenAnonymROVORowImpl"
+  ComponentClass="model.readOnlyView.NoteModeEnsGenAnonymROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.NoteModeEnsGenAnonymROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_etud"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_parc"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_sem"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_fil_ue_sem"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_fil_ue_sem_ec"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_type_ctrl"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_calendrier"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select  nme.id_note_mode_enseignement , nme.note , nme.id_inscription_ped_sem_ue , nme.id_type_controle       
+from inscriptions_admin ia     
+join inscriptions_pedagogiques ip on ip.id_inscription_admin = ia.id_inscription_admin     
+join inscription_ped_semestre ips on ips.id_inscription_pedagogique = ip.id_inscription_pedagogique     
+join inscription_ped_sem_ue ipsu on ipsu.id_inscription_ped_semestre = ips.id_inscription_ped_semestre     
+join notes_mode_enseignement nme on nme.id_inscription_ped_sem_ue = ipsu.id_inscription_ped_sem_ue     
+join parcours_maquette_annee pma on pma.id_parcours_maquet_annee = ip.id_parcours_maquet_annee     
+     
+where ia.id_etudiant=:id_etud     
+and ia.id_annees_univers=:id_annee     
+and pma.id_niveau_formation_parcours=:id_parc     
+and ips.id_semestre=:id_sem     
+and ipsu.id_filiere_ue_semstre=:id_fil_ue_sem     
+and nme.id_filiere_ue_semstre_ec=:id_fil_ue_sem_ec      
+and  nme.id_type_controle=:id_type_ctrl      
+and nme.id_calendrier_deliberation=:id_calendrier]]></SQLQuery>
+  <ViewAttribute
+    Name="IdNoteModeEnseignement"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_NOTE_MODE_ENSEIGNEMENT"
+    Expression="ID_NOTE_MODE_ENSEIGNEMENT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Note"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="NOTE"
+    Expression="NOTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionPedSemUe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PED_SEM_UE"
+    Expression="ID_INSCRIPTION_PED_SEM_UE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdTypeControle"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_TYPE_CONTROLE"
+    Expression="ID_TYPE_CONTROLE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNoteModeEnseignement"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

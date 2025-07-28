@@ -1,0 +1,152 @@
+package view.beans;
+
+import java.util.Map;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+
+import oracle.adf.model.BindingContext;
+
+import oracle.adf.model.binding.DCBindingContainer;
+import oracle.adf.model.binding.DCIteratorBinding;
+
+import oracle.adf.share.ADFContext;
+
+import oracle.adf.view.rich.component.rich.RichPopup;
+
+import oracle.adf.view.rich.context.AdfFacesContext;
+
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+
+public class ConnectionEvalBean {
+    private RichPopup popupNoCalDefineDetails;
+    private RichPopup popupSuccessConnect;
+
+    public ConnectionEvalBean() {
+    }
+
+    public BindingContainer getBindings() {
+        return BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+    // Dependent LOV base on valueChange attribute
+    @SuppressWarnings("unchecked")
+    public void OnDepartementValueChange(ValueChangeEvent valueChangeEvent) {
+        BindingContainer bindings = getBindings();
+        BindingContext cntx = BindingContext.getCurrent();
+        DCBindingContainer cbinding = (DCBindingContainer) cntx.getCurrentBindingsEntry();
+        UIComponent comp = valueChangeEvent.getComponent();
+        comp.processUpdates(FacesContext.getCurrentInstance());
+        //get current row and save its rowKey in view scope for later use
+        //DCIteratorBinding dciter = (DCIteratorBinding) cbinding.get("HistoriquesStructuresIterator");
+        DCIteratorBinding dciter = (DCIteratorBinding) cbinding.get("HistoriquesStructuresVO1Iterator"); 
+        Row currentDept = dciter.getCurrentRow();
+        System.out.print("XXXX " + currentDept.getAttribute("IdHistoriquesStructure"));
+        //User
+        OperationBinding operationUser = bindings.getOperationBinding("UserByUserName");
+        Object result = operationUser.execute();
+        DCIteratorBinding dciter_user = (DCIteratorBinding) cbinding.get("UserByUserNameIterator");
+        Row currentUser = dciter_user.getCurrentRow();
+        //Integer user_id = Integer.parseInt(currentUser.getAttribute("IdUtilisateur").toString());
+        System.out.println("user_id : "+currentUser.getAttribute("IdUtilisateur"));
+        //sessionApp.put("id_user", currentUser.getAttribute("IdUtilisateur"));
+        OperationBinding operationBinding = bindings.getOperationBinding("ExecuteWithParams");
+        operationBinding.getParamsMap().put("id_user", currentUser.getAttribute("IdUtilisateur"));
+        operationBinding.getParamsMap().put("idDept", currentDept.getAttribute("IdHistoriquesStructure"));
+        operationBinding.execute();
+        //AdfFacesContext.getCurrentInstance().addPartialTarget(this.getFiliereUeSemestreEcTable());
+    }
+
+    @SuppressWarnings("oracle.jdeveloper.java.unchecked-conversion-or-cast")
+    public void OnContinuAction(ActionEvent actionEvent) {
+        BindingContainer bindings = getBindings();
+        BindingContext cntx = BindingContext.getCurrent();
+        DCBindingContainer cbinding = (DCBindingContainer) cntx.getCurrentBindingsEntry();
+        
+        DCIteratorBinding dciter_s = (DCIteratorBinding) cbinding.get("StructuresIterator");
+        Row currents = dciter_s.getCurrentRow();
+        System.out.println("Structure " + currents.getAttribute("IdStructure"));
+        //############################ Get_departement_id ############################
+        DCIteratorBinding dciter_hs = (DCIteratorBinding) cbinding.get("HistoriquesStructuresVO1Iterator");
+        Row currenths = dciter_hs.getCurrentRow();
+        System.out.println("Historique Structure " + currenths.getAttribute("IdHistoriquesStructure"));
+        
+        // ################### Get Values Selected ###################################
+        //  Année Univers
+        DCIteratorBinding dciter_annee_univers = (DCIteratorBinding) cbinding.get("AnneeUniversIterator");
+        Row currentAnne = dciter_annee_univers.getCurrentRow();
+        System.out.println("IdAnneesUnivers " + currentAnne.getAttribute("IdAnneesUnivers"));
+        // Session
+        DCIteratorBinding dciter_session = (DCIteratorBinding) cbinding.get("SessionsIterator");
+        Row currentSession = dciter_session.getCurrentRow();
+        System.out.println("IdSession " + currentSession.getAttribute("IdSession"));
+        // Semestre
+        DCIteratorBinding dciter_semestre = (DCIteratorBinding) cbinding.get("SemestresIterator");
+        Row currentSemestre = dciter_semestre.getCurrentRow();
+        System.out.println("IdSemestre " + currentSemestre.getAttribute("IdSemestre"));
+        // Niveau formation Cohorte, // Niveau Formation // Parcours
+        DCIteratorBinding dciter_parcours = (DCIteratorBinding) cbinding.get("ParcoursIterator");
+        Row currentParcous = dciter_parcours.getCurrentRow();
+        System.out.println("IdNiveauFormationCohorte " + currentParcous.getAttribute("IdNiveauFormationCohorte"));
+        System.out.println("IdNiveauParcours " + currentParcous.getAttribute("IdNiveauFormationParcours"));
+        System.out.println("IdNiveauFormation " + currentParcous.getAttribute("IdNiveauFormation"));
+        //User
+        OperationBinding operationUser = bindings.getOperationBinding("UserByUserName");
+        Object result = operationUser.execute();
+        DCIteratorBinding dciter_user = (DCIteratorBinding) cbinding.get("UserByUserNameIterator");
+        Row currentUser = dciter_user.getCurrentRow();
+        //Calendrier Délibération
+        OperationBinding operationBinding = bindings.getOperationBinding("ExecuteWithParamsCalendrier");
+        operationBinding.getParamsMap().put("id_annee", currentAnne.getAttribute("IdAnneesUnivers"));
+        operationBinding.getParamsMap().put("id_session", currentSession.getAttribute("IdSession"));
+        operationBinding.getParamsMap().put("id_smstre", currentSemestre.getAttribute("IdSemestre"));
+        operationBinding.getParamsMap().put("id_niv_form", currentParcous.getAttribute("IdNiveauFormationCohorte"));
+        Object result1 = operationBinding.execute();
+        DCIteratorBinding dciter_calendrier = (DCIteratorBinding) cbinding.get("CalendrierDeliberationsIterator");
+        Row currentCalendrier = dciter_calendrier.getCurrentRow();
+        if (currentCalendrier == null) {
+            System.out.println("IdCalendrierDeliberation pas définit pour vous !!!");
+            RichPopup popup = this.getPopupNoCalDefineDetails();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            popup.show(hints);
+        } else {
+            System.out.println("IdCalendrierDeliberation " +
+                               currentCalendrier.getAttribute("IdCalendrierDeliberation"));
+            // ################## Put Variable in SessionScope ####################################
+            ADFContext adfctx = ADFContext.getCurrent();
+            Map sessionApp = adfctx.getSessionScope();
+            sessionApp.put("id_annee", currentAnne.getAttribute("IdAnneesUnivers"));
+            sessionApp.put("id_session", currentSession.getAttribute("IdSession"));
+            sessionApp.put("id_smstre", currentSemestre.getAttribute("IdSemestre"));
+            sessionApp.put("id_niv_form_cohorte", currentParcous.getAttribute("IdNiveauFormationCohorte"));
+            sessionApp.put("id_niv_form", currentParcous.getAttribute("IdNiveauFormation"));
+            sessionApp.put("id_niv_form_parcours", currentParcous.getAttribute("IdNiveauFormationParcours"));
+            sessionApp.put("id_calendrier", currentCalendrier.getAttribute("IdCalendrierDeliberation"));
+            sessionApp.put("id_hs", currenths.getAttribute("IdHistoriquesStructure"));
+            sessionApp.put("id_user", currentUser.getAttribute("IdUtilisateur"));
+            RichPopup popup = this.getPopupSuccessConnect();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            popup.show(hints);
+        }
+    }
+
+    public void setPopupNoCalDefineDetails(RichPopup popupNoCalDefineDetails) {
+        this.popupNoCalDefineDetails = popupNoCalDefineDetails;
+    }
+
+    public RichPopup getPopupNoCalDefineDetails() {
+        return popupNoCalDefineDetails;
+    }
+
+    public void setPopupSuccessConnect(RichPopup popupSuccessConnect) {
+        this.popupSuccessConnect = popupSuccessConnect;
+    }
+
+    public RichPopup getPopupSuccessConnect() {
+        return popupSuccessConnect;
+    }
+}

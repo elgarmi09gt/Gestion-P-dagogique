@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="RepExisteCleRepROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.RepExisteCleRepROVORowImpl"
+  ComponentClass="model.readOnlyView.RepExisteCleRepROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.RepExisteCleRepROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_rep"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select cr.id_cle_repartition , cr.id_repartition , cr.id_type_compte , cr.pourcentage, tc.libelle_long , tc.libelle_court     
+from cle_repartition cr  
+join type_compte tc on cr.id_type_compte = tc.id_type_compte    
+where id_repartition=:id_rep]]></SQLQuery>
+  <ViewAttribute
+    Name="IdCleRepartition"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_CLE_REPARTITION"
+    Expression="ID_CLE_REPARTITION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdRepartition"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_REPARTITION"
+    Expression="ID_REPARTITION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdTypeCompte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_TYPE_COMPTE"
+    Expression="ID_TYPE_COMPTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Pourcentage"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="POURCENTAGE"
+    Expression="POURCENTAGE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleCourt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_COURT"
+    Expression="LIBELLE_COURT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdCleRepartition"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+<af:iterator value="#{Inscriptionbean.validationInscription(bindings.IdEtudiant.inputValue,bindings.IdInscriptionPedagogiqueListeInsc.inputValue,bindings.IdParcoursMaquetAnneeListInsc.inputValue)}"
+               />
+<af:iterator value="#{Inscriptionbean.validationInscSem(bindings.IdEtudiant.inputValue,bindings.IdParcoursMaquetAnneeListInsc.inputValue)}"
+               />
+<af:panelTabbed position="above" id="pt1">
+    <af:showDetailItem id="tab1" text="Inscription" disclosed="true">
+      <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"
+                inlineStyle="margin-top:5px;margin-bottom:5px;"
+                visible="#{sessionScope.val_insc_en_ligne == '1' and sessionScope.val_paiement == '0' and sessionScope.val_apte == '0' and sessionScope.val_etud_bu == '0' and sessionScope.val_etat_insc == '1'  and  sessionScope.val_insc_ped_sem == '1' ? true : false}"
+                partialTriggers="::soc8"/>
+      <af:panelGroupLayout id="pgl4" layout="vertical">
+        <af:panelGroupLayout id="pgl3" layout="horizontal"
+                             inlineStyle="background-color:#2897e8;margin-bottom:10px;margin-left:300px;">
+          <af:panelLabelAndMessage label="Numéro" id="plam1" inlineStyle="margin-left:40px; font-size:large;">
+            <af:outputFormatted value="#{bindings.Numero.inputValue}" id="of1"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="Prénoms" id="plam7" inlineStyle="margin-left:40px; font-size:large;">
+            <af:outputFormatted value="#{bindings.Prenoms.inputValue}" id="of7"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.Nom.hints.label}" id="plam2"
+                                   inlineStyle="margin-left:40px; font-size:large;">
+            <af:outputFormatted value="#{bindings.Nom.inputValue}" id="of2"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="Date Naissance" id="plam3" inlineStyle="margin-left:40px; font-size:large;">
+            <af:outputFormatted value="#{bindings.DateNaissance.inputValue}" id="of3">
+              <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+            </af:outputFormatted>
+          </af:panelLabelAndMessage>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl5" layout="horizontal" inlineStyle="margin-left:300px;">
+          <af:panelFormLayout id="pfl1"
+                              inlineStyle="border:solid  2px #2897e8;width:160px;margin-top:20px;margin-left:10px;">
+            <f:facet name="footer"/>
+            <af:button text="Inscription En Ligne " id="b13"
+                       inlineStyle="font-size:small; border-radius:0px 0px 0px 0px / 0px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                       partialSubmit="false" disabled="true"/>
+            <af:link id="l1" icon="#{sessionScope.icone_insc_en_ligne}" disabled="true" inlineStyle="margin-left:70px;"/>
+          </af:panelFormLayout>
+          <af:panelFormLayout id="pfl4"
+                              inlineStyle="border:solid  2px #2897e8;width:115px;margin-top:20px;margin-left:10px;">
+            <f:facet name="footer"/>
+            <af:button text="En Règle BU" id="b6"
+                       inlineStyle="font-size:small; border-radius:0px 0px 0px 0px / 0px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                       partialSubmit="false" disabled="true"/>
+            <af:link id="l4" icon="#{sessionScope.icone_etud_bu}" disabled="true" inlineStyle="margin-left:40px;"/>
+          </af:panelFormLayout>
+          <af:panelFormLayout id="pfl5"
+                              inlineStyle="border:solid  2px #2897e8;width:90px;margin-top:20px;margin-left:10px;">
+            <f:facet name="footer"/>
+            <af:button text="Aptitude" id="b7"
+                       inlineStyle="font-size:small; border-radius:0px 0px 0px 0px / 0px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                       partialSubmit="false" disabled="true"/>
+            <af:link id="l5" icon="#{sessionScope.icone_apte}" disabled="true" inlineStyle="margin-left:25px;"/>
+          </af:panelFormLayout>
+          <af:panelFormLayout id="pfl6"
+                              inlineStyle="border:solid  2px #2897e8;width:190px;margin-top:20px;margin-left:10px;">
+            <f:facet name="footer"/>
+            <af:button text="ACP Etudiant (Paiement)" id="b8"
+                       inlineStyle="font-size:small; border-radius:0px 0px 0px 0px / 0px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"
+                       partialSubmit="false" disabled="true"/>
+            <af:link id="l6" icon="#{sessionScope.icone_paiement}" disabled="true" inlineStyle="margin-left:80px;"/>
+          </af:panelFormLayout>
+        </af:panelGroupLayout>
+        <af:button text="Inscription Pédagogique" id="b2"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:5px;margin-bottom:5px;"
+                   partialSubmit="false" disabled="true"/>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl1" layout="scroll">
+        <af:panelSplitter id="ps1" splitterPosition="700" firstBorder="all" secondBorder="all"
+                          inlineStyle="width:1300px; height:385px;margin-left:10px;margin-top:5px;" disabled="true">
+          <f:facet name="first">
+            <af:panelFormLayout id="pfl2">
+              <f:facet name="footer"/>
+              <af:selectOneChoice value="#{bindings.IdHorairesTd.inputValue}" label="Horaires Td"
+                                  required="#{bindings.IdHorairesTd.hints.mandatory}"
+                                  shortDesc="#{bindings.IdHorairesTd.hints.tooltip}" id="soc1"
+                                  contentStyle="margin-top:5px;margin-bottom:5px;">
+                <f:selectItems value="#{bindings.IdHorairesTd.items}" id="si1"/>
+                <f:validator binding="#{bindings.IdHorairesTd.validator}"/>
+              </af:selectOneChoice>
+              <af:selectOneChoice value="#{bindings.IdStatut.inputValue}" label="Statut"
+                                  required="#{bindings.IdStatut.hints.mandatory}"
+                                  shortDesc="#{bindings.IdStatut.hints.tooltip}" id="soc2"
+                                  contentStyle="margin-bottom:5px;">
+                <f:selectItems value="#{bindings.IdStatut.items}" id="si2"/>
+                <f:validator binding="#{bindings.IdStatut.validator}"/>
+              </af:selectOneChoice>
+              <af:selectOneChoice value="#{bindings.IdOption.inputValue}" label="Option"
+                                  required="#{bindings.IdOption.hints.mandatory}"
+                                  shortDesc="#{bindings.IdOption.hints.tooltip}" id="soc3"
+                                  contentStyle="margin-bottom:5px;width:420px;">
+                <f:selectItems value="#{bindings.IdOption.items}" id="si3"/>
+                <f:validator binding="#{bindings.IdOption.validator}"/>
+              </af:selectOneChoice>
+              <af:selectOneChoice value="#{bindings.IdBourse.inputValue}" label="Bourse"
+                                  required="#{bindings.IdBourse.hints.mandatory}"
+                                  shortDesc="#{bindings.IdBourse.hints.tooltip}" id="soc4"
+                                  contentStyle="margin-bottom:5px;">
+                <f:selectItems value="#{bindings.IdBourse.items}" id="si4"/>
+                <f:validator binding="#{bindings.IdBourse.validator}"/>
+              </af:selectOneChoice>
+              <af:selectOneChoice value="#{bindings.IdCohorte.inputValue}" label="Cohorte"
+                                  required="#{bindings.IdCohorte.hints.mandatory}"
+                                  shortDesc="#{bindings.IdCohorte.hints.tooltip}" id="soc5"
+                                  contentStyle="margin-bottom:10px;">
+                <f:selectItems value="#{bindings.IdCohorte.items}" id="si5"/>
+                <f:validator binding="#{bindings.IdCohorte.validator}"/>
+              </af:selectOneChoice>
+              <af:selectOneChoice value="#{bindings.IdTypeConvention.inputValue}" label="Type Convention"
+                                  required="#{bindings.IdTypeConvention.hints.mandatory}"
+                                  shortDesc="#{bindings.IdTypeConvention.hints.tooltip}" id="soc6"
+                                  contentStyle="margin-bottom:5px;">
+                <f:selectItems value="#{bindings.IdTypeConvention.items}" id="si6"/>
+                <f:validator binding="#{bindings.IdTypeConvention.validator}"/>
+              </af:selectOneChoice>
+            </af:panelFormLayout>
+          </f:facet>
+          <f:facet name="second">
+            <af:panelFormLayout id="pfl3">
+              <f:facet name="footer"/>
+              <af:selectOneChoice value="#{bindings.EtatInscrEtatInscrId.inputValue}" label="Etat Inscription"
+                                  required="#{bindings.EtatInscrEtatInscrId.hints.mandatory}"
+                                  shortDesc="#{bindings.EtatInscrEtatInscrId.hints.tooltip}" id="soc8"
+                                  contentStyle="margin-top:5px;margin-bottom:5px;" autoSubmit="true"
+                                  valueChangeListener="#{Inscriptionbean.onChangeEtat}">
+                <f:selectItems value="#{bindings.EtatInscrEtatInscrId.items}" id="si9"/>
+                <f:validator binding="#{bindings.EtatInscrEtatInscrId.validator}"/>
+              </af:selectOneChoice>
+              <af:inputText value="#{bindings.Quittance.inputValue}" label="#{bindings.Quittance.hints.label}"
+                            required="#{bindings.Quittance.hints.mandatory}"
+                            columns="#{bindings.Quittance.hints.displayWidth}"
+                            maximumLength="#{bindings.Quittance.hints.precision}"
+                            shortDesc="#{bindings.Quittance.hints.tooltip}" id="it2" contentStyle="margin-bottom:10px;">
+                <f:validator binding="#{bindings.Quittance.validator}"/>
+              </af:inputText>
+              <af:selectOneChoice value="#{bindings.IdOperateur.inputValue}" label="Opérateur"
+                                  required="#{bindings.IdOperateur.hints.mandatory}"
+                                  shortDesc="#{bindings.IdOperateur.hints.tooltip}" id="soc7"
+                                  contentStyle="margin-bottom:5px;">
+                <f:selectItems value="#{bindings.IdOperateur.items}" id="si7"/>
+                <f:validator binding="#{bindings.IdOperateur.validator}"/>
+              </af:selectOneChoice>
+              <af:inputText value="#{bindings.CoutFormation.inputValue}" label="Coût Formation"
+                            required="#{bindings.CoutFormation.hints.mandatory}"
+                            columns="#{bindings.CoutFormation.hints.displayWidth}"
+                            maximumLength="#{bindings.CoutFormation.hints.precision}"
+                            shortDesc="#{bindings.CoutFormation.hints.tooltip}" id="it1" disabled="true">
+                <f:validator binding="#{bindings.CoutFormation.validator}"/>
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.CoutFormation.format}"/>
+              </af:inputText>
+              <af:inputText value="#{bindings.Tarif.inputValue}" label="#{bindings.Tarif.hints.label}"
+                            required="#{bindings.Tarif.hints.mandatory}" columns="#{bindings.Tarif.hints.displayWidth}"
+                            maximumLength="#{bindings.Tarif.hints.precision}"
+                            shortDesc="#{bindings.Tarif.hints.tooltip}" id="it3" disabled="true" visible="false">
+                <f:validator binding="#{bindings.Tarif.validator}"/>
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.Tarif.format}"/>
+              </af:inputText>
+              <af:selectOneRadio value="#{bindings.NbInsc.inputValue}" label="Nbr. Inscription"
+                                 required="#{bindings.NbInsc.hints.mandatory}"
+                                 shortDesc="#{bindings.NbInsc.hints.tooltip}" id="sor2" layout="horizontal"
+                                 disabled="true" visible="false">
+                <f:selectItems value="#{bindings.NbInsc.items}" id="si10"/>
+                <f:validator binding="#{bindings.NbInsc.validator}"/>
+              </af:selectOneRadio>
+              <af:inputText value="#{bindings.DernierInscription.inputValue}" label="Dernier Inscription"
+                            required="#{bindings.DernierInscription.hints.mandatory}"
+                            columns="#{bindings.DernierInscription.hints.displayWidth}"
+                            maximumLength="#{bindings.DernierInscription.hints.precision}"
+                            shortDesc="#{bindings.DernierInscription.hints.tooltip}" id="it4" disabled="true"
+                            visible="false">
+                <f:validator binding="#{bindings.DernierInscription.validator}"/>
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.DernierInscription.format}"/>
+              </af:inputText>
+              <af:selectOneRadio value="#{bindings.Cartetiree.inputValue}" label="Carte tirée"
+                                 required="#{bindings.Cartetiree.hints.mandatory}"
+                                 shortDesc="#{bindings.Cartetiree.hints.tooltip}" id="sor5" layout="horizontal"
+                                 disabled="true" visible="false">
+                <f:selectItems value="#{bindings.Cartetiree.items}" id="si13"/>
+                <f:validator binding="#{bindings.Cartetiree.validator}"/>
+              </af:selectOneRadio>
+              <af:selectOneRadio value="#{bindings.OrdreInscription.inputValue}" label="Ordre Inscription"
+                                 required="#{bindings.OrdreInscription.hints.mandatory}"
+                                 shortDesc="#{bindings.OrdreInscription.hints.tooltip}" id="sor6" layout="horizontal"
+                                 disabled="true" visible="false">
+                <f:selectItems value="#{bindings.OrdreInscription.items}" id="si14"/>
+                <f:validator binding="#{bindings.OrdreInscription.validator}"/>
+              </af:selectOneRadio>
+              <af:inputText value="#{bindings.CodeAConserver.inputValue}" label="Code"
+                            required="#{bindings.CodeAConserver.hints.mandatory}"
+                            columns="#{bindings.CodeAConserver.hints.displayWidth}"
+                            maximumLength="#{bindings.CodeAConserver.hints.precision}"
+                            shortDesc="#{bindings.CodeAConserver.hints.tooltip}" id="it5" disabled="true"
+                            visible="false">
+                <f:validator binding="#{bindings.CodeAConserver.validator}"/>
+              </af:inputText>
+              <af:inputDate value="#{bindings.DateEditionCarte.inputValue}" label="Date Edition Carte"
+                            required="#{bindings.DateEditionCarte.hints.mandatory}"
+                            columns="#{bindings.DateEditionCarte.hints.displayWidth}"
+                            shortDesc="#{bindings.DateEditionCarte.hints.tooltip}" id="id1"
+                            contentStyle="margin-bottom:5px;" disabled="true" visible="false">
+                <f:validator binding="#{bindings.DateEditionCarte.validator}"/>
+                <af:convertDateTime pattern="#{bindings.DateEditionCarte.format}"/>
+              </af:inputDate>
+              <af:inputText value="#{bindings.IdParcoursMaquetAnnee.inputValue}"
+                            label="#{bindings.IdParcoursMaquetAnnee.hints.label}"
+                            required="#{bindings.IdParcoursMaquetAnnee.hints.mandatory}"
+                            columns="#{bindings.IdParcoursMaquetAnnee.hints.displayWidth}"
+                            maximumLength="#{bindings.IdParcoursMaquetAnnee.hints.precision}"
+                            shortDesc="#{bindings.IdParcoursMaquetAnnee.hints.tooltip}" id="it6" visible="false">
+                <f:validator binding="#{bindings.IdParcoursMaquetAnnee.validator}"/>
+                <af:convertNumber groupingUsed="false" pattern="#{bindings.IdParcoursMaquetAnnee.format}"/>
+              </af:inputText>
+              <af:selectBooleanCheckbox value="#{bindings.InsEnLigne.inputValue}" label="Inscription En Ligne"
+                                        shortDesc="#{bindings.InsEnLigne.hints.tooltip}" id="sbc1" disabled="true"/>
+            </af:panelFormLayout>
+          </f:facet>
+        </af:panelSplitter>
+        <af:panelGroupLayout id="pgl2">
+          <af:button text="&lt;&lt; Précédent" id="b1"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+                     action="#{Inscriptionbean.autorisePreviousStop}"/>
+          <af:button text="Suivant >>" id="b3"
+                     inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+                     action="#{Inscriptionbean.onNextInscPed}"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </af:showDetailItem>
+    <af:showDetailItem id="tab2" text="Consultations">
+      <af:panelTabbed position="above" id="pt2">
+        <af:showDetailItem id="tab3" text="Cursus" disclosed="true">
+          <af:region value="#{bindings.taskflowdetailcursus1.regionModel}" id="r1"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab4" text="Responsable">
+          <af:region value="#{bindings.responsableetudtk1.regionModel}" id="r5"/>
+        </af:showDetailItem>
+        <af:showDetailItem text="Historique Insc." id="sdi1">
+          <af:region value="#{bindings.detailhistoriqueinscription1.regionModel}" id="r2"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab5" text="Etudiant TIC">
+          <af:region value="#{bindings.etudianttictk1.regionModel}" id="r6"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab6" text="Etudiant BU">
+          <af:region value="#{bindings.tasketudbu1.regionModel}" id="r3"/>
+        </af:showDetailItem>
+        <af:showDetailItem id="tab7" text="Etudiant ACP">
+          <af:region value="#{bindings.paiementetudtk1.regionModel}" id="r4"/>
+        </af:showDetailItem>
+      </af:panelTabbed>
+    </af:showDetailItem>
+  </af:panelTabbed>
+</ui:composition>

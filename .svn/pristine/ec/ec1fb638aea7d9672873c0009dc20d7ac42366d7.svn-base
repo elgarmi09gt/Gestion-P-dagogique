@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listtypeprelevementPageDef"
+                Package="parametrage.type_prelevement">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="TypePrelevement" RangeSize="25" DataControl="parametrageAppDataControl"
+              id="TypePrelevementIterator"/>
+    <searchRegion Binds="TypePrelevementIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="TypePrelevement1Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="TypePrelevementIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypePrelevementIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypePrelevementIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypePrelevementIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypePrelevementIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="Rollback" DataControl="parametrageAppDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <action IterBinding="TypePrelevementIterator" id="CreateInsert"
+            InstanceName="parametrageAppDataControl.TypePrelevement" DataControl="parametrageAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="TypePrelevementIterator" id="Delete" InstanceName="parametrageAppDataControl.TypePrelevement"
+            DataControl="parametrageAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="TypePrelevementIterator" id="TypePrelevement1">
+      <nodeDefinition DefName="model.updatableview.TypePrelevementVO" Name="TypePrelevement10">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

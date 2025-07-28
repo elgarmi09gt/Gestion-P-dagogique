@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelStretchLayout id="psl1" dimensionsFrom="parent">
+    <f:facet name="start"/>
+    <f:facet name="end"/>
+    <f:facet name="top"/>
+    <f:facet name="bottom"/>
+    <f:facet name="center">
+      <af:panelCollection id="pc1" binding="#{Semestresbean.collectionSemestres}" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t2">
+            <af:button id="b1" actionListener="#{Semestresbean.onSemestres}" icon="/images/new_icon.png"/>
+            <af:button id="b2" icon="/images/edit_icon.png">
+              <af:showPopupBehavior popupId="::p4"/>
+            </af:button>
+            <af:button id="b3" icon="/images/delete_icon.png">
+              <af:showPopupBehavior popupId="::p2"/>
+            </af:button>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.Semestres1.collectionModel}" var="row" rows="#{bindings.Semestres1.rangeSize}"
+                  emptyText="#{bindings.Semestres1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.Semestres1.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.Semestres1.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.Semestres1.rangeSize}" filterModel="#{bindings.Semestres1Query.queryDescriptor}"
+                  filterVisible="true" queryListener="#{bindings.Semestres1Query.processQuery}" varStatus="vs" id="t3">
+          <af:column sortProperty="#{bindings.Semestres1.hints.LibelleLong.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.Semestres1.hints.LibelleLong.label}" id="c6">
+            <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.Semestres1.hints.LibelleLong.tooltip}"
+                           id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.Semestres1.hints.LibelleCourt.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.Semestres1.hints.LibelleCourt.label}" id="c8">
+            <af:outputText value="#{row.LibelleCourt}" shortDesc="#{bindings.Semestres1.hints.LibelleCourt.tooltip}"
+                           id="ot5"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.Semestres1.hints.LibelleEnLettre.name}" filterable="true" sortable="true"
+                     headerText="Libelle En Lettre" id="c9">
+            <af:outputText value="#{row.LibelleEnLettre}"
+                           shortDesc="#{bindings.Semestres1.hints.LibelleEnLettre.tooltip}" id="ot6"/>
+          </af:column>
+          <af:column headerText="#{bindings.Semestres1.hints.Rang.label}" id="c1">
+            <af:outputText value="#{row.Rang}" shortDesc="#{bindings.Semestres1.hints.Rang.tooltip}" id="ot2">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.Semestres1.hints.Rang.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.Semestres1.hints.Ordre.label}" id="c2">
+            <af:outputText value="#{row.Ordre}" shortDesc="#{bindings.Semestres1.hints.Ordre.tooltip}" id="ot3">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.Semestres1.hints.Ordre.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.Semestres1.hints.DateCreation.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.Semestres1.hints.DateCreation.label}" id="c12">
+            <f:facet name="filter">
+              <af:inputDate value="#{bindings.Semestres1Query.queryDescriptor.filterConjunctionCriterion.criterionMap.DateCreation.value}"
+                            id="id2">
+                <af:convertDateTime pattern="#{bindings.Semestres1.hints.DateCreation.format}"/>
+              </af:inputDate>
+            </f:facet>
+            <af:outputText value="#{row.DateCreation}" shortDesc="#{bindings.Semestres1.hints.DateCreation.tooltip}"
+                           id="ot8">
+              <af:convertDateTime pattern="#{bindings.Semestres1.hints.DateCreation.format}"/>
+            </af:outputText>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p3" contentDelivery="lazyUncached">
+              <af:menu text="menu 1" id="m1">
+                <af:commandMenuItem text="New" id="cmi1" actionListener="#{Semestresbean.onSemestres}"
+                                    icon="/images/new_icon.png"/>
+                <af:commandMenuItem text="Edit" id="cmi2" icon="/images/edit_icon.png">
+                  <af:showPopupBehavior popupId=":::p4"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="Delete" id="cmi3" icon="/images/delete_icon.png">
+                  <af:showPopupBehavior popupId=":::p2"/>
+                </af:commandMenuItem>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+      </af:panelCollection>
+    </f:facet>
+  </af:panelStretchLayout>
+  <af:resource type="javascript">
+      function onDialogNew(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{Semestresbean.popupNew}">
+    <af:dialog id="d1" dialogListener="#{Semestresbean.onDialogNew}" title="Formulaire de saisie">
+      <af:panelFormLayout id="pfl1">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleEnLettre.inputValue}" label="Libelle En Lettre"
+                      required="#{bindings.LibelleEnLettre.hints.mandatory}"
+                      columns="#{bindings.LibelleEnLettre.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleEnLettre.hints.precision}"
+                      shortDesc="#{bindings.LibelleEnLettre.hints.tooltip}" id="it3">
+          <f:validator binding="#{bindings.LibelleEnLettre.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Rang.inputValue}" label="#{bindings.Rang.hints.label}"
+                      required="#{bindings.Rang.hints.mandatory}" columns="#{bindings.Rang.hints.displayWidth}"
+                      maximumLength="#{bindings.Rang.hints.precision}" shortDesc="#{bindings.Rang.hints.tooltip}"
+                      id="it12">
+          <f:validator binding="#{bindings.Rang.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Rang.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Ordre.inputValue}" label="#{bindings.Ordre.hints.label}"
+                      required="#{bindings.Ordre.hints.mandatory}" columns="#{bindings.Ordre.hints.displayWidth}"
+                      maximumLength="#{bindings.Ordre.hints.precision}" shortDesc="#{bindings.Ordre.hints.tooltip}"
+                      id="it13">
+          <f:validator binding="#{bindings.Ordre.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Ordre.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it4">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialogNew" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{Semestresbean.onDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" contentDelivery="lazyUncached">
+    <af:dialog id="d2" dialogListener="#{Semestresbean.onSemestresDelete}" title="Voulez-vous supprimer?">
+      <af:panelFormLayout id="pfl2">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it6">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleEnLettre.inputValue}" label="Libelle En Lettre"
+                      required="#{bindings.LibelleEnLettre.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleEnLettre.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleEnLettre.hints.precision}"
+                      shortDesc="#{bindings.LibelleEnLettre.hints.tooltip}" id="it7">
+          <f:validator binding="#{bindings.LibelleEnLettre.validator}"/>
+        </af:inputText>
+        <af:inputDate value="#{bindings.DateCreation.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation.hints.label}" required="#{bindings.DateCreation.hints.mandatory}"
+                      columns="#{bindings.DateCreation.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation.hints.tooltip}" id="id1">
+          <f:validator binding="#{bindings.DateCreation.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation.format}"/>
+        </af:inputDate>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p4" contentDelivery="lazyUncached">
+    <af:dialog id="d3" title="Formulaire de modifications" dialogListener="#{Semestresbean.onDialogNew}">
+      <af:panelFormLayout id="pfl3">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it8">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it9">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleEnLettre.inputValue}" label="Libelle En Lettre"
+                      required="#{bindings.LibelleEnLettre.hints.mandatory}"
+                      columns="#{bindings.LibelleEnLettre.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleEnLettre.hints.precision}"
+                      shortDesc="#{bindings.LibelleEnLettre.hints.tooltip}" id="it10">
+          <f:validator binding="#{bindings.LibelleEnLettre.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie.inputValue}" label="#{bindings.UtiModifie.hints.label}"
+                      required="#{bindings.UtiModifie.hints.mandatory}"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it11">
+          <f:validator binding="#{bindings.UtiModifie.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Ordre.inputValue}" label="#{bindings.Ordre.hints.label}"
+                      required="#{bindings.Ordre.hints.mandatory}" columns="#{bindings.Ordre.hints.displayWidth}"
+                      maximumLength="#{bindings.Ordre.hints.precision}" shortDesc="#{bindings.Ordre.hints.tooltip}"
+                      id="it16">
+          <f:validator binding="#{bindings.Ordre.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Ordre.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Rang.inputValue}" label="#{bindings.Rang.hints.label}"
+                      required="#{bindings.Rang.hints.mandatory}" columns="#{bindings.Rang.hints.displayWidth}"
+                      maximumLength="#{bindings.Rang.hints.precision}" shortDesc="#{bindings.Rang.hints.tooltip}"
+                      id="it17">
+          <f:validator binding="#{bindings.Rang.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Rang.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

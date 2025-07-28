@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listetatcloturePageDef"
+                Package="parametrage.etat_cloture">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="EtatCloture" RangeSize="25" DataControl="parametrageAppDataControl" id="EtatClotureIterator"/>
+    <searchRegion Binds="EtatClotureIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtatClotureQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="EtatClotureIterator" id="EtatCloture">
+      <nodeDefinition DefName="model.updatableview.EtatClotureVO" Name="EtatCloture0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+          <Item Value="UtiCree"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="EtatClotureIterator" id="CreateInsert" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="EtatClotureIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtatClotureIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtatClotureIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="EtatClotureIterator" id="Delete" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="EtatClotureIterator" id="IdEtatCloture">
+      <AttrNames>
+        <Item Value="IdEtatCloture"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtatClotureIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtatClotureIterator" id="DateModification">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtatClotureIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

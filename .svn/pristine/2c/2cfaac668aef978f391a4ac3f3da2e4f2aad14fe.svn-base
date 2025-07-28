@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelStretchLayout id="psl1" dimensionsFrom="parent">
+    <f:facet name="start"/>
+    <f:facet name="end"/>
+    <f:facet name="top"/>
+    <f:facet name="bottom"/>
+    <f:facet name="center">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{Gradesbean.tableCollection}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t2">
+            <af:button id="b1" icon="/images/new_icon.png" actionListener="#{Gradesbean.onGradesNew}"/>
+            <af:button id="b2" icon="/images/edit_icon.png">
+              <af:showPopupBehavior popupId="::pEdit"/>
+            </af:button>
+            <af:button id="b3" icon="/images/delete_icon.png">
+              <af:showPopupBehavior popupId="::pDel"/>
+            </af:button>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.Grades.collectionModel}" var="row" rows="#{bindings.Grades.rangeSize}"
+                  emptyText="#{bindings.Grades.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.Grades.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.Grades.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.Grades.rangeSize}" filterModel="#{bindings.GradesQuery.queryDescriptor}"
+                  filterVisible="true" queryListener="#{bindings.GradesQuery.processQuery}" varStatus="vs" id="t1">
+          <af:column sortProperty="#{bindings.Grades.hints.IdTypePersonnel.name}" filterable="true" sortable="true"
+                     headerText="Type Personnel" id="c1" width="300">
+            <af:selectOneChoice value="#{row.bindings.IdTypePersonnel.inputValue}"
+                                label="#{row.bindings.IdTypePersonnel.label}"
+                                required="#{bindings.Grades.hints.IdTypePersonnel.mandatory}"
+                                shortDesc="#{bindings.Grades.hints.IdTypePersonnel.tooltip}" readOnly="true" id="soc1">
+              <f:selectItems value="#{row.bindings.IdTypePersonnel.items}" id="si1"/>
+              <f:validator binding="#{row.bindings.IdTypePersonnel.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.Grades.hints.LibelleLong.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.Grades.hints.LibelleLong.label}" id="c2" width="300">
+            <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.Grades.hints.LibelleLong.tooltip}"
+                           id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.Grades.hints.LibelleCourt.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.Grades.hints.LibelleCourt.label}" id="c3">
+            <af:outputText value="#{row.LibelleCourt}" shortDesc="#{bindings.Grades.hints.LibelleCourt.tooltip}"
+                           id="ot2"/>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached">
+              <af:menu text="menu 1" id="m1">
+                <af:commandMenuItem text="New" id="cmi1" icon="/images/new_icon.png"
+                                    actionListener="#{Gradesbean.onGradesNew}"/>
+                <af:commandMenuItem text="Edit" id="cmi2" icon="/images/edit_icon.png">
+                  <af:showPopupBehavior popupId=":::pEdit"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="Delete" id="cmi3" icon="/images/delete_icon.png">
+                  <af:showPopupBehavior popupId=":::pDel"/>
+                </af:commandMenuItem>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+      </af:panelCollection>
+    </f:facet>
+  </af:panelStretchLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="pNew" binding="#{Gradesbean.popNew}">
+    <af:dialog id="d1" title="Ajout un grade" dialogListener="#{Gradesbean.onDialog}">
+      <af:panelFormLayout id="pfl1">
+        <af:selectOneChoice value="#{bindings.IdTypePersonnel.inputValue}" label="Type Personnel"
+                            required="#{bindings.IdTypePersonnel.hints.mandatory}"
+                            shortDesc="#{bindings.IdTypePersonnel.hints.tooltip}" id="soc2">
+          <f:selectItems value="#{bindings.IdTypePersonnel.items}" id="si2"/>
+          <f:validator binding="#{bindings.IdTypePersonnel.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="Utilisateur"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it3">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{Gradesbean.onDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+      <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="pEdit" contentDelivery="lazyUncached">
+    <af:dialog id="d2" title="Formulaire de modifications" dialogListener="#{Gradesbean.onDialog}">
+      <af:panelFormLayout id="pfl2">
+        <af:selectOneChoice value="#{bindings.IdTypePersonnel.inputValue}" label="Type Personnel"
+                            required="#{bindings.IdTypePersonnel.hints.mandatory}"
+                            shortDesc="#{bindings.IdTypePersonnel.hints.tooltip}" id="soc3">
+          <f:selectItems value="#{bindings.IdTypePersonnel.items}" id="si3"/>
+          <f:validator binding="#{bindings.IdTypePersonnel.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it4">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="pDel" contentDelivery="lazyUncached">
+    <af:dialog id="d3" title="Confirmez-vous la suppression?" dialogListener="#{Gradesbean.onBradesDelete}">
+      <af:panelFormLayout id="pfl3">
+        <af:selectOneChoice value="#{bindings.IdTypePersonnel.inputValue}" label="Type Personnel"
+                            required="#{bindings.IdTypePersonnel.hints.mandatory}"
+                            shortDesc="#{bindings.IdTypePersonnel.hints.tooltip}" readOnly="true" id="soc4">
+          <f:selectItems value="#{bindings.IdTypePersonnel.items}" id="si4"/>
+          <f:validator binding="#{bindings.IdTypePersonnel.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it6">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it7">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

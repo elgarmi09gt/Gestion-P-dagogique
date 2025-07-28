@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="parametrage_saisie_note_ec_parametrage_saisie_note_ec_ExecuteWithParamsPageDef"
+                Package="evaluation.paramsaisienoteec" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="ParcoursParamSaisieNoteEc" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ParcoursParamSaisieNoteEcIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="ParcoursParamSaisieNoteEcIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="idu" NDValue="#{sessionScope.id_user}" NDType="java.lang.Integer"/>
+      <NamedData NDName="ida" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Integer"/>
+    </action>
+  </bindings>
+</pageDefinition>

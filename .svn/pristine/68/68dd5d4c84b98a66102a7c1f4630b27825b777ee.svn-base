@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelStretchLayout id="psl1" dimensionsFrom="parent">
+    <f:facet name="start"/>
+    <f:facet name="end"/>
+    <f:facet name="top"/>
+    <f:facet name="bottom"/>
+    <f:facet name="center">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{Boursesbean.tableBourses}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t2">
+            <af:button id="b1" icon="/images/new_icon.png" actionListener="#{Boursesbean.onBoursesNew}"/>
+            <af:button id="b2" icon="/images/edit_icon.png">
+              <af:showPopupBehavior popupId="::pBourEdit"/>
+            </af:button>
+            <af:button id="b3" icon="/images/delete_icon.png">
+              <af:showPopupBehavior popupId="::pBourDel"/>
+            </af:button>
+          </af:toolbar>
+        </f:facet>
+        <af:table value="#{bindings.Bourses.collectionModel}" var="row" rows="#{bindings.Bourses.rangeSize}"
+                  emptyText="#{bindings.Bourses.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.Bourses.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.Bourses.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.Bourses.rangeSize}" filterModel="#{bindings.BoursesQuery.queryDescriptor}"
+                  filterVisible="true" queryListener="#{bindings.BoursesQuery.processQuery}" varStatus="vs" id="t1">
+          <af:column sortProperty="#{bindings.Bourses.hints.Libelle.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.Bourses.hints.Libelle.label}" id="c1" width="300">
+            <af:outputText value="#{row.Libelle}" shortDesc="#{bindings.Bourses.hints.Libelle.tooltip}" id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.Bourses.hints.Boursier.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.Bourses.hints.Boursier.label}" id="c2">
+            <af:selectOneChoice value="#{row.bindings.Boursier.inputValue}" label="#{row.bindings.Boursier.label}"
+                                required="#{bindings.Bourses.hints.Boursier.mandatory}"
+                                shortDesc="#{bindings.Bourses.hints.Boursier.tooltip}" readOnly="true" id="soc1">
+              <f:selectItems value="#{row.bindings.Boursier.items}" id="si1"/>
+              <f:validator binding="#{row.bindings.Boursier.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.Bourses.hints.IdTypeBourse.name}" filterable="true" sortable="true"
+                     headerText="Type Bourse" id="c3">
+            <af:selectOneChoice value="#{row.bindings.IdTypeBourse.inputValue}"
+                                label="#{row.bindings.IdTypeBourse.label}"
+                                required="#{bindings.Bourses.hints.IdTypeBourse.mandatory}"
+                                shortDesc="#{bindings.Bourses.hints.IdTypeBourse.tooltip}" readOnly="true" id="soc2">
+              <f:selectItems value="#{row.bindings.IdTypeBourse.items}" id="si2"/>
+              <f:validator binding="#{row.bindings.IdTypeBourse.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.Bourses.hints.IdOrganisme.name}" filterable="true" sortable="true"
+                     headerText="Organisme" id="c4" width="300">
+            <af:selectOneChoice value="#{row.bindings.IdOrganisme.inputValue}" label="#{row.bindings.IdOrganisme.label}"
+                                required="#{bindings.Bourses.hints.IdOrganisme.mandatory}"
+                                shortDesc="#{bindings.Bourses.hints.IdOrganisme.tooltip}" readOnly="true" id="soc3">
+              <f:selectItems value="#{row.bindings.IdOrganisme.items}" id="si3"/>
+              <f:validator binding="#{row.bindings.IdOrganisme.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.Bourses.hints.IdTypePrelevement.name}" filterable="true" sortable="true"
+                     headerText="Type Prélévement" id="c5" width="150">
+            <af:selectOneChoice value="#{row.bindings.IdTypePrelevement.inputValue}"
+                                label="#{row.bindings.IdTypePrelevement.label}"
+                                required="#{bindings.Bourses.hints.IdTypePrelevement.mandatory}"
+                                shortDesc="#{bindings.Bourses.hints.IdTypePrelevement.tooltip}" readOnly="true"
+                                id="soc4">
+              <f:selectItems value="#{row.bindings.IdTypePrelevement.items}" id="si4"/>
+              <f:validator binding="#{row.bindings.IdTypePrelevement.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.Bourses.hints.Recu.name}" filterable="true" sortable="true"
+                     headerText="Reçu" id="c6">
+            <af:selectOneChoice value="#{row.bindings.Recu.inputValue}" label="#{row.bindings.Recu.label}"
+                                required="#{bindings.Bourses.hints.Recu.mandatory}"
+                                shortDesc="#{bindings.Bourses.hints.Recu.tooltip}" readOnly="true" id="soc5">
+              <f:selectItems value="#{row.bindings.Recu.items}" id="si5"/>
+              <f:validator binding="#{row.bindings.Recu.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached">
+              <af:menu text="menu 1" id="m1">
+                <af:commandMenuItem text="New" id="cmi1" icon="/images/new_icon.png"
+                                    actionListener="#{Boursesbean.onBoursesNew}"/>
+                <af:commandMenuItem text="Edit" id="cmi2" icon="/images/edit_icon.png">
+                  <af:showPopupBehavior popupId=":::pBourEdit"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="Delete" id="cmi3" icon="/images/delete_icon.png">
+                  <af:showPopupBehavior popupId=":::pBourDel"/>
+                </af:commandMenuItem>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+        <f:facet name="statusbar"/>
+      </af:panelCollection>
+    </f:facet>
+  </af:panelStretchLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="pBourNew" contentDelivery="lazyUncached"
+            binding="#{Boursesbean.popNew}">
+    <af:dialog id="d1" title="Ajout d'une nouvelle bourse" dialogListener="#{Boursesbean.onDialog}">
+      <af:panelFormLayout id="pfl1">
+        <af:inputText value="#{bindings.Libelle.inputValue}" label="#{bindings.Libelle.hints.label}"
+                      required="#{bindings.Libelle.hints.mandatory}" columns="#{bindings.Libelle.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle.hints.precision}" shortDesc="#{bindings.Libelle.hints.tooltip}"
+                      id="it1" contentStyle="margin-bottom:10px;" inlineStyle="margin-bottom:10px;">
+          <f:validator binding="#{bindings.Libelle.validator}"/>
+        </af:inputText>
+        <af:selectOneRadio value="#{bindings.Boursier.inputValue}" label="#{bindings.Boursier.label}"
+                           required="#{bindings.Boursier.hints.mandatory}"
+                           shortDesc="#{bindings.Boursier.hints.tooltip}" id="sor1" layout="horizontal"
+                           inlineStyle="margin-bottom:10px;" contentStyle="margin-bottom:10px;">
+          <f:selectItems value="#{bindings.Boursier.items}" id="si6"/>
+          <f:validator binding="#{bindings.Boursier.validator}"/>
+        </af:selectOneRadio>
+        <af:selectOneChoice value="#{bindings.IdTypeBourse.inputValue}" label="Type Bourse"
+                            required="#{bindings.IdTypeBourse.hints.mandatory}"
+                            shortDesc="#{bindings.IdTypeBourse.hints.tooltip}" id="soc6"
+                            contentStyle="margin-bottom:10px;" inlineStyle="margin-bottom:10px;">
+          <f:selectItems value="#{bindings.IdTypeBourse.items}" id="si7"/>
+          <f:validator binding="#{bindings.IdTypeBourse.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdOrganisme.inputValue}" label="Organisme"
+                            required="#{bindings.IdOrganisme.hints.mandatory}"
+                            shortDesc="#{bindings.IdOrganisme.hints.tooltip}" id="soc7"
+                            contentStyle="margin-bottom:10px;" inlineStyle="margin-bottom:10px;">
+          <f:selectItems value="#{bindings.IdOrganisme.items}" id="si8"/>
+          <f:validator binding="#{bindings.IdOrganisme.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdTypePrelevement.inputValue}" label="Type Prélèvement"
+                            required="#{bindings.IdTypePrelevement.hints.mandatory}"
+                            shortDesc="#{bindings.IdTypePrelevement.hints.tooltip}" id="soc8"
+                            contentStyle="margin-bottom:10px;" inlineStyle="margin-bottom:10px;">
+          <f:selectItems value="#{bindings.IdTypePrelevement.items}" id="si9"/>
+          <f:validator binding="#{bindings.IdTypePrelevement.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneRadio value="#{bindings.Recu.inputValue}" label="#{bindings.Recu.label}"
+                           required="#{bindings.Recu.hints.mandatory}" shortDesc="#{bindings.Recu.hints.tooltip}"
+                           id="sor2" layout="horizontal">
+          <f:selectItems value="#{bindings.Recu.items}" id="si10"/>
+          <f:validator binding="#{bindings.Recu.validator}"/>
+        </af:selectOneRadio>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="Utilisateur"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it2">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{Boursesbean.onDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+    <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="pBourEdit" contentDelivery="lazyUncached">
+    <af:dialog id="d2" title="Formulaire de modifications" dialogListener="#{Boursesbean.onDialog}">
+      <af:panelFormLayout id="pfl2">
+        <af:inputText value="#{bindings.Libelle.inputValue}" label="#{bindings.Libelle.hints.label}"
+                      required="#{bindings.Libelle.hints.mandatory}" columns="#{bindings.Libelle.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle.hints.precision}" shortDesc="#{bindings.Libelle.hints.tooltip}"
+                      id="it3" contentStyle="margin-bottom:10px;" inlineStyle="margin-bottom:10px;">
+          <f:validator binding="#{bindings.Libelle.validator}"/>
+        </af:inputText>
+        <af:selectOneRadio value="#{bindings.Boursier.inputValue}" label="#{bindings.Boursier.label}"
+                           required="#{bindings.Boursier.hints.mandatory}"
+                           shortDesc="#{bindings.Boursier.hints.tooltip}" id="sor3" layout="horizontal">
+          <f:selectItems value="#{bindings.Boursier.items}" id="si11"/>
+          <f:validator binding="#{bindings.Boursier.validator}"/>
+        </af:selectOneRadio>
+        <af:selectOneChoice value="#{bindings.IdTypeBourse.inputValue}" label="Type Bourse"
+                            required="#{bindings.IdTypeBourse.hints.mandatory}"
+                            shortDesc="#{bindings.IdTypeBourse.hints.tooltip}" id="soc9"
+                            contentStyle="margin-bottom:10px;margin-top:10px;">
+          <f:selectItems value="#{bindings.IdTypeBourse.items}" id="si12"/>
+          <f:validator binding="#{bindings.IdTypeBourse.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdOrganisme.inputValue}" label="Organisme"
+                            required="#{bindings.IdOrganisme.hints.mandatory}"
+                            shortDesc="#{bindings.IdOrganisme.hints.tooltip}" id="soc10"
+                            contentStyle="margin-bottom:10px;">
+          <f:selectItems value="#{bindings.IdOrganisme.items}" id="si13"/>
+          <f:validator binding="#{bindings.IdOrganisme.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdTypePrelevement.inputValue}" label="Type Prélèvement"
+                            required="#{bindings.IdTypePrelevement.hints.mandatory}"
+                            shortDesc="#{bindings.IdTypePrelevement.hints.tooltip}" id="soc11"
+                            contentStyle="margin-bottom:10px;">
+          <f:selectItems value="#{bindings.IdTypePrelevement.items}" id="si14"/>
+          <f:validator binding="#{bindings.IdTypePrelevement.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneRadio value="#{bindings.Recu.inputValue}" label="#{bindings.Recu.label}"
+                           required="#{bindings.Recu.hints.mandatory}" shortDesc="#{bindings.Recu.hints.tooltip}"
+                           id="sor4" layout="horizontal">
+          <f:selectItems value="#{bindings.Recu.items}" id="si15"/>
+          <f:validator binding="#{bindings.Recu.validator}"/>
+        </af:selectOneRadio>
+        <af:inputText value="#{bindings.UtiModifie.inputValue}" label="Utilisateur"
+                      required="#{bindings.UtiModifie.hints.mandatory}"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it4" contentStyle="margin-top:10px;">
+          <f:validator binding="#{bindings.UtiModifie.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="pBourDel" contentDelivery="lazyUncached">
+    <af:dialog id="d3" title="Confirmez-vous la suppression?" dialogListener="#{Boursesbean.onDialogDelete}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl3">
+        <af:inputText value="#{bindings.Libelle.inputValue}" label="#{bindings.Libelle.hints.label}"
+                      required="#{bindings.Libelle.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Libelle.hints.displayWidth}"
+                      maximumLength="#{bindings.Libelle.hints.precision}" shortDesc="#{bindings.Libelle.hints.tooltip}"
+                      id="it5">
+          <f:validator binding="#{bindings.Libelle.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdTypeBourse.inputValue}" label="#{bindings.IdTypeBourse.label}"
+                            required="#{bindings.IdTypeBourse.hints.mandatory}"
+                            shortDesc="#{bindings.IdTypeBourse.hints.tooltip}" readOnly="true" id="soc12">
+          <f:selectItems value="#{bindings.IdTypeBourse.items}" id="si16"/>
+          <f:validator binding="#{bindings.IdTypeBourse.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdOrganisme.inputValue}" label="#{bindings.IdOrganisme.label}"
+                            required="#{bindings.IdOrganisme.hints.mandatory}"
+                            shortDesc="#{bindings.IdOrganisme.hints.tooltip}" readOnly="true" id="soc13">
+          <f:selectItems value="#{bindings.IdOrganisme.items}" id="si17"/>
+          <f:validator binding="#{bindings.IdOrganisme.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

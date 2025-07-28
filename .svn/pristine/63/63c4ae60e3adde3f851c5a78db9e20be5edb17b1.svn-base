@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="UtilisFiliereUeSemestreEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="UTILIS_FILIERE_UE_SEMESTRE"
+  AliasName="UtilisFiliereUeSemestreEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdUtilisateur"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_UTILISATEUR"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="UTILIS_FILIERE_UE_SEMESTRE"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    PrimaryKey="true"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdFiliereUeSemstre"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_FILIERE_UE_SEMSTRE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="UTILIS_FILIERE_UE_SEMESTRE"/>
+  <Attribute
+    Name="Role"
+    ColumnName="ROLE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="UTILIS_FILIERE_UE_SEMESTRE"
+    IsNotNull="true"
+    Precision="75"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="UTILIS_FILIERE_UE_SEMESTRE"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="UTILIS_FILIERE_UE_SEMESTRE"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="UTILIS_FILIERE_UE_SEMESTRE"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="UTILIS_FILIERE_UE_SEMESTRE"/>
+  <Attribute
+    Name="IdUtilisFilierUeSem"
+    Precision="5"
+    Scale="0"
+    ColumnName="ID_UTILIS_FILIER_UE_SEM"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="UTILIS_FILIERE_UE_SEMESTRE"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Key
+    Name="PkUtilisFiliereUeSemestre"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_UTILIS_FILIERE_UE_SEMESTRE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisFiliereUeSemestreEO.IdUtilisFilierUeSem"/>
+      <Item Value="model.entities.UtilisFiliereUeSemestreEO.Role"/>
+      <Item Value="model.entities.UtilisFiliereUeSemestreEO.IdUtilisateur"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtiliFilUeSemFilUeSem">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_FILIERE_UE_SEMSTRE"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILI_FIL_UE_SEM_FIL_UE_SEM"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisFiliereUeSemestreEO.IdFiliereUeSemstre"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtiliFilUeSemUtilis">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILI_FIL_UE_SEM_UTILIS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisFiliereUeSemestreEO.IdUtilisateur"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisFilUeSemUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILIS_FIL_UE_SEM_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisFiliereUeSemestreEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisFilUeSemUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILIS_FIL_UE_SEM_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisFiliereUeSemestreEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

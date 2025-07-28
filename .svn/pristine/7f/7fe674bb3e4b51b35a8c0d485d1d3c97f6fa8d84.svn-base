@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listformationsPageDef"
+                Package="formations">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="HistoriquesStructuresROVO" RangeSize="8" DataControl="gestdapAppDataControl"
+              id="HistoriquesStructuresROIterator" Refresh="default"/>
+    <iterator Binds="FormationsVO" RangeSize="25" DataControl="gestdapAppDataControl" id="FormationsVO1Iterator"/>
+    <iterator Binds="FormationsSpecialitesVO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="FormationsSpecialitesVO1Iterator"/>
+    <iterator Binds="FormationsOptionsVO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="FormationsOptionsIterator"/>
+    <searchRegion Binds="FormationsOptionsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormationsOptionsQuery"/>
+    <iterator Binds="MentionsDomaines" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="MentionsDomainesIterator"/>
+    <searchRegion Binds="FormationsVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormationsVO1Query"/>
+    <searchRegion Binds="FormationsSpecialitesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormationsSpecialitesQuery"/>
+    <iterator Binds="FormationAccesVO" RangeSize="25" DataControl="gestdapAppDataControl" id="FormationAccesIterator"/>
+    <iterator Binds="FormationConditionAccesVO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="FormCondAccesIterator"/>
+    <searchRegion Binds="FormCondAccesIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormationConditionAccesQuery"/>
+    <searchRegion Binds="FormationAccesIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormationAcces1Query"/>
+    <iterator Binds="FormationLangueVO" RangeSize="25" DataControl="gestdapAppDataControl" id="FormationLangueIterator"/>
+    <searchRegion Binds="FormationLangueIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormationLangueQuery"/>
+    <iterator Binds="FormationOrganisatioEtudeVO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="FormationOrganisatioEtudeIterator"/>
+    <searchRegion Binds="FormationOrganisatioEtudeIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormationOrganisatioEtudeQuery"/>
+    <iterator Binds="FormationInstitutsVO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="FormationInstitutsIterator"/>
+    <searchRegion Binds="FormationInstitutsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="FormationInstitutsQuery"/>
+    <iterator Binds="NiveauxFormationsVO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="NiveauxFormationsIterator"/>
+    <searchRegion Binds="NiveauxFormationsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NiveauxFormationsQuery"/>
+    <iterator Binds="NiveauFormationCohortesVO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="NiveauFormationCohortesIterator"/>
+    <searchRegion Binds="NiveauFormationCohortesIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NiveauFormationCohortesQuery"/>
+    <iterator Binds="NiveauxFormationParcoursVO" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="NiveauxFormationParcoursIterator"/>
+    <searchRegion Binds="NiveauxFormationParcoursIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NiveauxFormationParcoursQuery"/>
+    <iterator Binds="StructureAcces" RangeSize="8" DataControl="gestdapAppDataControl" id="StructureAccesIterator"/>
+    <searchRegion Binds="StructureAccesIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="StructureAccesQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="HistoriquesStructuresROIterator" id="HistoriquesStructuresRO1">
+      <nodeDefinition DefName="model.readOnlyView.HistoriquesStructuresROVO" Name="HistoriquesStructuresRO10">
+        <AttrNames>
+          <Item Value="IdHistoriquesStructure"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="FormationsVO1Iterator" id="LibelleLongFrom">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationsVO1Iterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationsVO1Iterator" id="Ouvert">
+      <AttrNames>
+        <Item Value="Ouvert"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="Rollback" DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="rollbackTransaction"/>
+    <action IterBinding="FormationsVO1Iterator" id="CreateInsertForm" InstanceName="gestdapAppDataControl.FormationsVO1"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="FormationsVO1Iterator" id="DeleteForm" InstanceName="gestdapAppDataControl.FormationsVO1"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="FormationsSpecialitesVO1Iterator" id="CreateInsertFormSpc"
+            InstanceName="gestdapAppDataControl.FormationsSpecialites" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="FormationsSpecialitesVO1Iterator" id="DeleteFormSpc"
+            InstanceName="gestdapAppDataControl.FormationsSpecialites" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="FormationsOptionsIterator" id="CreateInsertFormOpt"
+            InstanceName="gestdapAppDataControl.FormationsOptions" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="FormationsOptionsIterator" id="DeleteFormOpt" InstanceName="gestdapAppDataControl.FormationsOptions"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="FormationsSpecialitesVO1Iterator" id="IdSpecialite">
+      <AttrNames>
+        <Item Value="IdSpecialite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationsOptionsIterator" id="IdOption">
+      <AttrNames>
+        <Item Value="IdOption"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MentionsDomainesIterator" id="IdMention1">
+      <AttrNames>
+        <Item Value="IdMention"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="FormationsVO1Iterator" StaticList="false" Uses="LOV_IdMention" id="IdMention2"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FormationsVO1Iterator" StaticList="false" Uses="LOV_IdGradesFormation" id="IdGradesFormation1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FormationsVO1Iterator" StaticList="false" Uses="LOV_IdCycle" id="IdCycle1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FormationsVO1Iterator" StaticList="false" Uses="LOV_IdTypeFormation" id="IdTypeFormation1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FormationsVO1Iterator" StaticList="false" Uses="LOV_IdOrganisationEtude"
+          id="IdOrganisationEtude1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FormationsSpecialitesVO1Iterator" StaticList="false" Uses="LOV_IdSpecialite" id="IdSpecialite1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FormationsOptionsIterator" StaticList="false" Uses="LOV_IdOption" id="IdOption1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <tree IterBinding="FormationsOptionsIterator" id="FormationsOptions1">
+      <nodeDefinition DefName="model.updatableview.FormationsOptionsVO" Name="FormationsOptions10">
+        <AttrNames>
+          <Item Value="IdOption"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="FormationAccesIterator" StaticList="false" Uses="LOV_IdAccesFrom" id="IdAccesFrom"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <action IterBinding="FormationAccesIterator" id="CreateInsertFormAcces" InstanceName="gestdapAppDataControl.FormationAcces"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="FormationAccesIterator" id="DeleteFormAcces" InstanceName="gestdapAppDataControl.FormationAcces"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="FormCondAccesIterator" id="FormationConditionAcces">
+      <nodeDefinition DefName="model.updatableview.FormationConditionAccesVO" Name="FormationConditionAcces0">
+        <AttrNames>
+          <Item Value="IdConditionAcces"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FormationAccesIterator" id="FormationAcces1">
+      <nodeDefinition DefName="model.updatableview.FormationAccesVO" Name="FormationAcces10">
+        <AttrNames>
+          <Item Value="IdAccesFrom"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="FormCondAccesIterator" StaticList="false" Uses="LOV_IdConditionAcces"
+          id="IdConditionAcces" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <action IterBinding="FormCondAccesIterator" id="CreateInsertFormCondAcces"
+            InstanceName="gestdapAppDataControl.FormationConditionAcces" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="FormCondAccesIterator" id="DeleteFormCondAcces"
+            InstanceName="gestdapAppDataControl.FormationConditionAcces" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="FormationLangueIterator" id="FormationLangue">
+      <nodeDefinition DefName="model.updatableview.FormationLangueVO" Name="FormationLangue0">
+        <AttrNames>
+          <Item Value="IdLangue"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+          <Item Value="Pourcentage"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="FormationLangueIterator" StaticList="false" Uses="LOV_IdLangue" id="IdLangue"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="FormationLangueIterator" id="Pourcentage">
+      <AttrNames>
+        <Item Value="Pourcentage"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="FormationLangueIterator" id="CreateInsertFormLang" InstanceName="gestdapAppDataControl.FormationLangue"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="FormationLangueIterator" id="DeleteFormLang" InstanceName="gestdapAppDataControl.FormationLangue"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="FormationOrganisatioEtudeIterator" id="FormationOrganisatioEtude">
+      <nodeDefinition DefName="model.updatableview.FormationOrganisatioEtudeVO" Name="FormationOrganisatioEtude0">
+        <AttrNames>
+          <Item Value="IdOrganisationEtude"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="FormationOrganisatioEtudeIterator" StaticList="false" Uses="LOV_IdOrganisationEtude"
+          id="IdOrganisationEtude" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <action IterBinding="FormationOrganisatioEtudeIterator" id="CreateInsertOrgEtude"
+            InstanceName="gestdapAppDataControl.FormationOrganisatioEtude" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="FormationOrganisatioEtudeIterator" id="DeleteOrgEtude"
+            InstanceName="gestdapAppDataControl.FormationOrganisatioEtude" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="FormationInstitutsIterator" id="FormationInstituts">
+      <nodeDefinition DefName="model.updatableview.FormationInstitutsVO" Name="FormationInstituts0">
+        <AttrNames>
+          <Item Value="IdInstitut"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="FormationInstitutsIterator" StaticList="false" Uses="LOV_IdInstitut" id="IdInstitut"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <action IterBinding="FormationInstitutsIterator" id="CreateInsertFormInst"
+            InstanceName="gestdapAppDataControl.FormationInstituts" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="FormationInstitutsIterator" id="DeleteFormInst" InstanceName="gestdapAppDataControl.FormationInstituts"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="FormationsVO1Iterator" id="IdMention">
+      <AttrNames>
+        <Item Value="IdMention"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="NiveauxFormationsIterator" StaticList="false" Uses="LOV_IdNiveau" id="IdNiveau"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="LibelleLong1">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="LibelleCourt1">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="NbreInsPermise">
+      <AttrNames>
+        <Item Value="NbreInsPermise"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="IdModePaiement">
+      <AttrNames>
+        <Item Value="IdModePaiement"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="Mensualite">
+      <AttrNames>
+        <Item Value="Mensualite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="CoutFormation">
+      <AttrNames>
+        <Item Value="CoutFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="DroitInsPed">
+      <AttrNames>
+        <Item Value="DroitInsPed"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="DroitInsAdm">
+      <AttrNames>
+        <Item Value="DroitInsAdm"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="CoutFormationEtr">
+      <AttrNames>
+        <Item Value="CoutFormationEtr"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="DroitInsAdmEtr">
+      <AttrNames>
+        <Item Value="DroitInsAdmEtr"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="DroitInsPedEtr">
+      <AttrNames>
+        <Item Value="DroitInsPedEtr"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="TagSemestrialisation">
+      <AttrNames>
+        <Item Value="TagSemestrialisation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="TagGroupeMatiere">
+      <AttrNames>
+        <Item Value="TagGroupeMatiere"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="ModeDispatching">
+      <AttrNames>
+        <Item Value="ModeDispatching"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="NiveauxFormationsIterator" id="CreateInsertNivForm"
+            InstanceName="gestdapAppDataControl.NiveauxFormations" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="NiveauxFormationsIterator" id="DeleteNivForm" InstanceName="gestdapAppDataControl.NiveauxFormations"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="FormationsSpecialitesVO1Iterator" id="FormationsSpecialites">
+      <nodeDefinition DefName="model.updatableview.FormationsSpecialitesVO" Name="FormationsSpecialites0">
+        <AttrNames>
+          <Item Value="IdSpecialite"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="NiveauFormationCohortesIterator" id="NiveauFormationCohortes">
+      <nodeDefinition DefName="model.updatableview.NiveauFormationCohortesVO" Name="NiveauFormationCohortes0">
+        <AttrNames>
+          <Item Value="IdCohorte"/>
+          <Item Value="NombreEtudiant"/>
+          <Item Value="Actif"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="NiveauFormationCohortesIterator" StaticList="false" Uses="LOV_IdCohorte" id="IdCohorte"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="NiveauFormationCohortesIterator" id="NombreEtudiant">
+      <AttrNames>
+        <Item Value="NombreEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationCohortesIterator" id="Actif">
+      <AttrNames>
+        <Item Value="Actif"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationParcoursIterator" id="IdFormationOption">
+      <AttrNames>
+        <Item Value="IdFormationOption"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationParcoursIterator" id="IdFormationSpecialite">
+      <AttrNames>
+        <Item Value="IdFormationSpecialite"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="NiveauFormationCohortesIterator" id="CreateInsertNivFormCoh"
+            InstanceName="gestdapAppDataControl.NiveauFormationCohortes" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="NiveauFormationCohortesIterator" id="DeleteNivFormCoh"
+            InstanceName="gestdapAppDataControl.NiveauFormationCohortes" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="NiveauxFormationParcoursIterator" id="CreateInsertNivFormParc"
+            InstanceName="gestdapAppDataControl.NiveauxFormationParcours" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="NiveauxFormationParcoursIterator" id="DeleteNivFormParc"
+            InstanceName="gestdapAppDataControl.NiveauxFormationParcours" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="NiveauxFormationParcoursIterator" id="NiveauxFormationParcours1">
+      <nodeDefinition DefName="model.updatableview.NiveauxFormationParcoursVO" Name="NiveauxFormationParcours10">
+        <AttrNames>
+          <Item Value="IdFormationOption"/>
+          <Item Value="IdFormationSpecialite"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="NiveauxFormationParcoursIterator" StaticList="false" Uses="LOV_IdFormationOption"
+          id="IdFormationOption1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="NiveauxFormationParcoursIterator" StaticList="false" Uses="LOV_IdFormationSpecialite"
+          id="IdFormationSpecialite1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FormationsVO1Iterator" StaticList="false" Uses="LOV_Ouvert" id="Ouvert2" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="FormationsVO1Iterator" StaticList="false" Uses="LOV_Professionalisante"
+          id="Professionalisante1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="FormationsVO1Iterator" StaticList="false" Uses="LOV_TroncCommun" id="TroncCommun1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="HistoriquesStructuresROIterator" id="LibelleLongStruc">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationsSpecialitesVO1Iterator" id="libelleSpecialite">
+      <AttrNames>
+        <Item Value="libelleSpecialite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationsOptionsIterator" id="libelleoption">
+      <AttrNames>
+        <Item Value="libelleoption"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="NiveauxFormationsIterator" StaticList="false" Uses="LOV_ASelection" id="ASelection1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="NiveauxFormationsIterator" StaticList="false" Uses="LOV_AutorisationPermise"
+          id="AutorisationPermise1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="NiveauxFormationsIterator" StaticList="false" Uses="LOV_UtiliseEvaluation"
+          id="UtiliseEvaluation1" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="NiveauxFormationsIterator" StaticList="false" Uses="LOV_Presentielle" id="Presentielle1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="NiveauxFormationsIterator" StaticList="false" Uses="LOV_Diplomante" id="Diplomante1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="NiveauxFormationsIterator" StaticList="false" Uses="LOV_Ouvert" id="Ouvert3"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="FormationsVO1Iterator" id="IdEcoleDoctorale">
+      <AttrNames>
+        <Item Value="IdEcoleDoctorale"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="FormationsVO1Iterator" id="FormationsVO11">
+      <nodeDefinition DefName="model.updatableview.FormationsVO" Name="FormationsVO110">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="IdMention"/>
+          <Item Value="IdHistoriquesStructure"/>
+          <Item Value="IdGradesFormation"/>
+          <Item Value="IdCycle"/>
+          <Item Value="Ouvert"/>
+          <Item Value="IdEcoleDoctorale"/>
+          <Item Value="Professionalisante"/>
+          <Item Value="IdTypeFormation"/>
+          <Item Value="TroncCommun"/>
+          <Item Value="IdOrganisationEtude"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="NiveauxFormationsIterator" id="NiveauxFormations">
+      <nodeDefinition DefName="model.updatableview.NiveauxFormationsVO" Name="NiveauxFormations0">
+        <AttrNames>
+          <Item Value="IdNiveau"/>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="ASelection"/>
+          <Item Value="AutorisationPermise"/>
+          <Item Value="UtiliseEvaluation"/>
+          <Item Value="NbreInsPermise"/>
+          <Item Value="Ouvert"/>
+          <Item Value="CoutFormation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="NiveauFormationCohortesIterator" id="UtiModifie9">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationCohortesIterator" id="UtiCree10">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationParcoursIterator" id="UtiCree9">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationParcoursIterator" id="UtiModifie10">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationCohortesIterator" id="IdNiveauFormation">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="StructureAccesIterator" id="StructureAcces">
+      <nodeDefinition DefName="model.readOnlyView.StructureAccesROVO" Name="StructureAcces0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="FormationsVO1Iterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="UtiCree1">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationCohortesIterator" id="UtiCree2">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationParcoursIterator" id="UtiCree3">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationsSpecialitesVO1Iterator" id="UtiCree4">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationsOptionsIterator" id="UtiCree5">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationAccesIterator" id="UtiCree6">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormCondAccesIterator" id="UtiCree7">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationLangueIterator" id="UtiCree8">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationOrganisatioEtudeIterator" id="UtiCree11">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationInstitutsIterator" id="UtiCree12">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationsVO1Iterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationsIterator" id="UtiModifie1">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxFormationParcoursIterator" id="UtiModifie2">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauFormationCohortesIterator" id="UtiModifie3">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationsSpecialitesVO1Iterator" id="UtiModifie4">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="FormationsOptionsIterator" id="UtiModifie5">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

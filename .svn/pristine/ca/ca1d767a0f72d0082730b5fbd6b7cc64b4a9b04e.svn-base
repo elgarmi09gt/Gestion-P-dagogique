@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="InscExoEcolageROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.InscExoEcolageROVORowImpl"
+  ComponentClass="model.readOnlyView.InscExoEcolageROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.InscExoEcolageROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[select e.id_annees_univers ,  
+e.id_exoneration ,  
+e.id_inscription_pedagogique ,  
+e.id_motif_exoneration , 
+e.id_nature_exoneration ,  
+e.id_type_exoneration ,  
+e.montant ,  
+e.ref_exo ,  
+e.taux,  
+me.libelle as lib_motif ,  
+ne.libelle as lib_nature ,  
+te.libelle as lib_type_exo   
+from exoneration e 
+join motif_exoneration me on me.id_motif_exoneration = e.id_motif_exoneration 
+join nature_exoneration ne on ne.id_nature_exoneration = e.id_nature_exoneration 
+join type_exoneration te on te.id_type_exoneration = e.id_type_exoneration]]></SQLQuery>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdExoneration"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_EXONERATION"
+    Expression="ID_EXONERATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionPedagogique"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PEDAGOGIQUE"
+    Expression="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdMotifExoneration"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_MOTIF_EXONERATION"
+    Expression="ID_MOTIF_EXONERATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNatureExoneration"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NATURE_EXONERATION"
+    Expression="ID_NATURE_EXONERATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdTypeExoneration"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_TYPE_EXONERATION"
+    Expression="ID_TYPE_EXONERATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Montant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="MONTANT"
+    Expression="MONTANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="RefExo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="REF_EXO"
+    Expression="REF_EXO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Taux"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="TAUX"
+    Expression="TAUX"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibMotif"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_MOTIF"
+    Expression="LIB_MOTIF"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibNature"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_NATURE"
+    Expression="LIB_NATURE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibTypeExo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_TYPE_EXO"
+    Expression="LIB_TYPE_EXO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

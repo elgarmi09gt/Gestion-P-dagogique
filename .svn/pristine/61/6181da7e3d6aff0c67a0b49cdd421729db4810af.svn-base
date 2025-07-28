@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:table rows="#{bindings.return.rangeSize}" fetchSize="#{bindings.return.rangeSize}"
+            emptyText="#{bindings.return.viewable ? 'No data to display.' : 'Access Denied.'}" var="row"
+            rowBandingInterval="0" value="#{bindings.return.collectionModel}"
+            selectedRowKeys="#{bindings.return.collectionModel.selectedRow}"
+            selectionListener="#{bindings.return.collectionModel.makeCurrent}" rowSelection="single" id="t1">
+    <af:iterator value="#{bindings.return.attributeDefs}" var="def" rows="0" id="i1">
+      <af:column headerText="#{bindings.return.labels[def.name]}" sortable="true" sortProperty="#{def.name}" id="c1">
+        <af:outputText value="#{row[def.name]}" id="ot1"/>
+      </af:column>
+    </af:iterator>
+  </af:table>
+</ui:composition>

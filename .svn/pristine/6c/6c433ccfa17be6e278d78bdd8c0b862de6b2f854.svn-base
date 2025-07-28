@@ -1,0 +1,349 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelHeader text="Liste des Etudiants" id="ph2">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:panelBox text="Critères de recherche" id="pb2" inlineStyle="margin-top:10px;width:1100px;">
+        <f:facet name="toolbar"/>
+        <af:panelFormLayout id="pfl1" rows="2" labelAlignment="start">
+          <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                        required="#{bindings.Nom.hints.mandatory}" columns="#{bindings.Nom.hints.displayWidth}"
+                        maximumLength="#{bindings.Nom.hints.precision}" shortDesc="#{bindings.Nom.hints.tooltip}"
+                        id="it2" binding="#{ListeAutorisebean.nom}" contentStyle="width:200px;">
+            <f:validator binding="#{bindings.Nom.validator}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.Prenoms.inputValue}" label="Prénom"
+                        required="#{bindings.Prenoms.hints.mandatory}" columns="#{bindings.Prenoms.hints.displayWidth}"
+                        maximumLength="#{bindings.Prenoms.hints.precision}"
+                        shortDesc="#{bindings.Prenoms.hints.tooltip}" id="it3" binding="#{ListeAutorisebean.prenom}">
+            <f:validator binding="#{bindings.Prenoms.validator}"/>
+          </af:inputText>
+          <af:inputDate value="#{bindings.DateNaissance.inputValue}" label="Date Naissance"
+                        required="#{bindings.DateNaissance.hints.mandatory}"
+                        columns="#{bindings.DateNaissance.hints.displayWidth}"
+                        shortDesc="#{bindings.DateNaissance.hints.tooltip}" id="id2"
+                        binding="#{ListeAutorisebean.date_naiss}">
+            <f:validator binding="#{bindings.DateNaissance.validator}"/>
+            <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+          </af:inputDate>
+          <af:inputText value="#{bindings.LieuNaissance.inputValue}" label="Lieu Naissance"
+                        required="#{bindings.LieuNaissance.hints.mandatory}"
+                        columns="#{bindings.LieuNaissance.hints.displayWidth}"
+                        maximumLength="#{bindings.LieuNaissance.hints.precision}"
+                        shortDesc="#{bindings.LieuNaissance.hints.tooltip}" id="it4"
+                        binding="#{ListeAutorisebean.lieu_naiss}">
+            <f:validator binding="#{bindings.LieuNaissance.validator}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.Adresse.inputValue}" label="#{bindings.Adresse.hints.label}"
+                        required="#{bindings.Adresse.hints.mandatory}" columns="#{bindings.Adresse.hints.displayWidth}"
+                        maximumLength="#{bindings.Adresse.hints.precision}"
+                        shortDesc="#{bindings.Adresse.hints.tooltip}" id="it5" binding="#{ListeAutorisebean.adresse}">
+            <f:validator binding="#{bindings.Adresse.validator}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.PieceIdentification.inputValue}"
+                        label="Pièce d'Identification"
+                        required="#{bindings.PieceIdentification.hints.mandatory}"
+                        columns="#{bindings.PieceIdentification.hints.displayWidth}"
+                        maximumLength="#{bindings.PieceIdentification.hints.precision}"
+                        shortDesc="#{bindings.PieceIdentification.hints.tooltip}" id="it7"
+                        binding="#{ListeAutorisebean.cin}">
+            <f:validator binding="#{bindings.PieceIdentification.validator}"/>
+          </af:inputText>
+        </af:panelFormLayout>
+        <af:button text="Search" id="b2" action="#{ListeAutorisebean.onRecherche}" accessKey="S"
+                   inlineStyle="margin-top:20px;margin-left:10px;margin-bottom:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#f5e6e6;margin-bottom:15px;"/>
+        <af:button text="Reset" id="b4" accessKey="R" action="#{ListeAutorisebean.resetAutorisePers}"
+                   inlineStyle="margin-left:10px; margin-left:10px; border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:none 0% 0%/auto repeat scroll padding-box border-box #e87c8e; margin-bottom:15px; background-color:#e87c8e;"/>
+      </af:panelBox>
+      <af:panelCollection id="pc1" inlineStyle="width:1100px;">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.ListePersonnesRO.collectionModel}" var="row"
+                  rows="#{bindings.ListePersonnesRO.rangeSize}"
+                  emptyText="#{bindings.ListePersonnesRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.ListePersonnesRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ListePersonnesRO.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.ListePersonnesRO.rangeSize}"
+                  filterModel="#{bindings.ListePersonnesROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.ListePersonnesROQuery.processQuery}" varStatus="vs" id="t1"
+                  scrollPolicy="page">
+          <af:column headerText="#{bindings.ListePersonnesRO.hints.Numero.label}" id="c12" width="195">
+            <af:outputText value="#{row.Numero}" shortDesc="#{bindings.ListePersonnesRO.hints.Numero.tooltip}"
+                           id="ot12"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListePersonnesRO.hints.Nom.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.ListePersonnesRO.hints.Nom.label}" id="c1" width="200">
+            <af:outputText value="#{row.Nom}" shortDesc="#{bindings.ListePersonnesRO.hints.Nom.tooltip}" id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListePersonnesRO.hints.Prenoms.name}" filterable="true" sortable="true"
+                     headerText="Prénom" id="c2" width="300">
+            <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.ListePersonnesRO.hints.Prenoms.tooltip}"
+                           id="ot2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListePersonnesRO.hints.DateNaissance.name}" filterable="true"
+                     sortable="true" headerText="Date Naissance" id="c3"
+                     width="100">
+            <f:facet name="filter">
+              <af:inputDate value="#{bindings.ListePersonnesROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                            id="id1">
+                <af:convertDateTime pattern="#{bindings.ListePersonnesRO.hints.DateNaissance.format}"/>
+              </af:inputDate>
+            </f:facet>
+            <af:outputText value="#{row.DateNaissance}"
+                           shortDesc="#{bindings.ListePersonnesRO.hints.DateNaissance.tooltip}" id="ot3">
+              <af:convertDateTime pattern="#{bindings.ListePersonnesRO.hints.DateNaissance.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListePersonnesRO.hints.PieceIdentification.name}" filterable="true"
+                     sortable="true" headerText="Piéce d'Identification" id="c7"
+                     width="125">
+            <af:outputText value="#{row.PieceIdentification}"
+                           shortDesc="#{bindings.ListePersonnesRO.hints.PieceIdentification.tooltip}" id="ot7"/>
+          </af:column>
+          <af:column id="c5" headerText="Action" width="110">
+            <af:button text="Autoriser" id="b1" action="#{ListeAutorisebean.autoriser}" icon="/images/commit.png"
+                       inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelHeader>
+    <af:panelHeader text="Liste des Etudiants déjà autorisés pour la formation: #{sessionScope.Libform}" id="ph1">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:panelBox text="Critères de recherche" id="pb1" inlineStyle="margin-top:10px;width:1100px;">
+        <f:facet name="toolbar"/>
+        <af:panelFormLayout id="pfl2" rows="1">
+          <af:inputText value="#{bindings.Nom2.inputValue}" label="#{bindings.Nom2.hints.label}"
+                        required="#{bindings.Nom2.hints.mandatory}" columns="#{bindings.Nom2.hints.displayWidth}"
+                        maximumLength="#{bindings.Nom2.hints.precision}" shortDesc="#{bindings.Nom2.hints.tooltip}"
+                        id="it6" binding="#{ListeAutorisebean.nom_pers_aut}" contentStyle="width:200px;">
+            <f:validator binding="#{bindings.Nom2.validator}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.Prenoms2.inputValue}" label="Prénom"
+                        required="#{bindings.Prenoms2.hints.mandatory}"
+                        columns="#{bindings.Prenoms2.hints.displayWidth}"
+                        maximumLength="#{bindings.Prenoms2.hints.precision}"
+                        shortDesc="#{bindings.Prenoms2.hints.tooltip}" id="it8"
+                        binding="#{ListeAutorisebean.prenom_pers_aut}">
+            <f:validator binding="#{bindings.Prenoms2.validator}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.PieceIdentification2.inputValue}"
+                        label="Piéce d'Identification"
+                        required="#{bindings.PieceIdentification2.hints.mandatory}"
+                        columns="#{bindings.PieceIdentification2.hints.displayWidth}"
+                        maximumLength="#{bindings.PieceIdentification2.hints.precision}"
+                        shortDesc="#{bindings.PieceIdentification2.hints.tooltip}" id="it18"
+                        binding="#{ListeAutorisebean.cin_pers_aut}">
+            <f:validator binding="#{bindings.PieceIdentification2.validator}"/>
+          </af:inputText>
+        </af:panelFormLayout>
+        <af:button text="Search" id="b5" accessKey="S"
+                   inlineStyle="margin-top:20px;margin-left:10px;margin-bottom:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#f5e6e6;margin-bottom:15px;"
+                   action="#{ListeAutorisebean.searchPersAutorise}"/>
+        <af:button text="Reset" id="b6" accessKey="R"
+                   inlineStyle="margin-left:10px;margin-left:10px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#F2313D;margin-bottom:15px;background-color:#e87c8e;"
+                   action="#{ListeAutorisebean.resetPersAutorise}"/>
+      </af:panelBox>
+      <af:table value="#{bindings.ListePersAutorise.collectionModel}" var="row"
+                rows="#{bindings.ListePersAutorise.rangeSize}"
+                emptyText="#{bindings.ListePersAutorise.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.ListePersAutorise.collectionModel.selectedRow}"
+                selectionListener="#{bindings.ListePersAutorise.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.ListePersAutorise.rangeSize}"
+                filterModel="#{bindings.ListePersAutoriseQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.ListePersAutoriseQuery.processQuery}" varStatus="vs" id="t3"
+                scrollPolicy="page" inlineStyle="width:1100px;">
+        <af:column headerText="#{bindings.ListePersAutorise.hints.Numero.label}" id="c4" width="150">
+          <af:outputText value="#{row.Numero}" shortDesc="#{bindings.ListePersAutorise.hints.Numero.tooltip}" id="ot4"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.ListePersAutorise.hints.Nom.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.ListePersAutorise.hints.Nom.label}" id="c6" width="250">
+          <af:outputText value="#{row.Nom}" shortDesc="#{bindings.ListePersAutorise.hints.Nom.tooltip}" id="ot6"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.ListePersAutorise.hints.Prenoms.name}" filterable="true" sortable="true"
+                   headerText="Prénom" id="c8" width="300">
+          <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.ListePersAutorise.hints.Prenoms.tooltip}"
+                         id="ot8"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.ListePersAutorise.hints.DateNaissance.name}" filterable="true"
+                   sortable="true" headerText="Date Naissance" id="c9">
+          <f:facet name="filter">
+            <af:inputDate value="#{bindings.ListePersAutoriseQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                          id="id4">
+              <af:convertDateTime pattern="#{bindings.ListePersAutorise.hints.DateNaissance.format}"/>
+            </af:inputDate>
+          </f:facet>
+          <af:outputText value="#{row.DateNaissance}"
+                         shortDesc="#{bindings.ListePersAutorise.hints.DateNaissance.tooltip}" id="ot9">
+            <af:convertDateTime pattern="#{bindings.ListePersAutorise.hints.DateNaissance.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.ListePersAutorise.hints.Adresse.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.ListePersAutorise.hints.Adresse.label}" id="c11" width="240">
+          <af:outputText value="#{row.Adresse}" shortDesc="#{bindings.ListePersAutorise.hints.Adresse.tooltip}"
+                         id="ot11"/>
+        </af:column>
+      </af:table>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+  <af:resource type="javascript">
+      function onDialogPers(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+            binding="#{ListeAutorisebean.popup}">
+    <af:dialog id="d1" title="Autorisation : pour la formation #{sessionScope.Libform}"
+               dialogListener="#{ListeAutorisebean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous autoriser #{sessionScope.Prenom} #{sessionScope.Nom} à s'inscrire !" id="ot5"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{ListeAutorisebean.onDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" contentDelivery="lazyUncached"
+            binding="#{ListeAutorisebean.popPers}">
+    <af:dialog id="d2" title="Formulaire pour ajouter une personne" dialogListener="#{ListeAutorisebean.onDialogPers}">
+      <f:facet name="buttonBar"/>
+      <af:panelSplitter id="ps1" inlineStyle="width:1250px; height:395px;" splitterPosition="750">
+        <f:facet name="first">
+          <af:panelFormLayout id="pfl3">
+            <f:facet name="footer"/>
+            <af:inputText value="#{bindings.Nom1.inputValue}" label="#{bindings.Nom1.hints.label}"
+                          required="#{bindings.Nom1.hints.mandatory}" columns="#{bindings.Nom1.hints.displayWidth}"
+                          maximumLength="#{bindings.Nom1.hints.precision}" shortDesc="#{bindings.Nom1.hints.tooltip}"
+                          id="it1">
+              <f:validator binding="#{bindings.Nom1.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.NomMarital.inputValue}" label="Nom Marital"
+                          required="#{bindings.NomMarital.hints.mandatory}"
+                          columns="#{bindings.NomMarital.hints.displayWidth}"
+                          maximumLength="#{bindings.NomMarital.hints.precision}"
+                          shortDesc="#{bindings.NomMarital.hints.tooltip}" id="it9">
+              <f:validator binding="#{bindings.NomMarital.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.Prenoms1.inputValue}" label="Prénoms"
+                          required="#{bindings.Prenoms1.hints.mandatory}"
+                          columns="#{bindings.Prenoms1.hints.displayWidth}"
+                          maximumLength="#{bindings.Prenoms1.hints.precision}"
+                          shortDesc="#{bindings.Prenoms1.hints.tooltip}" id="it10">
+              <f:validator binding="#{bindings.Prenoms1.validator}"/>
+            </af:inputText>
+            <af:inputDate value="#{bindings.DateNaissance1.inputValue}" label="Date Naissance"
+                          required="#{bindings.DateNaissance1.hints.mandatory}"
+                          columns="#{bindings.DateNaissance1.hints.displayWidth}"
+                          shortDesc="#{bindings.DateNaissance1.hints.tooltip}" id="id3">
+              <f:validator binding="#{bindings.DateNaissance1.validator}"/>
+              <af:convertDateTime pattern="#{bindings.DateNaissance1.format}"/>
+            </af:inputDate>
+            <af:inputText value="#{bindings.LieuNaissance1.inputValue}" label="Lieu Naissance"
+                          required="#{bindings.LieuNaissance1.hints.mandatory}"
+                          columns="#{bindings.LieuNaissance1.hints.displayWidth}"
+                          maximumLength="#{bindings.LieuNaissance1.hints.precision}"
+                          shortDesc="#{bindings.LieuNaissance1.hints.tooltip}" id="it11">
+              <f:validator binding="#{bindings.LieuNaissance1.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.Adresse1.inputValue}" label="#{bindings.Adresse1.hints.label}"
+                          required="#{bindings.Adresse1.hints.mandatory}"
+                          columns="#{bindings.Adresse1.hints.displayWidth}"
+                          maximumLength="#{bindings.Adresse1.hints.precision}"
+                          shortDesc="#{bindings.Adresse1.hints.tooltip}" id="it14">
+              <f:validator binding="#{bindings.Adresse1.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.Telephone.inputValue}" label="Téléphone"
+                          required="#{bindings.Telephone.hints.mandatory}"
+                          columns="#{bindings.Telephone.hints.displayWidth}"
+                          maximumLength="#{bindings.Telephone.hints.precision}"
+                          shortDesc="#{bindings.Telephone.hints.tooltip}" id="it15">
+              <f:validator binding="#{bindings.Telephone.validator}"/>
+            </af:inputText>
+          </af:panelFormLayout>
+        </f:facet>
+        <f:facet name="second">
+          <af:panelFormLayout id="pfl4">
+            <f:facet name="footer"/>
+            <af:inputText value="#{bindings.EmailInstitutionnel.inputValue}"
+                          label="Email Institutionnel"
+                          required="#{bindings.EmailInstitutionnel.hints.mandatory}"
+                          columns="#{bindings.EmailInstitutionnel.hints.displayWidth}"
+                          maximumLength="#{bindings.EmailInstitutionnel.hints.precision}"
+                          shortDesc="#{bindings.EmailInstitutionnel.hints.tooltip}" id="it12">
+              <f:validator binding="#{bindings.EmailInstitutionnel.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.EmailPersonnel1.inputValue}" label="Email Personnel"
+                          required="#{bindings.EmailPersonnel1.hints.mandatory}"
+                          columns="#{bindings.EmailPersonnel1.hints.displayWidth}"
+                          maximumLength="#{bindings.EmailPersonnel1.hints.precision}"
+                          shortDesc="#{bindings.EmailPersonnel1.hints.tooltip}" id="it13">
+              <f:validator binding="#{bindings.EmailPersonnel1.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.Portable1.inputValue}" label="#{bindings.Portable1.hints.label}"
+                          required="#{bindings.Portable1.hints.mandatory}"
+                          columns="#{bindings.Portable1.hints.displayWidth}"
+                          maximumLength="#{bindings.Portable1.hints.precision}"
+                          shortDesc="#{bindings.Portable1.hints.tooltip}" id="it16">
+              <f:validator binding="#{bindings.Portable1.validator}"/>
+            </af:inputText>
+            <af:selectOneChoice value="#{bindings.IdPays.inputValue}" label="Pays"
+                                required="#{bindings.IdPays.hints.mandatory}"
+                                shortDesc="#{bindings.IdPays.hints.tooltip}" id="soc1">
+              <f:selectItems value="#{bindings.IdPays.items}" id="si1"/>
+              <f:validator binding="#{bindings.IdPays.validator}"/>
+            </af:selectOneChoice>
+            <af:selectOneChoice value="#{bindings.IdPaysNationalite.inputValue}"
+                                label="Nationalite"
+                                required="#{bindings.IdPaysNationalite.hints.mandatory}"
+                                shortDesc="#{bindings.IdPaysNationalite.hints.tooltip}" id="soc2">
+              <f:selectItems value="#{bindings.IdPaysNationalite.items}" id="si2"/>
+              <f:validator binding="#{bindings.IdPaysNationalite.validator}"/>
+            </af:selectOneChoice>
+            <af:selectOneChoice value="#{bindings.IdCivilite.inputValue}" label="Civilité"
+                                required="#{bindings.IdCivilite.hints.mandatory}"
+                                shortDesc="#{bindings.IdCivilite.hints.tooltip}" id="soc3">
+              <f:selectItems value="#{bindings.IdCivilite.items}" id="si3"/>
+              <f:validator binding="#{bindings.IdCivilite.validator}"/>
+            </af:selectOneChoice>
+            <af:inputText value="#{bindings.PieceIdentification1.inputValue}"
+                          label="Pièce d'Identification"
+                          required="#{bindings.PieceIdentification1.hints.mandatory}"
+                          columns="#{bindings.PieceIdentification1.hints.displayWidth}"
+                          maximumLength="#{bindings.PieceIdentification1.hints.precision}"
+                          shortDesc="#{bindings.PieceIdentification1.hints.tooltip}" id="it17">
+              <f:validator binding="#{bindings.PieceIdentification1.validator}"/>
+            </af:inputText>
+          </af:panelFormLayout>
+        </f:facet>
+      </af:panelSplitter>
+      <af:clientListener method="onDialogPers" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{ListeAutorisebean.onDialogCanPers}"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

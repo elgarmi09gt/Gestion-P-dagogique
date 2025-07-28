@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelTabbed position="above" id="pt1" dimensionsFrom="disclosedChild">
+      <af:showDetailItem id="tab1" text="#{viewcontrollerBundle.REGLES_ANONYMATS}">
+        <af:panelCollection id="pc4" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t8">
+              <!--af:button id="b7" icon="/images/new_icon.png"/-->
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="statusbar"/>
+          <af:table value="#{bindings.ReglesAnonymatVO.collectionModel}" var="row"
+                    rows="#{bindings.ReglesAnonymatVO.rangeSize}"
+                    emptyText="#{bindings.ReglesAnonymatVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.ReglesAnonymatVO.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.ReglesAnonymatVO.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.ReglesAnonymatVO.rangeSize}"
+                    filterModel="#{bindings.ReglesAnonymatVOQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.ReglesAnonymatVOQuery.processQuery}" varStatus="vs" id="t1"
+                    columnStretching="last">
+            <af:column sortProperty="#{bindings.ReglesAnonymatVO.hints.LibelleLong.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle.LIBELLE}" id="c1">
+              <af:outputText value="#{row.LibelleLong}"
+                             shortDesc="#{bindings.ReglesAnonymatVO.hints.LibelleLong.tooltip}" id="ot1"/>
+            </af:column>
+            <f:facet name="header"/>
+          </af:table>
+        </af:panelCollection>
+      </af:showDetailItem>
+      <af:showDetailItem id="tab2" text="#{viewcontrollerBundle.PARAMETRAGES}">
+        <af:panelGroupLayout id="pgl2" styleClass="AFStretchWidth" layout="scroll">
+          <af:panelGroupLayout id="pgl5" layout="horizontal" styleClass="AFStretchWidth">
+            <af:panelGroupLayout id="pgl3" layout="scroll" inlineStyle="width:800px">
+              <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+                <f:facet name="menus"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="statusbar"/>
+                <af:table value="#{bindings.Parcours.collectionModel}" var="row" rows="#{bindings.Parcours.rangeSize}"
+                          emptyText="#{bindings.Parcours.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0" selectedRowKeys="#{bindings.Parcours.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.Parcours.collectionModel.makeCurrent}" rowSelection="single"
+                          fetchSize="#{bindings.Parcours.rangeSize}"
+                          filterModel="#{bindings.ParcoursQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.ParcoursQuery.processQuery}" varStatus="vs" id="t2"
+                          columnStretching="last">
+                  <af:column sortProperty="#{bindings.Parcours.hints.isChecked.name}" filterable="true" sortable="true"
+                             id="c2" align="center">
+                    <af:selectBooleanCheckbox value="#{row.bindings.isChecked.inputValue}"
+                                              label="#{row.bindings.isChecked.label}"
+                                              shortDesc="#{bindings.Parcours.hints.isChecked.tooltip}" id="sbc1"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.Parcours.hints.LibParcours.name}" filterable="true"
+                             sortable="true" headerText="#{viewcontrollerBundle.PARCOURS}" id="c3"
+                             inlineStyle="font-size:large;">
+                    <af:outputFormatted value="#{row.bindings.LibParcours.inputValue}" id="of1"/>
+                  </af:column>
+                </af:table>
+              </af:panelCollection>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl4" inlineStyle="margin-left:10px;line-height:20px;margin-right:30px" layout="vertical">
+              <af:outputFormatted value="Régles d'Anonymat" id="of4" styleUsage="pageStamp"
+                                  inlineStyle="font-size:large;"/>
+              <af:selectOneChoice value="#{bindings.ReglesAnonymatVO1.inputValue}"
+                                  required="#{bindings.ReglesAnonymatVO1.hints.mandatory}"
+                                  shortDesc="#{bindings.ReglesAnonymatVO1.hints.tooltip}" id="soc1"
+                                  contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:50px"
+                                  autoSubmit="true">
+                <f:selectItems value="#{bindings.ReglesAnonymatVO1.items}" id="si1"/>
+                <f:validator binding="#{bindings.ReglesAnonymatVO1.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl6" layout="vertical" halign="right">
+            <af:button text="Enregistrer" id="b2"
+                       inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                       actionListener="#{AnonymatBean.OnSaveParamsClicked}"/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl9" layout="vertical">
+            <af:button text="Voir les règles d’anonymats utilisées" id="b4"
+                       inlineStyle="font-size:large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                       actionListener="#{AnonymatBean.onShowRulesClicked}"/>
+            <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar">
+                <af:toolbar id="t4"/>
+              </f:facet>
+              <af:table value="#{bindings.AnonymatParcours.collectionModel}" var="row"
+                        rows="#{bindings.AnonymatParcours.rangeSize}"
+                        emptyText="#{bindings.AnonymatParcours.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0"
+                        selectedRowKeys="#{bindings.AnonymatParcours.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.AnonymatParcours.collectionModel.makeCurrent}"
+                        rowSelection="single" fetchSize="#{bindings.AnonymatParcours.rangeSize}"
+                        filterModel="#{bindings.AnonymatParcoursQuery.queryDescriptor}" filterVisible="true"
+                        queryListener="#{bindings.AnonymatParcoursQuery.processQuery}" varStatus="vs" id="t3"
+                        binding="#{AnonymatBean.anonymatTable}" columnStretching="last">
+                <af:column sortProperty="#{bindings.AnonymatParcours.hints.IsActivate.name}" filterable="true"
+                           headerText="#{viewcontrollerBundle1.UTILISE}" id="c4">
+                  <af:selectOneChoice value="#{row.bindings.IsActivate.inputValue}"
+                                      label="#{row.bindings.IsActivate.label}"
+                                      required="#{bindings.AnonymatParcours.hints.IsActivate.mandatory}"
+                                      shortDesc="#{bindings.AnonymatParcours.hints.IsActivate.tooltip}" readOnly="true"
+                                      id="soc3" inlineStyle="font-size:large;">
+                    <f:selectItems value="#{row.bindings.IsActivate.items}" id="si3"/>
+                    <f:validator binding="#{row.bindings.IsActivate.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.AnonymatParcours.hints.IdSemestre.name}" filterable="true"
+                           headerText="#{viewcontrollerBundle1.SEMESTRE}" id="c5">
+                  <af:selectOneChoice value="#{row.bindings.IdSemestre.inputValue}"
+                                      label="#{row.bindings.IdSemestre.label}"
+                                      required="#{bindings.AnonymatParcours.hints.IdSemestre.mandatory}"
+                                      shortDesc="#{bindings.AnonymatParcours.hints.IdSemestre.tooltip}" readOnly="true"
+                                      id="soc4" inlineStyle="font-size:large;">
+                    <f:selectItems value="#{row.bindings.IdSemestre.items}" id="si4"/>
+                    <f:validator binding="#{row.bindings.IdSemestre.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.AnonymatParcours.hints.IdSession.name}" filterable="true"
+                           headerText="#{viewcontrollerBundle.SESSION}" id="c6">
+                  <af:selectOneChoice value="#{row.bindings.IdSession.inputValue}"
+                                      label="#{row.bindings.IdSession.label}"
+                                      required="#{bindings.AnonymatParcours.hints.IdSession.mandatory}"
+                                      shortDesc="#{bindings.AnonymatParcours.hints.IdSession.tooltip}" readOnly="true"
+                                      id="soc5" inlineStyle="font-size:large;">
+                    <f:selectItems value="#{row.bindings.IdSession.items}" id="si5"/>
+                    <f:validator binding="#{row.bindings.IdSession.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.AnonymatParcours.hints.IdNiveauFormationParcours.name}"
+                           filterable="true"
+                           headerText="#{viewcontrollerBundle1.PARCOURS_NIVEAU_FORMATION}" id="c7">
+                  <af:selectOneChoice value="#{row.bindings.IdNiveauFormationParcours.inputValue}"
+                                      label="#{row.bindings.IdNiveauFormationParcours.label}"
+                                      required="#{bindings.AnonymatParcours.hints.IdNiveauFormationParcours.mandatory}"
+                                      shortDesc="#{bindings.AnonymatParcours.hints.IdNiveauFormationParcours.tooltip}"
+                                      readOnly="true" id="soc6" inlineStyle="font-size:large;">
+                    <f:selectItems value="#{row.bindings.IdNiveauFormationParcours.items}" id="si6"/>
+                    <f:validator binding="#{row.bindings.IdNiveauFormationParcours.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+              </af:table>
+              <f:facet name="statusbar"/>
+            </af:panelCollection>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:showDetailItem>
+      <af:showDetailItem id="tab3" text="#{viewcontrollerBundle.NUMEROTAION___AFFECTATION}">
+        <af:panelGroupLayout id="pgl10" layout="scroll" inlineStyle="line-height:50px;">
+          <af:panelGroupLayout id="pgl7" layout="horizontal">
+            <af:panelGroupLayout id="pgl8" layout="vertical" inlineStyle="line-height:20px;margin-right:30px">
+              <af:outputFormatted value="Parcours" id="of3" styleUsage="pageStamp" inlineStyle="font-size:large;"/>
+              <af:selectOneChoice value="#{bindings.Parcours1.inputValue}"
+                                  required="#{bindings.Parcours1.hints.mandatory}"
+                                  shortDesc="#{bindings.Parcours1.hints.tooltip}" id="soc2"
+                                  contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:50px"
+                                  valueChangeListener="#{AnonymatBean.OnParcoursChange}" autoSubmit="true">
+                <f:selectItems value="#{bindings.Parcours1.items}" id="si2"/>
+                <f:validator binding="#{bindings.Parcours1.validator}"/>
+              </af:selectOneChoice>
+            </af:panelGroupLayout>
+            <af:button text="Générer Anonymat" id="b1"
+                       inlineStyle="font-size:medium; color:White; font-family:cursive; border-radius:8px ; background:none 0% 0%/auto repeat scroll padding-box border-box #2897e8; margin-left:10px;"
+                       actionListener="#{AnonymatBean.OnGenerateClicked}"/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl11" layout="vertical" inlineStyle="Margin-top:50px">
+            <af:button text="Réinitialiser Anonymat" id="b3"
+                       inlineStyle="font-size:medium; color:White; font-family:cursive; border-radius:8px 8px 8px 8px / 8px 8px 8px 8px ; background:none 0% 0%/auto repeat scroll padding-box border-box red; margin-left:10px;"
+                       actionListener="#{AnonymatBean.OnInitClicked}"/>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl12" layout="scroll">
+            <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar">
+                <af:toolbar id="t6">
+                  <af:button id="b5"
+                             inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;margin:10px"
+                             text="Exporter">
+                    <af:exportCollectionActionListener type="excelHTML" exportedId="t5"
+                                                       filename="Anonymat_#{bindings.Parcours.inputValue}#_Semestre_{sessionScope.id_smstre}#_Session{sessionScope.id_session}"/>
+                  </af:button>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.AnoGenParcours.collectionModel}" var="row"
+                        rows="#{bindings.AnoGenParcours.rangeSize}"
+                        emptyText="#{bindings.AnoGenParcours.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" selectedRowKeys="#{bindings.AnoGenParcours.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.AnoGenParcours.collectionModel.makeCurrent}" rowSelection="single"
+                        fetchSize="#{bindings.AnoGenParcours.rangeSize}"
+                        filterModel="#{bindings.AnoGenParcoursQuery.queryDescriptor}" filterVisible="true"
+                        queryListener="#{bindings.AnoGenParcoursQuery.processQuery}" varStatus="vs" id="t5"
+                        columnStretching="last" binding="#{AnonymatBean.anogenTable}">
+                <af:column sortProperty="#{bindings.AnoGenParcours.hints.Anonymat.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle1.ANONYMAT}" id="c11">
+                  <af:outputText value="#{row.Anonymat}" shortDesc="#{bindings.AnoGenParcours.hints.Anonymat.tooltip}"
+                                 id="ot5" inlineStyle="font-size:large;"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.AnoGenParcours.hints.Numero.name}" filterable="true" sortable="true"
+                           headerText="#{viewcontrollerBundle.NUMERO}" id="c8">
+                  <af:outputText value="#{row.Numero}" shortDesc="#{bindings.AnoGenParcours.hints.Numero.tooltip}"
+                                 id="ot2" inlineStyle="font-size:large;"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.AnoGenParcours.hints.Nom.name}" filterable="true" sortable="true"
+                           headerText="#{viewcontrollerBundle.NOM}" id="c10">
+                  <af:outputText value="#{row.Nom}" shortDesc="#{bindings.AnoGenParcours.hints.Nom.tooltip}" id="ot4"
+                                 inlineStyle="font-size:large;"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.AnoGenParcours.hints.Prenoms.name}" filterable="true"
+                           sortable="true" headerText="#{viewcontrollerBundle.PRENOM}" id="c9"
+                           width="250">
+                  <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.AnoGenParcours.hints.Prenoms.tooltip}"
+                                 id="ot3" inlineStyle="font-size:large;"/>
+                </af:column>
+              </af:table>
+              <f:facet name="statusbar"/>
+            </af:panelCollection>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:showDetailItem>
+    </af:panelTabbed>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{AnonymatBean.popupConfirmInit}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d4" affirmativeTextAndAccessKey="OUI" cancelTextAndAccessKey="FERMER" noTextAndAccessKey="NON"
+               type="okCancel" title="Info" inlineStyle="text-align:center"
+               dialogListener="#{AnonymatBean.OnDialogAction}">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Voulez-vous reinitialiser !!!" id="of7" inlineStyle="color:red; font-size:x-large;"/>
+      <af:icon name="warning" id="i6"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popNoParcrsChecked"
+            binding="#{AnonymatBean.popupNoChekedParcrs}">
+    <af:dialog id="d1" title="Info !!!" inlineStyle="text-align:center; font-size:x-large; color:Red;" type="cancel"
+               cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:icon name="info" id="i5"/>
+      <af:outputFormatted value="Aucun Parcours selectionné" id="of2"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{AnonymatBean.popupNoPrcrs}">
+    <af:dialog id="d2" title="Info !!!" inlineStyle="text-align:center;" type="cancel" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:icon name="info" id="i4"/>
+      <af:outputFormatted value=" Ce parcours n'a pas de régles configuré !!!" id="of5"
+                          inlineStyle="font-size:x-large; color:Red;"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{AnonymatBean.popupManyPrcrs}">
+    <af:dialog id="d3" title="Info" type="cancel" cancelTextAndAccessKey="Fermer" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:icon name="info" id="i3"/>
+      <af:outputFormatted value="Trop de regles pour ce parcours !!!" id="of6" inlineStyle="font-size:x-large; color:Red;"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{AnonymatBean.popupNoAnoDefineYet}">
+    <af:dialog id="d5" type="cancel" cancelTextAndAccessKey="Fermer" title="Info" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:icon name="info" id="i1"/>
+      <af:outputFormatted value="Pas encore d'anonymat définit" id="of8"
+                          inlineStyle="color:#2897e8; font-size:x-large;"/>
+      <af:icon name="info" id="i2"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p5" binding="#{AnonymatBean.popupOkConfirmInit}">
+    <af:dialog id="d6" type="cancel" title="Info" cancelTextAndAccessKey="FERMER" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Initialisation Avec Success" id="of9" inlineStyle="font-size:x-large; color:Green;"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

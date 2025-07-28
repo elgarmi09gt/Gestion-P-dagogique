@@ -1,0 +1,610 @@
+package view.beans.etats;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import java.net.MalformedURLException;
+
+import java.sql.Connection;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import javax.sql.DataSource;
+
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.type.WhenNoDataTypeEnum;
+import net.sf.jasperreports.engine.util.JRLoader;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCIteratorBinding;
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPopup;
+import oracle.adf.view.rich.component.rich.input.RichInputText;
+import oracle.adf.view.rich.component.rich.input.RichSelectBooleanCheckbox;
+import oracle.adf.view.rich.component.rich.layout.RichPanelGroupLayout;
+import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
+import oracle.adf.view.rich.context.AdfFacesContext;
+
+import oracle.binding.AttributeBinding;
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+
+public class EtatsBean {
+    private RichPopup popupSuccessReport;
+    ADFContext adfCtx = ADFContext.getCurrent();
+    Map sessionFlowScope = adfCtx.getSessionScope();
+    Long annee = Long.parseLong(sessionFlowScope.get("id_annee").toString());
+    Long id_hs = Long.parseLong(sessionFlowScope.get("id_hs").toString());
+    Long semestre = Long.parseLong(sessionFlowScope.get("id_smstre").toString());
+    private RichSelectBooleanCheckbox inputSemestre;
+    private RichCommandButton btnAttestation;
+    private RichPanelGroupLayout panelformetu;
+    private RichSelectBooleanCheckbox inputIndiv;
+    private RichInputText inputEtudiant;
+    private RichPopup popupNoNum;
+    private RichPopup popupEnterNum;
+    private RichCommandButton btnReleves;
+    private RichPanelGroupLayout panedetSem;
+    private RichPanelGroupLayout panedetAn;
+    private RichPanelGroupLayout panebtn;
+
+    public EtatsBean() {
+    }
+
+    @SuppressWarnings({ "unchecked", "oracle.jdeveloper.java.insufficient-catch-block" })
+    public void BtnAttestationAction(ActionEvent actionEvent) {
+        Map m = new HashMap();
+        m.put("parcours", new Long(2));
+        m.put("annee_univers", new Long(2));
+        m.put("id_hs", new Long(5));
+        try {
+            runReport("attestation_stand_bis.jasper", m,"attestations");
+        } catch (Exception e) {
+        }
+    }
+    public Connection getDataSourceConnection(String dataSourceName) throws Exception {
+        Context ctx = new InitialContext();
+        DataSource ds = (DataSource) ctx.lookup(dataSourceName);
+        return ds.getConnection();
+    }
+
+    private Connection getConnection() throws Exception {
+        return getDataSourceConnection("jdbc/refDS"); // datasource name should be defined in weblogic
+    }
+
+    public ServletContext getContext() {
+        return (ServletContext) getFacesContext().getExternalContext().getContext();
+    }
+
+    public HttpServletResponse getResponse() {
+        return (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
+    }
+
+    public static FacesContext getFacesContext() {
+        return FacesContext.getCurrentInstance();
+    }
+    public BindingContainer getBindings() {
+        return (BindingContainer) BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+    @SuppressWarnings("unchecked")
+    public void runReport(String repPath, java.util.Map param, String document) throws Exception {
+        System.out.println("Running ...");
+            BindingContainer bindings = getBindings();
+            //Get Rule
+            DCIteratorBinding iterR = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                        .getCurrentBindingsEntry()
+                                                                        .get("ParcoursIterator");
+            Row currentR = iterR.getCurrentRow();
+            String doc_name =document+" ";
+            String niveauForm =currentR.getAttribute("Niveauformation").toString();
+            String cohorte =currentR.getAttribute("Cohorte").toString();
+            doc_name=doc_name+niveauForm+" "+cohorte+" ";
+            if(currentR.getAttribute("Specialite")!=null){
+                doc_name=doc_name+currentR.getAttribute("Specialite").toString()+" ";
+               }
+            if(currentR.getAttribute("Opt")!=null){
+                doc_name=doc_name+currentR.getAttribute("Opt").toString()+" ";
+            }
+            Connection conn = null;
+            Map sessionScope = ADFContext.getCurrent().getSessionScope();
+            LocalDateTime dateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            System.out.println(dateTime.format(formatter));
+            String file_name = doc_name+dateTime.format(formatter)+".pdf";
+            System.out.println("file_name "+file_name);
+            sessionScope.put("file_name", file_name);
+                try {
+                HttpServletResponse response = getResponse();
+                ServletOutputStream out = response.getOutputStream();
+                response.setHeader("Cache-Control", "max-age=0");
+                response.setContentType("application/pdf");
+                ServletContext context = getContext();
+                InputStream fs = context.getResourceAsStream("/reports/" + repPath);
+                JasperReport template = (JasperReport) JRLoader.loadObject(fs);
+                template.setWhenNoDataType(WhenNoDataTypeEnum.ALL_SECTIONS_NO_DETAIL);
+                conn = getConnection();
+                @SuppressWarnings("unchecked")
+                JasperPrint print = JasperFillManager.fillReport(template, param, conn);
+                //Affichage du report
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                JasperExportManager.exportReportToPdfStream(print, baos);
+                out.write(baos.toByteArray());
+                //téléchargement du report direct
+                //JasperExportManager.exportReportToPdfFile(print,file);
+                //JasperExportManager.exportReportToPdfFile(printFileName, "C://sample_report.pdf");
+                
+                //RichPopup popup = this.getPopupSuccessReport();
+                //RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //popup.show(hints);
+                
+                out.flush();
+                out.close();
+        
+                FacesContext.getCurrentInstance().responseComplete();
+                
+            } catch (Exception jex) {
+                jex.printStackTrace();
+            } finally {
+                System.out.println("Finnish");
+                close(conn);
+            }
+            //}
+        }
+
+        @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+        public void close(Connection con) {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+
+    @SuppressWarnings({ "unchecked", "oracle.jdeveloper.java.unchecked-conversion-or-cast",
+                        "oracle.jdeveloper.java.insufficient-catch-block" })
+    public String BtnAttestationAction() {
+        Map m = new HashMap();
+        m.put("parcours", new Long(2));
+        m.put("annee_univers", new Long(2));
+        m.put("id_hs", new Long(5));
+        try {
+            runReport("attestation_stand.jasper", m, "attestation");
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    @SuppressWarnings({ "oracle.jdeveloper.java.insufficient-catch-block", "unchecked" })
+    public String BtnRelevesAction() {
+        Map m = new HashMap();
+        m.put("parcours", new Long(2));
+        m.put("annee_univers", new Long(2));
+        m.put("id_hs", new Long(5));
+        try {
+            runReport("releves_standard.jasper", m, "releves");
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public void setPopupSuccessReport(RichPopup popupSuccessReport) {
+        this.popupSuccessReport = popupSuccessReport;
+    }
+
+    public RichPopup getPopupSuccessReport() {
+        return popupSuccessReport;
+    }
+
+    public void RefreshParcours(ValueChangeEvent valueChangeEvent) {
+        BindingContainer container = BindingContext.getCurrent().getCurrentBindingsEntry();
+        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+        AttributeBinding attrIdBinding = (AttributeBinding) container.getControlBinding("IdNiveauFormationParcours");
+       System.out.println("IdNiveauFormationParcours : " +attrIdBinding.getInputValue().toString());
+    }
+
+    @SuppressWarnings({ "unchecked", "oracle.jdeveloper.java.insufficient-catch-block" })
+    public void TestDownload(FacesContext facesContext, OutputStream outputStream) {
+        Map m = new HashMap();
+        m.put("parcours", new Long(2));
+        m.put("annee_univers", new Long(2));
+        m.put("id_hs", new Long(5));
+        try {
+            runReport("releves.jasper", m,"attestations");
+        } catch (Exception e) {
+        }
+
+    }
+
+    @SuppressWarnings({ "oracle.jdeveloper.java.insufficient-catch-block", "unchecked" })
+    public void AttestationClicked(FacesContext facesContext, OutputStream outputStream) {
+        Map m = new HashMap();
+        String realpath;
+        DCIteratorBinding iterP = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                    .getCurrentBindingsEntry()
+                                                                    .get("ParcoursIterator");
+        Row currentR = iterP.getCurrentRow();
+        System.out.println("Parcours id "+currentR.getAttribute("IdNiveauFormationParcours").toString());
+        //IsParcoursAnneedeliberate
+        m.put("parcours", Long.parseLong(currentR.getAttribute("IdNiveauFormationParcours").toString()));
+        m.put("annee_univers", getAnnee());
+        m.put("id_hs", getId_hs());
+        try {
+            runReport("attestation_stand.jasper", m,"Attestation");
+        } catch (Exception e) {
+        }
+    }
+
+    @SuppressWarnings({ "unchecked", "oracle.jdeveloper.java.insufficient-catch-block" })
+    public void RelevesClicked(FacesContext facesContext, OutputStream outputStream) {
+        //System.out.println("Is Semestre Check : "+this.getInputSemestre().getValue().toString());
+        String realpath=null;
+        DCIteratorBinding iterP = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                    .getCurrentBindingsEntry()
+                                                                    .get("ParcoursIterator");
+        Row currentR = iterP.getCurrentRow();
+        System.out.println("Parcours id "+currentR.getAttribute("IdNiveauFormationParcours").toString());
+        try {
+                realpath = getContext().getResource("/reports/").getPath();
+                System.out.println("Path to reports : "+realpath);
+            } catch (MalformedURLException e) {
+                System.out.println(e.getMessage());
+            }
+            Map m = new HashMap();
+            m.put("parcours", Long.parseLong(currentR.getAttribute("IdNiveauFormationParcours").toString()));
+            m.put("SUBREPORT_DIR", realpath);
+            m.put("annee_univers", getAnnee());
+            m.put("id_hs", getId_hs());
+            //groupé
+        if(this.getInputIndiv().getValue()== null){
+            try {
+            //groupé semestre
+                if (this.getInputSemestre().getValue() != null) {
+                    if (this.getInputSemestre()
+                            .getValue()
+                            .equals(true)) {
+                        m.put("id_semestre", getSemestre());
+                        runReport("releves_standard_smstre_ecole.jasper", m, "releves_semestre_"+getSemestre());
+                    } else {
+                        runReport("releves_standard.jasper", m, "releves");
+                    }
+                } else {
+                    runReport("releves_standard.jasper", m, "releves");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }else{
+            //Individuel
+            if(this.getInputIndiv().getValue().equals(true)){
+                if(this.getInputEtudiant().getValue()!= null){
+                System.out.println("Numero "+this.getInputEtudiant().getValue().toString());
+                    OperationBinding etunum = BindingContext.getCurrent()
+                                                              .getCurrentBindingsEntry()
+                                                              .getOperationBinding("ExecuteWithParams");
+                    etunum.getParamsMap().put("annee", getAnnee());
+                    etunum.getParamsMap().put("sem", getSemestre());
+                    etunum.getParamsMap().put("parcours", Integer.parseInt(currentR.getAttribute("IdNiveauFormationParcours").toString()));
+                    etunum.getParamsMap().put("num_etu", this.getInputEtudiant().getValue().toString());
+                    etunum.execute();
+                    DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                               .getCurrentBindingsEntry()
+                                                                               .get("isEtudiantNumeroValideIterator");
+                   if(iter.getEstimatedRowCount()==0){
+                        System.out.println("Popup No Student with num");
+                        RichPopup popup = this.getPopupNoNum();
+                        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                        //empty hints renders dialog in center of screen
+                        popup.show(hints);
+                    }else{
+                       System.out.println("Execute report indiv");
+                        try {
+                        //indiv semestre
+                            m.put("numero", this.getInputEtudiant().getValue().toString());
+                            if (this.getInputSemestre().getValue() != null) {
+                                if (this.getInputSemestre()
+                                        .getValue()
+                                        .equals(true)) {
+                                    m.put("id_semestre", getSemestre());
+                                    runReport("releves_standard_smstre_ecole_indiv.jasper", m, this.getInputEtudiant().getValue().toString()+"releves_semestre_"+getSemestre());
+                                } else {
+                                    System.out.println("Releves standard indiv");
+                                    //runReport("releves_standard_indiv.jasper", m, this.getInputEtudiant().getValue().toString()+"releves");
+                                }
+                            } else {
+                                    System.out.println("Releves standard indiv");
+                                //runReport("releves_standard_indiv.jasper", m, this.getInputEtudiant().getValue().toString()+"releves");
+                            }
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }else{
+                    System.out.println("Popup enter numero etudiant");
+                }
+            }else{
+                System.out.println("groupé");
+            }
+        }
+    }
+
+    public void setAnnee(Long annee) {
+        this.annee = annee;
+    }
+
+    public Long getAnnee() {
+        return annee;
+    }
+
+    public void setId_hs(Long id_hs) {
+        this.id_hs = id_hs;
+    }
+
+    public Long getId_hs() {
+        return id_hs;
+    }
+
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public String Test() {
+        String path = this.getClass().getResource("index.jsf").getPath();
+        System.out.println("Path index.jsf : "+path);
+        return null;
+    }
+
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void OnTestPathClicked(ActionEvent actionEvent) {
+        String realpath;
+        try {
+            realpath = getContext().getResource("/reports/releves.jasper").getPath();
+            FacesMessage msg = new FacesMessage("getContext().getResource(reports).getPath() : "+realpath);
+            msg.setSeverity(FacesMessage.SEVERITY_INFO);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } catch (MalformedURLException e) {
+        }
+    }
+
+    public void OnSelectDiselectSemestre(ValueChangeEvent valueChangeEvent) {
+        BindingContainer container = BindingContext.getCurrent().getCurrentBindingsEntry();
+        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+        System.out.println("New Value semestre : " +valueChangeEvent.getNewValue().toString());
+        if (valueChangeEvent.getNewValue().equals(true)) {
+            this.getBtnAttestation().setDisabled(true);
+        } else {
+            this.getBtnAttestation().setDisabled(false);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getBtnAttestation());
+    }
+
+    public void setInputSemestre(RichSelectBooleanCheckbox inputSemestre) {
+        this.inputSemestre = inputSemestre;
+    }
+
+    public RichSelectBooleanCheckbox getInputSemestre() {
+        return inputSemestre;
+    }
+
+    public void setBtnAttestation(RichCommandButton btnAttestation) {
+        this.btnAttestation = btnAttestation;
+    }
+
+    public RichCommandButton getBtnAttestation() {
+        return btnAttestation;
+    }
+
+    public void setSemestre(Long semestre) {
+        this.semestre = semestre;
+    }
+
+    public Long getSemestre() {
+        return semestre;
+    }
+
+    public void onSelectDiselectIndiv(ValueChangeEvent valueChangeEvent) {
+        BindingContainer container = BindingContext.getCurrent().getCurrentBindingsEntry();
+        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+        System.out.println("New Value indiv : " +valueChangeEvent.getNewValue().toString());
+        if (valueChangeEvent.getNewValue().equals(true)) {
+            this.getPanelformetu().setVisible(true);
+            this.getPanebtn().setVisible(false);
+            this.getPanedetAn().setVisible(false);
+            this.getPanedetSem().setVisible(false);
+        } else {
+            this.getPanedetSem().setVisible(false);
+            this.getPanedetAn().setVisible(false);
+            this.getPanelformetu().setVisible(false);
+            this.getPanebtn().setVisible(true);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanelformetu());
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanebtn());
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanedetAn());
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanedetSem());
+    }
+
+    public void setPanelformetu(RichPanelGroupLayout panelformetu) {
+        this.panelformetu = panelformetu;
+    }
+
+    public RichPanelGroupLayout getPanelformetu() {
+        return panelformetu;
+    }
+
+    public void setInputIndiv(RichSelectBooleanCheckbox inputIndiv) {
+        this.inputIndiv = inputIndiv;
+    }
+
+    public RichSelectBooleanCheckbox getInputIndiv() {
+        return inputIndiv;
+    }
+
+    public void setInputEtudiant(RichInputText inputEtudiant) {
+        this.inputEtudiant = inputEtudiant;
+    }
+
+    public RichInputText getInputEtudiant() {
+        return inputEtudiant;
+    }
+
+    public void setPopupNoNum(RichPopup popupNoNum) {
+        this.popupNoNum = popupNoNum;
+    }
+
+    public RichPopup getPopupNoNum() {
+        return popupNoNum;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void onShowDetailsClicked(ActionEvent actionEvent) {
+        DCIteratorBinding iterP = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                    .getCurrentBindingsEntry()
+                                                                    .get("ParcoursIterator");
+        Row currentR = iterP.getCurrentRow();
+        if (this.getInputIndiv().getValue() != null) {
+            //individuel
+            if (this.getInputIndiv()
+                    .getValue()
+                    .equals(true)) {
+                //true
+                if (this.getInputEtudiant().getValue() != null) {
+                    System.out.println("Numero " + this.getInputEtudiant()
+                                                       .getValue()
+                                                       .toString());
+                    OperationBinding etunum = BindingContext.getCurrent()
+                                                            .getCurrentBindingsEntry()
+                                                            .getOperationBinding("ExecuteWithParams");
+                    etunum.getParamsMap().put("annee", getAnnee());
+                    etunum.getParamsMap().put("sem", getSemestre());
+                    etunum.getParamsMap()
+                        .put("parcours",
+                             Integer.parseInt(currentR.getAttribute("IdNiveauFormationParcours").toString()));
+                    etunum.getParamsMap().put("num_etu", this.getInputEtudiant()
+                                                             .getValue()
+                                                             .toString());
+                    etunum.execute();
+                    DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                               .getCurrentBindingsEntry()
+                                                                               .get("isEtudiantNumeroValideIterator");
+                    if (iter.getEstimatedRowCount() == 0) {
+                        System.out.println("Popup No Student with num");
+                        RichPopup popup = this.getPopupNoNum();
+                        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                        //empty hints renders dialog in center of screen
+                        popup.show(hints);
+                    }else{
+                        if (this.getInputSemestre().getValue() != null) {
+                            if (this.getInputSemestre()
+                                    .getValue()
+                                    .equals(true)) {
+                                OperationBinding opdetails = BindingContext.getCurrent()
+                                                                           .getCurrentBindingsEntry()
+                                                                           .getOperationBinding("getDetailSemEtu");
+                                opdetails.getParamsMap().put("annee", getAnnee());
+                                opdetails.getParamsMap().put("sem", getSemestre());
+                                opdetails.getParamsMap()
+                                    .put("parcours",
+                                         Integer.parseInt(currentR.getAttribute("IdNiveauFormationParcours")
+                                                          .toString()));
+                                opdetails.getParamsMap().put("numero", this.getInputEtudiant()
+                                                                           .getValue()
+                                                                           .toString());
+                                opdetails.execute();
+                                this.getPanedetAn().setVisible(false);
+                                this.getPanedetSem().setVisible(true);
+                                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanedetSem());
+                            }else{
+                                //DetAnnEtu 
+                                OperationBinding opdetails = BindingContext.getCurrent()
+                                                                           .getCurrentBindingsEntry()
+                                                                           .getOperationBinding("GetDetailsAnEtu");
+                                opdetails.getParamsMap().put("annee", getAnnee());
+                                opdetails.getParamsMap()
+                                    .put("parcours",
+                                         Integer.parseInt(currentR.getAttribute("IdNiveauFormationParcours")
+                                                          .toString()));
+                                opdetails.getParamsMap().put("numero", this.getInputEtudiant()
+                                                                           .getValue()
+                                                                           .toString());
+                                opdetails.execute();
+                                this.getPanedetSem().setVisible(false);
+                                this.getPanedetAn().setVisible(true);
+                                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanedetAn());
+                            }
+                        }else{
+                              this.getPanedetSem().setVisible(false);
+                              this.getPanedetAn().setVisible(false);
+                                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanedetAn());
+                                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPanedetSem());
+                            }
+                    }
+                } else {
+                    System.out.println("Enter num");
+                    RichPopup popup = this.getPopupEnterNum();
+                    RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                    //empty hints renders dialog in center of screen
+                    popup.show(hints);
+                }
+            }
+        }
+    }
+
+    public void setPopupEnterNum(RichPopup popupEnterNum) {
+        this.popupEnterNum = popupEnterNum;
+    }
+
+    public RichPopup getPopupEnterNum() {
+        return popupEnterNum;
+    }
+
+    public void setBtnReleves(RichCommandButton btnReleves) {
+        this.btnReleves = btnReleves;
+    }
+
+    public RichCommandButton getBtnReleves() {
+        return btnReleves;
+    }
+
+    public void setPanedetSem(RichPanelGroupLayout panedetSem) {
+        this.panedetSem = panedetSem;
+    }
+
+    public RichPanelGroupLayout getPanedetSem() {
+        return panedetSem;
+    }
+
+    public void setPanedetAn(RichPanelGroupLayout panedetAn) {
+        this.panedetAn = panedetAn;
+    }
+
+    public RichPanelGroupLayout getPanedetAn() {
+        return panedetAn;
+    }
+
+    public void setPanebtn(RichPanelGroupLayout panebtn) {
+        this.panebtn = panebtn;
+    }
+
+    public RichPanelGroupLayout getPanebtn() {
+        return panebtn;
+    }
+}

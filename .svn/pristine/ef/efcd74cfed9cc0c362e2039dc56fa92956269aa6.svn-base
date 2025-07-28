@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="detail_hist_inscriptionPageDef"
+                Package="inscription.historique_inscription">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="NivFormHistoInscRO" RangeSize="5" DataControl="inscriptionAppDataControl"
+              id="NivFormHistoInscROIterator"/>
+    <searchRegion Binds="NivFormHistoInscROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NivFormHistoInscRO1Query"/>
+    <iterator Binds="Etudiants" RangeSize="10" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="Personnes" RangeSize="10" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="NivFormHistoInscROIterator" id="NivFormHistoInscRO1">
+      <nodeDefinition DefName="model.readOnlyView.NivFormHistoInscROVO" Name="NivFormHistoInscRO10">
+        <AttrNames>
+          <Item Value="AnneeUnivers"/>
+          <Item Value="Libform"/>
+          <Item Value="EtatInscrEtatInscrId"/>
+          <Item Value="IdHorairesTd"/>
+          <Item Value="IdOption"/>
+          <Item Value="InsEnLigne"/>
+          <Item Value="Redoublement"/>
+          <Item Value="NbInsc"/>
+          <Item Value="IdCohorte"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="EtudiantsIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

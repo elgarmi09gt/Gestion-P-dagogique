@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="GroupeSaisieEtudiantROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.GroupeSaisieEtudiantROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT         DISTINCT 
+  gse.ID_GROUPE_SAISIE_ETUDIANT , gs.LIBELLE_LONG, pers.PRENOMS|| ' '|| pers.NOM PrenomNom ,    
+  gs.ID_NIVEAU_FORMATION_PARCOURS  ,gs.ID_GROUPE_SAISIE    
+FROM  GROUPE_SAISIE gs         
+JOIN  GROUPE_SAISIE_ETUDIANT gse ON   gs.ID_GROUPE_SAISIE = gse.ID_GROUPE_SAISIE         
+JOIN  ETUDIANTS etu ON   gse.ID_ETUDIANT = etu.ID_ETUDIANT         
+JOIN  PERSONNES pers ON   etu.ID_PERSONNE = pers.ID_PERSONNE         
+JOIN  NIVEAUX_FORMATION_PARCOURS nfp on nfp.ID_NIVEAU_FORMATION_PARCOURS = gs.ID_NIVEAU_FORMATION_PARCOURS         
+JOIN  CALENDRIER_DELIBERATION cd on nfp.ID_NIVEAU_FORMATION_COHORTE = cd.ID_NIVEAU_FORMATION_COHORTE]]></SQLQuery>
+  <ViewAttribute
+    Name="IdGroupeSaisieEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_GROUPE_SAISIE_ETUDIANT"
+    Expression="ID_GROUPE_SAISIE_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenomnom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="301"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMNOM"
+    Expression="PRENOMNOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="301"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdGroupeSaisie"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_GROUPE_SAISIE"
+    Expression="ID_GROUPE_SAISIE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdGroupeSaisieEtudiant"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="GroupeSaisieParcoursROVO"
+    ViewLink="model.viewlink.GroupeSaisiePcrsToGroupeSaisieEtdVL"
+    Type="oracle.jbo.server.ViewRowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

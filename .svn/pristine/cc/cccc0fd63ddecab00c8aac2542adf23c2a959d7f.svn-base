@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <c:set var="viewcontrollerBundle"
+         value="#{adfBundle['viewcontroller.evaluation.paramsaisienoteec.paramSaisieNoteEcBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelHeader text="Parcours" id="ph1" styleClass="AFStretchWidth"
+                    inlineStyle="border:solid  2px #2897e8; line-height:30px;">
+      <af:table id="md1" rows="#{bindings.ParcoursParamSaisieNoteEc.rangeSize}"
+                fetchSize="#{bindings.ParcoursParamSaisieNoteEc.rangeSize}"
+                emptyText="#{bindings.ParcoursParamSaisieNoteEc.viewable ? 'No data to display.' : 'Access Denied.'}"
+                var="row" value="#{bindings.ParcoursParamSaisieNoteEc.collectionModel}" rowBandingInterval="0"
+                selectedRowKeys="#{bindings.ParcoursParamSaisieNoteEc.collectionModel.selectedRow}"
+                selectionListener="#{bindings.ParcoursParamSaisieNoteEc.collectionModel.makeCurrent}"
+                rowSelection="single" columnStretching="last">
+        <af:column headerText="#{viewcontrollerBundle.PARCOURS_NIVEAU_FORMATION}"
+                   sortProperty="#{bindings.ParcoursParamSaisieNoteEc.hints.Niveauformationparcours.name}"
+                   sortable="false" id="c3" width="100%">
+          <af:outputText value="#{row.Niveauformationparcours}"
+                         shortDesc="#{bindings.ParcoursParamSaisieNoteEc.hints.Niveauformationparcours.tooltip}"
+                         id="ot3"/>
+        </af:column>
+        <af:column headerText="#{viewcontrollerBundle.ANNEE_UNIVERSITAIRE}" id="c1">
+          <af:selectOneChoice value="#{row.bindings.IdAnneesUnivers.inputValue}"
+                              label="#{row.bindings.IdAnneesUnivers.label}"
+                              required="#{bindings.ParcoursParamSaisieNoteEc.hints.IdAnneesUnivers.mandatory}"
+                              shortDesc="#{bindings.ParcoursParamSaisieNoteEc.hints.IdAnneesUnivers.tooltip}" id="soc4">
+            <f:selectItems value="#{row.bindings.IdAnneesUnivers.items}" id="si4"/>
+            <f:validator binding="#{row.bindings.IdAnneesUnivers.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+      </af:table>
+    </af:panelHeader>
+    <af:panelHeader text="Ues" id="ph2" styleClass="AFStretchWidth"
+                    inlineStyle="margin-top:30px;border:solid  2px #2897e8; line-height:30px;">
+      <af:table rows="#{bindings.FiliereUeSemestres.rangeSize}" fetchSize="#{bindings.FiliereUeSemestres.rangeSize}"
+                emptyText="#{bindings.FiliereUeSemestres.viewable ? 'No data to display.' : 'Access Denied.'}" var="row"
+                value="#{bindings.FiliereUeSemestres.collectionModel}" rowBandingInterval="0"
+                selectedRowKeys="#{bindings.FiliereUeSemestres.collectionModel.selectedRow}"
+                selectionListener="#{bindings.FiliereUeSemestres.collectionModel.makeCurrent}" rowSelection="single"
+                id="t1" columnStretching="last">
+        <af:column headerText="#{viewcontrollerBundle.CODIFICATION}"
+                   sortProperty="#{bindings.FiliereUeSemestres.hints.Codification.name}" sortable="false" id="c5"
+                   width="100%">
+          <af:outputText value="#{row.Codification}"
+                         shortDesc="#{bindings.FiliereUeSemestres.hints.Codification.tooltip}" id="ot5"/>
+        </af:column>
+        <af:column headerText="#{viewcontrollerBundle.UE}" sortProperty="#{bindings.FiliereUeSemestres.hints.IdUe.name}"
+                   sortable="false" id="c6">
+          <af:selectOneChoice value="#{row.bindings.IdUe.inputValue}" label="#{row.bindings.IdUe.label}"
+                              required="#{bindings.FiliereUeSemestres.hints.IdUe.mandatory}"
+                              shortDesc="#{bindings.FiliereUeSemestres.hints.IdUe.tooltip}" readOnly="true" id="soc1">
+            <f:selectItems value="#{row.bindings.IdUe.items}" id="si1"/>
+            <f:validator binding="#{row.bindings.IdUe.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column headerText="#{viewcontrollerBundle.SEMESTRE}"
+                   sortProperty="#{bindings.FiliereUeSemestres.hints.IdSemestre.name}" sortable="false" id="c7">
+          <af:selectOneChoice value="#{row.bindings.IdSemestre.inputValue}" label="#{row.bindings.IdSemestre.label}"
+                              required="#{bindings.FiliereUeSemestres.hints.IdSemestre.mandatory}"
+                              shortDesc="#{bindings.FiliereUeSemestres.hints.IdSemestre.tooltip}" readOnly="true"
+                              id="soc2">
+            <f:selectItems value="#{row.bindings.IdSemestre.items}" id="si2"/>
+            <f:validator binding="#{row.bindings.IdSemestre.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+      </af:table>
+    </af:panelHeader>
+    <af:panelHeader text="Ecs" id="ph3" inlineStyle="margin-top:30px;border:solid  2px #2897e8; line-height:30px;">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:table value="#{bindings.FiliereUeSemestreEcs.collectionModel}" var="row"
+                rows="#{bindings.FiliereUeSemestreEcs.rangeSize}"
+                emptyText="#{bindings.FiliereUeSemestreEcs.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.FiliereUeSemestreEcs.collectionModel.selectedRow}"
+                selectionListener="#{bindings.FiliereUeSemestreEcs.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.FiliereUeSemestreEcs.rangeSize}"
+                filterModel="#{bindings.FiliereUeSemestreEcsQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.FiliereUeSemestreEcsQuery.processQuery}" varStatus="vs" id="t2"
+                columnStretching="last">
+        <af:column sortProperty="#{bindings.FiliereUeSemestreEcs.hints.Codification.name}" filterable="true"
+                   sortable="true" headerText="#{viewcontrollerBundle.CODIFICATION}" id="c11" width="100%">
+          <af:outputText value="#{row.Codification}"
+                         shortDesc="#{bindings.FiliereUeSemestreEcs.hints.Codification.tooltip}" id="ot9"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.FiliereUeSemestreEcs.hints.IdEc.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle.EC}" id="c12">
+          <af:selectOneChoice value="#{row.bindings.IdEc.inputValue}" label="#{row.bindings.IdEc.label}"
+                              required="#{bindings.FiliereUeSemestreEcs.hints.IdEc.mandatory}"
+                              shortDesc="#{bindings.FiliereUeSemestreEcs.hints.IdEc.tooltip}" readOnly="true" id="soc3">
+            <f:selectItems value="#{row.bindings.IdEc.items}" id="si3"/>
+            <f:validator binding="#{row.bindings.IdEc.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+      </af:table>
+    </af:panelHeader>
+    <af:panelHeader text="Mode Controle Ec" id="ph6"
+                    inlineStyle="margin-top:30px;border:solid  2px #2897e8; line-height:30px;border-radius:4px">
+      <f:facet name="context"/>
+      <f:facet name="toolbar">
+        <af:toolbar id="t4">
+          <af:button
+                     disabled="#{!bindings.CreateInsert.enabled}" id="b1" action="#{ParametreSaisieBean.OnNewClicked}"
+                     icon="/images/new_icon.png"/>
+          <af:button disabled="#{!bindings.Commit.enabled}"
+                     id="b2" action="#{ParametreSaisieBean.OnCommitClicked}" icon="/images/commit.png"/>
+        </af:toolbar>
+      </f:facet>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:table value="#{bindings.ModeControleEcs.collectionModel}" var="row"
+                rows="#{bindings.ModeControleEcs.rangeSize}"
+                emptyText="#{bindings.ModeControleEcs.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.ModeControleEcs.collectionModel.selectedRow}"
+                selectionListener="#{bindings.ModeControleEcs.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.ModeControleEcs.rangeSize}"
+                filterModel="#{bindings.ModeControleEcsQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.ModeControleEcsQuery.processQuery}" varStatus="vs" id="t3"
+                scrollPolicy="page" columnStretching="last" partialTriggers="::b1">
+        <af:column sortProperty="#{bindings.ModeControleEcs.hints.IdTypeControle.name}" filterable="true"
+                   sortable="true" headerText="#{viewcontrollerBundle1.TYPE_CONTROLE}" id="c2"
+                   width="100%">
+          <af:selectOneChoice value="#{row.bindings.IdTypeControle.inputValue}"
+                              label="#{row.bindings.IdTypeControle.label}"
+                              required="#{bindings.ModeControleEcs.hints.IdTypeControle.mandatory}"
+                              shortDesc="#{bindings.ModeControleEcs.hints.IdTypeControle.tooltip}" id="soc5">
+            <f:selectItems value="#{row.bindings.IdTypeControle.items}" id="si5"/>
+            <f:validator binding="#{row.bindings.IdTypeControle.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.ModeControleEcs.hints.IdModeControle.name}" filterable="true"
+                   sortable="true" headerText="#{viewcontrollerBundle1.MODE_CONTROLE}" id="c4">
+          <af:selectOneChoice value="#{row.bindings.IdModeControle.inputValue}"
+                              label="#{row.bindings.IdModeControle.label}"
+                              required="#{bindings.ModeControleEcs.hints.IdModeControle.mandatory}"
+                              shortDesc="#{bindings.ModeControleEcs.hints.IdModeControle.tooltip}" id="soc6">
+            <f:selectItems value="#{row.bindings.IdModeControle.items}" id="si6"/>
+            <f:validator binding="#{row.bindings.IdModeControle.validator}"/>
+          </af:selectOneChoice>
+        </af:column>
+        <af:column sortProperty="#{bindings.ModeControleEcs.hints.Coefficient.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle1.COEFICIENT}" id="c8">
+          <af:inputText value="#{row.bindings.Coefficient.inputValue}"
+                        label="#{bindings.ModeControleEcs.hints.Coefficient.label}"
+                        required="#{bindings.ModeControleEcs.hints.Coefficient.mandatory}"
+                        columns="#{bindings.ModeControleEcs.hints.Coefficient.displayWidth}"
+                        maximumLength="#{bindings.ModeControleEcs.hints.Coefficient.precision}"
+                        shortDesc="#{bindings.ModeControleEcs.hints.Coefficient.tooltip}" id="it1">
+            <f:validator binding="#{row.bindings.Coefficient.validator}"/>
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.ModeControleEcs.hints.Coefficient.format}"/>
+          </af:inputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.ModeControleEcs.hints.ModeCalcul.name}" filterable="true" sortable="true"
+                   headerText="#{viewcontrollerBundle1.MODE_CALCUL}" id="c9">
+          <af:inputText value="#{row.bindings.ModeCalcul.inputValue}"
+                        label="#{bindings.ModeControleEcs.hints.ModeCalcul.label}"
+                        required="#{bindings.ModeControleEcs.hints.ModeCalcul.mandatory}"
+                        columns="#{bindings.ModeControleEcs.hints.ModeCalcul.displayWidth}"
+                        maximumLength="#{bindings.ModeControleEcs.hints.ModeCalcul.precision}"
+                        shortDesc="#{bindings.ModeControleEcs.hints.ModeCalcul.tooltip}" id="it2">
+            <f:validator binding="#{row.bindings.ModeCalcul.validator}"/>
+          </af:inputText>
+        </af:column>
+      </af:table>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+</ui:composition>

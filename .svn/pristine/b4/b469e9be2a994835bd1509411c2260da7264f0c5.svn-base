@@ -1,0 +1,220 @@
+package view.beans.evaluation.initialisation;
+
+import java.sql.CallableStatement;
+import java.sql.SQLException;
+
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import javax.faces.event.ValueChangeEvent;
+
+import oracle.adf.model.BindingContext;
+
+import oracle.adf.model.binding.DCBindingContainer;
+import oracle.adf.model.binding.DCIteratorBinding;
+
+import oracle.adf.share.ADFContext;
+
+import oracle.adf.view.rich.component.rich.RichPopup;
+import oracle.adf.view.rich.component.rich.layout.RichPanelGridLayout;
+
+import oracle.adf.view.rich.context.AdfFacesContext;
+
+import oracle.binding.AttributeBinding;
+import oracle.binding.BindingContainer;
+
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+
+public class InitialisationBean {
+    Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    private Integer anne_univers = Integer.parseInt(sessionScope.get("id_annee").toString());
+    private Integer session = Integer.parseInt(sessionScope.get("id_session").toString());
+    private Integer utilisateur = Integer.parseInt(sessionScope.get("id_user").toString());
+    private Integer semestre = Integer.parseInt(sessionScope.get("id_smstre").toString());
+    private RichPanelGridLayout pgl;
+    private RichPopup successInitPopup;
+    private RichPopup popupNotCalYet;
+
+    public InitialisationBean() {
+    }
+
+    public BindingContainer getBindings() {
+        return BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void BeforeOpened(ActionEvent actionEvent) {
+        System.out.println("User : "+getUtilisateur());
+        System.out.println("Session : "+getSession());
+        System.out.println("Sem : "+getSemestre());
+        System.out.println("An : "+getAnne_univers());
+        BindingContext cntx = BindingContext.getCurrent();
+        // get selected parcours
+        DCBindingContainer cbinding = (DCBindingContainer) cntx.getCurrentBindingsEntry();
+        DCIteratorBinding dciter_parcours = (DCIteratorBinding) cbinding.get("ParcoursIterator");
+        Row currentParcours = dciter_parcours.getCurrentRow();
+        System.out.println("Parcours : "+ currentParcours.getAttribute("IdNiveauFormationParcours"));
+        BindingContainer bindings = getBindings();
+        OperationBinding operationParamCal = bindings.getOperationBinding("isParametredCalendar");
+        operationParamCal.getParamsMap().put("id_annee", getAnne_univers());
+        operationParamCal.getParamsMap()
+            .put("id_parcours", Integer.parseInt(currentParcours.getAttribute("IdNiveauFormationParcours").toString()));
+        operationParamCal.getParamsMap().put("id_session", getSession());
+        operationParamCal.getParamsMap().put("id_semestre", getSemestre());
+        operationParamCal.execute();
+        DCIteratorBinding is_parametred_cal = (DCIteratorBinding) cbinding.get("isParametredCalendarIterator");
+        Row currentCalendrier = is_parametred_cal.getCurrentRow();
+        if (currentCalendrier == null) {
+            sessionScope.put("is_param_cal", false);
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPgl());
+            /*  RichPopup popup = this.getPopupNotCalYet();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints); */
+        }else {
+        OperationBinding operationBinding = bindings.getOperationBinding("initialiserNoteModeEnsFiliere");
+        operationBinding.getParamsMap().put("anne_univers", getAnne_univers());
+        operationBinding.getParamsMap().put("niv_fomr_parcours", Integer.parseInt(currentParcours.getAttribute("IdNiveauFormationParcours").toString()));
+        operationBinding.getParamsMap().put("session_id", getSession());
+        operationBinding.getParamsMap().put("utilisateur", getUtilisateur());
+        Object result = operationBinding.execute();
+            
+        OperationBinding operationEmjambist = bindings.getOperationBinding("traitementEnjambiste");
+        operationEmjambist.getParamsMap().put("anne_univers", getAnne_univers());
+        operationEmjambist.getParamsMap().put("niv_fomr_parcours", Integer.parseInt(currentParcours.getAttribute("IdNiveauFormationParcours").toString()));
+        operationEmjambist.getParamsMap().put("utilisateur", getUtilisateur());
+        operationEmjambist.execute();
+            
+        RichPopup popup = this.getSuccessInitPopup();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        //empty hints renders dialog in center of screen
+        popup.show(hints);
+            
+        }
+        
+    }
+
+    public void setAnne_univers(Integer anne_univers) {
+        this.anne_univers = anne_univers;
+    }
+
+    public Integer getAnne_univers() {
+        return anne_univers;
+    }
+
+    public void setSession(Integer session) {
+        this.session = session;
+    }
+
+    public Integer getSession() {
+        return session;
+    }
+
+    public void setUtilisateur(Integer utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Integer getUtilisateur() {
+        return utilisateur;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnParcoursChange(ValueChangeEvent valueChangeEvent) {
+        BindingContainer bindings = getBindings();
+        BindingContainer container = BindingContext.getCurrent().getCurrentBindingsEntry();
+        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+        AttributeBinding attrIdBinding = (AttributeBinding) container.getControlBinding("IdNiveauFormationParcours");
+        Integer IdNiveauFormationParcours = (Integer.parseInt(attrIdBinding.getInputValue().toString()));
+        System.out.println("IdNiveauFormationParcours "+IdNiveauFormationParcours);
+        
+        BindingContext cntx = BindingContext.getCurrent();
+        // get selected parcours
+        DCBindingContainer cbinding = (DCBindingContainer) cntx.getCurrentBindingsEntry();
+        DCIteratorBinding dciter_parcours = (DCIteratorBinding) cbinding.get("ParcoursIterator");
+        Row currentParcours = dciter_parcours.getCurrentRow();
+        System.out.println("Parcours : "+ currentParcours.getAttribute("IdNiveauFormationParcours"));
+        // isParametredCalendar
+        OperationBinding operationParamCal = bindings.getOperationBinding("isParametredCalendar");
+        
+        operationParamCal.getParamsMap().put("id_annee", getAnne_univers());
+        operationParamCal.getParamsMap()
+            .put("id_parcours", Integer.parseInt(currentParcours.getAttribute("IdNiveauFormationParcours").toString()));
+        operationParamCal.getParamsMap().put("id_session", getSession());
+        operationParamCal.getParamsMap().put("id_semestre", getSemestre());
+        operationParamCal.execute();
+        DCIteratorBinding is_parametred_cal = (DCIteratorBinding) cbinding.get("isParametredCalendarIterator");
+        Row currentCalendrier = is_parametred_cal.getCurrentRow();
+        if (currentCalendrier == null) {
+            sessionScope.put("is_param_cal", false);
+            sessionScope.put("icon_param_cal", "/images/delete_icon.png");
+        }else {
+            sessionScope.put("is_param_cal", true);
+            sessionScope.put("icon_param_cal", "/images/commit.png");
+        }
+        //isClosedInscription
+        /* OperationBinding operationCloIns = bindings.getOperationBinding("isClosedInscription");
+        
+        operationCloIns .getParamsMap().put("id_annee", getAnne_univers());
+        operationCloIns .getParamsMap()
+            .put("id_parcours", Integer.parseInt(currentParcours.getAttribute("IdNiveauFormationParcours").toString()));
+        operationCloIns .execute();
+        DCIteratorBinding is_close_insc = (DCIteratorBinding) cbinding.get("isClosedInscriptionIterator");
+        Row currentClosedInsc = is_close_insc.getCurrentRow();
+        if (currentClosedInsc == null) {
+            sessionScope.put("is_close_ins", false);
+            sessionScope.put("icon_close_insc", "/images/delete_icon.png");
+        }else {
+            sessionScope.put("is_close_ins", true);
+            sessionScope.put("icon_close_insc", "/images/commit.png");
+        } */
+        sessionScope.put("is_close_ins", true);
+        sessionScope.put("is_valid_maq", true);
+        sessionScope.put("is_jury_def", true);
+        
+        if(Boolean.parseBoolean(sessionScope.get("is_param_cal").toString() )&& 
+        Boolean.parseBoolean(sessionScope.get("is_valid_maq").toString() )&&
+        Boolean.parseBoolean(sessionScope.get("is_close_ins").toString()) &&
+        Boolean.parseBoolean(sessionScope.get("is_jury_def").toString())){
+            sessionScope.put("diseableBtn", false);
+        }else{
+            sessionScope.put("diseableBtn", true);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPgl());
+    }
+
+    public void setSemestre(Integer semestre) {
+        this.semestre = semestre;
+    }
+
+    public Integer getSemestre() {
+        return semestre;
+    }
+
+    public void setPgl(RichPanelGridLayout pgl) {
+        this.pgl = pgl;
+    }
+
+    public RichPanelGridLayout getPgl() {
+        return pgl;
+    }
+
+    public void setSuccessInitPopup(RichPopup successInitPopup) {
+        this.successInitPopup = successInitPopup;
+    }
+
+    public RichPopup getSuccessInitPopup() {
+        return successInitPopup;
+    }
+
+    public void setPopupNotCalYet(RichPopup popupNotCalYet) {
+        this.popupNotCalYet = popupNotCalYet;
+    }
+
+    public RichPopup getPopupNotCalYet() {
+        return popupNotCalYet;
+    }
+}

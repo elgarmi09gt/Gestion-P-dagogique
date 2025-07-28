@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="FonctionnalitesEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="FONCTIONNALITES"
+  AliasName="FonctionnalitesEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdFonctionnalite"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_FONCTIONNALITE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="FONCTIONNALITES"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="LibelleLong"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="200"
+    ColumnName="LIBELLE_LONG"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="FONCTIONNALITES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="LibelleCourt"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="75"
+    ColumnName="LIBELLE_COURT"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="FONCTIONNALITES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="FONCTIONNALITES"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="FONCTIONNALITES"/>
+  <Attribute
+    Name="UtiCree"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="FONCTIONNALITES"
+    IsNotNull="true"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="FONCTIONNALITES"/>
+  <Attribute
+    Name="IdModule"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_MODULE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="FONCTIONNALITES"/>
+  <Attribute
+    Name="CheminImage"
+    Precision="255"
+    ColumnName="CHEMIN_IMAGE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="FONCTIONNALITES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="255"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="UrlAction"
+    Precision="255"
+    ColumnName="URL_ACTION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="FONCTIONNALITES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="255"/>
+    </DesignTime>
+  </Attribute>
+  <Key
+    Name="PkFonctionnalites"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_FONCTIONNALITES"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FonctionnalitesEO.IdFonctionnalite"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqFonctioLibelleCourt">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_FONCTIO_LIBELLE_COURT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FonctionnalitesEO.LibelleCourt"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqFonctioLibelleLong">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_FONCTIO_LIBELLE_LONG"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FonctionnalitesEO.LibelleLong"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkFonctioModule">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_MODULES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_FONCTIO_MODULE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FonctionnalitesEO.IdModule"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkFonctioUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_FONCTIO_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FonctionnalitesEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkFonctioUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_FONCTIO_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FonctionnalitesEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

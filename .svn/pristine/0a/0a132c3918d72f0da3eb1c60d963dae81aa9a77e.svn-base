@@ -1,0 +1,671 @@
+package view.beans.evaluation.deliberation_sem;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import java.util.Map;
+
+import javax.faces.event.ActionEvent;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCIteratorBinding;
+
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPopup;
+import oracle.adf.view.rich.component.rich.data.RichTable;
+
+import oracle.adf.view.rich.component.rich.nav.RichButton;
+
+import oracle.adf.view.rich.component.rich.output.RichPanelCollection;
+import oracle.adf.view.rich.context.AdfFacesContext;
+
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+import oracle.jbo.RowSetIterator;
+
+import view.beans.entities.Ec;
+import view.beans.entities.Etudiant;
+import view.beans.entities.Ue;
+import view.beans.entities.ResultUe;
+
+public class DeliberationSemestrielleBean {
+
+    private List<Etudiant> etudiantlists;
+    private List<Ue> uelists;
+    private static List<Ec> eclists;
+    private HashMap<String, String> list;
+    private List<HashMap<String, String>> reslists;
+    private boolean allowedDeliberation;
+    private RichTable deliberationTable;
+    private RichButton deliberationBtn;
+    private RichButton compensationBtn;
+    private RichButton clotureBtn;
+    private RichPopup popupShowDetNotUeDelibaretedAll;
+    private RichPopup popupShowDetAnClosed;
+    private RichPopup popupShowSuccessDelibSem;
+    private RichPopup popupShowDetNotSemCompensed;
+    private RichPopup popupClosedSemOk;
+    private RichPopup popupSemNotDelib;
+    private RichPopup popupCompensedSemOk;
+    private RichPanelCollection pancolDelibSem;
+    private RichPopup popupCompensedSemFailed;
+
+    Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    private Integer parcours = Integer.parseInt(sessionScope.get("id_niv_form_parcours").toString());
+    private Integer anne_univers = Integer.parseInt(sessionScope.get("id_annee").toString());
+    private Integer session = Integer.parseInt(sessionScope.get("id_session").toString());
+    private Integer utilisateur = Integer.parseInt(sessionScope.get("id_user").toString());
+    private Integer calendrier = Integer.parseInt(sessionScope.get("id_calendrier").toString());
+    private Integer semestre = Integer.parseInt(sessionScope.get("id_smstre").toString());
+     
+    @SuppressWarnings("unchecked")
+    public DeliberationSemestrielleBean() {
+        //allowedDeliberation = true;
+        etudiantlists = new ArrayList();
+        
+    }
+
+    public void setAllowedDeliberation(boolean allowedDeliberation) {
+        this.allowedDeliberation = allowedDeliberation;
+    }
+
+    public boolean isAllowedDeliberation() {
+        return allowedDeliberation;
+    }
+
+    public void setEtudiantlists(List<Etudiant> etudiantlists) {
+        this.etudiantlists = etudiantlists;
+    }
+
+    public List<Etudiant> getEtudiantlists() {
+        return etudiantlists;
+    }
+
+    public void setUelists(List<Ue> uelists) {
+        this.uelists = uelists;
+    }
+
+    public List<Ue> getUelists() {
+        return uelists;
+    }
+
+    public static void setEclists(List<Ec> eclists) {
+        DeliberationSemestrielleBean.eclists = eclists;
+    }
+
+    public static List<Ec> getEclists() {
+        return eclists;
+    }
+
+    public void setList(HashMap<String, String> list) {
+        this.list = list;
+    }
+
+    public HashMap<String, String> getList() {
+        return list;
+    }
+
+    public void setReslists(List<HashMap<String, String>> reslists) {
+        this.reslists = reslists;
+    }
+
+    public List<HashMap<String, String>> getReslists() {
+        return reslists;
+    }
+
+    public BindingContainer getBindings() {
+        return (BindingContainer) BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    @SuppressWarnings("unchecked")
+    // listes des ue(fil_ue_sem) du parcours
+    public List<Ue> getUeParcousAnSemSess() {
+        uelists = new ArrayList();
+        OperationBinding lesFilUe = BindingContext.getCurrent()
+                                                  .getCurrentBindingsEntry()
+                                                  .getOperationBinding("GetFilUeSem");
+        lesFilUe.getParamsMap().put("anne", getAnne_univers());
+        lesFilUe.getParamsMap().put("sem", getSemestre());
+        lesFilUe.getParamsMap().put("parcours", getParcours());
+        lesFilUe.getParamsMap().put("sess", getSession());
+        lesFilUe.execute();
+
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibSemFilUeIterator");
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+
+        while (rsi.hasNext()) {
+            Row nextRow = rsi.next();
+            uelists.add(new Ue(Integer.parseInt(nextRow.getAttribute("IdFiliereUeSemstre").toString()),
+                               nextRow.getAttribute("LibelleLong").toString()));
+        }
+        return uelists;
+    }
+
+    @SuppressWarnings("unchecked")
+    // liste des ecs pour un fil_ue_sem
+    public  List<Ec> getEcParcousAnSemSess(Integer fil_ue) {
+        eclists = new ArrayList();
+        OperationBinding lesFilUe = BindingContext.getCurrent()
+                                                  .getCurrentBindingsEntry()
+                                                  .getOperationBinding("GetEcsFilUeSem");
+        lesFilUe.getParamsMap().put("anne", getAnne_univers());
+        lesFilUe.getParamsMap().put("sem", getSemestre());
+        lesFilUe.getParamsMap().put("parcours", getParcours());
+        lesFilUe.getParamsMap().put("sess", getSession());
+        lesFilUe.getParamsMap().put("fil_ue", fil_ue);
+        lesFilUe.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibSemFilEcIterator");
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        while (rsi.hasNext()) {
+            Row nextRow = rsi.next();
+            eclists.add(new Ec(Integer.parseInt(nextRow.getAttribute("IdFiliereUeSemstreEc").toString()),
+                               nextRow.getAttribute("LibelleLong").toString(),
+                               Integer.parseInt(nextRow.getAttribute("Coefficient").toString())));
+        }
+        return eclists;
+    }
+
+    @SuppressWarnings("unchecked")
+    // recuperer l'inspedsem de l'etudiant
+    public Integer getInsPedSemUe(String numero, Integer fil_ue_se) {
+
+        OperationBinding inspedsem_ = BindingContext.getCurrent()
+                                                    .getCurrentBindingsEntry()
+                                                    .getOperationBinding("GetInsPedSemUe");
+        inspedsem_.getParamsMap().put("annee", getAnne_univers());
+        inspedsem_.getParamsMap().put("sem", getSemestre());
+        inspedsem_.getParamsMap().put("parcours", getParcours());
+        inspedsem_.getParamsMap().put("sess", getSession());
+        inspedsem_.getParamsMap().put("num", numero);
+        inspedsem_.getParamsMap().put("fil_ue_sem", fil_ue_se);
+        inspedsem_.execute();
+
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibSemInsPedSemUeIterator");
+        Row currentinsped = iter.getCurrentRow();
+        if (currentinsped == null) {
+            return 0;
+        }
+        return Integer.parseInt(currentinsped.getAttribute("IdInscriptionPedSemUe").toString());
+    }
+
+    @SuppressWarnings("unchecked")
+    // recuperer la moyenne, le resultat et le credit de l'etudiant pour un insped_sem_ue donnee
+    public List<HashMap<String, String>> getResultUe(Integer inspedSemUe) {
+        reslists = new ArrayList();
+        list = new HashMap<String, String>();
+
+        OperationBinding inspedsem_ = BindingContext.getCurrent()
+                                                    .getCurrentBindingsEntry()
+                                                    .getOperationBinding("GetMoyCredResUe");
+        inspedsem_.getParamsMap().put("annee", getAnne_univers());
+        inspedsem_.getParamsMap().put("sem", getSemestre());
+        inspedsem_.getParamsMap().put("parcours", getParcours());
+        inspedsem_.getParamsMap().put("sess", getSession());
+        inspedsem_.getParamsMap().put("inspedsemue", inspedSemUe);
+        inspedsem_.execute();
+
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibResUeIterator");
+        Row currentinsped = iter.getCurrentRow();
+        if (currentinsped == null) {
+            list.put("Moyenne", "");
+            list.put("Credit", "");
+            list.put("Resultat", "");
+            reslists.add(list);
+            return reslists;
+        }
+        list.put("Moyenne", currentinsped.getAttribute("Note").toString());
+        list.put("Credit", currentinsped.getAttribute("Credit").toString());
+        Integer res = Integer.parseInt(currentinsped.getAttribute("Resultat").toString());
+        if (res == 1 || res == 0) {
+            list.put("Resultat", "NV");
+        }
+        if (res == 2) {
+            list.put("Resultat", "V");
+        }
+        if (res == 3) {
+            list.put("Resultat", "VC");
+        }
+
+        //list.put("Résultat", currentinsped.getAttribute("Resultat").toString());
+        reslists.add(list);
+
+        return reslists;
+    }
+
+    @SuppressWarnings("unchecked")
+    // recuperer la note de l'etudiant pour un ec donne
+    public String getNote(Integer insped, Integer fil_ue, Integer fil_ue_se_ec) {
+        OperationBinding opNote = BindingContext.getCurrent()
+                                                .getCurrentBindingsEntry()
+                                                .getOperationBinding("GetNoteEc");
+        opNote.getParamsMap().put("annee", getAnne_univers());
+        opNote.getParamsMap().put("sem", getSemestre());
+        opNote.getParamsMap().put("parcours", getParcours());
+        opNote.getParamsMap().put("sess", getSession());
+        opNote.getParamsMap().put("fil_ue", fil_ue);
+        opNote.getParamsMap().put("insped", insped);
+        opNote.getParamsMap().put("fil_ec", fil_ue_se_ec);
+        opNote.execute();
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibSemNoteEcIterator");
+        Row currentnote = iter.getCurrentRow();
+        if (currentnote == null) {
+            return "";
+        }
+        return currentnote.getAttribute("Note").toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    // recuperer l'inspedsem de l'etudiant
+    public Integer getInsPedSem(String numero) {
+
+        OperationBinding inspedsem_ = BindingContext.getCurrent()
+                                                    .getCurrentBindingsEntry()
+                                                    .getOperationBinding("GetInsPedSem");
+        inspedsem_.getParamsMap().put("annee", getAnne_univers());
+        inspedsem_.getParamsMap().put("sem", getSemestre());
+        inspedsem_.getParamsMap().put("parcours", getParcours());
+        inspedsem_.getParamsMap().put("sess", getSession());
+        inspedsem_.getParamsMap().put("num", numero);
+        inspedsem_.execute();
+
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibSemInsPedSemIterator");
+        Row currentinsped = iter.getCurrentRow();
+        if (currentinsped == null) {
+            return 0;
+        }
+        return Integer.parseInt(currentinsped.getAttribute("IdInscriptionPedSemestre").toString());
+    }
+    
+    @SuppressWarnings("unchecked")
+    // recuperer la moyenne, le resultat et le credit de l'etudiant pour un insped_sem donnee
+    public List<HashMap<String, String>> getResultSmstre(Integer inspedSem) {
+        reslists = new ArrayList();
+        list = new HashMap<String, String>();
+
+        OperationBinding inspedsem_ = BindingContext.getCurrent()
+                                                    .getCurrentBindingsEntry()
+                                                    .getOperationBinding("GetMoyCredResSmstre");
+        inspedsem_.getParamsMap().put("annee", getAnne_univers());
+        inspedsem_.getParamsMap().put("sem", getSemestre());
+        inspedsem_.getParamsMap().put("parcours", getParcours());
+        inspedsem_.getParamsMap().put("sess", getSession());
+        inspedsem_.getParamsMap().put("inspedsem", inspedSem);
+        inspedsem_.execute();
+
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("DelibSemResSemIterator");
+        Row currentinsped = iter.getCurrentRow();
+        if (currentinsped == null) {
+            list.put("Moyenne", "");
+            list.put("Credit", "");
+            list.put("Resultat", "");
+            reslists.add(list);
+            return reslists;
+        }
+        list.put("Moyenne", currentinsped.getAttribute("Note").toString());
+        list.put("Credit", currentinsped.getAttribute("Credit").toString());
+        Integer res = Integer.parseInt(currentinsped.getAttribute("Resultat").toString());
+        if (res == 1 || res == 0) {
+            list.put("Resultat", "NV");
+        }
+        else if (res == 2) {
+            list.put("Resultat", "V");
+        }
+        else if (res == 3) {
+            list.put("Resultat", "VC");
+        }
+        else
+            {
+                list.put("Resultat", "");
+            }
+        //list.put("Résultat", currentinsped.getAttribute("Resultat").toString());
+        reslists.add(list);
+
+        return reslists;
+    }
+    
+    public void setDeliberationTable(RichTable deliberationTable) {
+        this.deliberationTable = deliberationTable;
+    }
+
+    public RichTable getDeliberationTable() {
+        return deliberationTable;
+    }
+
+    public void setDeliberationBtn(RichButton deliberationBtn) {
+        this.deliberationBtn = deliberationBtn;
+    }
+
+    public RichButton getDeliberationBtn() {
+        return deliberationBtn;
+    }
+
+    public void setCompensationBtn(RichButton compensationBtn) {
+        this.compensationBtn = compensationBtn;
+    }
+
+    public RichButton getCompensationBtn() {
+        return compensationBtn;
+    }
+
+    public void setClotureBtn(RichButton clotureBtn) {
+        this.clotureBtn = clotureBtn;
+    }
+
+    public RichButton getClotureBtn() {
+        return clotureBtn;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void Deliberer(ActionEvent actionEvent) {
+        // Calculer moyenne semestrielle
+        // Déliberer semestre
+        // Avant de déliberer, s'assurer que toutes les ues sont cloturées
+        BindingContainer bindings = getBindings();
+        OperationBinding is_closed_all_ue = bindings.getOperationBinding("isClosedAllUe");
+        is_closed_all_ue.getParamsMap().put("parcours", getParcours());
+        is_closed_all_ue.getParamsMap().put("calendrier", getCalendrier());
+        is_closed_all_ue.getParamsMap().put("semestre", getSemestre());
+        Integer is_all_ue_closed = (Integer) is_closed_all_ue.execute();
+        // System.out.println("is_closed : "+is_closed);
+        if (is_all_ue_closed == 0) {
+            System.out.println("Des ues ne sont pas encores cloturées");
+            RichPopup popup = this.getPopupShowDetNotUeDelibaretedAll();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints);
+            return;
+        } else {
+            // verifier si l'année n'est pas déja cloturé
+            OperationBinding is_closed_an = bindings.getOperationBinding("isClosedAnnee");
+            is_closed_an.getParamsMap().put("parcours", getParcours());
+            is_closed_an.getParamsMap().put("calendrier", getCalendrier());
+            Integer is_an_closed = (Integer) is_closed_an.execute();
+            if (is_an_closed == 110) {
+                System.out.println("L'annee est cloturées");
+                RichPopup popup = this.getPopupShowDetAnClosed();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+                return;
+            } else {
+                // calculer moyenne semestriel et délibérer
+                OperationBinding calc_moy_sem = bindings.getOperationBinding("calculMoyenneSemestrielle");
+                calc_moy_sem.getParamsMap().put("calendrier", getCalendrier());
+                calc_moy_sem.getParamsMap().put("utilisateur", getUtilisateur());
+                calc_moy_sem.execute();
+                //Déliberer et refresh table
+                OperationBinding deliberer_sem = bindings.getOperationBinding("delibererSemestre");
+                deliberer_sem.getParamsMap().put("parcours", getParcours());
+                deliberer_sem.getParamsMap().put("calendrier", getCalendrier());
+                deliberer_sem.getParamsMap().put("semestre", getSemestre());
+                deliberer_sem.getParamsMap().put("action", "O");
+                deliberer_sem.getParamsMap().put("utilisateur", getUtilisateur());
+                Integer is_deliberated_sem = (Integer) deliberer_sem.execute();
+                if (is_deliberated_sem == 212) {
+                    System.out.println("Délibération Avec Succes");
+                    RichPopup popup = this.getPopupShowSuccessDelibSem();
+                    RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                    //empty hints renders dialog in center of screen
+                    popup.show(hints);
+                    compensationBtn.setDisabled(false);
+                    AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCompensationBtn());
+                    AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPancolDelibSem());
+                    AdfFacesContext.getCurrentInstance().addPartialTarget(this.getDeliberationTable());
+                    return;
+                }
+            }
+        }
+        return;
+    }
+
+    public void setPopupShowDetNotUeDelibaretedAll(RichPopup popupShowDetNotUeDelibaretedAll) {
+        this.popupShowDetNotUeDelibaretedAll = popupShowDetNotUeDelibaretedAll;
+    }
+
+    public RichPopup getPopupShowDetNotUeDelibaretedAll() {
+        return popupShowDetNotUeDelibaretedAll;
+    }
+
+    public void setPopupShowDetAnClosed(RichPopup popupShowDetAnClosed) {
+        this.popupShowDetAnClosed = popupShowDetAnClosed;
+    }
+
+    public RichPopup getPopupShowDetAnClosed() {
+        return popupShowDetAnClosed;
+    }
+
+    public void setPopupShowSuccessDelibSem(RichPopup popupShowSuccessDelibSem) {
+        this.popupShowSuccessDelibSem = popupShowSuccessDelibSem;
+    }
+
+    public RichPopup getPopupShowSuccessDelibSem() {
+        return popupShowSuccessDelibSem;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void Compenser(ActionEvent actionEvent) {
+        System.out.println("Compenser !!!");
+        String action = "O";
+        BindingContainer bindings = getBindings();
+        // is_delibrated_semestre(parcours, calendrier) = 1
+        // Avant de compenser, s'assurer que le semestre est délibéré et que l'anné n'est pas cloturer
+        // is_closed_annee2(parcours, calendrier) = 0
+        OperationBinding is_delib_sem = bindings.getOperationBinding("isDelibratedSemestre");
+        is_delib_sem.getParamsMap().put("parcours", getParcours());
+        is_delib_sem.getParamsMap().put("calendrier", getCalendrier());
+        Integer is_delib_se = (Integer) is_delib_sem.execute();
+        if (is_delib_se == 0) {
+            System.out.println("Le Semestre n'est pas délibérer");
+            RichPopup popup = this.getPopupSemNotDelib();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints);
+            return;
+        } else {
+            // verifier si l'année n'est pas déja cloturé
+            OperationBinding is_closed_an = bindings.getOperationBinding("isClosedAnnee");
+            is_closed_an.getParamsMap().put("parcours", getParcours());
+            is_closed_an.getParamsMap().put("calendrier", getCalendrier());
+            Integer is_an_closed = (Integer) is_closed_an.execute();
+            if (is_an_closed == 110) {
+                System.out.println("L'annee est cloturées");
+                RichPopup popup = this.getPopupShowDetAnClosed();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+                return;
+            }else{
+                // Compenser les Ues compensables selon les regles de compensation
+                OperationBinding compenser = bindings.getOperationBinding("compenser");
+                compenser.getParamsMap().put("parcours", getParcours());
+                compenser.getParamsMap().put("anne", getAnne_univers());
+                compenser.getParamsMap().put("calendrier", getCalendrier());
+                compenser.getParamsMap().put("utilisateur", getUtilisateur());
+                compenser.execute();
+                // Metre a jours la table résultat semestre en recalculant la moyenne semestrielle
+                OperationBinding calc_moy_sem = bindings.getOperationBinding("calculMoyenneSemestrielle");
+                calc_moy_sem.getParamsMap().put("calendrier", getCalendrier());
+                calc_moy_sem.getParamsMap().put("utilisateur", getUtilisateur());
+                calc_moy_sem.execute();
+                
+                OperationBinding compenserSemestre = bindings.getOperationBinding("CompenserSemestre");
+                compenserSemestre.getParamsMap().put("parcours", getParcours());
+                compenserSemestre.getParamsMap().put("calendrier", getCalendrier());
+                compenserSemestre.getParamsMap().put("semestre", getSemestre());
+                compenserSemestre.getParamsMap().put("action", action);
+                compenserSemestre.getParamsMap().put("utilisateur", getUtilisateur());
+                //compenserSemestre.execute();
+                Integer compenserSemstre = (Integer) compenserSemestre.execute();
+                if(compenserSemstre == 213){
+                    System.out.println("Semestre Compenser avec succe");
+                    RichPopup popup = this.getPopupCompensedSemOk();
+                    RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                    //empty hints renders dialog in center of screen
+                    popup.show(hints);
+                    AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPancolDelibSem());
+                    AdfFacesContext.getCurrentInstance().addPartialTarget(this.getDeliberationTable());
+                    return;
+                }
+                else{
+                    System.out.println("erreur de compensation !!!");
+                    RichPopup popup = this.getPopupCompensedSemFailed();
+                    RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                    //empty hints renders dialog in center of screen
+                    popup.show(hints);
+                }
+            }
+        }
+    }
+    @SuppressWarnings("oracle.jdeveloper.java.unchecked-conversion-or-cast")
+    public void Cloturer(ActionEvent actionEvent) {
+        // Le semestre doit etre compenser avant d'atre cloturer : isCompensedSemestre
+        String action = "O";
+        BindingContainer bindings = getBindings();
+        // clotureSemestre(Long parcours,Long calendrier,Long semestre,String action,Long utilisateur)
+        OperationBinding closed_semestre = bindings.getOperationBinding("closeSemestre");
+        closed_semestre.getParamsMap().put("parcours", getParcours());
+        closed_semestre.getParamsMap().put("calendrier", getCalendrier());
+        closed_semestre.getParamsMap().put("semestre", getSemestre());
+        closed_semestre.getParamsMap().put("action", action);
+        closed_semestre.getParamsMap().put("utilisateur", getUtilisateur());
+        Integer is_closed_sem = (Integer) closed_semestre.execute();
+        System.out.println("is_closed_sem : "+is_closed_sem);
+        if (is_closed_sem == 214) {
+            System.out.println("Semestre Cloturer Avec Succes !!!");
+            RichPopup popup = this.getPopupClosedSemOk();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints);
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPancolDelibSem());
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getDeliberationTable());
+            return;
+        } else if (is_closed_sem == 110) {
+            System.out.println("Opération impossible : année est déja cloturer !!!");
+            RichPopup popup = this.getPopupShowDetAnClosed();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints);
+            return;
+        } else if (is_closed_sem == 311) {
+            System.out.println("Le semestre doit d'abord etre compenser !!!");
+            RichPopup popup = this.getPopupShowDetNotSemCompensed();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints);
+            return;
+        }
+    }
+
+    public void setPopupShowDetNotSemCompensed(RichPopup popupShowDetNotSemCompensed) {
+        this.popupShowDetNotSemCompensed = popupShowDetNotSemCompensed;
+    }
+
+    public RichPopup getPopupShowDetNotSemCompensed() {
+        return popupShowDetNotSemCompensed;
+    }
+
+    public void setPopupClosedSemOk(RichPopup popupClosedSemOk) {
+        this.popupClosedSemOk = popupClosedSemOk;
+    }
+
+    public RichPopup getPopupClosedSemOk() {
+        return popupClosedSemOk;
+    }
+
+    public void setPopupSemNotDelib(RichPopup popupSemNotDelib) {
+        this.popupSemNotDelib = popupSemNotDelib;
+    }
+
+    public RichPopup getPopupSemNotDelib() {
+        return popupSemNotDelib;
+    }
+
+    public void setPopupCompensedSemOk(RichPopup popupCompensedSemOk) {
+        this.popupCompensedSemOk = popupCompensedSemOk;
+    }
+
+    public RichPopup getPopupCompensedSemOk() {
+        return popupCompensedSemOk;
+    }
+
+    public void setPancolDelibSem(RichPanelCollection pancolDelibSem) {
+        this.pancolDelibSem = pancolDelibSem;
+    }
+
+    public RichPanelCollection getPancolDelibSem() {
+        return pancolDelibSem;
+    }
+
+    public void setPopupCompensedSemFailed(RichPopup popupCompensedSemFailed) {
+        this.popupCompensedSemFailed = popupCompensedSemFailed;
+    }
+
+    public RichPopup getPopupCompensedSemFailed() {
+        return popupCompensedSemFailed;
+    }
+
+    public void setParcours(Integer parcours) {
+        this.parcours = parcours;
+    }
+
+    public Integer getParcours() {
+        return parcours;
+    }
+
+    public void setAnne_univers(Integer anne_univers) {
+        this.anne_univers = anne_univers;
+    }
+
+    public Integer getAnne_univers() {
+        return anne_univers;
+    }
+
+    public void setSession(Integer session) {
+        this.session = session;
+    }
+
+    public Integer getSession() {
+        return session;
+    }
+
+    public void setUtilisateur(Integer utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Integer getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setCalendrier(Integer calendrier) {
+        this.calendrier = calendrier;
+    }
+
+    public Integer getCalendrier() {
+        return calendrier;
+    }
+
+    public void setSemestre(Integer semestre) {
+        this.semestre = semestre;
+    }
+
+    public Integer getSemestre() {
+        return semestre;
+    }
+}

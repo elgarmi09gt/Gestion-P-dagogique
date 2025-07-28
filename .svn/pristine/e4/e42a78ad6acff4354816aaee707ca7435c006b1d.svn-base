@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="attestationTF">
+    <default-activity>ExecuteWithParams1</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <input-parameter-definition id="__11">
+      <name>id_annee</name>
+      <value>#{pageFlowScope.anne}</value>
+      <class>java.lang.Integer</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__12">
+      <name>id_parcours</name>
+      <value>#{pageFlowScope.id_parcours}</value>
+      <class>java.lang.Integer</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__13">
+      <name>id_structure</name>
+      <value>#{pageFlowScope.id_structure}</value>
+      <class>java.lang.Integer</class>
+    </input-parameter-definition>
+    <managed-bean id="__3">
+      <managed-bean-name>AttestationsBean</managed-bean-name>
+      <managed-bean-class>view.beans.evaluation.releves.AttestationsBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__4">
+      <managed-bean-name>ReleveBean</managed-bean-name>
+      <managed-bean-class>view.beans.evaluation.relevesAttestations.ReleveBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__5">
+      <managed-bean-name>PrintAttestationsBean</managed-bean-name>
+      <managed-bean-class>view.beans.evaluation.relevesAttestations.PrintAttestationsBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <method-call id="ExecuteWithParams">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="attestations">
+      <page>/evaluation/releves/attestations.jsff</page>
+    </view>
+    <view id="attestation">
+      <page>/evaluation/releves/attestation.jsff</page>
+    </view>
+    <method-call id="ExecuteWithParams1">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__1">
+      <from-activity-id>ExecuteWithParams</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>attestations</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__9">
+      <from-activity-id>ExecuteWithParams1</from-activity-id>
+      <control-flow-case id="__10">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>attestation</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

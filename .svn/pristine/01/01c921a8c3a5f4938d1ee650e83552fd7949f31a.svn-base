@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NumDiplomeInsAncROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.NumDiplomeInsAncROVORowImpl"
+  ComponentClass="model.readOnlyView.NumDiplomeInsAncROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.NumDiplomeInsAncROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_annee"
+    Kind="viewcriteria"
+    Type="java.lang.Long"/>
+  <ViewAccessor
+    Name="HistoriquesStructuresROVO1"
+    ViewObjectName="model.readOnlyView.HistoriquesStructuresROVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_IdHistoriqueStructure"
+    ListVOName="HistoriquesStructuresROVO1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdHistoriqueStructure"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdHistoriquesStructure"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[select nd.id_numero_diplome,nd.numero , nd.id_historique_structure , au.libelle_long, nd.id_annees_univers   
+from numero_diplome nd   
+join annees_univers au on nd.id_annees_univers = au.id_annees_univers   
+where to_number(SUBSTR(au.libelle_long,-4)) < 2000]]></SQLQuery>
+  <ViewAttribute
+    Name="IdNumeroDiplome"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_NUMERO_DIPLOME"
+    Expression="ID_NUMERO_DIPLOME"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="30"
+    Scale="0"
+    Type="java.math.BigInteger"
+    ColumnType="NUMBER"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdHistoriqueStructure"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    AliasName="ID_HISTORIQUE_STRUCTURE"
+    Expression="ID_HISTORIQUE_STRUCTURE"
+    SQLType="NUMERIC"
+    LOVName="LOV_IdHistoriqueStructure">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewCriteria
+    Name="NumDiplomeInsAncROVOCriteria"
+    ViewObjectName="model.readOnlyView.NumDiplomeInsAncROVO"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="NumDiplomeInsAncROVOCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="NumDiplomeInsAncROVOCriteria_NumDiplomeInsAncROVOCriteria_row_0_IdAnneesUnivers"
+        ViewAttribute="IdAnneesUnivers"
+        Operator="="
+        Conjunction="AND"
+        Value=":id_annee"
+        IsBindVarValue="true"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNumeroDiplome"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

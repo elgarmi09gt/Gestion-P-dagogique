@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="AnneeUnivAnscInscROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.AnneeUnivAnscInscROVORowImpl"
+  ComponentClass="model.readOnlyView.AnneeUnivAnscInscROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.AnneeUnivAnscInscROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[select distinct  f.id_HISTORIQUES_STRUCTURE,pma.id_annees_univers,  a.libelle_long  
+from  parcours_maquette_annee pma                               
+JOIN niveaux_formation_parcours nfp on nfp.id_niveau_formation_parcours = pma.id_niveau_formation_parcours                                 
+JOIN niveau_formation_cohortes nfc on nfc.id_niveau_formation_cohorte = nfp.id_niveau_formation_cohorte                                 
+JOIN niveaux_formations nf on nfc.id_niveau_formation = nf.id_niveau_formation                                               
+JOIN formations f on f.id_formation = nf.id_formation             
+join niveaux n on n.id_niveau = nf.id_niveau--; 
+JOIN annees_univers a on a.id_annees_univers = pma.id_annees_univers 
+where to_number(SUBSTR(a.libelle_long,-4)) < 2000]]></SQLQuery>
+  <ViewAttribute
+    Name="IdHistoriquesStructure"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Integer"
+    ColumnType="INTEGER"
+    AliasName="ID_HISTORIQUES_STRUCTURE"
+    Expression="ID_HISTORIQUES_STRUCTURE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdAnneesUnivers"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="NivFormAncInsROVO"
+    ViewLink="model.viewlink.AnneeUnivNivFormAncInscVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

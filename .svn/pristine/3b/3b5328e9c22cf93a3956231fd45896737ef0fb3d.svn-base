@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="personnes_etudiantPageDef"
+                Package="inscription.etudiant">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Etudiants" RangeSize="25" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="ListePersonnesRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="ListePersonnesROIterator"/>
+    <searchRegion Binds="ListePersonnesROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ListePersonnesROQuery"/>
+    <iterator Binds="AttrSearchPers" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="AttrSearchPersIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="EtudiantsIterator" id="IdPersonne">
+      <AttrNames>
+        <Item Value="IdPersonne"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantsIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="EtudiantsIterator" id="CreateInsert" InstanceName="inscriptionAppDataControl.Etudiants"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <methodAction id="getEtudiants" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getEtudiants"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getEtudiants.dataControl.dataProvider">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isEtudiant_isEtudiant_dataControl_dataProvider_isEtudiant_result">
+      <NamedData NDName="id_pers" NDType="java.lang.Long"/>
+    </methodAction>
+    <tree IterBinding="ListePersonnesROIterator" id="ListePersonnesRO">
+      <nodeDefinition DefName="model.readOnlyView.ListePersonnesROVO" Name="ListePersonnesRO0">
+        <AttrNames>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Adresse"/>
+          <Item Value="EmailPersonnel"/>
+          <Item Value="PieceIdentification"/>
+          <Item Value="Portable"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="Adresse">
+      <AttrNames>
+        <Item Value="Adresse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="PieceIdentification">
+      <AttrNames>
+        <Item Value="PieceIdentification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListePersonnesROIterator" id="NomPers">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ListePersonnesROIterator" id="PrenomsPers">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ListePersonnesROIterator" id="Execute"
+            InstanceName="inscriptionAppDataControl.ListePersonnesRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="iteratorExecute"/>
+  </bindings>
+</pageDefinition>

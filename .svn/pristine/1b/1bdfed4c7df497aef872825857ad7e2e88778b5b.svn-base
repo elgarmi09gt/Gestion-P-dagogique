@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="DelibSemResSemROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.DelibSemResSemROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="parcours"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="annee"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="sem"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="sess"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="inspedsem"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT rs.NOTE, rs.CREDIT, rs.RESULTAT 
+FROM  RESULTATS_SEMESTRE rs  
+JOIN  INSCRIPTION_PED_SEMESTRE ips on rs.ID_INSCRIPTION_PED_SEMESTRE = ips.ID_INSCRIPTION_PED_SEMESTRE  
+Join INSCRIPTIONS_PEDAGOGIQUES ip on ips.ID_INSCRIPTION_PEDAGOGIQUE = ip.ID_INSCRIPTION_PEDAGOGIQUE  
+JOIN  PARCOURS_MAQUETTE_ANNEE pm ON pm.ID_PARCOURS_MAQUET_ANNEE=ip.ID_PARCOURS_MAQUET_ANNEE   
+JOIN  NIVEAUX_FORMATION_PARCOURS nfp ON nfp.ID_NIVEAU_FORMATION_PARCOURS=pm.ID_NIVEAU_FORMATION_PARCOURS  
+WHERE nfp.ID_NIVEAU_FORMATION_PARCOURS=:parcours  
+AND   pm.ID_ANNEES_UNIVERS=:annee  
+AND   ips.ID_SEMESTRE=:sem  
+AND   rs.ID_SESSION=:sess  
+AND rs.ID_INSCRIPTION_PED_SEMESTRE=:inspedsem]]></SQLQuery>
+  <ViewAttribute
+    Name="Note"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="NOTE"
+    Expression="NOTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Credit"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Scale="2"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="CREDIT"
+    Expression="CREDIT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Resultat"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="RESULTAT"
+    Expression="RESULTAT"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

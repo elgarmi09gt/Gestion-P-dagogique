@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"
+            inlineStyle="height:120px;margin-top:30px;margin-bottom:20px;"/>
+  <af:outputText value="Liste des autorisations" id="ot3" inlineStyle="font-size:large;margin-left:10px;"/>
+  <af:table value="#{bindings.AutorisationInscriptionROVO.collectionModel}" var="row"
+            rows="#{bindings.AutorisationInscriptionROVO.rangeSize}"
+            emptyText="#{bindings.AutorisationInscriptionROVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+            rowBandingInterval="0" selectedRowKeys="#{bindings.AutorisationInscriptionROVO.collectionModel.selectedRow}"
+            selectionListener="#{bindings.AutorisationInscriptionROVO.collectionModel.makeCurrent}"
+            rowSelection="single" fetchSize="#{bindings.AutorisationInscriptionROVO.rangeSize}"
+            filterModel="#{bindings.AutorisationInscriptionROVOQuery.queryDescriptor}" filterVisible="true"
+            queryListener="#{bindings.AutorisationInscriptionROVOQuery.processQuery}" varStatus="vs" id="t2"
+            inlineStyle="margin-left:10px;margin-top:20px;width:1140px;">
+    <af:column sortProperty="#{bindings.AutorisationInscriptionROVO.hints.LibForm.name}" filterable="true"
+               sortable="true" headerText="Diplôme" id="c1" width="600">
+      <af:outputText value="#{row.LibForm}" shortDesc="#{bindings.AutorisationInscriptionROVO.hints.LibForm.tooltip}"
+                     id="ot1"/>
+    </af:column>
+    <af:column sortProperty="#{bindings.AutorisationInscriptionROVO.hints.LibNivForm.name}" filterable="true"
+               sortable="true" headerText="Formation" id="c2" width="400">
+      <af:outputText value="#{row.LibNivForm}"
+                     shortDesc="#{bindings.AutorisationInscriptionROVO.hints.LibNivForm.tooltip}" id="ot2"/>
+    </af:column>
+    <af:column headerText="Case à cocher" id="c3">
+      <af:selectBooleanCheckbox value="#{row.bindings.case_cocher.inputValue}" label="#{row.bindings.case_cocher.label}"
+                                shortDesc="#{bindings.AutorisationInscriptionROVO.hints.case_cocher.tooltip}"
+                                id="sbc1"/>
+    </af:column>
+  </af:table>
+  <af:button text="&lt;&lt; Précédent" id="b2" action="#{Inscriptionbean.autorisePreviousStop}"
+             inlineStyle="margin-top:20px;margin-left:10px;"/>
+  <af:button text="Suivant >>" id="b1" action="#{Inscriptionbean.validerInscrpAdmin}" inlineStyle="margin-left:10px;"/>
+</ui:composition>

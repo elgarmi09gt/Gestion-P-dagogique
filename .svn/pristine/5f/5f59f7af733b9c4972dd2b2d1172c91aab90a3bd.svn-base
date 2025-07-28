@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelTabbed position="above" id="pt1">
+    <af:showDetailItem id="tab1" text="Liste des étudiants inscrits" disclosed="true">
+      <af:iterator value="#{EtudPaieInscBean.refreshTablePaiement(bindings.IdFormation.inputValue,bindings.IdNiveauFormation.inputValue,bindings.IdAnneePasse.inputValue)}"
+                   id="i2"/>
+      <af:panelGroupLayout id="pgl1" layout="vertical"
+                           inlineStyle="border:solid  2px #2897e8;border-radius:8px;width:1150px;">
+        <af:selectOneChoice value="#{bindings.FormHistStrRO.inputValue}" label="Formation"
+                            required="#{bindings.FormHistStrRO.hints.mandatory}"
+                            shortDesc="#{bindings.FormHistStrRO.hints.tooltip}" id="soc4" autoSubmit="true"
+                            contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                            labelStyle="font-size:large;" inlineStyle="margin-top:10px;margin-left:10px;">
+          <f:selectItems value="#{bindings.FormHistStrRO.items}" id="si4"/>
+          <f:validator binding="#{bindings.FormHistStrRO.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.NivFormFormPay.inputValue}" label="Niveau Formation"
+                            required="#{bindings.NivFormFormPay.hints.mandatory}"
+                            shortDesc="#{bindings.NivFormFormPay.hints.tooltip}" id="soc1" autoSubmit="true"
+                            contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                            labelStyle="font-size:large;" inlineStyle="margin-top:20px;margin-left:10px;">
+          <f:selectItems value="#{bindings.NivFormFormPay.items}" id="si1"/>
+          <f:validator binding="#{bindings.NivFormFormPay.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.AnneeUniversPasseAnterRO.inputValue}" label="Année Universitaire"
+                            required="#{bindings.AnneeUniversPasseAnterRO.hints.mandatory}"
+                            shortDesc="#{bindings.AnneeUniversPasseAnterRO.hints.tooltip}" id="soc3" autoSubmit="true"
+                            contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                            labelStyle="font-size:large;"
+                            inlineStyle="margin-top:20px;margin-bottom:10px;margin-left:10px;">
+          <f:selectItems value="#{bindings.AnneeUniversPasseAnterRO.items}" id="si3"/>
+          <f:validator binding="#{bindings.AnneeUniversPasseAnterRO.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl2" layout="vertical"
+                           inlineStyle="border:solid  2px #2897e8;width:1450px;margin-top:20px;">
+        <af:button text="Liste des étudiants inscrits" id="b1"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                   partialSubmit="false" disabled="true"/>
+        <af:table value="#{bindings.EtudPaieInscriptionRO.collectionModel}" var="row"
+                  rows="#{bindings.EtudPaieInscriptionRO.rangeSize}"
+                  emptyText="#{bindings.EtudPaieInscriptionRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.EtudPaieInscriptionRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.EtudPaieInscriptionRO.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.EtudPaieInscriptionRO.rangeSize}"
+                  filterModel="#{bindings.EtudPaieInscriptionROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.EtudPaieInscriptionROQuery.processQuery}" varStatus="vs" id="t1">
+          <af:column sortProperty="#{bindings.EtudPaieInscriptionRO.hints.IdEtudiant.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.EtudPaieInscriptionRO.hints.IdEtudiant.label}" id="c1"
+                     visible="false">
+            <af:outputText value="#{row.IdEtudiant}"
+                           shortDesc="#{bindings.EtudPaieInscriptionRO.hints.IdEtudiant.tooltip}" id="ot1">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.EtudPaieInscriptionRO.hints.IdEtudiant.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column id="c9" headerText="Informations de l'étudiant" align="center">
+            <af:column sortProperty="#{bindings.EtudPaieInscriptionRO.hints.Numero.name}" filterable="true"
+                       sortable="true" headerText="#{bindings.EtudPaieInscriptionRO.hints.Numero.label}" id="c2">
+              <af:outputText value="#{row.Numero}" shortDesc="#{bindings.EtudPaieInscriptionRO.hints.Numero.tooltip}"
+                             id="ot2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtudPaieInscriptionRO.hints.Prenoms.name}" filterable="true"
+                       sortable="true" headerText="Prénoms" id="c4" width="200">
+              <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.EtudPaieInscriptionRO.hints.Prenoms.tooltip}"
+                             id="ot4"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtudPaieInscriptionRO.hints.Nom.name}" filterable="true" sortable="true"
+                       headerText="#{bindings.EtudPaieInscriptionRO.hints.Nom.label}" id="c3" width="150">
+              <af:outputText value="#{row.Nom}" shortDesc="#{bindings.EtudPaieInscriptionRO.hints.Nom.tooltip}"
+                             id="ot3"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtudPaieInscriptionRO.hints.DateNaissance.name}" filterable="true"
+                       sortable="true" headerText="Date Naissance" id="c5">
+              <f:facet name="filter">
+                <af:inputDate value="#{bindings.EtudPaieInscriptionROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                              id="id1">
+                  <af:convertDateTime pattern="#{bindings.EtudPaieInscriptionRO.hints.DateNaissance.format}"/>
+                </af:inputDate>
+              </f:facet>
+              <af:outputText value="#{row.DateNaissance}"
+                             shortDesc="#{bindings.EtudPaieInscriptionRO.hints.DateNaissance.tooltip}" id="ot5">
+                <af:convertDateTime pattern="#{bindings.EtudPaieInscriptionRO.hints.DateNaissance.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.EtudPaieInscriptionRO.hints.Nationalite.name}" filterable="true"
+                       sortable="true" headerText="Nationalité" id="c6" width="200">
+              <af:outputText value="#{row.Nationalite}"
+                             shortDesc="#{bindings.EtudPaieInscriptionRO.hints.Nationalite.tooltip}" id="ot6"/>
+            </af:column>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudPaieInscriptionRO.hints.EtatInscrEtatInscrId.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.EtudPaieInscriptionRO.hints.EtatInscrEtatInscrId.label}"
+                     id="c7" visible="false">
+            <af:outputText value="#{row.EtatInscrEtatInscrId}"
+                           shortDesc="#{bindings.EtudPaieInscriptionRO.hints.EtatInscrEtatInscrId.tooltip}" id="ot7">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.EtudPaieInscriptionRO.hints.EtatInscrEtatInscrId.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudPaieInscriptionRO.hints.IdInscriptionPedagogique.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.EtudPaieInscriptionRO.hints.IdInscriptionPedagogique.label}" id="c8"
+                     visible="false">
+            <af:outputText value="#{row.IdInscriptionPedagogique}"
+                           shortDesc="#{bindings.EtudPaieInscriptionRO.hints.IdInscriptionPedagogique.tooltip}"
+                           id="ot8">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.EtudPaieInscriptionRO.hints.IdInscriptionPedagogique.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column id="c10" headerText="Insc. En Ligne" align="center">
+            <af:column headerText="Validée" id="c13" width="75">
+              <af:outputText value="#{EtudPaieInscBean.getInscEnLigne(row.IdInscriptionPedagogique)}" id="ot17"/>
+            </af:column>
+          </af:column>
+          <af:column id="c11" headerText="BU" align="center">
+            <af:column headerText="En Régle" id="c23" width="55">
+              <af:outputText value="#{EtudPaieInscBean.getEtudiantBu(row.IdEtudiant,bindings.IdAnneePasse.inputValue)}"
+                             id="ot12"/>
+            </af:column>
+          </af:column>
+          <af:column id="c12" headerText="Aptitude" align="center">
+            <af:column headerText="Apte" id="c24" width="50">
+              <af:outputText value="#{EtudPaieInscBean.getApteEtudiant(row.IdEtudiant,bindings.IdAnneePasse.inputValue)}"
+                             id="ot18"/>
+            </af:column>
+          </af:column>
+          <af:column id="c15" headerText="Etudiant ACP" align="center">
+            <af:column headerText="Paiement" id="c25" width="55">
+              <af:outputText value="#{EtudPaieInscBean.getPaiementEtudiant(row.IdInscriptionPedagogique,bindings.IdFormation.inputValue,bindings.IdNiveauFormation.inputValue,bindings.IdAnneePasse.inputValue)}"
+                             id="ot19"/>
+            </af:column>
+          </af:column>
+          <af:column id="c14" headerText="Resp. Etudiant" align="center">
+            <af:column headerText="Resp." id="c18" width="55">
+              <af:outputText value="#{EtudPaieInscBean.getResponsableEtud(row.IdEtudiant)}" id="ot10"/>
+            </af:column>
+          </af:column>
+          <af:column id="c16" headerText="Etat Inscription" align="center" width="120">
+            <af:column headerText="Etat" id="c17" width="120" align="center">
+              <af:outputText value="#{EtudPaieInscBean.getEtatInsc(row.IdInscriptionPedagogique)}" id="ot9"/>
+            </af:column>
+          </af:column>
+          <af:column id="c19" headerText="Inscription Ped" align="center" width="120">
+            <af:column headerText="Validée" id="c20" width="120" align="center">
+              <af:outputText value="#{EtudPaieInscBean.getResultat(row.IdEtudiant,row.IdInscriptionPedagogique,bindings.IdFormation.inputValue,bindings.IdNiveauFormation.inputValue,bindings.IdAnneePasse.inputValue,row.EtatInscrEtatInscrId)}"
+                             id="ot11"/>
+              <af:link id="l1" icon="#{sessionScope.icone_resultat_val}" disabled="true"
+                       inlineStyle="margin-left:30px;"/>
+            </af:column>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </af:showDetailItem>
+    <af:showDetailItem id="tab2" text="Liste des étudiants ayant payé">
+          <af:iterator value="#{EtudPaieInscBean.refreshMoisPaiement(bindings.IdFormation.inputValue,bindings.IdNiveauFormation.inputValue,bindings.IdAnneePasse.inputValue,bindings.IdMois.inputValue)}"
+                   id="i1"/>
+    <af:panelGroupLayout id="pgl3" layout="vertical"
+                           inlineStyle="border:solid  2px #2897e8;border-radius:8px;width:1150px;">
+        <af:selectOneChoice value="#{bindings.FormHistStrRO.inputValue}" label="Formation"
+                            required="#{bindings.FormHistStrRO.hints.mandatory}"
+                            shortDesc="#{bindings.FormHistStrRO.hints.tooltip}" id="soc2" autoSubmit="true"
+                            contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                            labelStyle="font-size:large;" inlineStyle="margin-top:10px;margin-left:10px;">
+          <f:selectItems value="#{bindings.FormHistStrRO.items}" id="si2"/>
+          <f:validator binding="#{bindings.FormHistStrRO.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.NivFormFormPay.inputValue}" label="Niveau Formation"
+                            required="#{bindings.NivFormFormPay.hints.mandatory}"
+                            shortDesc="#{bindings.NivFormFormPay.hints.tooltip}" id="soc5" autoSubmit="true"
+                            contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                            labelStyle="font-size:large;" inlineStyle="margin-top:20px;margin-left:10px;">
+          <f:selectItems value="#{bindings.NivFormFormPay.items}" id="si5"/>
+          <f:validator binding="#{bindings.NivFormFormPay.validator}"/>
+        </af:selectOneChoice>
+        <af:panelGroupLayout id="pgl5" layout="horizontal">
+          <af:selectOneChoice value="#{bindings.AnneeUniversPasseAnterRO.inputValue}" label="Année Universitaire"
+                              required="#{bindings.AnneeUniversPasseAnterRO.hints.mandatory}"
+                              shortDesc="#{bindings.AnneeUniversPasseAnterRO.hints.tooltip}" id="soc6" autoSubmit="true"
+                              contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                              labelStyle="font-size:large;"
+                              inlineStyle="margin-top:20px;margin-bottom:10px;margin-left:10px;">
+            <f:selectItems value="#{bindings.AnneeUniversPasseAnterRO.items}" id="si6"/>
+            <f:validator binding="#{bindings.AnneeUniversPasseAnterRO.validator}"/>
+          </af:selectOneChoice>
+          <af:selectOneChoice value="#{bindings.lesMoisFormNivFormAnnRO.inputValue}" label="Mois"
+                              required="#{bindings.lesMoisFormNivFormAnnRO.hints.mandatory}"
+                              shortDesc="#{bindings.lesMoisFormNivFormAnnRO.hints.tooltip}" id="soc7"
+                              contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                              labelStyle="font-size:large;"
+                              inlineStyle="margin-top:20px;margin-bottom:10px;margin-left:100px;" autoSubmit="true">
+            <f:selectItems value="#{bindings.lesMoisFormNivFormAnnRO.items}" id="si7"/>
+            <f:validator binding="#{bindings.lesMoisFormNivFormAnnRO.validator}"/>
+          </af:selectOneChoice>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="border:solid  2px #2897e8;margin-top:20px;">
+            <af:button text="Liste des étudiants ayant payé la mensualité du mois de : #{bindings.LibelleEchelon}" id="b2"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                   partialSubmit="false" disabled="true"/>
+        <af:table value="#{bindings.EtudAyantPaieMensualiteRO.collectionModel}" var="row"
+                  rows="#{bindings.EtudAyantPaieMensualiteRO.rangeSize}"
+                  emptyText="#{bindings.EtudAyantPaieMensualiteRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.EtudAyantPaieMensualiteRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.EtudAyantPaieMensualiteRO.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.EtudAyantPaieMensualiteRO.rangeSize}"
+                  filterModel="#{bindings.EtudAyantPaieMensualiteROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.EtudAyantPaieMensualiteROQuery.processQuery}" varStatus="vs" id="t2"
+                  scrollPolicy="page">
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.Numero.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.EtudAyantPaieMensualiteRO.hints.Numero.label}" id="c21">
+            <af:outputText value="#{row.Numero}" shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.Numero.tooltip}"
+                           id="ot13"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.Nom.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.EtudAyantPaieMensualiteRO.hints.Nom.label}" id="c22"
+                     width="120">
+            <af:outputText value="#{row.Nom}" shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.Nom.tooltip}"
+                           id="ot14"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.Prenoms.name}" filterable="true"
+                     sortable="true" headerText="Prénoms" id="c26" width="250">
+            <af:outputText value="#{row.Prenoms}"
+                           shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.Prenoms.tooltip}" id="ot15"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.DateNaissance.name}" filterable="true"
+                     sortable="true" headerText="Date Naissance" id="c27">
+            <f:facet name="filter">
+              <af:inputDate value="#{bindings.EtudAyantPaieMensualiteROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                            id="id2">
+                <af:convertDateTime pattern="#{bindings.EtudAyantPaieMensualiteRO.hints.DateNaissance.format}"/>
+              </af:inputDate>
+            </f:facet>
+            <af:outputText value="#{row.DateNaissance}"
+                           shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.DateNaissance.tooltip}" id="ot16">
+              <af:convertDateTime pattern="#{bindings.EtudAyantPaieMensualiteRO.hints.DateNaissance.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.Nationalite.name}" filterable="true"
+                     sortable="true" headerText="Nationalité" id="c28" width="120">
+            <af:outputText value="#{row.Nationalite}"
+                           shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.Nationalite.tooltip}" id="ot20"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.DateOperation.name}" filterable="true"
+                     sortable="true" headerText="Date" id="c29">
+            <f:facet name="filter">
+              <af:inputDate value="#{bindings.EtudAyantPaieMensualiteROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateOperation.value}"
+                            id="id3">
+                <af:convertDateTime pattern="#{bindings.EtudAyantPaieMensualiteRO.hints.DateOperation.format}"/>
+              </af:inputDate>
+            </f:facet>
+            <af:outputText value="#{row.DateOperation}"
+                           shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.DateOperation.tooltip}" id="ot21">
+              <af:convertDateTime pattern="#{bindings.EtudAyantPaieMensualiteRO.hints.DateOperation.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.LibelleEchelon.name}" filterable="true"
+                     sortable="true" headerText="Echéance" id="c30">
+            <af:outputText value="#{row.LibelleEchelon}"
+                           shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.LibelleEchelon.tooltip}" id="ot22"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.Montant.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.EtudAyantPaieMensualiteRO.hints.Montant.label}" id="c31">
+            <af:outputText value="#{row.Montant}"
+                           shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.Montant.tooltip}" id="ot23">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.EtudAyantPaieMensualiteRO.hints.Montant.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.LibModePaie.name}" filterable="true"
+                     sortable="true" headerText="Mode" id="c32">
+            <af:outputText value="#{row.LibModePaie}"
+                           shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.LibModePaie.tooltip}" id="ot24"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.LibTypePaie.name}" filterable="true"
+                     sortable="true" headerText="Type Paiement" id="c33" width="150">
+            <af:outputText value="#{row.LibTypePaie}"
+                           shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.LibTypePaie.tooltip}" id="ot25"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.NumChqVir.name}" filterable="true"
+                     sortable="true" headerText="N° Chèque (Virement)" id="c34">
+            <af:outputText value="#{row.NumChqVir}"
+                           shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.NumChqVir.tooltip}" id="ot26"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.EtudAyantPaieMensualiteRO.hints.Banque.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.EtudAyantPaieMensualiteRO.hints.Banque.label}" id="c35">
+            <af:outputText value="#{row.Banque}" shortDesc="#{bindings.EtudAyantPaieMensualiteRO.hints.Banque.tooltip}"
+                           id="ot27"/>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </af:showDetailItem>
+  </af:panelTabbed>
+</ui:composition>
+

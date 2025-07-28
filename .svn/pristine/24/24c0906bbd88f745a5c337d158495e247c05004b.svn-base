@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelSplitter id="ps1" inlineStyle="width:1355px;" splitterPosition="415" firstBorder="all" secondBorder="all"
+                      disabled="true">
+      <f:facet name="first">
+        <af:panelHeader text="Niveau Formation" id="ph4">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:table value="#{bindings.NivFormationRO.collectionModel}" var="row"
+                    rows="#{bindings.NivFormationRO.rangeSize}"
+                    emptyText="#{bindings.NivFormationRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.NivFormationRO.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.NivFormationRO.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.NivFormationRO.rangeSize}"
+                    filterModel="#{bindings.NivFormationROQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.NivFormationROQuery.processQuery}" varStatus="vs" id="t1"
+                    scrollPolicy="scroll">
+            <af:column sortProperty="#{bindings.NivFormationRO.hints.Libform.name}" filterable="true" sortable="true"
+                       headerText="Niveau Formation" id="c2" width="400">
+              <af:outputText value="#{row.Libform}" shortDesc="#{bindings.NivFormationRO.hints.Libform.tooltip}"
+                             id="ot2"/>
+            </af:column>
+          </af:table>
+        </af:panelHeader>
+      </f:facet>
+      <f:facet name="second">
+        <af:panelSplitter id="ps2" splitterPosition="370" disabled="true" firstBorder="all" secondBorder="all">
+          <f:facet name="first">
+            <af:panelHeader text="Liste des Groupes Linguistiques" id="ph2">
+              <f:facet name="context"/>
+              <f:facet name="toolbar"/>
+              <f:facet name="menuBar"/>
+              <f:facet name="legend"/>
+              <f:facet name="info"/>
+              <af:table value="#{bindings.NivFormGrpLingLangRO.collectionModel}" var="row"
+                        rows="#{bindings.NivFormGrpLingLangRO.rangeSize}"
+                        emptyText="#{bindings.NivFormGrpLingLangRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0"
+                        selectedRowKeys="#{bindings.NivFormGrpLingLangRO.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.NivFormGrpLingLangRO.collectionModel.makeCurrent}" fetchSize="#{bindings.NivFormGrpLingLangRO.rangeSize}"
+                        filterModel="#{bindings.NivFormGrpLingLangROQuery.queryDescriptor}" filterVisible="true"
+                        queryListener="#{bindings.NivFormGrpLingLangROQuery.processQuery}" varStatus="vs" id="t2"
+                        scrollPolicy="scroll" rowSelection="single">
+                <af:column sortProperty="#{bindings.NivFormGrpLingLangRO.hints.LibelleLong.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.NivFormGrpLingLangRO.hints.LibelleLong.label}" id="c3"
+                           width="200">
+                  <af:outputText value="#{row.LibelleLong}"
+                                 shortDesc="#{bindings.NivFormGrpLingLangRO.hints.LibelleLong.tooltip}" id="ot3"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.NivFormGrpLingLangRO.hints.LibelleCourt.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.NivFormGrpLingLangRO.hints.LibelleCourt.label}"
+                           id="c4" width="135">
+                  <af:outputText value="#{row.LibelleCourt}"
+                                 shortDesc="#{bindings.NivFormGrpLingLangRO.hints.LibelleCourt.tooltip}" id="ot4"/>
+                </af:column>
+                <af:clientListener type="click" method="handleTableClick"/><af:serverListener type="TableClickEvent"
+                                                                                              method="#{NivFormGrpLangbean.handleTableClick}"/>
+              </af:table>
+            </af:panelHeader>
+          </f:facet>
+          <f:facet name="second">
+            <af:panelGroupLayout id="pgl2" layout="vertical">
+              <af:panelHeader text="Liste des Langues du groupe : #{bindings.LibelleLongGrpLang}" id="ph3">
+                <f:facet name="context"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="menuBar"/>
+                <f:facet name="legend"/>
+                <f:facet name="info"/>
+                <af:table value="#{bindings.NivFormGrpLang.collectionModel}" var="row"
+                          rows="#{bindings.NivFormGrpLang.rangeSize}"
+                          emptyText="#{bindings.NivFormGrpLang.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0"
+                          selectedRowKeys="#{bindings.NivFormGrpLang.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.NivFormGrpLang.collectionModel.makeCurrent}"
+                          rowSelection="single" fetchSize="#{bindings.NivFormGrpLang.rangeSize}"
+                          filterModel="#{bindings.NivFormGrpLangQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.NivFormGrpLangQuery.processQuery}" varStatus="vs" id="t5"
+                          scrollPolicy="scroll">
+                  <af:column sortProperty="#{bindings.NivFormGrpLang.hints.LibelleLong.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.NivFormGrpLang.hints.LibelleLong.label}" id="c7"
+                             width="280">
+                    <af:outputText value="#{row.LibelleLong}"
+                                   shortDesc="#{bindings.NivFormGrpLang.hints.LibelleLong.tooltip}" id="ot6"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.NivFormGrpLang.hints.LibelleCourt.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.NivFormGrpLang.hints.LibelleCourt.label}" id="c8"
+                             width="130">
+                    <af:outputText value="#{row.LibelleCourt}"
+                                   shortDesc="#{bindings.NivFormGrpLang.hints.LibelleCourt.tooltip}" id="ot7"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.NivFormGrpLang.hints.case_cocher.label}" id="c1">
+                    <af:selectBooleanCheckbox value="#{row.bindings.case_cocher.inputValue}"
+                                              label="#{row.bindings.case_cocher.label}"
+                                              shortDesc="#{bindings.NivFormGrpLang.hints.case_cocher.tooltip}"
+                                              id="sbc1"/>
+                    <f:facet name="header">
+                      <af:selectBooleanCheckbox text="Select All" id="sbc2" autoSubmit="true"
+                                                valueChangeListener="#{NivFormGrpLangbean.onSelectAllNivLang}"
+                                                binding="#{NivFormGrpLangbean.checkNivLang}"/>
+                    </f:facet>
+                  </af:column>
+                </af:table>
+              </af:panelHeader>
+              <af:button text="Valider" id="b1" action="#{NivFormGrpLangbean.onValiderNivFormLang}"
+                         inlineStyle="margin-left:20px;margin-top:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#ffffff;margin-bottom:15px;"
+                         icon="/images/commit.png"/>
+            </af:panelGroupLayout>
+          </f:facet>
+        </af:panelSplitter>
+      </f:facet>
+    </af:panelSplitter>
+    <af:panelHeader text="Liste des Langues de la formation : #{bindings.Libform}" id="ph1"
+                    inlineStyle="margin-top:20px">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:table value="#{bindings.NivFromListeLingLangRO.collectionModel}" var="row"
+                rows="#{bindings.NivFromListeLingLangRO.rangeSize}"
+                emptyText="#{bindings.NivFromListeLingLangRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.NivFromListeLingLangRO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.NivFromListeLingLangRO.collectionModel.makeCurrent}" rowSelection="single"
+                fetchSize="#{bindings.NivFromListeLingLangRO.rangeSize}"
+                filterModel="#{bindings.NivFromListeLingLangROQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.NivFromListeLingLangROQuery.processQuery}" varStatus="vs" id="t4" width="528">
+        <af:column sortProperty="#{bindings.NivFromListeLingLangRO.hints.LibelleLong.name}" filterable="true"
+                   sortable="true" headerText="#{bindings.NivFromListeLingLangRO.hints.LibelleLong.label}" id="c9"
+                   width="300">
+          <af:outputText value="#{row.LibelleLong}"
+                         shortDesc="#{bindings.NivFromListeLingLangRO.hints.LibelleLong.tooltip}" id="ot8"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.NivFromListeLingLangRO.hints.LibelleCourt.name}" filterable="true"
+                   sortable="true" headerText="#{bindings.NivFromListeLingLangRO.hints.LibelleCourt.label}" id="c10"
+                   width="200">
+          <af:outputText value="#{row.LibelleCourt}"
+                         shortDesc="#{bindings.NivFromListeLingLangRO.hints.LibelleCourt.tooltip}" id="ot9"/>
+        </af:column>
+      </af:table>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+    <af:resource type="javascript">
+      function handleTableClick(evt){   
+         var table = evt.getSource();
+         AdfCustomEvent.queue(table, "TableClickEvent",{}, true);         
+         evt.cancel();
+      }
+     </af:resource>
+</ui:composition>

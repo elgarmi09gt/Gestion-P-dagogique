@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="liste_paiement_retard_liste_paiement_retard_ExecuteWithParamsPageDef"
+                Package="ecolage.liste_paiements_en_retard" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="FormHistStrRO" RangeSize="25" DataControl="ecolageAppDataControl" id="FormHistStrROIterator"
+              Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="FormHistStrROIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams" InstanceName="ecolageAppDataControl.FormHistStrRO"
+            DataControl="ecolageAppDataControl">
+      <NamedData NDName="id_hs" NDValue="#{sessionScope.id_hs}" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDValue="#{sessionScope.id_annee}" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

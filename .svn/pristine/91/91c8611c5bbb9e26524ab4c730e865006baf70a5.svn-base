@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="UtilisateursEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="UTILISATEURS"
+  AliasName="UtilisateursEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdUtilisateur"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_UTILISATEUR"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="UTILISATEURS"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="Login"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="100"
+    ColumnName="LOGIN"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="UTILISATEURS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="MotDePasse"
+    IsNotNull="true"
+    Precision="75"
+    ColumnName="MOT_DE_PASSE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="UTILISATEURS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IdPersonne"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_PERSONNE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="UTILISATEURS"/>
+  <Attribute
+    Name="IdStructure"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_STRUCTURE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="UTILISATEURS"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="UTILISATEURS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="UTILISATEURS"/>
+  <Attribute
+    Name="UtiCree"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="UTILISATEURS"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="UTILISATEURS"/>
+  <AccessorAttribute
+    Name="PaiementEtudiantEO1"
+    Association="model.entities.FkPaiementEtudiantUtiModifAssoc"
+    AssociationEnd="model.entities.FkPaiementEtudiantUtiModifAssoc.PaiementEtudiantEO1"
+    AssociationOtherEnd="model.entities.FkPaiementEtudiantUtiModifAssoc.UtilisateursEO1"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <AccessorAttribute
+    Name="PaiementEtudiantEO"
+    Association="model.assoc.FkPaiementEtudiantUtiCreeAssoc"
+    AssociationEnd="model.assoc.FkPaiementEtudiantUtiCreeAssoc.PaiementEtudiantEO"
+    AssociationOtherEnd="model.assoc.FkPaiementEtudiantUtiCreeAssoc.UtilisateursEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkUtilisateur"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_UTILISATEUR"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursEO.IdUtilisateur"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqUtilisLogin">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_UTILIS_LOGIN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursEO.Login"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILIS_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILIS_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisateursPersonnes">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_PERSONNES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILISATEURS_PERSONNES"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursEO.IdPersonne"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisateursStructure">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_STRUCTURES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILISATEURS_STRUCTURE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursEO.IdStructure"/>
+    </AttrArray>
+  </Key>
+</Entity>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="UtilisateurNiveauxFormationsEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="UTILISATEUR_NIVEAUX_FORMATIONS"
+  AliasName="UtilisateurNiveauxFormations1"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdUtilisNiveauFormation"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_UTILIS_NIVEAU_FORMATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="UTILISATEUR_NIVEAUX_FORMATIONS"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdUtilisateur"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_UTILISATEUR"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="UTILISATEUR_NIVEAUX_FORMATIONS"/>
+  <Attribute
+    Name="IdNiveauFormation"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="UTILISATEUR_NIVEAUX_FORMATIONS"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="UTILISATEUR_NIVEAUX_FORMATIONS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="UTILISATEUR_NIVEAUX_FORMATIONS"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="UTILISATEUR_NIVEAUX_FORMATIONS"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="UTILISATEUR_NIVEAUX_FORMATIONS"/>
+  <Attribute
+    Name="IdNiveauFormationSpecialite"
+    Precision="5"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION_SPECIALITE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="UTILISATEUR_NIVEAUX_FORMATIONS"/>
+  <Attribute
+    Name="IdNivFormSpecOption"
+    Precision="5"
+    Scale="0"
+    ColumnName="ID_NIV_FORM_SPEC_OPTION"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="UTILISATEUR_NIVEAUX_FORMATIONS"/>
+  <Key
+    Name="PkUtilisNiveauFormatio"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_UTILIS_NIVEAU_FORMATIO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateurNiveauxFormationsEO.IdUtilisNiveauFormation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqUtilisNiveauFormatio">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_isDisabledConstraint" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_UTILIS_NIVEAU_FORMATIO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateurNiveauxFormationsEO.IdUtilisateur"/>
+      <Item Value="model.entities.UtilisateurNiveauxFormationsEO.IdNiveauFormation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtiNivFormatioUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTI_NIV_FORMATIO_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateurNiveauxFormationsEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtiNivFormatioUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTI_NIV_FORMATIO_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateurNiveauxFormationsEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisNivFormatioNivform">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAUX_FORMATIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILIS_NIV_FORMATIO_NIVFORM"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateurNiveauxFormationsEO.IdNiveauFormation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisNivFormatioUtilis">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILIS_NIV_FORMATIO_UTILIS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateurNiveauxFormationsEO.IdUtilisateur"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisnivformatioOptio">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ID_NIV_FORM_SPEC_OPTION"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILISNIVFORMATIO_OPTIO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateurNiveauxFormationsEO.IdNivFormSpecOption"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisnivformatioSpec">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAU_FORMATION_SPECIALITE"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILISNIVFORMATIO_SPEC"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateurNiveauxFormationsEO.IdNiveauFormationSpecialite"/>
+    </AttrArray>
+  </Key>
+</Entity>

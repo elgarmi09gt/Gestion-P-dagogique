@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="AttrComplAutorisation"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.AttrComplAutorisationRowImpl"
+  ComponentClass="model.readOnlyView.AttrComplAutorisationImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.AttrComplAutorisation_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewAccessor
+    Name="ModeEntreeVO1"
+    ViewObjectName="model.updatableview.ModeEntreeVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="SerieBacVO1"
+    ViewObjectName="model.updatableview.SerieBacVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="TypeMentionVO1"
+    ViewObjectName="model.updatableview.TypeMentionVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="LyceeVO1"
+    ViewObjectName="model.updatableview.LyceeVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_ModeEntree"
+    ListVOName="ModeEntreeVO1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ModeEntree"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdModeEntree"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_SerieBac"
+    ListVOName="SerieBacVO1"
+    NullValueFlag="start"
+    NullValueId="LOV_SerieBac_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="SerieBac"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdSerieBac"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Serie"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_Mention"
+    ListVOName="TypeMentionVO1"
+    NullValueFlag="start"
+    NullValueId="LOV_Mention_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Mention"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdTypeMention"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_Lycee"
+    ListVOName="LyceeVO1"
+    NullValueFlag="start"
+    NullValueId="LOV_Lycee_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Lycee"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdLycee"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[select ''mode_entree,''annee_bac,''serie_bac,''mention,''lycee from dual]]></SQLQuery>
+  <ViewAttribute
+    Name="ModeEntree"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.Long"
+    ColumnType="VARCHAR2"
+    AliasName="MODE_ENTREE"
+    Expression="MODE_ENTREE"
+    SQLType="CHAR"
+    LOVName="LOV_ModeEntree">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="AnneeBac"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="32"
+    Type="java.lang.Integer"
+    ColumnType="CHAR"
+    AliasName="ANNEE_BAC"
+    Expression="ANNEE_BAC"
+    SQLType="CHAR"/>
+  <ViewAttribute
+    Name="SerieBac"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="32"
+    Type="java.lang.Long"
+    ColumnType="CHAR"
+    AliasName="SERIE_BAC"
+    Expression="SERIE_BAC"
+    SQLType="CHAR"
+    LOVName="LOV_SerieBac">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Mention"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="32"
+    Type="java.lang.Long"
+    ColumnType="CHAR"
+    AliasName="MENTION"
+    Expression="MENTION"
+    SQLType="CHAR"
+    LOVName="LOV_Mention">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Lycee"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="32"
+    Type="java.lang.Long"
+    ColumnType="CHAR"
+    AliasName="LYCEE"
+    Expression="LYCEE"
+    SQLType="CHAR"
+    LOVName="LOV_Lycee">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

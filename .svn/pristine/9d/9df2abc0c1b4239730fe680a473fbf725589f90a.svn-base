@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listniveauxPageDef"
+                Package="dap.niveaux">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Niveaux" RangeSize="25" DataControl="gestdapAppDataControl" id="NiveauxIterator"/>
+    <searchRegion Binds="NiveauxIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="NiveauxQuery"/>
+    <iterator Binds="isNiveauFormationNiveauExist" RangeSize="10" DataControl="gestdapAppDataControl"
+              id="isNiveauFormationNiveauExistIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="NiveauxIterator" id="Niveaux">
+      <nodeDefinition DefName="model.updatableview.NiveauxVO" Name="Niveaux0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="IdGrade"/>
+          <Item Value="Niveau"/>
+          <Item Value="DateCreation"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="NiveauxIterator" StaticList="false" Uses="LOV_IdGrade" id="IdGrade" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <action id="Commit" DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="NiveauxIterator" id="CreateNiveau" InstanceName="gestdapAppDataControl.Niveaux"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="NiveauxIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxIterator" id="Niveau">
+      <AttrNames>
+        <Item Value="Niveau"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxIterator" id="IdNiveau">
+      <AttrNames>
+        <Item Value="IdNiveau"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxIterator" id="DateModification">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NiveauxIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="NiveauxIterator" id="Delete" InstanceName="gestdapAppDataControl.Niveaux"
+            DataControl="gestdapAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="isNiveauFormationNiveauExistIterator" id="IsNiveauFormNivExist"
+            InstanceName="gestdapAppDataControl.isNiveauFormationNiveauExist" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="nv_id" NDType="java.lang.Integer"/>
+    </action>
+  </bindings>
+</pageDefinition>

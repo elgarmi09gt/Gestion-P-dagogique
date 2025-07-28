@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['viewcontroller.dap.niveaux.listniveauxBundle']}"/>
+  <af:panelStretchLayout id="psl1" dimensionsFrom="parent">
+    <f:facet name="start"/>
+    <f:facet name="end"/>
+    <f:facet name="top"/>
+    <f:facet name="bottom"/>
+    <f:facet name="center">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t2">
+            <af:button id="b1" actionListener="#{NiveauxBean.OnNewNiveauClicked}" icon="/images/new_icon.png"/>
+            <af:button id="b2" actionListener="#{NiveauxBean.OnEditNiveauClicked}" icon="/images/edit_icon.png"/>
+            <af:button id="b3" action="#{NiveauxBean.OnDeleteClicked}" icon="/images/delete_icon.png">
+              <af:showPopupBehavior popupId="::popup-delete-niveau"/>
+            </af:button>
+          </af:toolbar>
+        </f:facet>
+        <af:table value="#{bindings.Niveaux.collectionModel}" var="row" rows="#{bindings.Niveaux.rangeSize}"
+                  emptyText="#{bindings.Niveaux.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.Niveaux.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.Niveaux.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.Niveaux.rangeSize}" filterModel="#{bindings.NiveauxQuery.queryDescriptor}"
+                  filterVisible="true" queryListener="#{bindings.NiveauxQuery.processQuery}" varStatus="vs" id="t1"
+                  binding="#{NiveauxBean.niveauxTable}" columnStretching="last">
+          <af:column sortProperty="#{bindings.Niveaux.hints.LibelleLong.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.LIBELLE}" id="c1" width="100%">
+            <af:outputText value="#{row.LibelleLong}" shortDesc="#{bindings.Niveaux.hints.LibelleLong.tooltip}"
+                           id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.Niveaux.hints.LibelleCourt.name}" filterable="true" sortable="true"
+                     headerText="#{viewcontrollerBundle.LIBELLE_COURT}" id="c2">
+            <af:outputText value="#{row.LibelleCourt}" shortDesc="#{bindings.Niveaux.hints.LibelleCourt.tooltip}"
+                           id="ot2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.Niveaux.hints.IdGrade.name}" filterable="true" sortable="true"
+                     headerText="Grade" id="c3">
+            <af:selectOneChoice value="#{row.bindings.IdGrade.inputValue}" label="#{row.bindings.IdGrade.label}"
+                                required="#{bindings.Niveaux.hints.IdGrade.mandatory}"
+                                shortDesc="#{bindings.Niveaux.hints.IdGrade.tooltip}" readOnly="true" id="soc1">
+              <f:selectItems value="#{row.bindings.IdGrade.items}" id="si1"/>
+              <f:validator binding="#{row.bindings.IdGrade.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.Niveaux.hints.Niveau.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.Niveaux.hints.Niveau.label}" id="c4">
+            <af:outputText value="#{row.Niveau}" shortDesc="#{bindings.Niveaux.hints.Niveau.tooltip}" id="ot3">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.Niveaux.hints.Niveau.format}"/>
+            </af:outputText>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup childCreation="deferred" autoCancel="disabled" id="p1">
+              <af:menu text="menu 1" id="m1">
+                <af:commandMenuItem id="cmi1" actionListener="#{NiveauxBean.OnNewNiveauClicked}"
+                                    icon="/images/new_icon.png"/>
+                <af:commandMenuItem text="Edit" id="cmi2" actionListener="#{NiveauxBean.OnEditNiveauClicked}"
+                                    icon="/images/edit_icon.png"/>
+                <af:commandMenuItem text="Delete" id="cmi3" action="#{NiveauxBean.OnDeleteClicked}"
+                                    icon="/images/delete_icon.png">
+                  <af:showPopupBehavior popupId=":::popup-delete-niveau"/>
+                </af:commandMenuItem>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+        <f:facet name="statusbar"/>
+      </af:panelCollection>
+    </f:facet>
+  </af:panelStretchLayout>
+  <af:resource type="javascript">
+    function OnDialogCancel(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "HandlerEvenDialogCancel", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-new-niveau" binding="#{NiveauxBean.popupNewNiveau}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d1" dialogListener="#{NiveauxBean.OnDialogAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl1">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle.LIBELLE_COURT}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdGrade.inputValue}" label="#{viewcontrollerBundle.GRADE}"
+                            required="#{bindings.IdGrade.hints.mandatory}" shortDesc="#{bindings.IdGrade.hints.tooltip}"
+                            id="soc3">
+          <f:selectItems value="#{bindings.IdGrade.items}" id="si3"/>
+          <f:validator binding="#{bindings.IdGrade.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.Niveau.inputValue}" label="#{bindings.Niveau.hints.label}"
+                      required="#{bindings.Niveau.hints.mandatory}" columns="#{bindings.Niveau.hints.displayWidth}"
+                      maximumLength="#{bindings.Niveau.hints.precision}" shortDesc="#{bindings.Niveau.hints.tooltip}"
+                      id="it3">
+          <f:validator binding="#{bindings.Niveau.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Niveau.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it4">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <af:clientListener type="dialog" method="OnDialogCancel"/>
+      <af:serverListener type="HandlerEvenDialogCancel" method="#{NiveauxBean.OnDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-edit-niveau"
+            binding="#{NiveauxBean.popupEditNiveau}" contentDelivery="lazyUncached">
+    <af:dialog id="d2" dialogListener="#{NiveauxBean.OnDialogAction}">
+      <af:panelFormLayout id="pfl2">
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle.LIBELLE_COURT}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it6">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdGrade.inputValue}" label="#{viewcontrollerBundle.GRADE}"
+                            required="#{bindings.IdGrade.hints.mandatory}" shortDesc="#{bindings.IdGrade.hints.tooltip}"
+                            id="soc2">
+          <f:selectItems value="#{bindings.IdGrade.items}" id="si2"/>
+          <f:validator binding="#{bindings.IdGrade.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.Niveau.inputValue}" label="#{bindings.Niveau.hints.label}"
+                      required="#{bindings.Niveau.hints.mandatory}" columns="#{bindings.Niveau.hints.displayWidth}"
+                      maximumLength="#{bindings.Niveau.hints.precision}" shortDesc="#{bindings.Niveau.hints.tooltip}"
+                      id="it7">
+          <f:validator binding="#{bindings.Niveau.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Niveau.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it8">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-delete-niveau" contentDelivery="lazyUncached">
+    <af:dialog id="d3" type="yesNo" dialogListener="#{NiveauxBean.OnDeleteNiveauAction}"
+               title="Confirmer Supprimer !!!" affirmativeTextAndAccessKey="OUI" noTextAndAccessKey="NON">
+      <af:panelFormLayout id="pfl3">
+        <af:inputText value="#{bindings.IdNiveau.inputValue}" label="#{viewcontrollerBundle.NIVEAU}"
+                      required="#{bindings.IdNiveau.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.IdNiveau.hints.displayWidth}"
+                      maximumLength="#{bindings.IdNiveau.hints.precision}"
+                      shortDesc="#{bindings.IdNiveau.hints.tooltip}" id="it9">
+          <f:validator binding="#{bindings.IdNiveau.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.IdNiveau.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibelleLong.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it10">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle.LIBELLE_COURT}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it11">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdGrade.inputValue}" label="#{viewcontrollerBundle.GRADE}"
+                            required="#{bindings.IdGrade.hints.mandatory}" shortDesc="#{bindings.IdGrade.hints.tooltip}"
+                            readOnly="true" id="soc4">
+          <f:selectItems value="#{bindings.IdGrade.items}" id="si4"/>
+          <f:validator binding="#{bindings.IdGrade.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.Niveau.inputValue}" label="#{viewcontrollerBundle.NIVEAU}"
+                      required="#{bindings.Niveau.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Niveau.hints.displayWidth}" maximumLength="#{bindings.Niveau.hints.precision}"
+                      shortDesc="#{bindings.Niveau.hints.tooltip}" id="it12">
+          <f:validator binding="#{bindings.Niveau.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Niveau.format}"/>
+        </af:inputText>
+        <af:inputDate value="#{bindings.DateCreation.inputValue}" readOnly="true"
+                      label="#{bindings.DateCreation.hints.label}" required="#{bindings.DateCreation.hints.mandatory}"
+                      columns="#{bindings.DateCreation.hints.displayWidth}"
+                      shortDesc="#{bindings.DateCreation.hints.tooltip}" id="id2">
+          <f:validator binding="#{bindings.DateCreation.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateCreation.format}"/>
+        </af:inputDate>
+        <af:inputDate value="#{bindings.DateModification.inputValue}" readOnly="true"
+                      label="#{bindings.DateModification.hints.label}"
+                      required="#{bindings.DateModification.hints.mandatory}"
+                      columns="#{bindings.DateModification.hints.displayWidth}"
+                      shortDesc="#{bindings.DateModification.hints.tooltip}" id="id3">
+          <f:validator binding="#{bindings.DateModification.validator}"/>
+          <af:convertDateTime pattern="#{bindings.DateModification.format}"/>
+        </af:inputDate>
+        <af:inputText value="#{bindings.UtiCree.inputValue}" label="#{bindings.UtiCree.hints.label}"
+                      required="#{bindings.UtiCree.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiCree.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiCree.hints.precision}" shortDesc="#{bindings.UtiCree.hints.tooltip}"
+                      id="it13">
+          <f:validator binding="#{bindings.UtiCree.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiCree.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.UtiModifie.inputValue}" label="#{bindings.UtiModifie.hints.label}"
+                      required="#{bindings.UtiModifie.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.UtiModifie.hints.displayWidth}"
+                      maximumLength="#{bindings.UtiModifie.hints.precision}"
+                      shortDesc="#{bindings.UtiModifie.hints.tooltip}" id="it14">
+          <f:validator binding="#{bindings.UtiModifie.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.UtiModifie.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

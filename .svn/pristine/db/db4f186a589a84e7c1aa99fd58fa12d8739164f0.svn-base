@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ReglesCompensationEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="REGLES_COMPENSATION"
+  AliasName="ReglesCompensationEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdRegleCompens"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_REGLE_COMPENS"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="REGLES_COMPENSATION"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="Libelle"
+    IsNotNull="true"
+    Precision="30"
+    ColumnName="LIBELLE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="REGLES_COMPENSATION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Description"
+    IsNotNull="true"
+    Precision="255"
+    ColumnName="DESCRIPTION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="REGLES_COMPENSATION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="255"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="REGLES_COMPENSATION"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="REGLES_COMPENSATION"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="REGLES_COMPENSATION"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="REGLES_COMPENSATION"/>
+  <Key
+    Name="PkReglesCompensation"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_REGLES_COMPENSATION"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ReglesCompensationEO.IdRegleCompens"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkReglCompensUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_REGL_COMPENS_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ReglesCompensationEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkReglCompensUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_REGL_COMPENS_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ReglesCompensationEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

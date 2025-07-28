@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="etatActuCmpteFormROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.etatActuCmpteFormROVORowImpl"
+  ComponentClass="model.readOnlyView.etatActuCmpteFormROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.etatActuCmpteFormROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_hs"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_form"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_util"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select    
+tc.id_type_compte,         
+tc.libelle_long as lib_type_cmpte ,  
+sc.id_compte ,      
+sc.id_solde_compte ,      
+sc.solde_actuel ,      
+sc.solde_initial    
+     
+from repartition r                     
+join formation_repartition fr on fr.id_repartition = r.id_repartition   
+join (select id_structures ,id_historiques_structure  from historiques_structures where id_historiques_structure=:id_hs)  str  on r.id_structure=str.id_structures  
+join cle_repartition cr on cr.id_repartition = r.id_repartition         
+join type_compte tc on tc.id_type_compte = cr.id_type_compte        
+join comptes c on c.id_type_compte = tc.id_type_compte and c.id_annees_univers = fr.id_annees_univers   
+    and c.id_formation = fr.id_formation   
+    and str.id_historiques_structure = c.id_historiques_structure     
+join soldes_comptes sc on sc.id_compte = c.id_compte and sc.id_annees_univers = c.id_annees_univers   
+join utilisateur_formations uf on uf.id_formation =  c.id_formation   
+  
+where fr.id_annees_univers=:id_annee                     
+and fr.id_formation=:id_form   
+and uf.id_utilisateur=:id_util     
+and uf.role = 'RESPONSABLE FORMATION']]></SQLQuery>
+  <ViewAttribute
+    Name="IdTypeCompte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_TYPE_COMPTE"
+    Expression="ID_TYPE_COMPTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibTypeCmpte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_TYPE_CMPTE"
+    Expression="LIB_TYPE_CMPTE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdCompte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_COMPTE"
+    Expression="ID_COMPTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdSoldeCompte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SOLDE_COMPTE"
+    Expression="ID_SOLDE_COMPTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="SoldeActuel"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="SOLDE_ACTUEL"
+    Expression="SOLDE_ACTUEL"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="SoldeInitial"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="SOLDE_INITIAL"
+    Expression="SOLDE_INITIAL"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

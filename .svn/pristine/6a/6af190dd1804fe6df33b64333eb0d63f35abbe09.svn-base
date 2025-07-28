@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="FormationInstitutsEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="FORMATION_INSTITUTS"
+  AliasName="FormationInstitutsEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdFormationInstitut"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_FORMATION_INSTITUT"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="FORMATION_INSTITUTS"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdInstitut"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_INSTITUT"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="FORMATION_INSTITUTS"/>
+  <Attribute
+    Name="IdFormation"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_FORMATION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="FORMATION_INSTITUTS"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="FORMATION_INSTITUTS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="FORMATION_INSTITUTS"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="FORMATION_INSTITUTS"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="FORMATION_INSTITUTS"/>
+  <AccessorAttribute
+    Name="FormationsEO"
+    Association="model.assoc.FormationsToFormationInstitutsAssoc"
+    AssociationEnd="model.assoc.FormationsToFormationInstitutsAssoc.FormationsEO"
+    AssociationOtherEnd="model.assoc.FormationsToFormationInstitutsAssoc.FormationInstitutsEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <Key
+    Name="PkFormationInstitut"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_FORMATION_INSTITUT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FormationInstitutsEO.IdFormationInstitut"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkFormInstitut">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_INSTITUTS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_FORM_INSTITUT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FormationInstitutsEO.IdInstitut"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkFormInstitutForm">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_FORMATIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_FORM_INSTITUT_FORM"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FormationInstitutsEO.IdFormation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkFormInstitutUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_FORM_INSTITUT_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FormationInstitutsEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkFormInstitutUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_FORM_INSTITUT_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.FormationInstitutsEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

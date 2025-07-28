@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="recherche_etudPageDef"
+                Package="inscription.enregistrement_diplome">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="EudiantPersonneRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="EudiantPersonneROIterator"/>
+    <searchRegion Criteria="EudiantPersonneROVOCriteria" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="EudiantPersonneROIterator" id="EudiantPersonneROVOCriteriaQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="EudiantPersonneROIterator" id="EudiantPersonneRO">
+      <nodeDefinition DefName="model.updatableview.EudiantPersonneROVO" Name="EudiantPersonneRO0">
+        <AttrNames>
+          <Item Value="IdEtudiant"/>
+          <Item Value="Numero"/>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="PieceIdentification"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="EudiantPersonneROIterator" id="IdEtudiant">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

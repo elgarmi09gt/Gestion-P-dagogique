@@ -1,0 +1,38 @@
+package view.beans.evaluation.parametragesaisieec;
+
+import oracle.adf.model.BindingContext;
+
+import oracle.binding.AttributeBinding;
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+public class ParametreSaisieBean {
+    public ParametreSaisieBean() {
+    }
+
+    public BindingContainer getBindings() {
+        return BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    public String OnNewClicked() {
+        BindingContainer bindings = getBindings();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree");
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateInsert");
+        Object result = operationBinding.execute();
+        uticre.setInputValue(getUtilisateur());
+        if (!operationBinding.getErrors().isEmpty()) {
+            return null;
+        }
+        return null;
+    }
+
+    public String OnCommitClicked() {
+        BindingContainer bindings = getBindings();
+        OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return null;
+        }
+        return null;
+    }
+}

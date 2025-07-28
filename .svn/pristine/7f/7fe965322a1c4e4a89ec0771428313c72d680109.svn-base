@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="type_comptePageDef"
+                Package="ecolage.type_compte">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="TypeCompteRO" RangeSize="25" DataControl="ecolageAppDataControl" id="TypeCompteROIterator"/>
+    <searchRegion Binds="TypeCompteROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="TypeCompteROQuery"/>
+    <iterator Binds="TypeCompte" RangeSize="10" DataControl="ecolageAppDataControl" id="TypeCompteIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="TypeCompteROIterator" id="TypeCompteRO">
+      <nodeDefinition DefName="model.readOnlyView.TypeCompteROVO" Name="TypeCompteRO0">
+        <AttrNames>
+          <Item Value="LibCourtType"/>
+          <Item Value="LibelleType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="TypeCompteIterator" id="CreateInsertTypeCmp" InstanceName="ecolageAppDataControl.TypeCompte"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="TypeCompteIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeCompteIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TypeCompteIterator" id="UtiCreeTypeCmp">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="TypeCompteROIterator" id="refreshTableTypeCmp" InstanceName="ecolageAppDataControl.TypeCompteRO"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="iteratorExecute"/>
+    <action id="Commit" DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="TypeCompteIterator" id="getTypeCmptCurrent" InstanceName="ecolageAppDataControl.TypeCompte"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_type_cmpt" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="TypeCompteIterator" id="UtiModifieTypeCmp">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="TypeCompteIterator" id="DeleteTypeCmp" InstanceName="ecolageAppDataControl.TypeCompte"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+  </bindings>
+</pageDefinition>

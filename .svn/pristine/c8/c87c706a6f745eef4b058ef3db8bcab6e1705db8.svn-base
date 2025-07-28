@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="equivalencePageDef"
+                Package="inscription.equivalence">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="NivFormAutoriseRO" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="NivFormAutoriseROIterator"/>
+        <iterator Binds="Personnes" RangeSize="25" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="PersonneSearchSimple" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="PersonneSearchSimpleIterator"/>
+    <iterator Binds="PaysNationalite" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="PaysNationaliteIterator"/>
+    <iterator Binds="Equivalence" RangeSize="10" DataControl="inscriptionAppDataControl" id="EquivalenceIterator"/>
+    <iterator Binds="EquivalenceListe" RangeSize="7" DataControl="inscriptionAppDataControl"
+              id="EquivalenceListeIterator"/>
+    <searchRegion Binds="EquivalenceListeIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EquivalenceListeQuery"/>
+  </executables>
+  <bindings>
+    <list IterBinding="NivFormAutoriseROIterator" ListOperMode="navigation" ListIter="NivFormAutoriseROIterator"
+          id="NivFormAutoriseRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Libform"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="PersonnesIterator" id="getDetailPers" InstanceName="inscriptionAppDataControl.Personnes"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers_var" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="isNumNouvBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumNouvBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumNouvBac.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumNouvBac_isNumNouvBac_dataControl_dataProvider_isNumNouvBac_result">
+      <NamedData NDName="num_table" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getIdPersBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersBac.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersBac_getIdPersBac_dataControl_dataProvider_getIdPersBac_result">
+      <NamedData NDName="num_table" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isNumEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumEtudiant_isNumEtudiant_dataControl_dataProvider_isNumEtudiant_result">
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getIdPersEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersEtudiant_getIdPersEtudiant_dataControl_dataProvider_getIdPersEtudiant_result">
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="isNumCin" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumCin"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumCin.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumCin_isNumCin_dataControl_dataProvider_isNumCin_result">
+      <NamedData NDName="num_cin" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getIdPersCin" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersCin"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersCin.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersCin_getIdPersCin_dataControl_dataProvider_getIdPersCin_result">
+      <NamedData NDName="cin" NDType="java.lang.String"/>
+    </methodAction>
+    <action IterBinding="PersonneSearchSimpleIterator" id="getPersonneSearch"
+            InstanceName="inscriptionAppDataControl.PersonneSearchSimple" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="prenom_pers" NDType="java.lang.String"/>
+      <NamedData NDName="nom_pers" NDType="java.lang.String"/>
+      <NamedData NDName="date_naiss" NDType="java.lang.String"/>
+    </action>
+    <list IterBinding="PaysNationaliteIterator" ListOperMode="navigation" ListIter="PaysNationaliteIterator"
+          id="PaysNationalite" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Nationalite"/>
+      </AttrNames>
+    </list>
+    <action IterBinding="PaysNationaliteIterator" id="getPaysNationalite"
+            InstanceName="inscriptionAppDataControl.PaysNationalite" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_pays" NDType="java.lang.Long"/>
+      <NamedData NDName="id_nationalite" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="EquivalenceIterator" id="CreateInsertEquival" InstanceName="inscriptionAppDataControl.Equivalence"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="EquivalenceIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EquivalenceIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EquivalenceIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EquivalenceIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EquivalenceIterator" id="NumeroCin">
+      <AttrNames>
+        <Item Value="NumeroCin"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EquivalenceIterator" id="IdNiveauFormation">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EquivalenceIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="EquivalenceIterator" id="Email">
+      <AttrNames>
+        <Item Value="Email"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormAutoriseROIterator" id="IdNiveauFormationForm">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaysNationaliteIterator" id="IdPays">
+      <AttrNames>
+        <Item Value="IdPays"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormAutoriseROIterator" id="Libform">
+      <AttrNames>
+        <Item Value="Libform"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="EquivalenceListeIterator" id="EquivalenceListe">
+      <nodeDefinition DefName="model.readOnlyView.EquivalenceListeROVO" Name="EquivalenceListe0">
+        <AttrNames>
+          <Item Value="LibAnnee"/>
+          <Item Value="Prenoms"/>
+          <Item Value="Nom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="Nationalite"/>
+          <Item Value="NumeroCin"/>
+          <Item Value="Email"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="EquivalenceListeIterator" id="refreshEquivalence"
+            InstanceName="inscriptionAppDataControl.EquivalenceListe" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_niv_form" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="EquivalenceIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EquivalenceIterator" id="Nationalite">
+      <AttrNames>
+        <Item Value="Nationalite"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

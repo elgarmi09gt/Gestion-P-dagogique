@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ModeControleEvalROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ModeControleEvalROVORowImpl"
+  ComponentClass="model.readOnlyView.ModeControleEvalROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ModeControleEvalROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_type_ctrl"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[SELECT     
+    mce.id_filiere_ue_semstre_ec,mce.id_mode_controle_ec,mc.libelle_long, mce.id_type_controle, mce.id_mode_controle,mce.ID_PARCOURS_MAQUETTE_ANNEE     
+FROM mode_controle_ec mce     
+JOIN mode_controle mc on mc.id_mode_controle = mce.id_mode_controle    
+where id_type_controle=:id_type_ctrl]]></SQLQuery>
+  <ViewAttribute
+    Name="IdFiliereUeSemstreEc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_FILIERE_UE_SEMSTRE_EC"
+    Expression="ID_FILIERE_UE_SEMSTRE_EC"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdModeControleEc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_MODE_CONTROLE_EC"
+    Expression="ID_MODE_CONTROLE_EC"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIBELLE_LONG"
+    Expression="LIBELLE_LONG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdTypeControle"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_TYPE_CONTROLE"
+    SQLType="NUMERIC"
+    Expression="ID_TYPE_CONTROLE"/>
+  <ViewAttribute
+    Name="IdModeControle"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_MODE_CONTROLE"
+    Expression="ID_MODE_CONTROLE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdParcoursMaquetteAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PARCOURS_MAQUETTE_ANNEE"
+    Expression="ID_PARCOURS_MAQUETTE_ANNEE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdModeControleEc"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="EcEvalROVO"
+    ViewLink="model.viewlink.EcEvalROToTypeControleEvalROVL"
+    Type="model.readOnlyView.EcEvalROVORowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="TypeControleVO"
+    ViewLink="model.viewlink.TypeControleToModeControleROVL"
+    Type="oracle.jbo.server.ViewRowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

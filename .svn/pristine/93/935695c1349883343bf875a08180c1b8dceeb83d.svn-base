@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl2" layout="scroll">
+    <af:panelHeader text="Validation Inscription" id="ph1" inlineStyle="margin-left:10px;">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:selectOneChoice value="#{bindings.NivFormationRO.inputValue}" label="Niveau Formation"
+                          required="#{bindings.NivFormationRO.hints.mandatory}"
+                          shortDesc="#{bindings.NivFormationRO.hints.tooltip}" id="soc1" autoSubmit="true"
+                          contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                          labelStyle="font-size:large;" inlineStyle="margin-top:20px;"
+                          valueChangeListener="#{PreInscbean.onChangeNivForm}">
+        <f:selectItems value="#{bindings.NivFormationRO.items}" id="si1"/>
+        <f:validator binding="#{bindings.NivFormationRO.validator}"/>
+      </af:selectOneChoice>
+    </af:panelHeader>
+    <af:panelGroupLayout id="pgl3" layout="horizontal" inlineStyle="margin-top:10px;">
+      <af:selectBooleanCheckbox label="En attente de validation" id="sbc1" inlineStyle="margin-left:380px;"
+                                autoSubmit="true" partialTriggers="sbc2 sbc3 t3 soc1" binding="#{PreInscbean.attente}"
+                                valueChangeListener="#{PreInscbean.onChangeAttente}"/>
+      <af:selectBooleanCheckbox label="Déjà inscrits" id="sbc2" inlineStyle="margin-left:100px;" autoSubmit="true"
+                                partialTriggers="sbc1 sbc3 t3 soc1" binding="#{PreInscbean.inscrits}"
+                                valueChangeListener="#{PreInscbean.onChangeInscrits}"/>
+      <af:selectBooleanCheckbox label="Ne pas s'inscrire" id="sbc3" inlineStyle="margin-left:100px;" autoSubmit="true"
+                                partialTriggers="sbc1 sbc2 t3 soc1" binding="#{PreInscbean.not_inscrits}"
+                                valueChangeListener="#{PreInscbean.onChangeNotInscrits}"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl1" layout="vertical"
+                         inlineStyle="margin-top:30px;border:solid  2px #2897e8;width:1150px;margin-left:10px;">
+            <af:button text="Liste des Etudiants" id="b3"
+                       inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:5px;"
+                       partialSubmit="false" disabled="true"/>
+      <af:table value="#{bindings.NivFormPreins.collectionModel}" var="row" rows="#{bindings.NivFormPreins.rangeSize}"
+                emptyText="#{bindings.NivFormPreins.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" fetchSize="#{bindings.NivFormPreins.rangeSize}" id="t3" rowSelection="single"
+                selectionListener="#{bindings.NivFormPreins.collectionModel.makeCurrent}"
+                selectedRowKeys="#{bindings.NivFormPreins.collectionModel.selectedRow}" scrollPolicy="page"
+                partialTriggers="::sbc1" inlineStyle="margin-top:10px;margin-left:5px;" width="1123">
+        <af:column headerText="#{bindings.NivFormPreins.hints.IdEtudiant.label}" id="c15" visible="false">
+          <af:outputText value="#{row.IdEtudiant}" shortDesc="#{bindings.NivFormPreins.hints.IdEtudiant.tooltip}"
+                         id="ot9">
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.NivFormPreins.hints.IdEtudiant.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column id="c1" headerText="Informations de l'Etudiant" inlineStyle="text-align:center;" align="center">
+          <af:column headerText="#{bindings.NivFormPreins.hints.Numero.label}" id="c16" width="120">
+            <af:outputText value="#{row.Numero}" shortDesc="#{bindings.NivFormPreins.hints.Numero.tooltip}" id="ot10"/>
+          </af:column>
+          <af:column headerText="Prénom &amp; Nom" id="c17" width="350">
+            <af:outputText value="#{row.Prenomnom}" shortDesc="#{bindings.NivFormPreins.hints.Prenomnom.tooltip}"
+                           id="ot11"/>
+          </af:column>
+          <af:column headerText="Date Naissance" id="c7" width="120">
+            <af:outputText value="#{row.DateNaissance}"
+                           shortDesc="#{bindings.NivFormPreins.hints.DateNaissance.tooltip}" id="ot1">
+              <af:convertDateTime pattern="#{bindings.NivFormPreins.hints.DateNaissance.format}"/>
+            </af:outputText>
+          </af:column>
+        </af:column>
+        <af:column id="c2" headerText="Insc. En Ligne" align="center">
+          <af:column headerText="Validée" id="c13" width="75">
+            <af:outputText value="#{DeliberatioUeBean.getInscEnLigne(row.IdInscriptionPedagogique)}"
+                           shortDesc="#{bindings.NivFormPreins.hints.EnRegleBu.tooltip}" id="ot17"/>
+          </af:column>
+        </af:column>
+        <af:column id="c4" headerText="BU" align="center">
+          <af:column headerText="En Régle" id="c23" width="55">
+            <af:outputText value="#{DeliberatioUeBean.getEtudiantBu(row.IdEtudiant,bindings.IdAnneesUnivers1.inputValue)}"
+                           shortDesc="#{bindings.NivFormPreins.hints.EnRegleBu.tooltip}" id="ot12"/>
+          </af:column>
+        </af:column>
+        <af:column id="c5" headerText="Aptitude" align="center">
+          <af:column headerText="#{bindings.NivFormPreins.hints.Apte.label}" id="c24" width="50">
+            <af:outputText value="#{DeliberatioUeBean.getApteEtudiant(row.IdEtudiant,bindings.IdAnneesUnivers1.inputValue)}"
+                           shortDesc="#{bindings.NivFormPreins.hints.Apte.tooltip}" id="ot18"/>
+          </af:column>
+        </af:column>
+        <af:column id="c6" headerText="Etudiant ACP" align="center">
+          <af:column headerText="Paiement" id="c25" width="55">
+            <af:outputText value="#{DeliberatioUeBean.getPaiementEtudiant(row.IdEtudiant,bindings.IdAnneesUnivers1.inputValue,bindings.IdNiveauFormationParcours.inputValue,row.IdInscriptionPedagogique)}"
+                           shortDesc="#{bindings.NivFormPreins.hints.paiement.tooltip}" id="ot19"/>
+          </af:column>
+        </af:column>
+        <af:column id="c3" headerText="Etudiant TIC" align="center">
+          <af:column headerText="TIC" id="c8" width="55">
+            <af:outputText value="#{DeliberatioUeBean.getEtudTic(row.IdEtudiant,bindings.IdAnneesUnivers1.inputValue)}"
+                           shortDesc="#{bindings.NivFormPreins.hints.paiement.tooltip}" id="ot3"/>
+          </af:column>
+        </af:column>
+        <af:column id="c14" headerText="Resp. Etudiant" align="center">
+          <af:column headerText="Resp." id="c18" width="55">
+            <af:outputText value="#{DeliberatioUeBean.getResponsableEtud(row.IdEtudiant)}"
+                           shortDesc="#{bindings.NivFormPreins.hints.paiement.tooltip}" id="ot4"/>
+          </af:column>
+        </af:column>
+        <af:column headerText="#{bindings.NivFormPreins.hints.IdInscriptionPedagogique.label}" id="c26" visible="false">
+          <af:outputText value="#{row.IdInscriptionPedagogique}"
+                         shortDesc="#{bindings.NivFormPreins.hints.IdInscriptionPedagogique.tooltip}" id="ot20">
+            <af:convertNumber groupingUsed="false"
+                              pattern="#{bindings.NivFormPreins.hints.IdInscriptionPedagogique.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="Sélect" id="c27" width="75">
+          <af:selectBooleanCheckbox value="#{row.bindings.case_cocher.inputValue}"
+                                    label="#{row.bindings.case_cocher.label}"
+                                    shortDesc="#{bindings.NivFormPreins.hints.case_cocher.tooltip}" id="sbc4"/>
+          <f:facet name="header">
+            <af:selectBooleanCheckbox text="Tout" id="sbc5" valueChangeListener="#{PreInscbean.onSelectAll}"
+                                      binding="#{PreInscbean.check_all}" autoSubmit="true"/>
+          </f:facet>
+        </af:column>
+      </af:table>
+      <af:button text="Valider" id="b1"
+                 inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                 icon="/images/commit.png" action="#{PreInscbean.onValiderPreInsc}"/>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+            binding="#{PreInscbean.popup}">
+    <af:dialog id="d1" title="Confirmation de l'inscription" dialogListener="#{PreInscbean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous valider l'inscription de (#{PreInscbean.nombr_insc}) étudiant(s) ?" id="ot2"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{PreInscbean.onDialogCan}"/>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+</ui:composition>

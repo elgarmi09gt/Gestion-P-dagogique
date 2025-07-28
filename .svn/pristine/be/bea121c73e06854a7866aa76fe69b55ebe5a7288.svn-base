@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <af:panelFormLayout id="pfl1" rows="2"
+                      inlineStyle="border:solid  2px #2897e8;width:700px;margin-top:10px;margin-left:10px;margin-bottom:20px;">
+    <af:inputText value="#{bindings.Numero.inputValue}" label="Numéro"
+                  required="#{bindings.Numero.hints.mandatory}" columns="#{bindings.Numero.hints.displayWidth}"
+                  maximumLength="#{bindings.Numero.hints.precision}" shortDesc="#{bindings.Numero.hints.tooltip}"
+                  id="it1" readOnly="true">
+      <f:validator binding="#{bindings.Numero.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                  required="#{bindings.Nom.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Nom.hints.displayWidth}" maximumLength="#{bindings.Nom.hints.precision}"
+                  shortDesc="#{bindings.Nom.hints.tooltip}" id="it2">
+      <f:validator binding="#{bindings.Nom.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Prenoms.inputValue}" label="Prénoms"
+                  required="#{bindings.Prenoms.hints.mandatory}" readOnly="true"
+                  columns="#{bindings.Prenoms.hints.displayWidth}" maximumLength="#{bindings.Prenoms.hints.precision}"
+                  shortDesc="#{bindings.Prenoms.hints.tooltip}" id="it3">
+      <f:validator binding="#{bindings.Prenoms.validator}"/>
+    </af:inputText>
+    <af:inputDate value="#{bindings.DateNaissance.inputValue}" readOnly="true"
+                  label="Date Naissance" required="#{bindings.DateNaissance.hints.mandatory}"
+                  columns="#{bindings.DateNaissance.hints.displayWidth}"
+                  shortDesc="#{bindings.DateNaissance.hints.tooltip}" id="id1">
+      <f:validator binding="#{bindings.DateNaissance.validator}"/>
+      <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+    </af:inputDate>
+  </af:panelFormLayout>
+  <af:button text="Acquisition des frais d'inscription" id="b2"
+             inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:30px;"
+             partialSubmit="false" disabled="true"/>
+  <af:panelLabelAndMessage label="#{bindings.Prenoms} #{bindings.Nom} est déjà acquité de ses frais d'inscription !"
+                           id="plam1"
+                           inlineStyle="background-color:Yellow;margin-left:10px;margin-top:20px;margin-bottom:10px;margin-left:400px;"
+                           visible="#{sessionScope.is_en_regle_paie == '1' ? true : false}"/>
+  <af:panelLabelAndMessage label="#{bindings.Prenoms} #{bindings.Nom} n'est pas acquité de ses frais d'inscription !"
+                           id="plam2"
+                           inlineStyle="background-color:Red;margin-left:10px;margin-top:10px;margin-bottom:10px;margin-left:400px;"
+                           visible="#{sessionScope.is_not_en_regle_paie == '1' ? true : false}"/>
+  <af:panelFormLayout id="pfl2" rows="3"
+                      inlineStyle="border:solid  2px #2897e8;margin-top:20px;margin-left:10px;width:1200px;">
+    <af:selectOneChoice value="#{bindings.CodeNationalite.inputValue}" label="Nationalité"
+                        required="#{bindings.CodeNationalite.hints.mandatory}"
+                        shortDesc="#{bindings.CodeNationalite.hints.tooltip}" id="soc1" contentStyle="margin-top:10px;"
+                        disabled="true">
+      <f:selectItems value="#{bindings.CodeNationalite.items}" id="si1"/>
+      <f:validator binding="#{bindings.CodeNationalite.validator}"/>
+    </af:selectOneChoice>
+    <af:inputDate value="#{bindings.DatePaiement.inputValue}" label="Date Paiement"
+                  required="#{bindings.DatePaiement.hints.mandatory}"
+                  columns="#{bindings.DatePaiement.hints.displayWidth}"
+                  shortDesc="#{bindings.DatePaiement.hints.tooltip}" id="id2" disabled="true">
+      <f:validator binding="#{bindings.DatePaiement.validator}"/>
+      <af:convertDateTime pattern="#{bindings.DatePaiement.format}"/>
+    </af:inputDate>
+    <af:selectOneChoice value="#{bindings.IdOperateur.inputValue}" label="Opérateur"
+                        required="#{bindings.IdOperateur.hints.mandatory}"
+                        shortDesc="#{bindings.IdOperateur.hints.tooltip}" id="soc3" contentStyle="margin-top:10px;"
+                        disabled="true">
+      <f:selectItems value="#{bindings.IdOperateur.items}" id="si3"/>
+      <f:validator binding="#{bindings.IdOperateur.validator}"/>
+    </af:selectOneChoice>
+    <af:inputText value="#{bindings.NumQuittance.inputValue}" label="Numéro Quittance"
+                  required="#{bindings.NumQuittance.hints.mandatory}"
+                  columns="#{bindings.NumQuittance.hints.displayWidth}"
+                  maximumLength="#{bindings.NumQuittance.hints.precision}"
+                  shortDesc="#{bindings.NumQuittance.hints.tooltip}" id="it5" disabled="true">
+      <f:validator binding="#{bindings.NumQuittance.validator}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.DroitAdm.inputValue}" label="Droit Insc. Administrative"
+                  required="#{bindings.DroitAdm.hints.mandatory}" columns="#{bindings.DroitAdm.hints.displayWidth}"
+                  maximumLength="#{bindings.DroitAdm.hints.precision}" shortDesc="#{bindings.DroitAdm.hints.tooltip}"
+                  id="it8" disabled="true" labelStyle="width:200px;">
+      <f:validator binding="#{bindings.DroitAdm.validator}"/>
+      <af:convertNumber groupingUsed="false" pattern="#{bindings.DroitAdm.format}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.DroitPed.inputValue}" label="Droit insc. Pédagogique"
+                  required="#{bindings.DroitPed.hints.mandatory}" columns="#{bindings.DroitPed.hints.displayWidth}"
+                  maximumLength="#{bindings.DroitPed.hints.precision}" shortDesc="#{bindings.DroitPed.hints.tooltip}"
+                  id="it9" disabled="true">
+      <f:validator binding="#{bindings.DroitPed.validator}"/>
+      <af:convertNumber groupingUsed="false" pattern="#{bindings.DroitPed.format}"/>
+    </af:inputText>
+    <af:inputText value="#{bindings.Montant.inputValue}" label="#{bindings.Montant.hints.label}"
+                  required="#{bindings.Montant.hints.mandatory}" columns="#{bindings.Montant.hints.displayWidth}"
+                  maximumLength="#{bindings.Montant.hints.precision}" shortDesc="#{bindings.Montant.hints.tooltip}"
+                  id="it6" disabled="true">
+      <f:validator binding="#{bindings.Montant.validator}"/>
+      <af:convertNumber groupingUsed="false" pattern="#{bindings.Montant.format}"/>
+    </af:inputText>
+    <af:selectOneChoice value="#{bindings.IdModePaiement.inputValue}" label="Mode Paiement"
+                        required="#{bindings.IdModePaiement.hints.mandatory}"
+                        shortDesc="#{bindings.IdModePaiement.hints.tooltip}" id="soc2" contentStyle="margin-top:5px;"
+                        disabled="true">
+      <f:selectItems value="#{bindings.IdModePaiement.items}" id="si2"/>
+      <f:validator binding="#{bindings.IdModePaiement.validator}"/>
+    </af:selectOneChoice>
+    <af:inputText value="#{bindings.MontantPercu.inputValue}" label="Montant Perçu"
+                  required="#{bindings.MontantPercu.hints.mandatory}"
+                  columns="#{bindings.MontantPercu.hints.displayWidth}"
+                  maximumLength="#{bindings.MontantPercu.hints.precision}"
+                  shortDesc="#{bindings.MontantPercu.hints.tooltip}" id="it10" contentStyle="margin-bottom:10px;"
+                  disabled="true">
+      <f:validator binding="#{bindings.MontantPercu.validator}"/>
+      <af:convertNumber groupingUsed="false" pattern="#{bindings.MontantPercu.format}"/>
+    </af:inputText>
+    <af:selectBooleanCheckbox label="Valider" id="sbc1" disabled="true"
+                              selected="#{sessionScope.is_en_regle_paie == '1' ? true : false}"/>
+  </af:panelFormLayout>
+</ui:composition>

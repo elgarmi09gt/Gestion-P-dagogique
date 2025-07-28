@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="vertical">
+    <af:panelGroupLayout id="pgl2" layout="horizontal">
+      <af:panelGroupLayout id="pgl3" layout="vertical" inlineStyle="line-height:30px;width:500px" valign="middle" halign="center">
+        <af:outputFormatted value="Parcours" id="of1" styleUsage="pageStamp"
+                                        inlineStyle="font-size:x-large;"/>
+        <af:selectOneChoice value="#{bindings.Parcours.inputValue}"
+                            required="#{bindings.Parcours.hints.mandatory}"
+                            contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:50px"
+                            shortDesc="#{bindings.Parcours.hints.tooltip}" id="soc1"
+                            binding="#{ReglesCompensationBean.parcours}"
+                            valueChangeListener="#{ReglesCompensationBean.OnParcoursChanged}" autoSubmit="true">
+          <f:selectItems value="#{bindings.Parcours.items}" id="si1"/>
+          <f:validator binding="#{bindings.Parcours.validator}"/>
+        </af:selectOneChoice>
+      </af:panelGroupLayout>
+      <af:spacer width="30" height="30" id="s1"/>
+      <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="line-height:50px; font-size:large;">
+        <af:outputFormatted value="Régles de Compensations" id="of2" styleUsage="pageStamp"
+                                        inlineStyle="font-size:x-large;"/>
+        <af:selectOneRadio value="#{bindings.ReglesCompensation1.inputValue}"
+                           required="#{bindings.ReglesCompensation1.hints.mandatory}"
+                           shortDesc="#{bindings.ReglesCompensation1.hints.tooltip}" id="sor1"
+                           contentStyle=" border-radius:8px;font-size:x-large;border:solid 2px #2898e8;line-height:50px;"
+                           inlineStyle="line-height:30px; font-size:large;" binding="#{ReglesCompensationBean.regles}">
+          <f:selectItems value="#{bindings.ReglesCompensation1.items}" id="si2"/>
+          <f:validator binding="#{bindings.ReglesCompensation1.validator}"/>
+        </af:selectOneRadio>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl5" layout="vertical" valign="middle" halign="center" inlineStyle="margin-top:30px">
+      <af:button text="#{viewcontrollerBundle.ENREGISTRER}" id="b1" inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;"
+                 icon="/images/save_close_48px.png" actionListener="#{ReglesCompensationBean.OnAddRule}"/>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{ReglesCompensationBean.popupRuleExist}">
+    <af:dialog id="d1" title="Info  !!!" type="ok"
+               inlineStyle="text-align:center; font-size:x-large; color:#2897e8;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Ce parcours à déja une règle pour cette année : #{sessionScope.get(&quot;Libelle&quot;).toString()}( #{sessionScope.get(&quot;Description&quot;).toString()})" id="of3"/>
+    </af:dialog>
+  </af:popup>
+  <af:panelGroupLayout id="pgl6" layout="scroll" inlineStyle="margin-top:10px">
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar">
+        <af:toolbar id="t2">
+          <af:button id="b2" icon="/images/delete_icon.png">
+            <af:showPopupBehavior popupId="::p2"/>
+          </af:button>
+        </af:toolbar>
+      </f:facet>
+      <f:facet name="statusbar"/>
+      <af:table value="#{bindings.ReglesCompensationPArcoursROVO.collectionModel}" var="row"
+                rows="#{bindings.ReglesCompensationPArcoursROVO.rangeSize}"
+                emptyText="#{bindings.ReglesCompensationPArcoursROVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0"
+                selectedRowKeys="#{bindings.ReglesCompensationPArcoursROVO.collectionModel.selectedRow}"
+                selectionListener="#{bindings.ReglesCompensationPArcoursROVO.collectionModel.makeCurrent}"
+                rowSelection="single" fetchSize="#{bindings.ReglesCompensationPArcoursROVO.rangeSize}"
+                filterModel="#{bindings.ReglesCompensationPArcoursROVOQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.ReglesCompensationPArcoursROVOQuery.processQuery}" varStatus="vs" id="t1"
+                columnStretching="last" binding="#{ReglesCompensationBean.parcoursRuleTable}">
+        <af:column sortProperty="#{bindings.ReglesCompensationPArcoursROVO.hints.Libelle.name}" filterable="true"
+                   sortable="true" headerText="#{bindings.ReglesCompensationPArcoursROVO.hints.Libelle.label}" id="c1"
+                   width="300" inlineStyle="font-size:large;">
+          <af:outputText value="#{row.Libelle}"
+                         shortDesc="#{bindings.ReglesCompensationPArcoursROVO.hints.Libelle.tooltip}" id="ot1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.ReglesCompensationPArcoursROVO.hints.Description.name}" filterable="true"
+                   sortable="true" headerText="#{bindings.ReglesCompensationPArcoursROVO.hints.Description.label}"
+                   id="c2" inlineStyle="font-size:large;">
+          <af:outputText value="#{row.Description}"
+                         shortDesc="#{bindings.ReglesCompensationPArcoursROVO.hints.Description.tooltip}" id="ot2"/>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2">
+    <af:dialog id="d2" title="Confirmation suppression" type="yesNo" affirmativeTextAndAccessKey="OUI"
+               noTextAndAccessKey="ANNULER" dialogListener="#{ReglesCompensationBean.OnConfirmDelete}">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl7" layout="vertical" inlineStyle="text-align:center;">
+        <af:icon name="warning" id="i1"/>
+        <af:outputFormatted value="Voulez-vous supprimer ?" id="of4" inlineStyle="font-size:x-large; color:Red;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

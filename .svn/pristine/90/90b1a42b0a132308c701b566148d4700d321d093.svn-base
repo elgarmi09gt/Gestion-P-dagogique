@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="RelationsTypeStructuresEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="RELATIONS_TYPE_STRUCTURES"
+  AliasName="RelationsTypeStructuresEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdRelatioTypStruct"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_RELATIO_TYP_STRUCT"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="RELATIONS_TYPE_STRUCTURES"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="TypeStructureParent"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="TYPE_STRUCTURE_PARENT"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="RELATIONS_TYPE_STRUCTURES"/>
+  <Attribute
+    Name="TypeStructureFils"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="TYPE_STRUCTURE_FILS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="RELATIONS_TYPE_STRUCTURES"/>
+  <Attribute
+    Name="IdTypeRelation"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_TYPE_RELATION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="RELATIONS_TYPE_STRUCTURES"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="RELATIONS_TYPE_STRUCTURES"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="RELATIONS_TYPE_STRUCTURES"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="RELATIONS_TYPE_STRUCTURES"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="RELATIONS_TYPE_STRUCTURES"/>
+  <Key
+    Name="PkRelatioTypStruct"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_RELATIO_TYP_STRUCT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RelationsTypeStructuresEO.IdRelatioTypStruct"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqRelatTypStrUnique">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_RELAT_TYP_STR_UNIQUE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RelationsTypeStructuresEO.TypeStructureParent"/>
+      <Item Value="model.entities.RelationsTypeStructuresEO.TypeStructureFils"/>
+      <Item Value="model.entities.RelationsTypeStructuresEO.IdTypeRelation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkRelatTypStructFils">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_TYPE_SECTIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_RELAT_TYP_STRUCT_FILS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RelationsTypeStructuresEO.TypeStructureFils"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkRelatTypStructParent">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_TYPE_SECTIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_RELAT_TYP_STRUCT_PARENT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RelationsTypeStructuresEO.TypeStructureParent"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkRelatTypStructRelatio">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_TYPE_RELATIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_RELAT_TYP_STRUCT_RELATIO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RelationsTypeStructuresEO.IdTypeRelation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkRelatTypStructUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_RELAT_TYP_STRUCT_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RelationsTypeStructuresEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkRelatTypStructUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_RELAT_TYP_STRUCT_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.RelationsTypeStructuresEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

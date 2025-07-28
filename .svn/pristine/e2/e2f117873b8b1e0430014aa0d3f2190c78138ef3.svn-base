@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="responsable_etab_deptPageDef"
+                Package="ecolage.resp_etab_dept">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="UtilisateurStructure" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="UtilisateurStructureIterator"/>
+    <iterator Binds="Structures" RangeSize="5" DataControl="evaluationAppDataControl" id="StructuresIterator"/>
+    <searchRegion Binds="StructuresIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="StructuresQuery"/>
+    <iterator Binds="UtilisateursROVO1" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="UtilisateursROVO1Iterator"/>
+    <iterator Binds="HistoriquesStructuresVO1" RangeSize="5" DataControl="evaluationAppDataControl"
+              id="HistoriquesStructuresVO1Iterator"/>
+    <searchRegion Binds="HistoriquesStructuresVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="HistoriquesStructuresVO1Query"/>
+    <iterator Binds="UtilisateursROVO2" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="UtilisateursROVO2Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="StructuresIterator" id="Structures">
+      <nodeDefinition DefName="model.updatableview.StructuresVO" Name="Structures0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="UtilisateursROVO1Iterator" ListOperMode="navigation" ListIter="UtilisateursROVO1Iterator"
+          id="UtilisateursROVO1" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Prenomnom"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="HistoriquesStructuresVO1Iterator" id="HistoriquesStructuresVO1">
+      <nodeDefinition DefName="model.updatableview.HistoriquesStructuresVO" Name="HistoriquesStructuresVO10">
+        <AttrNames>
+          <Item Value="LibelleCourt"/>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="UtilisateursROVO2Iterator" ListOperMode="navigation" ListIter="UtilisateursROVO2Iterator"
+          id="UtilisateursROVO2" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Prenomnom"/>
+      </AttrNames>
+    </list>
+  </bindings>
+</pageDefinition>

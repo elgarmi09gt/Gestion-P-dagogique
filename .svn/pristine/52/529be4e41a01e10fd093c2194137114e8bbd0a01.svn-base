@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="parametrage_cles_repartitions_tk_parametrage_cles_repartitions_tk_ExecuteWithParamsPageDef"
+                Package="ecolage.parametrage_cles_repartitions" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="FormationPayanteRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="FormationPayanteROIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="FormationPayanteROIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams" InstanceName="ecolageAppDataControl.FormationPayanteRO"
+            DataControl="ecolageAppDataControl">
+      <NamedData NDName="id_hs" NDValue="#{sessionScope.id_hs}" NDType="java.lang.String"/>
+      <NamedData NDName="id_util" NDValue="#{sessionScope.id_user}" NDType="java.lang.String"/>
+      <NamedData NDName="id_annee" NDValue="#{sessionScope.id_annee}" NDType="java.lang.String"/>
+      <NamedData NDName="niv_form_parc" NDValue="#{sessionScope.id_niv_form_parcours}" NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

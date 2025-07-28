@@ -1,0 +1,501 @@
+package view.beans.structure;
+
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCIteratorBinding;
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPopup;
+import oracle.adf.view.rich.component.rich.data.RichTable;
+import oracle.adf.view.rich.context.AdfFacesContext;
+import oracle.adf.view.rich.event.DialogEvent;
+
+import oracle.adf.view.rich.event.DialogEvent.Outcome;
+
+import oracle.adf.view.rich.render.ClientEvent;
+
+import oracle.binding.AttributeBinding;
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+
+import view.beans.jsfutils.JSFUtils;
+
+public class StructureBean {
+    final String OLD_CURR_KEY_VIEWSCOPE_ATTR = "__oldCurrentRowKey__";
+    private RichTable structureTable;
+    private RichPopup popupNewStructure;
+    private RichPopup popupEditStructure;
+    private RichPopup popupDeleteStructure;
+    private RichTable hstructureTable;
+    private RichPopup popupNewHStruct;
+    private RichPopup popupEditHStructure;
+    private RichPopup popupDeleteHStructure;
+    Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    private Integer utilisateur = Integer.parseInt(sessionScope.get("id_user").toString());
+    private RichPopup popupDeptExist;
+    private RichPopup popupUtiExist;
+    private RichPopup popupFormExist;
+    private RichPopup popupStructExist;
+    private RichPopup popupDeptExistYet;
+
+    public StructureBean() {
+    }
+
+    public void setStructureTable(RichTable structureTable) {
+        this.structureTable = structureTable;
+    }
+
+    public RichTable getStructureTable() {
+        return structureTable;
+    }
+
+    public BindingContainer getBindings() {
+        return BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    public void OnNewStructureClicked(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = getBindings();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree");
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("StructuresIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        if (oldCcurrentRow != null) {
+            ADFContext adfCtx = ADFContext.getCurrent();
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        }
+        //perform row create
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateStructure");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopupNewStructure();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        //empty hints renders dialog in center of screen
+        popup.show(hints);
+        return;
+    }
+
+    public void setPopupNewStructure(RichPopup popupNewStructure) {
+        this.popupNewStructure = popupNewStructure;
+    }
+
+    public RichPopup getPopupNewStructure() {
+        return popupNewStructure;
+    }
+
+    // For All New & Edit Dialog ok action
+    public void OnDialogAction(DialogEvent dialogEvent) {
+        // Add event code here...
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = getBindings();
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopupNewStructure().hide();
+            this.getPopupNewHStruct().hide();
+            this.getPopupEditStructure().hide();
+            this.getPopupEditHStructure().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getStructureTable());
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getHstructureTable());
+        }
+    }
+
+    // New & Edit Structure
+    public void OnStructureDialogCancel(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = getBindings();
+        RichPopup popup = this.getPopupNewStructure();
+        popup.hide();
+        //the cancel operation is executed with immediate=true to bypass the
+        //model update. Therefore we manually delete the new row from the
+        //iterator
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("StructuresIterator");
+        Row currentRow = dciter.getCurrentRow();
+        dciter.removeCurrentRow();
+        //set current row back to original row
+        ADFContext adfCtx = ADFContext.getCurrent();
+        if(adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR) != null){
+            String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getStructureTable());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        //we don't want to continue with the remainder of the lifecycle and
+        //thus skip the rest
+        fctx.renderResponse();
+    }
+
+    public void OnEditStructureClicked(ActionEvent actionEvent) {
+        // Add event code here...
+        AttributeBinding utimodif = (AttributeBinding) getBindings().getControlBinding("UtiModifie");
+        utimodif.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopupEditStructure();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        //empty hints renders dialog in center of screen
+        popup.show(hints);
+    }
+
+    public void setPopupEditStructure(RichPopup popupEditStructure) {
+        this.popupEditStructure = popupEditStructure;
+    }
+
+    public RichPopup getPopupEditStructure() {
+        return popupEditStructure;
+    }
+
+    public void setPopupDeleteStructure(RichPopup popupDeleteStructure) {
+        this.popupDeleteStructure = popupDeleteStructure;
+    }
+
+    public RichPopup getPopupDeleteStructure() {
+        return popupDeleteStructure;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnDeleteStructureAction(DialogEvent dialogEvent) {
+        // Add event code here...
+        if (dialogEvent.getOutcome().equals(Outcome.yes)) {
+            BindingContainer bindings = getBindings();
+            AttributeBinding strIdBinding = (AttributeBinding) bindings.getControlBinding("IdStructure");
+            Integer str_id = (Integer.parseInt(strIdBinding.getInputValue().toString()));
+            OperationBinding isDeptExist = bindings.getOperationBinding("IsDeptEtabExist");
+            isDeptExist.getParamsMap().put("str_id", str_id);
+            isDeptExist.execute();
+            DCIteratorBinding iterDeptEtab = (DCIteratorBinding) bindings.get("IsDeptEtabExistIterator");
+            Row crntstr = iterDeptEtab.getCurrentRow();
+            if (crntstr == null) {
+                OperationBinding isUtiExist = bindings.getOperationBinding("IsUtiEtabExist");
+                isUtiExist.getParamsMap().put("str_id", str_id);
+                isUtiExist.execute();
+                DCIteratorBinding iterUtiEtab = (DCIteratorBinding) bindings.get("IsUtiEtabExistIterator");
+                Row crntuti = iterUtiEtab.getCurrentRow();
+                if (crntuti == null) {
+                    OnDeleteStructureClicked();
+                }else{
+                //popup uti exist
+                RichPopup popup = this.getPopupUtiExist();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+            }
+            }else{
+                //popup formation exist
+                RichPopup popup = this.getPopupDeptExist();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+            }
+            
+        }
+    }
+
+    public String OnDeleteStructureClicked() {
+        // Add event code here...
+        BindingContainer bindings = getBindings();
+        OperationBinding operationBinding = bindings.getOperationBinding("DeleteStructure");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return null;
+        } else {
+            OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+            Object commitResult = operationCommit.execute();
+           // AdfFacesContext.getCurrentInstance().addPartialTarget(this.getStructureTable());
+            return null;
+        }
+    }
+
+    public void setHstructureTable(RichTable hstructureTable) {
+        this.hstructureTable = hstructureTable;
+    }
+
+    public RichTable getHstructureTable() {
+        return hstructureTable;
+    }
+
+    public void setPopupNewHStruct(RichPopup popupNewHStruct) {
+        this.popupNewHStruct = popupNewHStruct;
+    }
+
+    public RichPopup getPopupNewHStruct() {
+        return popupNewHStruct;
+    }
+
+    public void setPopupEditHStructure(RichPopup popupEditHStructure) {
+        this.popupEditHStructure = popupEditHStructure;
+    }
+
+    public RichPopup getPopupEditHStructure() {
+        return popupEditHStructure;
+    }
+
+    public void setPopupDeleteHStructure(RichPopup popupDeleteHStructure) {
+        this.popupDeleteHStructure = popupDeleteHStructure;
+    }
+
+    public RichPopup getPopupDeleteHStructure() {
+        return popupDeleteHStructure;
+    }
+
+    public void OnNewHStructClicked(ActionEvent actionEvent) {
+        // Add event code here...
+        BindingContainer bindings = getBindings();
+        AttributeBinding uticre = (AttributeBinding) getBindings().getControlBinding("UtiCree1");
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("HistoriquesStructuresStructIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        if (oldCcurrentRow != null) {
+            ADFContext adfCtx = ADFContext.getCurrent();
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        }
+        //perform row create
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateHStructure");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return;
+        }
+        uticre.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopupNewHStruct();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        //empty hints renders dialog in center of screen
+        popup.show(hints);
+        return;
+    }
+
+    public void OnEditHStructClick(ActionEvent actionEvent) {
+        // Add event code here...
+        AttributeBinding utimodif = (AttributeBinding) getBindings().getControlBinding("UtiModifie1");
+        utimodif.setInputValue(getUtilisateur());
+        RichPopup popup = this.getPopupEditHStructure();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        //empty hints renders dialog in center of screen
+        popup.show(hints);
+
+    }
+
+    public String OnDeleteHStructClicked() {
+        // Add event code here...
+        BindingContainer bindings = getBindings();
+        OperationBinding operationBinding = bindings.getOperationBinding("DeleteHStructure");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return null;
+        } else {
+            OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+            Object commitResult = operationCommit.execute();
+            //AdfFacesContext.getCurrentInstance().addPartialTarget(this.getStructureTable());
+            return null;
+        }
+    }
+
+    // Historique Structure Cancel Dialog
+    public void OnHStructDialogCancel(ClientEvent clientEvent) {
+        // Add event code here...
+        BindingContainer bindings = getBindings();
+        RichPopup popup = this.getPopupNewHStruct();
+        popup.hide();
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("HistoriquesStructuresStructIterator");
+        Row currentRow = dciter.getCurrentRow();
+        dciter.removeCurrentRow();
+        //set current row back to original row
+        ADFContext adfCtx = ADFContext.getCurrent();
+        if(adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR) != null){
+            String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+            dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        }
+        //AdfFacesContext.getCurrentInstance().addPartialTarget(this.getHstructureTable());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        //we don't want to continue with the remainder of the lifecycle and
+        //thus skip the rest
+        fctx.renderResponse();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnDeleteHStructAction(DialogEvent dialogEvent) {
+        // Add event code here...
+        if (dialogEvent.getOutcome().equals(Outcome.yes)) {
+            BindingContainer bindings = getBindings();
+            AttributeBinding hsIdBinding = (AttributeBinding) bindings.getControlBinding("IdHistoriquesStructure");
+            Integer hs_id = (Integer.parseInt(hsIdBinding.getInputValue().toString()));
+            OperationBinding isFormExist = bindings.getOperationBinding("IsFormDeptExist");
+            isFormExist.getParamsMap().put("hs_id", hs_id);
+            isFormExist.execute();
+            DCIteratorBinding iterFormDept = (DCIteratorBinding) bindings.get("IsFormDeptExistIterator");
+            Row crntfr = iterFormDept.getCurrentRow();
+            if (crntfr == null) {
+                OnDeleteHStructClicked();
+            } else {
+                //popup uti exist
+                RichPopup popup = this.getPopupFormExist();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void onNewStructureAction(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = getBindings();
+            //JSFUtils.setExpressionValue("#{bindings.UtiCree.inputValue}", getUtilisateur());
+            DCIteratorBinding iterstruct = (DCIteratorBinding) bindings.get("StructuresIterator");
+            Row crntstr = iterstruct.getCurrentRow();
+            
+            OperationBinding isstructExist = bindings.getOperationBinding("IsStructExist");
+            isstructExist.getParamsMap().put("lib", crntstr.getAttribute("LibelleLong").toString());
+            isstructExist.getParamsMap().put("abrev", crntstr.getAttribute("LibelleCourt").toString());
+            isstructExist.execute();
+            DCIteratorBinding iterstructt = (DCIteratorBinding) bindings.get("IsStructExistIterator");
+            Row crntstrr = iterstructt.getCurrentRow();
+            if (crntstrr == null) {
+                OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+                Object result = operationBinding.execute();
+                if (!operationBinding.getErrors().isEmpty()) {
+                    //handle errors if any
+                    //...
+                    return;
+                }
+                this.getPopupNewStructure().hide();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getStructureTable());
+            }else{
+                RichPopup popup = this.getPopupStructExist();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+            }
+        }
+    }
+
+    public void onEditStructAction(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = getBindings();
+            //JSFUtils.setExpressionValue("#{bindings.UtiModifie.inputValue}", getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopupEditStructure().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getStructureTable());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void onNewHistoriqueAction(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = getBindings();
+            //JSFUtils.setExpressionValue("#{bindings.UtiCree1.inputValue}", getUtilisateur());
+            DCIteratorBinding iterhstruct = (DCIteratorBinding) bindings.get("HistoriquesStructuresStructIterator");
+            Row crnthstr = iterhstruct.getCurrentRow();
+            
+            OperationBinding ishstructExist = bindings.getOperationBinding("IsHStructExist");
+            ishstructExist.getParamsMap().put("lib", crnthstr.getAttribute("LibelleLong").toString());
+            ishstructExist.getParamsMap().put("abrev", crnthstr.getAttribute("LibelleCourt").toString());
+            ishstructExist.execute();
+            DCIteratorBinding iterhstructt = (DCIteratorBinding) bindings.get("IsHStructExistIterator");
+            Row crnthstrr = iterhstructt.getCurrentRow();
+            if (crnthstrr == null) {
+                OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+                Object result = operationBinding.execute();
+                if (!operationBinding.getErrors().isEmpty()) {
+                    //handle errors if any
+                    //...
+                    return;
+                }
+                this.getPopupNewHStruct().hide();
+                AdfFacesContext.getCurrentInstance().addPartialTarget(this.getHstructureTable());
+            }else{
+                RichPopup popup = this.getPopupDeptExistYet();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                //empty hints renders dialog in center of screen
+                popup.show(hints);
+            }
+        }
+    }
+
+    public void onEditHistoriqueAction(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = getBindings();
+            //JSFUtils.setExpressionValue("#{bindings.UtiModifie1.inputValue}", getUtilisateur());
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            this.getPopupEditHStructure().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getHstructureTable());
+        }
+    }
+
+    public void setUtilisateur(Integer utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Integer getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setPopupDeptExist(RichPopup popupDeptExist) {
+        this.popupDeptExist = popupDeptExist;
+    }
+
+    public RichPopup getPopupDeptExist() {
+        return popupDeptExist;
+    }
+
+    public void setPopupUtiExist(RichPopup popupUtiExist) {
+        this.popupUtiExist = popupUtiExist;
+    }
+
+    public RichPopup getPopupUtiExist() {
+        return popupUtiExist;
+    }
+
+    public void setPopupFormExist(RichPopup popupFormExist) {
+        this.popupFormExist = popupFormExist;
+    }
+
+    public RichPopup getPopupFormExist() {
+        return popupFormExist;
+    }
+
+    public void setPopupStructExist(RichPopup popupStructExist) {
+        this.popupStructExist = popupStructExist;
+    }
+
+    public RichPopup getPopupStructExist() {
+        return popupStructExist;
+    }
+
+    public void setPopupDeptExistYet(RichPopup popupDeptExistYet) {
+        this.popupDeptExistYet = popupDeptExistYet;
+    }
+
+    public RichPopup getPopupDeptExistYet() {
+        return popupDeptExistYet;
+    }
+}

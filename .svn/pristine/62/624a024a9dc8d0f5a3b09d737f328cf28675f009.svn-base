@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="validation-depart-tk">
+    <default-activity>ExecuteWithParams</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__1">
+      <managed-bean-name>ValidationDepartBean</managed-bean-name>
+      <managed-bean-class>validation_depart.ValidationDepartBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="validation_departement">
+      <page>/ecolage/validation_departement/validation_departement.jsff</page>
+    </view>
+    <method-call id="ExecuteWithParams">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="ExecuteWithParams1">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__3">
+      <from-activity-id>ExecuteWithParams</from-activity-id>
+      <control-flow-case id="__4">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>ExecuteWithParams1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__5">
+      <from-activity-id>ExecuteWithParams1</from-activity-id>
+      <control-flow-case id="__6">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>validation_departement</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

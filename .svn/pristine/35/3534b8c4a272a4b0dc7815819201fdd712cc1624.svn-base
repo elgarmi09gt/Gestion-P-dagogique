@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="viewcontrollerBundle" value="#{adfBundle['view.ViewControllerBundle']}"/>
+    <af:panelGroupLayout id="pgl8" layout="scroll">
+        <af:iterator value="#{DeliberatioUeBean.isclosed(bindings.IdFiliereUeSemstre.inputValue,sessionScope.id_calendrier)}"
+               id="i6"/>
+        <af:panelGroupLayout id="pgl1" layout="horizontal" styleClass="AFStretchWidth" valign="top"
+                             inlineStyle="border:2px solid InfoText;">
+            <af:panelGroupLayout id="pgl2" layout="vertical" binding="#{DeliberatioUeBean.btnpanue}">
+                <af:panelGroupLayout id="pgl3" layout="horizontal" inlineStyle="margin:10px">
+                    <af:panelGroupLayout id="pgl4" layout="vertical" halign="center" valign="middle"
+                                         inlineStyle="line-height:20px;">
+                        <af:outputFormatted value="Unité d'enseignement" id="of1" styleUsage="instruction"
+                                            inlineStyle="font-size:large;"/>
+                        <af:selectOneChoice value="#{bindings.DelibSemFilUe.inputValue}"
+                                            required="#{bindings.DelibSemFilUe.hints.mandatory}"
+                                            shortDesc="#{bindings.DelibSemFilUe.hints.tooltip}" id="soc1"
+                                            contentStyle="width:300px; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:30px"
+                                            autoSubmit="true" binding="#{DeliberatioUeBean.inputDeliberer}"
+                                            styleClass="mytab">
+                            <f:selectItems value="#{bindings.DelibSemFilUe.items}" id="si1"/>
+                            <f:validator binding="#{bindings.DelibSemFilUe.validator}"/>
+                        </af:selectOneChoice>
+                    </af:panelGroupLayout>
+                    <af:link text="Voir régles de calcul " id="l1"
+                             inlineStyle="margin-left:50px; text-align:center; font-style:italic; font-size:medium;"/>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl5" layout="horizontal" valign="middle" halign="center"
+                                     binding="#{DeliberatioUeBean.panelbtn}" partialTriggers="soc1">
+                    <af:button id="b1" icon="/images/Finance-Pos-Terminal-icon.png"
+                               inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                               actionListener="#{DeliberatioUeBean.Deliberer}" partialSubmit="true" shortDesc="Délibérer"
+                               visible='#{securityContext.userInRole["Admin,Responsable-ue,Responsable-niv-formation,Responsable-formation"]}'
+                               disabled="#{sessionScope.isclosedue == '0' ? false : true}"/>
+                    <af:button id="b2" icon="/images/Microsoft-Excel-2013-icon-small.png"
+                               inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                               shortDesc="Pv Provisoir" disabled="#{sessionScope.isdelibue == '0' ? true : false}">
+                        <af:exportCollectionActionListener type="excelHTML" exportedId="t1"
+                                                           filename="PV_#{bindings.DelibSemFilUe.inputValue}.xls"
+                                                           title="PV_#{bindings.DelibSemFilUe.inputValue}"/>
+                    </af:button>
+                    <af:button id="b3" icon="/images/Close-icon-small.png"
+                               inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                               partialSubmit="true"
+                               shortDesc="Clôturer UE"
+                               visible='#{securityContext.userInRole["Admin,Responsable-ue,Responsable-niv-formation,Responsable-formation"]}'
+                               disabled="#{sessionScope.isdelibue == '0' ? true : false}">
+                               <!-- actionListener="#{DeliberatioUeBean.Cloturer}" -->
+                        <af:showPopupBehavior popupId="pcloture"/>
+                    </af:button>
+                </af:panelGroupLayout>
+            </af:panelGroupLayout>
+            <af:panelGroupLayout id="pgl6" layout="vertical" halign="right" valign="top">
+                <!--af:outputFormatted value="% de saisie des ecs" id="of2"
+                                    inlineStyle="color:Blue; font-size:xx-large;margin-left:100px"/-->
+                <af:button id="b4"
+                           inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                           icon="/images/close_sess_icone_48px.png"
+                           actionListener="#{DeliberatioUeBean.OnCloseEcsUeClicked}" shortDesc="Clôturer les ECs"
+                           visible='#{securityContext.userInRole["Admin,Responsable-ue,Responsable-niv-formation,Responsable-formation"]}'
+                           disabled="#{sessionScope.isUedelibrated == '1' ? true : false}">
+                    <af:showPopupBehavior popupId="popup-confirm-close-all-ec"/>
+                </af:button>
+            </af:panelGroupLayout>
+        </af:panelGroupLayout>
+        <af:spacer width="10" height="50" id="s1"/>
+        <af:outputFormatted value="#{bindings.IdFiliereUeSemstre.inputValue}" id="of3"
+                            binding="#{DeliberatioUeBean.inputFilUe}" visible="false">
+            <af:convertNumber groupingUsed="false" pattern="#{bindings.IdFiliereUeSemstre.format}"/>
+        </af:outputFormatted>
+        <af:panelStretchLayout id="psl1" startWidth="10px" endWidth="10px" topHeight="10px" bottomHeight="10px"
+                               dimensionsFrom="children">
+            <f:facet name="start"/>
+            <f:facet name="end"/>
+            <f:facet name="top"/>
+            <f:facet name="bottom"/>
+            <f:facet name="center">
+                <af:panelGroupLayout id="pgl7" layout="scroll">
+                    <af:table value="#{DeliberatioUeBean.getUeStudents(bindings.IdFiliereUeSemstre.inputValue)}" var="row" rowBandingInterval="0" id="t1"
+                              partialTriggers="::soc1 ::b1 ::b3" columnStretching="last" styleClass="mytab">
+                        <af:column sortable="false" headerText="Informations de l' Etudiant" id="c1" align="center"
+                                   styleClass="mytab">
+                            <af:column sortable="false" headerText="#{viewcontrollerBundle.NUMERO}" id="c2" align="center">
+                                <af:outputText value="#{row.numero}" id="ot1"/>
+                            </af:column>
+                            <af:column sortable="false" headerText="#{viewcontrollerBundle.PRENOMNOM}" id="c3" width="150" align="center"
+                                       inlineStyle="border-left: solid 1px;">
+                                <af:outputText value="#{row.prenomNom}" id="ot2"/>
+                            </af:column>
+                        </af:column>
+                        <af:forEach items="#{DeliberationSemestrielleBean.getEcParcousAnSemSess(bindings.IdFiliereUeSemstre.inputValue)}"
+                                    var="ecs">
+                            <af:column sortable="false" headerText="#{ecs.ec}" id="c4" align="center">
+                                <af:forEach items="#{DeliberatioUeBean.getModeCntrlEc(ecs.id_ec)}" var="mcntl">
+                                    <af:column sortable="false" headerText="#{mcntl.mode_cntrl}" id="c5" align="center"
+                                               inlineStyle="border-left: solid 1px;">
+                                        <af:outputText value="#{DeliberatioUeBean.getNoteMcntrl(DeliberationSemestrielleBean.getInsPedSemUe(row.numero ,bindings.IdFiliereUeSemstre.inputValue),  bindings.IdFiliereUeSemstre.inputValue,  ecs.id_ec,mcntl.mode_cntrl_id)}"
+                                                       id="ot3"/>
+                                    </af:column>
+                                </af:forEach>
+                                <af:forEach items="#{DeliberatioUeBean.getResultEc(DeliberationSemestrielleBean.getInsPedSemUe(row.numero ,bindings.IdFiliereUeSemstre.inputValue),ecs.id_ec)}"
+                                            var="res">
+                                    <af:forEach items="#{res}" var="r">
+                                        <af:column sortable="false" headerText="#{r.key}" id="c9" align="center"
+                                                   inlineStyle="border-left: solid 1px;">
+                                            <af:outputText value="#{r.value}" id="ot7" inlineStyle="font-weight: bold;"/>
+                                        </af:column>
+                                    </af:forEach>
+                                </af:forEach>
+                            </af:column>
+                        </af:forEach>
+                        <af:column sortable="false" headerText="#{bindings.DelibSemFilUe.inputValue}" id="c7"
+                                   align="center" inlineStyle="font-size:large; text-align:center; font-weight:bold;">
+                            <af:forEach items="#{DeliberationSemestrielleBean.getResultUe(DeliberationSemestrielleBean.getInsPedSemUe(row.numero ,bindings.IdFiliereUeSemstre.inputValue))}"
+                                        var="res">
+                                <af:forEach items="#{res}" var="r">
+                                    <af:column sortable="false" headerText="#{r.key}" id="c8" align="center"
+                                               inlineStyle="font-size:large; text-align:center; font-weight:bold;border-left: solid 2px;">
+                                        <af:outputText value="#{r.value}" id="ot5"/>
+                                    </af:column>
+                                </af:forEach>
+                            </af:forEach>
+                        </af:column>
+                    </af:table>
+                </af:panelGroupLayout>
+            </f:facet>
+        </af:panelStretchLayout>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p3"
+                  binding="#{DeliberatioUeBean.popupShowDetUeDelibSuccess}">
+            <af:dialog id="d3" title="Info" inlineStyle="text-align:center;" type="ok">
+                <af:panelGroupLayout id="pgl11" layout="vertical" inlineStyle="text-align:center;">
+                    <af:icon name="info" id="i3"/>
+                    <af:outputFormatted value="Ue #{bindings.DelibSemFilUe.inputValue} délibérée avec succès" id="of6"
+                                        inlineStyle="color:Lime; font-size:medium;"/>
+                </af:panelGroupLayout>
+                <f:facet name="buttonBar"/>
+            </af:dialog>
+        </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+                  binding="#{DeliberatioUeBean.popupShowDetNotModEnsSaisieClosedAll}">
+            <af:dialog id="d2" title="Info" inlineStyle="text-align:center;" type="ok">
+                <af:panelGroupLayout id="pgl12" layout="vertical" inlineStyle="text-align:center;">
+                    <af:icon name="error" id="i4"/>
+                    <af:outputFormatted value="Veuillez clôturer tous les éléments constitutifs de l’unité d’enseignement d’abord ):"
+                                        id="of5" inlineStyle="color:Red; font-size:medium;"/>
+                </af:panelGroupLayout>
+                <f:facet name="buttonBar"/>
+            </af:dialog>
+        </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+                  binding="#{DeliberatioUeBean.popupShowDetUeClose}">
+            <af:dialog id="d1" title="Info" inlineStyle="text-align:center;" type="ok">
+                <af:panelGroupLayout id="pgl10" layout="vertical" inlineStyle="text-align:center;">
+                    <af:icon name="error" id="i2"/>
+                    <af:outputFormatted value="Ue #{bindings.DelibSemFilUe.inputValue} déjà clôturée" id="of4"
+                                        inlineStyle="color:Red; font-size:medium;"/>
+                </af:panelGroupLayout>
+                <f:facet name="buttonBar"/>
+            </af:dialog>
+        </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p4"
+                  binding="#{DeliberatioUeBean.popupShowDetUeNotDelib}">
+            <af:dialog id="d4" title="Info" inlineStyle="text-align:center;" type="ok">
+                <af:panelGroupLayout id="pgl9" layout="vertical" inlineStyle="text-align:center;">
+                    <af:icon name="error" id="i1"/>
+                    <af:outputFormatted value="Veuillez délibérer l’UE #{bindings.DelibSemFilUe.inputValue} d’abord"
+                                        id="of7" inlineStyle="font-size:medium; color:Red;"/>
+                </af:panelGroupLayout>
+                <f:facet name="buttonBar"/>
+            </af:dialog>
+        </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p5"
+                  binding="#{DeliberatioUeBean.popupShowDetUeCloseSuccess}">
+            <af:dialog id="d5" title="Info" inlineStyle="text-align:center;" type="ok">
+                <af:panelGroupLayout id="pgl13" layout="vertical" inlineStyle="text-align:center;">
+                    <af:icon name="info" id="i5"/>
+                    <af:outputFormatted value="Ue #{bindings.DelibSemFilUe.inputValue} Clôturée avec succès" id="of8"
+                                        inlineStyle="font-size:medium; color:Lime;"/>
+                </af:panelGroupLayout>
+                <f:facet name="buttonBar"/>
+            </af:dialog>
+        </af:popup>
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-confirm-close-all-ec"
+              contentDelivery="lazyUncached" binding="#{DeliberatioUeBean.popupConfirmcloseAllEc}">
+        <af:dialog id="d6" title="Confirmer clôture" cancelTextAndAccessKey="Annuler" type="yesNo"
+                   noTextAndAccessKey="Annuler" affirmativeTextAndAccessKey="Clôturer"
+                   dialogListener="#{DeliberatioUeBean.OnCloseAllEcClicked}">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl14" layout="vertical" inlineStyle="text-align:center;">
+                <af:icon name="info" id="i15"/>
+                <af:outputFormatted value="Clôture de tous les ECs ?" id="of2"
+                                    inlineStyle="font-size:medium; color:#2898e8; font-weight:bold;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-success-ec-close"
+              binding="#{DeliberatioUeBean.popupSuccessCloseAllEc}">
+        <af:dialog id="d9" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl15" layout="vertical" inlineStyle="text-align:center;">
+                <af:icon name="info" id="i7"/>
+                <af:outputFormatted value="Clôture effectue avec succès !" id="of9"
+                                    inlineStyle="color:Lime; font-size:medium; font-weight:bold;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-ue-closed" binding="#{DeliberatioUeBean.popupUeClosed}">
+        <af:dialog id="d8" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl16" layout="vertical" inlineStyle="text-align:center;">
+                <af:icon name="warning" id="i8"/>
+                <af:outputFormatted value="UE déjà clôturé !" id="of10" inlineStyle="font-size:medium; color:Orange;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-other-error" binding="#{DeliberatioUeBean.popupOtherError}">
+        <af:dialog id="d7" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl17" layout="vertical" inlineStyle="text-align:center;">
+                <af:icon name="warning" id="i9"/>
+                <af:outputFormatted value="Veuillez vérifié la clôture des saisies intermédiaires (CC, CT) des Ecs" id="of11"
+                                    inlineStyle="font-size:medium; color:Orange;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popup-all-ec-closed"
+              binding="#{DeliberatioUeBean.popupAllEcClosed}">
+        <af:dialog id="d10" type="cancel" title="Info" cancelTextAndAccessKey="Fermer">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl18" layout="vertical" inlineStyle="text-align:center;">
+                <af:icon name="info" id="i10"/>
+                <af:outputFormatted value="Tous les ECs sont clôturés !!!" id="of12"
+                                    inlineStyle="font-size:medium; color:#2898e8; font-weight:bold;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p6" binding="#{DeliberatioUeBean.popupsess1notclosed}">
+        <af:dialog id="d11" title="Info">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl19" layout="vertical" halign="center"
+                                 inlineStyle="font-size:large; color:Orange;">
+                <af:icon name="warning" id="i11"/>
+                <af:outputFormatted value="La session 1 n'est pas encore cloturée !!!" id="of13"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p7" binding="#{DeliberatioUeBean.jurynotyet}">
+        <af:dialog id="d12" type="cancel" cancelTextAndAccessKey="Fermer" title="Info">
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl21" layout="vertical" inlineStyle="text-align:center;">
+                <af:icon name="warning" id="i13"/>
+                <af:outputFormatted value="Jury pas encore définit !!!" id="of15"
+                                    inlineStyle="font-size:medium; color:#2898e8; font-weight:bold;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p8"
+              contentDelivery="lazyUncached" binding="#{DeliberatioUeBean.onlypdtcandelib}">
+        <af:dialog id="d13" title="Info" cancelTextAndAccessKey="Fermer" type="cancel"
+                   noTextAndAccessKey="Annuler"
+                   >
+            <f:facet name="buttonBar"/>
+            <af:panelGroupLayout id="pgl20" layout="vertical" inlineStyle="text-align:center;">
+                <af:icon name="info" id="i12"/>
+                <af:outputFormatted value="Seul le Président peut délibérer !!!" id="of14"
+                                    inlineStyle="font-size:medium; color:#2898e8; font-weight:bold;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="pcloture"
+              binding="#{DeliberatioUeBean.popupConfirmCloseUe}">
+    <af:dialog id="d14" title="Confirmation de la clôture" 
+               affirmativeTextAndAccessKey="OUI" cancelTextAndAccessKey="ANNULER" inlineStyle="text-align:center;"
+               dialogListener="#{DeliberatioUeBean.OnCloseUeClicked}">
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{DeliberatioUeBean.OnDialogConfirmCloseUeCancel}"/>
+            <af:panelGroupLayout id="pgl22" layout="vertical" halign="center">
+                <af:icon name="warning" id="i14"/>
+                <af:outputText value="Voulez-vous clôturer ?" id="ot10" inlineStyle="font-size:medium; color:Orange;"/>
+            </af:panelGroupLayout>
+        </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+</ui:composition>

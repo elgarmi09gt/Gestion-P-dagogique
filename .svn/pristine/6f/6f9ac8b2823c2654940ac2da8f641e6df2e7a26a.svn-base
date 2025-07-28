@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="etudiant_ticPageDef"
+                Package="inscription.etudiant_tic">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Etudiants" RangeSize="25" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="Personnes" RangeSize="10" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="EtudiantTicRO" RangeSize="25" DataControl="inscriptionAppDataControl" id="EtudiantTicROIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="EtudiantsIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="EtudiantTicROIterator" StaticList="false" Uses="LOV_TypeAcquisition" id="TypeAcquisition"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="EtudiantTicROIterator" StaticList="false" Uses="LOV_TypeOrdinateur" id="TypeOrdinateur"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="EtudiantTicROIterator" StaticList="false" Uses="LOV_PossedeOrdinateur" id="PossedeOrdinateur"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+  </bindings>
+</pageDefinition>

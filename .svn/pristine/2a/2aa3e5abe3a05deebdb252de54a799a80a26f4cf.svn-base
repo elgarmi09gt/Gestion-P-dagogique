@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NouveauxBacheliersEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="NOUVEAUX_BACHELIERS"
+  AliasName="NouveauxBacheliersEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdNouveauBachelier"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NOUVEAU_BACHELIER"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="NOUVEAUX_BACHELIERS"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="IdPersonne"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_PERSONNE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="NOUVEAUX_BACHELIERS"
+    Domain="oracle.jbo.domain.DBSequence"/>
+  <Attribute
+    Name="NumeroTable"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="NUMERO_TABLE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NOUVEAUX_BACHELIERS"/>
+  <Attribute
+    Name="AnneBac"
+    Precision="4"
+    Scale="0"
+    ColumnName="ANNE_BAC"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="NOUVEAUX_BACHELIERS"
+    IsNotNull="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="NOUVEAUX_BACHELIERS"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="NOUVEAUX_BACHELIERS"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NOUVEAUX_BACHELIERS"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NOUVEAUX_BACHELIERS"/>
+  <Attribute
+    Name="IdAnneesUnivers"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NOUVEAUX_BACHELIERS"/>
+  <Attribute
+    Name="IdLycee"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_LYCEE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="NOUVEAUX_BACHELIERS"/>
+  <Attribute
+    Name="IdSerieBac"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_SERIE_BAC"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="NOUVEAUX_BACHELIERS"
+    IsNotNull="true"/>
+  <Attribute
+    Name="IdTypeMention"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_TYPE_MENTION"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="NOUVEAUX_BACHELIERS"
+    IsNotNull="true"/>
+  <AccessorAttribute
+    Name="PersonnesEO"
+    Association="model.assoc.PersonnesToNouveauxBachelierAssoc"
+    AssociationEnd="model.assoc.PersonnesToNouveauxBachelierAssoc.PersonnesEO"
+    AssociationOtherEnd="model.assoc.PersonnesToNouveauxBachelierAssoc.NouveauxBacheliersEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <Key
+    Name="NouveauxBacheliersAnneBacCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"ANNE_BAC" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="NOUVEAUX_BACHELIERS_ANNE_BAC_C"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NouveauxBacheliersEO.AnneBac"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="NouveauxBacheliersIdSerieBacCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"ID_SERIE_BAC" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="NOUVEAUX_BACHELIERS_ID_SERIE_B"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NouveauxBacheliersEO.IdSerieBac"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="NouveauxBacheliersIdTypeMentionCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"ID_TYPE_MENTION" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="NOUVEAUX_BACHELIERS_ID_TYPE_ME"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NouveauxBacheliersEO.IdTypeMention"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="PkNouveauxBacheliers"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_NOUVEAUX_BACHELIERS"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NouveauxBacheliersEO.IdNouveauBachelier"/>
+      <Item Value="model.entities.NouveauxBacheliersEO.IdPersonne"/>
+      <Item Value="model.entities.NouveauxBacheliersEO.IdLycee"/>
+      <Item Value="model.entities.NouveauxBacheliersEO.IdSerieBac"/>
+      <Item Value="model.entities.NouveauxBacheliersEO.IdTypeMention"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqNouvBachelierNumeroTabl">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_NOUV_BACHELIER_NUMERO_TABL"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NouveauxBacheliersEO.NumeroTable"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNouvBachelierPersonne">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_PERSONNES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NOUV_BACHELIER_PERSONNE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NouveauxBacheliersEO.IdPersonne"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNouvBachelierUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NOUV_BACHELIER_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NouveauxBacheliersEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkNouvBachelierUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_NOUV_BACHELIER_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.NouveauxBacheliersEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

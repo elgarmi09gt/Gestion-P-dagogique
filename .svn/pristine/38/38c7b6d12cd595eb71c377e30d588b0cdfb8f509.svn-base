@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelBox text="Critères de Recherche" id="pb1" inlineStyle="width:1300px;">
+    <f:facet name="toolbar"/>
+    <af:panelFormLayout id="pfl1" rows="2">
+      <af:inputText value="#{bindings.Nom.inputValue}" label="#{bindings.Nom.hints.label}"
+                    required="#{bindings.Nom.hints.mandatory}" columns="#{bindings.Nom.hints.displayWidth}"
+                    maximumLength="#{bindings.Nom.hints.precision}" shortDesc="#{bindings.Nom.hints.tooltip}" id="it1"
+                    binding="#{NouvBacbean.nom}">
+        <f:validator binding="#{bindings.Nom.validator}"/>
+      </af:inputText>
+      <af:inputText value="#{bindings.Prenoms.inputValue}" label="#{bindings.Prenoms.hints.label}"
+                    required="#{bindings.Prenoms.hints.mandatory}" columns="#{bindings.Prenoms.hints.displayWidth}"
+                    maximumLength="#{bindings.Prenoms.hints.precision}" shortDesc="#{bindings.Prenoms.hints.tooltip}"
+                    id="it2" binding="#{NouvBacbean.prenom}">
+        <f:validator binding="#{bindings.Prenoms.validator}"/>
+      </af:inputText>
+      <af:inputDate value="#{bindings.DateNaissance.inputValue}" label="Date Naissance"
+                    required="#{bindings.DateNaissance.hints.mandatory}"
+                    columns="#{bindings.DateNaissance.hints.displayWidth}"
+                    shortDesc="#{bindings.DateNaissance.hints.tooltip}" id="id1" binding="#{NouvBacbean.date_naiss}">
+        <f:validator binding="#{bindings.DateNaissance.validator}"/>
+        <af:convertDateTime pattern="#{bindings.DateNaissance.format}"/>
+      </af:inputDate>
+      <af:inputText value="#{bindings.LieuNaissance.inputValue}" label="#{bindings.LieuNaissance.hints.label}"
+                    required="#{bindings.LieuNaissance.hints.mandatory}"
+                    columns="#{bindings.LieuNaissance.hints.displayWidth}"
+                    maximumLength="#{bindings.LieuNaissance.hints.precision}"
+                    shortDesc="#{bindings.LieuNaissance.hints.tooltip}" id="it3" binding="#{NouvBacbean.lieu_naiss}">
+        <f:validator binding="#{bindings.LieuNaissance.validator}"/>
+      </af:inputText>
+      <af:inputText value="#{bindings.Adresse.inputValue}" label="#{bindings.Adresse.hints.label}"
+                    required="#{bindings.Adresse.hints.mandatory}" columns="#{bindings.Adresse.hints.displayWidth}"
+                    maximumLength="#{bindings.Adresse.hints.precision}" shortDesc="#{bindings.Adresse.hints.tooltip}"
+                    id="it4" binding="#{NouvBacbean.adresse}">
+        <f:validator binding="#{bindings.Adresse.validator}"/>
+      </af:inputText>
+      <af:inputText value="#{bindings.PieceIdentification.inputValue}"
+                    label="#{bindings.PieceIdentification.hints.label}"
+                    required="#{bindings.PieceIdentification.hints.mandatory}"
+                    columns="#{bindings.PieceIdentification.hints.displayWidth}"
+                    maximumLength="#{bindings.PieceIdentification.hints.precision}"
+                    shortDesc="#{bindings.PieceIdentification.hints.tooltip}" id="it5" binding="#{NouvBacbean.cin}">
+        <f:validator binding="#{bindings.PieceIdentification.validator}"/>
+      </af:inputText>
+    </af:panelFormLayout>
+    <af:button text="Search" id="b1"
+               inlineStyle="margin-top:20px;margin-left:10px;margin-bottom:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#f5e6e6;margin-bottom:15px;"
+               action="#{NouvBacbean.onRechercheNouvBac}"/>
+    <af:button text="Reset" id="b2"
+               inlineStyle="margin-left:10px; margin-left:10px; border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:none 0% 0%/auto repeat scroll padding-box border-box #e87c8e; margin-bottom:15px; background-color:#e87c8e;"
+               action="#{NouvBacbean.onReset}"/>
+  </af:panelBox>
+  <af:panelCollection id="pc1" styleClass="AFStretchWidth" inlineStyle="width:1300px;">
+    <f:facet name="menus"/>
+    <f:facet name="toolbar"/>
+    <f:facet name="statusbar"/>
+    <af:table value="#{bindings.PersNouvBachelierRO.collectionModel}" var="row"
+              rows="#{bindings.PersNouvBachelierRO.rangeSize}"
+              emptyText="#{bindings.PersNouvBachelierRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+              rowBandingInterval="0" fetchSize="#{bindings.PersNouvBachelierRO.rangeSize}"
+              filterModel="#{bindings.PersNouvBachelierROQuery.queryDescriptor}" filterVisible="true"
+              queryListener="#{bindings.PersNouvBachelierROQuery.processQuery}" varStatus="vs" id="t1"
+              scrollPolicy="scroll" rowSelection="single"
+              selectionListener="#{bindings.PersNouvBachelierRO.collectionModel.makeCurrent}"
+              selectedRowKeys="#{bindings.PersNouvBachelierRO.collectionModel.selectedRow}">
+      <af:column sortProperty="#{bindings.PersNouvBachelierRO.hints.Nom.name}" filterable="true" sortable="true"
+                 headerText="#{bindings.PersNouvBachelierRO.hints.Nom.label}" id="c1" width="200">
+        <af:outputText value="#{row.Nom}" shortDesc="#{bindings.PersNouvBachelierRO.hints.Nom.tooltip}" id="ot1"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.PersNouvBachelierRO.hints.Prenoms.name}" filterable="true" sortable="true"
+                 headerText="Prénoms" id="c2" width="300">
+        <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.PersNouvBachelierRO.hints.Prenoms.tooltip}"
+                       id="ot2"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.PersNouvBachelierRO.hints.DateNaissance.name}" filterable="true"
+                 sortable="true" headerText="Date Naissance" id="c3"
+                 width="110">
+        <f:facet name="filter">
+          <af:inputDate value="#{bindings.PersNouvBachelierROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                        id="id2">
+            <af:convertDateTime pattern="#{bindings.PersNouvBachelierRO.hints.DateNaissance.format}"/>
+          </af:inputDate>
+        </f:facet>
+        <af:outputText value="#{row.DateNaissance}"
+                       shortDesc="#{bindings.PersNouvBachelierRO.hints.DateNaissance.tooltip}" id="ot3">
+          <af:convertDateTime pattern="#{bindings.PersNouvBachelierRO.hints.DateNaissance.format}"/>
+        </af:outputText>
+      </af:column>
+      <af:column sortProperty="#{bindings.PersNouvBachelierRO.hints.LieuNaissance.name}" filterable="true"
+                 sortable="true" headerText="Lieu Naissance" id="c4"
+                 width="320">
+        <af:outputText value="#{row.LieuNaissance}"
+                       shortDesc="#{bindings.PersNouvBachelierRO.hints.LieuNaissance.tooltip}" id="ot4"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.PersNouvBachelierRO.hints.PieceIdentification.name}" filterable="true"
+                 sortable="true" headerText="Pièce d'Identification" id="c6"
+                 width="150">
+        <af:outputText value="#{row.PieceIdentification}"
+                       shortDesc="#{bindings.PersNouvBachelierRO.hints.PieceIdentification.tooltip}" id="ot6"/>
+      </af:column>
+      <af:column id="c7" headerText="Action" width="150">
+        <af:button text="Add Nouv. Bachelier" id="b3" action="#{NouvBacbean.onAddNouvBac}"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;"/>
+      </af:column>
+    </af:table>
+  </af:panelCollection>
+  <af:popup id="petud" contentDelivery="lazyUncached"
+            binding="#{NouvBacbean.popEtud}" childCreation="deferred" autoCancel="disabled">
+    <af:dialog id="d1" title="Ajoutez un nouveau bachelier"
+               dialogListener="#{NouvBacbean.onDialog}">
+      <af:panelFormLayout id="pfl2" rows="3">
+      <af:panelLabelAndMessage label="Prénom &amp; Nom" id="plam1"
+                               inlineStyle="font-size:large; background-color:Yellow;">
+          <af:inputText id="it8" value="#{sessionScope.prenom}  #{sessionScope.nom}"/>
+        </af:panelLabelAndMessage>
+        <af:inputText value="#{bindings.AnneBac.inputValue}" label="Année Baccalauréat"
+                      required="#{bindings.AnneBac.hints.mandatory}" columns="#{bindings.AnneBac.hints.displayWidth}"
+                      maximumLength="#{bindings.AnneBac.hints.precision}" shortDesc="#{bindings.AnneBac.hints.tooltip}"
+                      id="it6">
+          <!--f:validator binding="#{bindings.AnneBac.validator}"/!-->
+          <af:validateLength minimum="4" maximum="4" messageDetailNotInRange="Année non valide" />
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.AnneBac.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.NumeroTable.inputValue}" label="#{bindings.NumeroTable.hints.label}"
+                      required="#{bindings.NumeroTable.hints.mandatory}"
+                      columns="#{bindings.NumeroTable.hints.displayWidth}"
+                      maximumLength="#{bindings.NumeroTable.hints.precision}"
+                      shortDesc="#{bindings.NumeroTable.hints.tooltip}" id="it7">
+          <f:validator binding="#{bindings.NumeroTable.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.NumeroTable.format}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdSerieBac.inputValue}" label="Série Bac"
+                            required="#{bindings.IdSerieBac.hints.mandatory}"
+                            shortDesc="#{bindings.IdSerieBac.hints.tooltip}" id="soc1"
+                            contentStyle="margin-top:10px;margin-bottom:10px;">
+          <f:selectItems value="#{bindings.IdSerieBac.items}" id="si1"/>
+          <f:validator binding="#{bindings.IdSerieBac.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdTypeMention.inputValue}" label="Mention"
+                            required="#{bindings.IdTypeMention.hints.mandatory}"
+                            shortDesc="#{bindings.IdTypeMention.hints.tooltip}" id="soc2"
+                            contentStyle="margin-top:10px;margin-bottom:10px;">
+          <f:selectItems value="#{bindings.IdTypeMention.items}" id="si2"/>
+          <f:validator binding="#{bindings.IdTypeMention.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdLycee.inputValue}" label="Etablissement provenance"
+                            required="#{bindings.IdLycee.hints.mandatory}" shortDesc="#{bindings.IdLycee.hints.tooltip}"
+                            id="soc3" contentStyle="margin-top:10px;margin-bottom:10px;">
+          <f:selectItems value="#{bindings.IdLycee.items}" id="si3"/>
+          <f:validator binding="#{bindings.IdLycee.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{NouvBacbean.onDialogCan}"/>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+</ui:composition>

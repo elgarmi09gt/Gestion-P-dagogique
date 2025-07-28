@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ListeSuspensioneEtudROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ListeSuspensioneEtudROVORowImpl"
+  ComponentClass="model.readOnlyView.ListeSuspensioneEtudROVOImpl"
+  PageIterMode="Full"
+  OrderBy='"DATE_FIN"'>
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ListeSuspensioneEtudROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="idpers"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select s.id_suspension, e.numero , e.id_etudiant , e.id_personne, s.duree , s.date_fin , s.date_debut , s.motif_suspension, au.libelle_long as lib_annee  from suspension s         
+JOIN etudiants e on e.id_etudiant = s.id_etudiant    
+JOIN annees_univers au on s.id_annees_univers = au.id_annees_univers   
+where e.id_personne=:idpers and s.levee = 0]]></SQLQuery>
+  <ViewAttribute
+    Name="IdSuspension"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_SUSPENSION"
+    Expression="ID_SUSPENSION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdPersonne"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PERSONNE"
+    Expression="ID_PERSONNE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Duree"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="DUREE"
+    Expression="DUREE"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="DateFin"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_FIN"
+    Expression="DATE_FIN"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="DateDebut"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_DEBUT"
+    Expression="DATE_DEBUT"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="MotifSuspension"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="MOTIF_SUSPENSION"
+    Expression="MOTIF_SUSPENSION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LibAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIB_ANNEE"
+    Expression="LIB_ANNEE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

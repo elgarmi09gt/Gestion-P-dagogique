@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="paiement_en_retardPageDef"
+                Package="ecolage.liste_paiements_en_retard">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="FormPayHstFormParcRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="FormPayHstFormParcROIterator"/>
+    <iterator Binds="LesFormationsStrctRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="LesFormationsStrctROIterator"/>
+    <iterator Binds="NivFormFormPayStrcRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="NivFormFormPayStrcROIterator"/>
+    <iterator Binds="AnneeUniversPasseAnterRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="AnneeUniversPasseAnterROIterator"/>
+    <iterator Binds="ListePaiementRetardRO" RangeSize="15" DataControl="ecolageAppDataControl"
+              id="ListePaiementRetardROIterator"/>
+    <searchRegion Binds="ListePaiementRetardROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ListePaiementRetardROQuery"/>
+    <iterator Binds="FormHistStrRO" RangeSize="25" DataControl="ecolageAppDataControl" id="FormHistStrROIterator"/>
+    <iterator Binds="NivFormFormPay" RangeSize="25" DataControl="ecolageAppDataControl" id="NivFormFormPayIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="AnneeUniversPasseAnterROIterator" ListOperMode="navigation"
+          ListIter="AnneeUniversPasseAnterROIterator" id="AnneeUniversPasseAnterRO" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="IdLibLongPasse"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="ListePaiementRetardROIterator" id="ListePaiementRetardRO">
+      <nodeDefinition DefName="model.readOnlyView.ListePaiementRetardROVO" Name="ListePaiementRetardRO0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="PrenomNom"/>
+          <Item Value="LibelleEchelon"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ListePaiementRetardROIterator" id="getListePaiementRetard"
+            InstanceName="ecolageAppDataControl.ListePaiementRetardRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_niv_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <list IterBinding="FormHistStrROIterator" ListOperMode="navigation" ListIter="FormHistStrROIterator"
+          id="FormHistStrRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="NivFormFormPayIterator" ListOperMode="navigation" ListIter="NivFormFormPayIterator"
+          id="NivFormFormPay" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="FormHistStrROIterator" id="IdFormation">
+      <AttrNames>
+        <Item Value="IdFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormFormPayIterator" id="IdNiveauFormation">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneeUniversPasseAnterROIterator" id="IdAnneePasse">
+      <AttrNames>
+        <Item Value="IdAnneePasse"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

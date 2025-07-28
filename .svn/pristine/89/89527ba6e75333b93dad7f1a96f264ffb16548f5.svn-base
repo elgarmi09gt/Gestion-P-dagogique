@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="liststatusPageDef"
+                Package="parametrage.status">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Statuts" RangeSize="25" DataControl="parametrageAppDataControl" id="StatutsIterator"/>
+    <searchRegion Binds="StatutsIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="StatutsQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="StatutsIterator" id="Statuts">
+      <nodeDefinition DefName="model.updatableview.StatutsVO" Name="Statuts0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="DateCreation"/>
+          <Item Value="UtiCree"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="StatutsIterator" id="CreateInsert" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="StatutsIterator" id="Delete" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="StatutsIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StatutsIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StatutsIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="parametrageAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="StatutsIterator" id="IdStatut">
+      <AttrNames>
+        <Item Value="IdStatut"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StatutsIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StatutsIterator" id="DateModification">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="StatutsIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listrepechagesPageDef"
+                Package="evaluation.repechage">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="DelibSemEtuRepecheROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="DelibSemEtuRepecheROVOIterator"/>
+    <iterator Binds="ResultatsSemestreVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="ResultatsSemestreVOIterator"/>
+    <searchRegion Binds="ResultatsSemestreVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ResultatsSemestreVOQuery"/>
+    <iterator Binds="FilUeInsPedSem" RangeSize="10" DataControl="evaluationAppDataControl" id="FilUeInsPedSemIterator"/>
+    <iterator Binds="FilEcInsPedSemUe" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="FilEcInsPedSemUeIterator"/>
+    <iterator Binds="ResultatFilUeSemestreROVO" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="ResultatFilUeSemestreROVOIterator"/>
+    <searchRegion Binds="ResultatFilUeSemestreROVOIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ResultatFilUeSemestreROVOQuery"/>
+    <iterator Binds="NotesModeEnseignementVO1" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="NotesModeEnseignementVO1Iterator"/>
+    <searchRegion Binds="NotesModeEnseignementVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="NotesModeEnseignementVO1Query"/>
+    <iterator Binds="PourcentageCC_CT_ROVO" RangeSize="10" DataControl="evaluationAppDataControl"
+              id="PourcentageCC_CT_ROVOIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="DelibSemEtuRepecheROVOIterator" id="GetEtudiantRepechable"
+            InstanceName="evaluationAppDataControl.DelibSemEtuRepecheROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDType="java.lang.Integer"/>
+      <NamedData NDName="noteInf" NDType="java.lang.Float"/>
+      <NamedData NDName="noteSup" NDType="java.lang.Float"/>
+    </action>
+    <action IterBinding="ResultatsSemestreVOIterator" id="GetResultEtuSearch"
+            InstanceName="evaluationAppDataControl.ResultatsSemestreVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="inferieur" NDType="java.lang.Integer"/>
+      <NamedData NDName="superieur" NDType="java.lang.Integer"/>
+      <NamedData NDName="id_calendrier" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="RepecheCriteria" RequiresUpdateModel="true" Action="invokeMethod" MethodName="RepecheCriteria"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.RepecheCriteria.dataControl.dataProvider">
+      <NamedData NDName="calendrier" NDType="java.lang.Long"/>
+      <NamedData NDName="superieur" NDType="java.math.BigDecimal"/>
+      <NamedData NDName="inferieur" NDType="java.math.BigDecimal"/>
+    </methodAction>
+    <tree IterBinding="ResultatsSemestreVOIterator" id="ResultatsSemestreVO">
+      <nodeDefinition DefName="model.updatableview.ResultatsSemestreVO" Name="ResultatsSemestreVO0">
+        <AttrNames>
+          <Item Value="Anonymat"/>
+          <Item Value="IdEtudiant"/>
+          <Item Value="Note"/>
+          <Item Value="Credit"/>
+          <Item Value="DetteCredit"/>
+          <Item Value="Resultat"/>
+          <Item Value="IdTypeMention"/>
+          <Item Value="IdSession"/>
+          <Item Value="IdInscriptionPedSemestre"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="ResultatsSemestreVOIterator" id="Anonymat">
+      <AttrNames>
+        <Item Value="Anonymat"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="FilUeInsPedSemIterator" id="GetFilUeInsPedSem"
+            InstanceName="evaluationAppDataControl.FilUeInsPedSem" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_ins_ped" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="FilEcInsPedSemUeIterator" id="GetFilEcInsPedSemUe"
+            InstanceName="evaluationAppDataControl.FilEcInsPedSemUe" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_ins_ped_sem_ue" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="ResultatFilUeSemestreROVOIterator" id="ResultatFilUeSemestreROVO">
+      <nodeDefinition DefName="model.readOnlyView.ResultatFilUeSemestreROVO" Name="ResultatFilUeSemestreROVO0">
+        <AttrNames>
+          <Item Value="IdFiliereUeSemstre"/>
+          <Item Value="Note"/>
+          <Item Value="Credit"/>
+          <Item Value="Resultat"/>
+          <Item Value="Compensable"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="NotesModeEnseignementVO1Iterator" id="NotesModeEnseignementVO1">
+      <nodeDefinition DefName="model.updatableview.NotesModeEnseignementVO" Name="NotesModeEnseignementVO10">
+        <AttrNames>
+          <Item Value="IdFiliereUeSemstreEc"/>
+          <Item Value="IdTypeControle"/>
+          <Item Value="Note"/>
+          <Item Value="PointJury"/>
+          <Item Value="IdInscriptionPedSemUe"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="PourcentageCC_CT_ROVOIterator" id="GetPourcentFilEc"
+            InstanceName="evaluationAppDataControl.PourcentageCC_CT_ROVO" DataControl="evaluationAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_fil_ec" NDType="java.lang.Long"/>
+    </action>
+    <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <methodAction id="CalculMoyenneEcRepeche" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CalculMoyenneEcRepeche" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CalculMoyenneEcRepeche.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.CalculMoyenneEcRepeche_CalculMoyenneEcRepeche_dataControl_dataProvider_CalculMoyenneEcRepeche_result">
+      <NamedData NDName="inspedSemUe" NDType="java.lang.Integer"/>
+      <NamedData NDName="idFilieUeSemEc" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="CalculMoyenneUeRepeche" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CalculMoyenneUeRepeche" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CalculMoyenneUeRepeche.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.CalculMoyenneUeRepeche_CalculMoyenneUeRepeche_dataControl_dataProvider_CalculMoyenneUeRepeche_result">
+      <NamedData NDName="idInspedSemUe" NDType="java.lang.Integer"/>
+      <NamedData NDName="idCalendrDelib" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="CompenseRepecheNature" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CompenseRepecheNature" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CompenseRepecheNature.dataControl.dataProvider">
+      <NamedData NDName="idInspedSem" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+      <NamedData NDName="nature" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="CalculMoyenneSemRepech" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CalculMoyenneSemRepech" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CalculMoyenneSemRepech.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.CalculMoyenneSemRepech_CalculMoyenneSemRepech_dataControl_dataProvider_CalculMoyenneSemRepech_result">
+      <NamedData NDName="idInspedSem" NDType="java.lang.Integer"/>
+      <NamedData NDName="idCalendrDelib" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="CompensationRule" RequiresUpdateModel="true" Action="invokeMethod" MethodName="CompensationRule"
+                  IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CompensationRule.dataControl.dataProvider"
+                  ReturnName="data.evaluationAppDataControl.methodResults.CompensationRule_CompensationRule_dataControl_dataProvider_CompensationRule_result">
+      <NamedData NDName="parcours" NDType="java.lang.Integer"/>
+      <NamedData NDName="anne" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="CompenseRepecheGlobal" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CompenseRepecheGlobal" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.CompenseRepecheGlobal.dataControl.dataProvider">
+      <NamedData NDName="idInspedSem" NDType="java.lang.Integer"/>
+      <NamedData NDName="calendrier" NDType="java.lang.Integer"/>
+      <NamedData NDName="utilisateur" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="findAndUpdateNotePointJury" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findAndUpdateNotePointJury" IsViewObjectMethod="false"
+                  DataControl="evaluationAppDataControl"
+                  InstanceName="bindings.findAndUpdateNotePointJury.dataControl.dataProvider">
+      <NamedData NDName="idNoteModeEns" NDType="java.lang.Long"/>
+      <NamedData NDName="point" NDType="java.lang.Float"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

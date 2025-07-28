@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE AppModule SYSTEM "jbo_03_01.dtd">
+<!---->
+<AppModule xmlns="http://xmlns.oracle.com/bc4j" Name="inscriptionApp" Version="12.2.1.12.24"
+           InheritPersonalization="merge" ComponentClass="model.services.inscriptionAppImpl" ClearCacheOnRollback="true"
+           ComponentInterface="model.services.common.inscriptionApp">
+    <DesignTime>
+        <Attr Name="_isCodegen" Value="true"/>
+    </DesignTime>
+    <Properties>
+        <SchemaBasedProperties>
+            <LABEL ResId="model.services.inscriptionApp_LABEL"/>
+        </SchemaBasedProperties>
+    </Properties>
+    <ViewUsage Name="Grades" ViewObjectName="model.updatableview.GradesVO"/>
+    <ViewUsage Name="Bourses" ViewObjectName="model.updatableview.BoursesVO"/>
+    <ViewUsage Name="Options" ViewObjectName="model.updatableview.OptionsVO"/>
+    <ViewUsage Name="FiliereUeSemstreEc" ViewObjectName="model.updatableview.FiliereUeSemstreEcVO"/>
+    <ViewUsage Name="FiliereUeSemstre" ViewObjectName="model.updatableview.FiliereUeSemstreVO"/>
+    <ViewUsage Name="BoursierLOV" ViewObjectName="model.readOnlyView.BoursierLOV"/>
+    <ViewUsage Name="BoursesRecuLOV" ViewObjectName="model.readOnlyView.BoursesRecuLOV"/>
+    <ViewUsage Name="FiliereUeSemstreEcVO1" ViewObjectName="model.updatableview.FiliereUeSemstreEcVO"/>
+    <ViewUsage Name="Personnes" ViewObjectName="model.updatableview.PersonnesVO"/>
+    <ViewUsage Name="Etudiants" ViewObjectName="model.updatableview.EtudiantsVO"/>
+    <ViewUsage Name="NouveauxBacheliers" ViewObjectName="model.updatableview.NouveauxBacheliersVO"/>
+    <ViewUsage Name="PersonnesROVO" ViewObjectName="model.readOnlyView.PersonnesROVO"/>
+    <ViewUsage Name="AutorisationInscriptionROVO" ViewObjectName="model.readOnlyView.AutorisationInscriptionROVO"/>
+    <ViewUsage Name="InscriptionsAdmin" ViewObjectName="model.updatableview.InscriptionsAdminVO"/>
+    <ViewUsage Name="InscriptionsPedagogiques" ViewObjectName="model.updatableview.InscriptionsPedagogiquesVO"/>
+    <ViewUsage Name="InscriptionPedSemestre" ViewObjectName="model.updatableview.InscriptionPedSemestreVO"/>
+    <ViewUsage Name="InscriptionPedSemUe" ViewObjectName="model.updatableview.InscriptionPedSemUeVO"/>
+    <ViewUsage Name="InscPedSemUe" ViewObjectName="model.readOnlyView.InscPedSemUe"/>
+    <ViewUsage Name="InscrAdminPedRO" ViewObjectName="model.readOnlyView.InscrAdminPedROVO"/>
+    <ViewUsage Name="UtiInsplSem" ViewObjectName="model.readOnlyView.UtiInsplSem"/>
+    <ViewUsage Name="reInscripAdminRO" ViewObjectName="model.readOnlyView.reInscripAdminROVO"/>
+    <ViewUsage Name="reInscResultSemRO" ViewObjectName="model.readOnlyView.reInscResultSemROVO"/>
+    <ViewUsage Name="reInscripAdminROVO2" ViewObjectName="model.readOnlyView.reInscripAdminROVO2"/>
+    <ViewUsage Name="reInsResultUe" ViewObjectName="model.readOnlyView.reInsResultUe"/>
+    <ViewUsage Name="InsPedSemUe2" ViewObjectName="model.readOnlyView.InsPedSemUe2"/>
+    <ViewUsage Name="InscriptionPedSemUeRO" ViewObjectName="model.readOnlyView.InscriptionPedSemUeROVO"/>
+    <ViewUsage Name="reInscriptionResultRO" ViewObjectName="model.readOnlyView.reInscriptionResultROVO"/>
+    <ViewUsage Name="reInscripAdminPedRO" ViewObjectName="model.readOnlyView.reInscripAdminPedROVO"/>
+    <ViewUsage Name="listeInsPed" ViewObjectName="model.readOnlyView.listeInsPed"/>
+    <ViewUsage Name="InscriptPedSemRO" ViewObjectName="model.readOnlyView.InscriptPedSemROVO"/>
+    <ViewUsage Name="InscriptPedSemUeRO" ViewObjectName="model.readOnlyView.InscriptPedSemUeROVO"/>
+    <ViewUsage Name="NivFormAutoriseRO" ViewObjectName="model.readOnlyView.NivFormAutoriseROVO"/>
+    <ViewUsage Name="AttributSearchRO" ViewObjectName="model.readOnlyView.AttributSearchROVO"/>
+    <ViewUsage Name="ListePersAutorise" ViewObjectName="model.readOnlyView.ListePersAutorise"/>
+    <ViewUsage Name="ListePersonnesRO" ViewObjectName="model.readOnlyView.ListePersonnesROVO"/>
+    <ViewUsage Name="AttrSearchPers" ViewObjectName="model.readOnlyView.AttrSearchPers"/>
+    <ViewUsage Name="AttrSearchPersAut" ViewObjectName="model.readOnlyView.AttrSearchPersAut"/>
+    <ViewUsage Name="GroupeTdTpParcours" ViewObjectName="model.readOnlyView.GroupeTdTpParcours"/>
+    <ViewUsage Name="GroupeTpTd" ViewObjectName="model.updatableview.GroupeTpTdVO"/>
+    <ViewUsage Name="AttrParcours" ViewObjectName="model.readOnlyView.AttrParcours"/>
+    <ViewUsage Name="GroupeParcSemestre" ViewObjectName="model.readOnlyView.GroupeParcSemestre"/>
+    <ViewUsage Name="ListeGroupeTdTpRO" ViewObjectName="model.readOnlyView.ListeGroupeTdTpROVO"/>
+    <ViewUsage Name="AutorisationValideRO" ViewObjectName="model.readOnlyView.AutorisationValideROVO"/>
+    <ViewUsage Name="ListePersAutValRO" ViewObjectName="model.readOnlyView.ListePersAutValROVO"/>
+    <ViewUsage Name="ListeEtudPasGroupeTdRO" ViewObjectName="model.readOnlyView.ListeEtudPasGroupeTdROVO"/>
+    <ViewUsage Name="GroupeTpTdEtudiants" ViewObjectName="model.updatableview.GroupeTpTdEtudiantsVO"/>
+    <ViewUsage Name="ListeEtudiantGroupeTdRO" ViewObjectName="model.readOnlyView.ListeEtudiantGroupeTdROVO"/>
+    <ViewUsage Name="NivFormAutoriseResRO" ViewObjectName="model.readOnlyView.NivFormAutoriseResROVO"/>
+    <ViewUsage Name="AutorisationValideRespRO" ViewObjectName="model.readOnlyView.AutorisationValideRespROVO"/>
+    <ViewUsage Name="ListePersAutValRespRO" ViewObjectName="model.readOnlyView.ListePersAutValRespROVO"/>
+    <ViewUsage Name="NivFormAutoriseDapRO" ViewObjectName="model.readOnlyView.NivFormAutoriseDapROVO"/>
+    <ViewUsage Name="AutorisationValideDapRO" ViewObjectName="model.readOnlyView.AutorisationValideDapROVO"/>
+    <ViewUsage Name="ListePersAutDapRO" ViewObjectName="model.readOnlyView.ListePersAutDapROVO"/>
+    <ViewUsage Name="NivFormationRO" ViewObjectName="model.readOnlyView.NivFormationROVO"/>
+    <ViewUsage Name="ListeEtudRO" ViewObjectName="model.readOnlyView.ListeEtudROVO"/>
+    <ViewUsage Name="ListeEtudNotPreInsRO" ViewObjectName="model.readOnlyView.ListeEtudNotPreInsROVO"/>
+    <ViewUsage Name="DiplomeEtudiantGradeRO" ViewObjectName="model.readOnlyView.DiplomeEtudiantGradeROVO"/>
+    <ViewUsage Name="DiplomesEtudiants" ViewObjectName="model.updatableview.DiplomesEtudiantsVO"/>
+    <ViewUsage Name="EudiantPersonneRO" ViewObjectName="model.updatableview.EudiantPersonneROVO"/>
+    <ViewUsage Name="AttEnregistrementDiplRO" ViewObjectName="model.readOnlyView.AttEnregistrementDiplROVO"/>
+    <ViewUsage Name="HistResultAncienRO" ViewObjectName="model.readOnlyView.HistResultAncienROVO"/>
+    <ViewUsage Name="AttrResulancienRO" ViewObjectName="model.readOnlyView.AttrResulancienROVO"/>
+    <ViewUsage Name="EtudiantAncien" ViewObjectName="model.updatableview.EtudiantAncienVO"/>
+    <ViewUsage Name="AttrSearchNumDiplomeRO" ViewObjectName="model.readOnlyView.AttrSearchNumDiplomeROVO"/>
+    <ViewUsage Name="NumeroDiplome" ViewObjectName="model.updatableview.NumeroDiplomeVO"/>
+    <ViewUsage Name="EtudAcnienRO" ViewObjectName="model.readOnlyView.EtudAcnienROVO"/>
+    <ViewUsage Name="HistStructAncInscRO" ViewObjectName="model.readOnlyView.HistStructAncInscROVO"/>
+    <ViewUsage Name="AnneeUnivAnscInscRO" ViewObjectName="model.readOnlyView.AnneeUnivAnscInscROVO"/>
+    <ViewUsage Name="NivFormAncInsRO" ViewObjectName="model.readOnlyView.NivFormAncInsROVO"/>
+    <ViewUsage Name="InscriptionAncienne" ViewObjectName="model.updatableview.InscriptionAncienneVO"/>
+    <ViewUsage Name="NumDiplomeInsAncRO" ViewObjectName="model.readOnlyView.NumDiplomeInsAncROVO"/>
+    <ViewUsage Name="ListeInscAncRO" ViewObjectName="model.readOnlyView.ListeInscAncROVO"/>
+    <ViewUsage Name="NivFormHistoInscRO" ViewObjectName="model.readOnlyView.NivFormHistoInscROVO"/>
+    <ViewUsage Name="StructureEtudBuRO" ViewObjectName="model.readOnlyView.StructureEtudBuROVO"/>
+    <ViewUsage Name="AnneeUniverRO" ViewObjectName="model.readOnlyView.AnneeUniverROVO"/>
+    <ViewUsage Name="EtudiantBuRO" ViewObjectName="model.readOnlyView.EtudiantBuROVO"/>
+    <ViewUsage Name="EtudiantBu" ViewObjectName="model.updatableview.EtudiantBuVO"/>
+    <ViewUsage Name="HistoPaiementEtudRO" ViewObjectName="model.readOnlyView.HistoPaiementEtudROVO"/>
+    <ViewUsage Name="FormPaiementEtudRO" ViewObjectName="model.readOnlyView.FormPaiementEtudROVO"/>
+    <ViewUsage Name="PaiementEtudiant" ViewObjectName="model.updatableview.PaiementEtudiantVO"/>
+    <ViewUsage Name="persEtudiantRO" ViewObjectName="model.readOnlyView.persEtudiantROVO"/>
+    <ViewUsage Name="PersNouvBachelierRO" ViewObjectName="model.readOnlyView.PersNouvBachelierROVO"/>
+    <ViewUsage Name="NivFormPreins" ViewObjectName="model.readOnlyView.NivFormPreins"/>
+    <ViewUsage Name="AutoInscPreinsRO" ViewObjectName="model.readOnlyView.AutoInscPreinsROVO"/>
+    <ViewUsage Name="EtudBuPreinsRO" ViewObjectName="model.readOnlyView.EtudBuPreinsROVO"/>
+    <ViewUsage Name="AptePreins" ViewObjectName="model.readOnlyView.AptePreins"/>
+    <ViewUsage Name="PaiementEtudPreins" ViewObjectName="model.readOnlyView.PaiementEtudPreins"/>
+    <ViewUsage Name="InscInfoGlobleForm" ViewObjectName="model.readOnlyView.InscInfoGlobleForm"/>
+    <ViewUsage Name="InscDoubleRO" ViewObjectName="model.readOnlyView.InscDoubleROVO"/>
+    <ViewUsage Name="InscNombreMaxiRO" ViewObjectName="model.readOnlyView.InscNombreMaxiROVO"/>
+    <ViewUsage Name="Autorises" ViewObjectName="model.updatableview.AutorisesVO"/>
+    <ViewUsage Name="DroitNiveauPaysRO" ViewObjectName="model.readOnlyView.DroitNiveauPaysROVO"/>
+    <ViewUsage Name="EtudiantExcluSuspenduRO" ViewObjectName="model.readOnlyView.EtudiantExcluSuspenduROVO"/>
+    <ViewUsage Name="EtudiantResultatCycleRO" ViewObjectName="model.readOnlyView.EtudiantResultatCycleROVO"/>
+    <ViewUsage Name="ListePersAutNewRO" ViewObjectName="model.readOnlyView.ListePersAutNewROVO"/>
+    <ViewUsage Name="ListePersonnesROVO" ViewObjectName="model.readOnlyView.ListePersonnesROVO"/>
+    <ViewUsage Name="PersDejaAutoriserRO" ViewObjectName="model.readOnlyView.PersDejaAutoriserROVO"/>
+    <ViewUsage Name="PersonneLastInsertRO" ViewObjectName="model.readOnlyView.PersonneLastInsertROVO"/>
+    <ViewUsage Name="Pays" ViewObjectName="model.updatableview.PaysVO"/>
+    <ViewUsage Name="PaysNationalite" ViewObjectName="model.updatableview.PaysVO"/>
+    
+  <ViewUsage
+    Name="Civilites"
+    ViewObjectName="model.updatableview.CivilitesVO"/><ViewUsage Name="PersonneExiste" ViewObjectName="model.readOnlyView.PersonneExisteROVO"/>
+    <ViewUsage Name="NivFormSaisieResultRO" ViewObjectName="model.readOnlyView.NivFormSaisieResultROVO"/>
+    
+  <ViewUsage
+    Name="EtudEnRegleBuRO"
+    ViewObjectName="model.readOnlyView.EtudEnRegleBuROVO"/><ViewUsage Name="EtudPaiementRO" ViewObjectName="model.readOnlyView.EtudPaiementROVO"/>
+    <ViewUsage Name="Structures" ViewObjectName="model.updatableview.StructuresVO"/>
+    <ViewUsage Name="AttrComplAutorisation" ViewObjectName="model.readOnlyView.AttrComplAutorisation"/>
+    <ViewUsage Name="Sexe" ViewObjectName="model.updatableview.SexeVO"/>
+    <ViewUsage Name="SerieBac" ViewObjectName="model.updatableview.SerieBacVO"/>
+    <ViewUsage Name="TypeMention" ViewObjectName="model.updatableview.TypeMentionVO"/>
+    <ViewUsage Name="Lycee" ViewObjectName="model.updatableview.LyceeVO"/>
+    <ViewUsage Name="EtudiantTicRO" ViewObjectName="model.readOnlyView.EtudiantTicROVO"/>
+    <ViewUsage Name="OptionFormRO" ViewObjectName="model.readOnlyView.OptionFormROVO"/>
+    <ViewUsage Name="InscPedChangeNationaliteRO" ViewObjectName="model.readOnlyView.InscPedChangeNationaliteROVO"/>
+    <ViewUsage Name="InscPedExcluRO" ViewObjectName="model.readOnlyView.InscPedExcluROVO"/>
+    <ViewUsage Name="ExcluLOV" ViewObjectName="model.readOnlyView.ExcluLOV"/>
+    <ViewUsage Name="InscPedEnCoursExcluRO" ViewObjectName="model.readOnlyView.InscPedEnCoursExcluROVO"/>
+    <ViewUsage Name="AnneeUniversSupRO" ViewObjectName="model.readOnlyView.AnneeUniversSupROVO"/>
+    <ViewUsage Name="ListePersSaisieResultatRO" ViewObjectName="model.readOnlyView.ListePersSaisieResultatROVO"/>
+    <ViewUsage Name="Resultat" ViewObjectName="model.updatableview.ResultatVO"/>
+    <ViewUsage Name="ResultParcoursSupRO" ViewObjectName="model.readOnlyView.ResultParcoursSupROVO"/>
+    <ViewUsage Name="SaisieResultatDetailPedRO" ViewObjectName="model.readOnlyView.SaisieResultatDetailPedROVO"/>
+    <ViewUsage Name="NivFormAnnulSuspendRO" ViewObjectName="model.readOnlyView.NivFormAnnulSuspendROVO"/>
+    <ViewUsage Name="ListeEtudAnnSuspRO" ViewObjectName="model.readOnlyView.ListeEtudAnnSuspROVO"/>
+    <ViewUsage Name="ListeEtudAnnSusp" ViewObjectName="model.readOnlyView.ListeEtudAnnSuspROVO"/>
+    <ViewUsage Name="ListeEtudFinalAnnSuspRO" ViewObjectName="model.readOnlyView.ListeEtudFinalAnnSuspROVO"/>
+    <ViewUsage Name="AnnulerSuspendreLOV" ViewObjectName="model.readOnlyView.AnnulerSuspendreLOV"/>
+    <ViewUsage Name="PersonneSearchSimple" ViewObjectName="model.readOnlyView.PersonneSearchSimple"/>
+    <ViewUsage Name="ListeInsPedExonerationRO" ViewObjectName="model.readOnlyView.ListeInsPedExonerationROVO"/>
+    <ViewUsage Name="Exoneration" ViewObjectName="model.updatableview.ExonerationVO"/>
+    <ViewUsage Name="InfoExonerationAnterieurRO" ViewObjectName="model.readOnlyView.InfoExonerationAnterieurROVO"/>
+    <ViewUsage Name="ListeSuspensioneEtudRO" ViewObjectName="model.readOnlyView.ListeSuspensioneEtudROVO"/>
+    <ViewUsage Name="ListeInscPedAnnulDesistRO" ViewObjectName="model.readOnlyView.ListeInscPedAnnulDesistROVO"/>
+    <ViewUsage Name="ListeInsPedIsAnnulDesistRO" ViewObjectName="model.readOnlyView.ListeInsPedIsAnnulDesistROVO"/>
+    <ViewUsage Name="AnneeUniversEnCoursRO" ViewObjectName="model.readOnlyView.AnneeUniversEnCoursROVO"/>
+    <ViewUsage Name="LesPersonnesRO" ViewObjectName="model.readOnlyView.LesPersonnesROVO"/>
+    <ViewUsage Name="Responsables" ViewObjectName="model.updatableview.ResponsablesVO"/>
+    <ViewUsage Name="HistoriquesStructures" ViewObjectName="model.updatableview.HistoriquesStructuresVO"/>
+    <ViewUsage Name="InscPedSemAncienRO" ViewObjectName="model.readOnlyView.InscPedSemAncienROVO"/>
+    <ViewUsage Name="Semestres" ViewObjectName="model.updatableview.SemestresVO"/>
+    <ViewUsage Name="listeUeValide" ViewObjectName="model.readOnlyView.listeUeValide"/>
+    <ViewUsage Name="ResultatsFilUeSemestre" ViewObjectName="model.updatableview.ResultatsFilUeSemestreVO"/>
+    <ViewUsage Name="ResponsableRO" ViewObjectName="model.readOnlyView.ResponsableROVO"/>
+    <ViewUsage Name="lesUeInscPedSemUeRO" ViewObjectName="model.readOnlyView.lesUeInscPedSemUeROVO"/>
+    <ViewUsage Name="HistoChangeNation" ViewObjectName="model.updatableview.HistoChangeNationVO"/>
+    <ViewUsage Name="InscPedSemEtudMobiliteRO" ViewObjectName="model.readOnlyView.InscPedSemEtudMobiliteROVO"/>
+    <ViewUsage Name="HistoMobiliteRO" ViewObjectName="model.readOnlyView.HistoMobiliteROVO"/>
+    <ViewUsage Name="AutoResulAnnValideRO" ViewObjectName="model.readOnlyView.AutoResulAnnValideROVO"/>
+    <ViewUsage Name="listeEtudMobiliteRO" ViewObjectName="model.readOnlyView.listeEtudMobiliteROVO"/>
+    <ViewUsage Name="listeEtudMobUeRO" ViewObjectName="model.readOnlyView.listeEtudMobUeROVO"/>
+    <ViewUsage Name="InscPedagogiqueRO" ViewObjectName="model.readOnlyView.InscPedagogiqueROVO"/>
+    <ViewUsage Name="UeInsc" ViewObjectName="model.readOnlyView.UeInsc"/>
+    <ViewUsage Name="AnneeUniversPasseeRO" ViewObjectName="model.readOnlyView.AnneeUniversPasseeROVO"/>
+    <ViewUsage Name="InsChangementCycleRO" ViewObjectName="model.readOnlyView.InsChangementCycleROVO"/>
+    <ViewUsage Name="InscAncienneRO" ViewObjectName="model.readOnlyView.InscAncienneROVO"/>
+    <ViewUsage Name="ResultatAnnuelRO" ViewObjectName="model.readOnlyView.ResultatAnnuelROVO"/>
+    <ViewUsage Name="ListeEtudInscProvRO" ViewObjectName="model.readOnlyView.ListeEtudInscProvROVO"/>
+    <ViewUsage Name="ListeProvEtudRO" ViewObjectName="model.readOnlyView.ListeProvEtudROVO"/>
+    <ViewUsage Name="SemestreReDoubleRO" ViewObjectName="model.readOnlyView.SemestreReDoubleROVO"/>
+    <ViewUsage Name="SemRedoubleRO" ViewObjectName="model.readOnlyView.SemRedoubleROVO"/>
+    <ViewUsage Name="ListePersAutDerogationRO" ViewObjectName="model.readOnlyView.ListePersAutDerogationROVO"/>
+    <ViewUsage Name="InscPedParcEnCoursRO" ViewObjectName="model.readOnlyView.InscPedParcEnCoursROVO"/>
+    <ViewUsage Name="InscPedSemParcRO" ViewObjectName="model.readOnlyView.InscPedSemParcROVO"/>
+    <ViewUsage Name="InscAncienneNiv1" ViewObjectName="model.readOnlyView.InscAncienneNiv1"/>
+    <ViewUsage Name="InscAncienneNiv2" ViewObjectName="model.readOnlyView.InscAncienneNiv2"/>
+    <ViewUsage
+        Name="InscNivFormationRO"
+        ViewObjectName="model.readOnlyView.InscNivFormationROVO"/>
+    <ViewUsage
+        Name="ResultatAnnuelInscPedRO"
+        ViewObjectName="model.readOnlyView.ResultatAnnuelInscPedROVO"/>
+    <ViewUsage
+        Name="NiveauInscPedRO"
+        ViewObjectName="model.readOnlyView.NiveauInscPedROVO"/>
+    <ViewUsage
+        Name="LesInscPedRO"
+        ViewObjectName="model.readOnlyView.LesInscPedROVO"/>
+    <ViewUsage
+        Name="LesUeInscPedSemRO"
+        ViewObjectName="model.readOnlyView.LesUeInscPedSemROVO"/>
+    <ViewUsage
+        Name="LesInscPedSem"
+        ViewObjectName="model.readOnlyView.LesInscPedSem"/>
+    <ViewUsage
+        Name="ResultatUeFilUeSemRO"
+        ViewObjectName="model.readOnlyView.ResultatUeFilUeSemROVO"/>
+    <ViewUsage
+        Name="ResultatInscPedSenRO"
+        ViewObjectName="model.readOnlyView.ResultatInscPedSenROVO"/>
+    <ViewUsage
+        Name="ResultatsSemestre"
+        ViewObjectName="model.updatableview.ResultatsSemestreVO"/>
+    <ViewUsage
+        Name="PaieEtudInscPedRO"
+        ViewObjectName="model.readOnlyView.PaieEtudInscPedROVO"/>
+    <ViewUsage
+        Name="Derogations"
+        ViewObjectName="model.updatableview.DerogationsVO"/>
+    <ViewUsage
+        Name="DetailStrcDerogationRO"
+        ViewObjectName="model.readOnlyView.DetailStrcDerogationROVO"/>
+    <ViewUsage
+        Name="DerogationEtudRO"
+        ViewObjectName="model.readOnlyView.DerogationEtudROVO"/>
+    <ViewUsage
+        Name="InscPedAnneeRO"
+        ViewObjectName="model.readOnlyView.InscPedAnneeROVO"/>
+    <ViewUsage
+        Name="AttrOblInscPedRO"
+        ViewObjectName="model.readOnlyView.AttrOblInscPedROVO"/>
+    <ViewUsage
+        Name="TypeConventions"
+        ViewObjectName="model.updatableview.TypeConventionsVO"/>
+    <ViewUsage
+        Name="Cohortes"
+        ViewObjectName="model.updatableview.CohortesVO"/>
+    <ViewUsage
+        Name="HorairesTd"
+        ViewObjectName="model.updatableview.HorairesTdVO"/>
+    <ViewUsage
+        Name="Operateurs"
+        ViewObjectName="model.updatableview.OperateursVO"/>
+    <ViewUsage
+        Name="Statuts"
+        ViewObjectName="model.updatableview.StatutsVO"/>
+    <ViewUsage
+        Name="InscPedEtatInscRO"
+        ViewObjectName="model.readOnlyView.InscPedEtatInscROVO"/>
+    <ViewUsage
+        Name="NiveauFormationSupRO"
+        ViewObjectName="model.readOnlyView.NiveauFormationSupROVO"/>
+    <ViewUsage
+        Name="ModePaiements"
+        ViewObjectName="model.updatableview.ModePaiementsVO"/>
+    <ViewUsage
+        Name="NombrInscPedAnneeRO"
+        ViewObjectName="model.readOnlyView.NombrInscPedAnneeROVO"/>
+    <ViewUsage
+        Name="EquivalenceRechercheRO"
+        ViewObjectName="model.readOnlyView.EquivalenceRechercheROVO"/>
+    <ViewUsage
+        Name="Equivalence"
+        ViewObjectName="model.updatableview.EquivalenceVO"/>
+    <ViewUsage
+        Name="EquivalenceListe"
+        ViewObjectName="model.readOnlyView.EquivalenceListeROVO"/>
+    <ViewUsage
+        Name="LesSuspenduRO"
+        ViewObjectName="model.readOnlyView.LesSuspenduROVO"/>
+    <ViewUsage
+        Name="Suspension"
+        ViewObjectName="model.updatableview.SuspensionVO"/>
+    <ViewUsage
+        Name="InscPedFormPayEcolRO"
+        ViewObjectName="model.readOnlyView.InscPedFormPayEcolROVO"/>
+    <ViewUsage
+        Name="FormPayEcolRegleRO"
+        ViewObjectName="model.readOnlyView.FormPayEcolRegleROVO"/>
+    <ViewUsage
+        Name="PaieEchelonEcolModFormRO"
+        ViewObjectName="model.readOnlyView.PaieEchelonEcolModFormROVO"/>
+    <ViewUsage
+        Name="PaieEtudGenRO"
+        ViewObjectName="model.readOnlyView.PaieEtudGenROVO"/>
+    <ViewUsage
+        Name="ExonerationEcolageRO"
+        ViewObjectName="model.readOnlyView.ExonerationEcolageROVO"/>
+    <ViewUsage
+        Name="Paiements"
+        ViewObjectName="model.updatableview.PaiementsVO"/>
+    <ViewUsage
+        Name="Comptes"
+        ViewObjectName="model.updatableview.ComptesVO"/>
+    <ViewUsage
+        Name="SoldesComptes"
+        ViewObjectName="model.updatableview.SoldesComptesVO"/>
+    <ViewUsage
+        Name="FormPayCompteEtudRO"
+        ViewObjectName="model.readOnlyView.FormPayCompteEtudROVO"/>
+    <ViewLinkUsage Name="FiliereUeSemTOFiliereUeSemEcVL1"
+                   ViewLinkObjectName="model.viewlink.FiliereUeSemTOFiliereUeSemEcVL"
+                   SrcViewUsageName="model.services.inscriptionApp.FiliereUeSemstre"
+                   DstViewUsageName="model.services.inscriptionApp.FiliereUeSemstreEcVO1" Reversed="false"/>
+    <ViewLinkUsage Name="GroupeTdTpParcToGroupeParcSemVL2"
+                   ViewLinkObjectName="model.viewlink.GroupeTdTpParcToGroupeParcSemVL"
+                   SrcViewUsageName="model.services.inscriptionApp.GroupeTdTpParcours"
+                   DstViewUsageName="model.services.inscriptionApp.GroupeParcSemestre" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAutToAutoValideVL1" ViewLinkObjectName="model.viewlink.NivFormAutToAutoValideVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAutoriseRO"
+                   DstViewUsageName="model.services.inscriptionApp.AutorisationValideRO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAutToListePersAutValVL1"
+                   ViewLinkObjectName="model.viewlink.NivFormAutToListePersAutValVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAutoriseRO"
+                   DstViewUsageName="model.services.inscriptionApp.ListePersAutValRO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAutResToAutValRespVL1" ViewLinkObjectName="model.viewlink.NivFormAutResToAutValRespVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAutoriseResRO"
+                   DstViewUsageName="model.services.inscriptionApp.AutorisationValideRespRO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAutResToListPersAutValRespVL1"
+                   ViewLinkObjectName="model.viewlink.NivFormAutResToListPersAutValRespVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAutoriseResRO"
+                   DstViewUsageName="model.services.inscriptionApp.ListePersAutValRespRO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAutDapToAutorisationValDap1"
+                   ViewLinkObjectName="model.viewlink.NivFormAutDapToAutorisationValDap"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAutoriseDapRO"
+                   DstViewUsageName="model.services.inscriptionApp.AutorisationValideDapRO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAutDapToListePersValDap1"
+                   ViewLinkObjectName="model.viewlink.NivFormAutDapToListePersValDap"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAutoriseDapRO"
+                   DstViewUsageName="model.services.inscriptionApp.ListePersAutDapRO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormationToListeEtudVL1" ViewLinkObjectName="model.viewlink.NivFormationToListeEtudVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormationRO"
+                   DstViewUsageName="model.services.inscriptionApp.ListeEtudRO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormmationToListeEtudNotPreInsVL1"
+                   ViewLinkObjectName="model.viewlink.NivFormmationToListeEtudNotPreInsVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormationRO"
+                   DstViewUsageName="model.services.inscriptionApp.ListeEtudNotPreInsRO" Reversed="false"/>
+    <ViewLinkUsage Name="HistStructToAnneeUnivAnsInscVL1"
+                   ViewLinkObjectName="model.viewlink.HistStructToAnneeUnivAnsInscVL"
+                   SrcViewUsageName="model.services.inscriptionApp.HistStructAncInscRO"
+                   DstViewUsageName="model.services.inscriptionApp.AnneeUnivAnscInscRO" Reversed="false"/>
+    <ViewLinkUsage Name="AnneeUnivNivFormAncInscVL1" ViewLinkObjectName="model.viewlink.AnneeUnivNivFormAncInscVL"
+                   SrcViewUsageName="model.services.inscriptionApp.AnneeUnivAnscInscRO"
+                   DstViewUsageName="model.services.inscriptionApp.NivFormAncInsRO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAncInsToInscAncienVL1" ViewLinkObjectName="model.viewlink.NivFormAncInsToInscAncienVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAncInsRO"
+                   DstViewUsageName="model.services.inscriptionApp.InscriptionAncienne" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAncInsROToListeInscAncROVL1"
+                   ViewLinkObjectName="model.viewlink.NivFormAncInsROToListeInscAncROVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAncInsRO"
+                   DstViewUsageName="model.services.inscriptionApp.ListeInscAncRO" Reversed="false"/>
+    <ViewLinkUsage Name="StructEtudBuROToEtudiantBuROVL1"
+                   ViewLinkObjectName="model.viewlink.StructEtudBuROToEtudiantBuROVL"
+                   SrcViewUsageName="model.services.inscriptionApp.StructureEtudBuRO"
+                   DstViewUsageName="model.services.inscriptionApp.EtudiantBuRO" Reversed="false"/>
+    <ViewLinkUsage Name="HistoPaiEtudROToFormPaiEtudROVL1"
+                   ViewLinkObjectName="model.viewlink.HistoPaiEtudROToFormPaiEtudROVL"
+                   SrcViewUsageName="model.services.inscriptionApp.HistoPaiementEtudRO"
+                   DstViewUsageName="model.services.inscriptionApp.FormPaiementEtudRO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormToNivFormPreinsVL1" ViewLinkObjectName="model.viewlink.NivFormToNivFormPreinsVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormationRO"
+                   DstViewUsageName="model.services.inscriptionApp.NivFormPreins" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAutToListePersAutNewVL1"
+                   ViewLinkObjectName="model.viewlink.NivFormAutToListePersAutNewVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAutoriseRO"
+                   DstViewUsageName="model.services.inscriptionApp.ListePersAutNewRO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAutToListePersonnesROVOVL1"
+                   ViewLinkObjectName="model.viewlink.NivFormAutToListePersonnesROVOVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAutoriseRO"
+                   DstViewUsageName="model.services.inscriptionApp.ListePersonnesROVO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAnnSuspToListeEtudAnnSuspVL1"
+                   ViewLinkObjectName="model.viewlink.NivFormAnnSuspToListeEtudAnnSuspVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAnnulSuspendRO"
+                   DstViewUsageName="model.services.inscriptionApp.ListeEtudAnnSusp" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAnnSuspToListeEtudFinalAnnSuspVL1"
+                   ViewLinkObjectName="model.viewlink.NivFormAnnSuspToListeEtudFinalAnnSuspVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAnnulSuspendRO"
+                   DstViewUsageName="model.services.inscriptionApp.ListeEtudFinalAnnSuspRO" Reversed="false"/>
+    <ViewLinkUsage Name="ListeInsPedExonerationROToExonerationVL1"
+                   ViewLinkObjectName="model.viewlink.ListeInsPedExonerationROToExonerationVL"
+                   SrcViewUsageName="model.services.inscriptionApp.ListeInsPedExonerationRO"
+                   DstViewUsageName="model.services.inscriptionApp.Exoneration" Reversed="false"/>
+    <ViewLinkUsage Name="HistoriquesStructToHistoMobiliteVL1"
+                   ViewLinkObjectName="model.viewlink.HistoriquesStructToHistoMobiliteVL"
+                   SrcViewUsageName="model.services.inscriptionApp.HistoriquesStructures"
+                   DstViewUsageName="model.services.inscriptionApp.HistoMobiliteRO" Reversed="false"/>
+    <ViewLinkUsage Name="EtudiantModEtudModUeVL1" ViewLinkObjectName="model.viewlink.EtudiantModEtudModUeVL"
+                   SrcViewUsageName="model.services.inscriptionApp.listeEtudMobiliteRO"
+                   DstViewUsageName="model.services.inscriptionApp.listeEtudMobUeRO" Reversed="false"/>
+    <ViewLinkUsage Name="NivFormAutToListePersAutDerogationVL1"
+                   ViewLinkObjectName="model.viewlink.NivFormAutToListePersAutDerogationVL"
+                   SrcViewUsageName="model.services.inscriptionApp.NivFormAutoriseRO"
+                   DstViewUsageName="model.services.inscriptionApp.ListePersAutDerogationRO" Reversed="false"/>
+    <ViewLinkUsage
+        Name="NivFormAutToEqListeVL1"
+        ViewLinkObjectName="model.viewlink.NivFormAutToEqListeVL"
+        SrcViewUsageName="model.services.inscriptionApp.NivFormAutoriseRO"
+        DstViewUsageName="model.services.inscriptionApp.EquivalenceListe"
+        Reversed="false"/>
+    <ClientInterface Name="__clientInterface">
+        <Method Name="isEtudiant" MethodName="isEtudiant">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_pers" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="getEtudiants" MethodName="getEtudiants">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="idpers" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="getNouvBac" MethodName="getNouvBac">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="idpers" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isNouvBac" MethodName="isNouvBac">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_pers" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isNumEtudiant" MethodName="isNumEtudiant">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="num_etud" Type="java.lang.String"/>
+        </Method>
+        <Method Name="getIdPersCin" MethodName="getIdPersCin">
+            <Return Name="_return_type_" Type="java.lang.String"/>
+            <Parameter Name="cin" Type="java.lang.String"/>
+        </Method>
+        <Method Name="getIdPersEtudiant" MethodName="getIdPersEtudiant">
+            <Return Name="_return_type_" Type="java.lang.String"/>
+            <Parameter Name="num_etud" Type="java.lang.String"/>
+        </Method>
+        <Method Name="getNumEtudiant" MethodName="getNumEtudiant">
+            <Return Name="_return_type_" Type="java.lang.String"/>
+            <Parameter Name="id_pers" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isNumCin" MethodName="isNumCin">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="num_cin" Type="java.lang.String"/>
+        </Method>
+        <Method Name="nombrUeInsc" MethodName="nombrUeInsc">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Long"/>
+            <Parameter Name="pers" Type="java.lang.Long"/>
+            <Parameter Name="semestre" Type="java.lang.Long"/>
+            <Parameter Name="annee" Type="java.lang.Long"/>
+            <Parameter Name="util" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="getIdInscrpAdmin" MethodName="getIdInscrpAdmin">
+            <Return Name="_return_type_" Type="java.lang.String"/>
+            <Parameter Name="type_form" Type="java.lang.Long"/>
+            <Parameter Name="annee" Type="java.lang.Long"/>
+            <Parameter Name="grade" Type="java.lang.Long"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isInscrpAdmin" MethodName="isInscrpAdmin">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="type_form" Type="java.lang.Long"/>
+            <Parameter Name="annee" Type="java.lang.Long"/>
+            <Parameter Name="grade" Type="java.lang.Long"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isResultSem" MethodName="isResultSem">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_ins_ped_sem" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isInsPedSemUe" MethodName="isInsPedSemUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_ins_ped_sem" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isUeResultSemUe" MethodName="isUeResultSemUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_ins_ped_sem_ue" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="nombreResultSem" MethodName="nombreResultSem">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="type_form" Type="java.lang.Long"/>
+            <Parameter Name="grade" Type="java.lang.Long"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isInsPedSem" MethodName="isInsPedSem">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_ins_ped" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="filterEtudiantsTd" MethodName="filterEtudiantsTd">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="searchString" Type="java.lang.String"/>
+            <Parameter Name="selectedList" Type="java.lang.String"/>
+        </Method>
+        <Method Name="getEudPreinscrption" MethodName="getEudPreinscrption">
+            <Return IsGeneric="true" Name="_return_type_" Type="java.util.List">
+                <Element Name="TableTypePreinscrp" Type="model.readOnlyView.common.TableTypePreinscrp"/>
+            </Return>
+            <Parameter Name="annee" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="fingAndUpdateInsPed" MethodName="fingAndUpdateInsPed">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_ins_ped" Type="java.lang.Long"/>
+            <Parameter Name="etat" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isAcquitePaiementEtud" MethodName="isAcquitePaiementEtud">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_ins_ped" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+            <Parameter Name="id_histo" Type="java.lang.Long"/>
+            <Parameter Name="valide" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="getIdAnonymat" MethodName="getIdAnonymat">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Long"/>
+            <Parameter Name="anne" Type="java.lang.Long"/>
+            <Parameter Name="semestre" Type="java.lang.Long"/>
+            <Parameter Name="sessions" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="fingAndUpdateAutorise" MethodName="fingAndUpdateAutorise">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_aut" Type="java.lang.Long"/>
+            <Parameter Name="valide" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="findAndUpdateResultat" MethodName="findAndUpdateResultat">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_resultat" Type="java.lang.Long"/>
+            <Parameter Name="insc_ped_sup" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="findAndPaieExoneration" MethodName="findAndPaieExoneration">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_insc_ped" Type="java.lang.Long"/>
+            <Parameter Name="droit_insc_adm" Type="java.lang.Long"/>
+            <Parameter Name="droit_insc_ped" Type="java.lang.Long"/>
+            <Parameter Name="cout_form" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isEtudEnRegleBu" MethodName="isEtudEnRegleBu">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_struct" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isNumNouvBac" MethodName="isNumNouvBac">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="num_table" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="getIdPersBac" MethodName="getIdPersBac">
+            <Return Name="_return_type_" Type="java.lang.String"/>
+            <Parameter Name="num_table" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="findAndUpdateInsPedVal" MethodName="findAndUpdateInsPedVal">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_insc_ped_sem" Type="java.lang.Long"/>
+            <Parameter Name="insc_ped_val" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="findAndUpdateNationalite" MethodName="findAndUpdateNationalite">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_pers" Type="java.lang.Long"/>
+            <Parameter Name="id_nouv_nat" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="findAndUpdateEtud" MethodName="findAndUpdateEtud">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+            <Parameter Name="mobilite" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isEtudiant" MethodName="isEtudiant">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_pers" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="getEtudiants" MethodName="getEtudiants">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="idpers" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="getNouvBac" MethodName="getNouvBac">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="idpers" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isNouvBac" MethodName="isNouvBac">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_pers" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isNumEtudiant" MethodName="isNumEtudiant">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="num_etud" Type="java.lang.String"/>
+        </Method>
+        <Method Name="getIdPersCin" MethodName="getIdPersCin">
+            <Return Name="_return_type_" Type="java.lang.String"/>
+            <Parameter Name="cin" Type="java.lang.String"/>
+        </Method>
+        <Method Name="getIdPersEtudiant" MethodName="getIdPersEtudiant">
+            <Return Name="_return_type_" Type="java.lang.String"/>
+            <Parameter Name="num_etud" Type="java.lang.String"/>
+        </Method>
+        <Method Name="getNumEtudiant" MethodName="getNumEtudiant">
+            <Return Name="_return_type_" Type="java.lang.String"/>
+            <Parameter Name="id_pers" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isNumCin" MethodName="isNumCin">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="num_cin" Type="java.lang.String"/>
+        </Method>
+        <Method Name="nombrUeInsc" MethodName="nombrUeInsc">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Long"/>
+            <Parameter Name="pers" Type="java.lang.Long"/>
+            <Parameter Name="semestre" Type="java.lang.Long"/>
+            <Parameter Name="annee" Type="java.lang.Long"/>
+            <Parameter Name="util" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="getIdInscrpAdmin" MethodName="getIdInscrpAdmin">
+            <Return Name="_return_type_" Type="java.lang.String"/>
+            <Parameter Name="type_form" Type="java.lang.Long"/>
+            <Parameter Name="annee" Type="java.lang.Long"/>
+            <Parameter Name="grade" Type="java.lang.Long"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isInscrpAdmin" MethodName="isInscrpAdmin">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="type_form" Type="java.lang.Long"/>
+            <Parameter Name="annee" Type="java.lang.Long"/>
+            <Parameter Name="grade" Type="java.lang.Long"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isResultSem" MethodName="isResultSem">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_ins_ped_sem" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isInsPedSemUe" MethodName="isInsPedSemUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_ins_ped_sem" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isUeResultSemUe" MethodName="isUeResultSemUe">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_ins_ped_sem_ue" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="nombreResultSem" MethodName="nombreResultSem">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="type_form" Type="java.lang.Long"/>
+            <Parameter Name="grade" Type="java.lang.Long"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isInsPedSem" MethodName="isInsPedSem">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_ins_ped" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="filterEtudiantsTd" MethodName="filterEtudiantsTd">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="searchString" Type="java.lang.String"/>
+            <Parameter Name="selectedList" Type="java.lang.String"/>
+        </Method>
+        <Method Name="getEudPreinscrption" MethodName="getEudPreinscrption">
+            <Return Name="_return_type_" Type="java.util.List" IsGeneric="true">
+                <Element Name="TableTypePreinscrp" Type="model.readOnlyView.common.TableTypePreinscrp"/>
+            </Return>
+            <Parameter Name="annee" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="fingAndUpdateInsPed" MethodName="fingAndUpdateInsPed">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_ins_ped" Type="java.lang.Long"/>
+            <Parameter Name="etat" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isAcquitePaiementEtud" MethodName="isAcquitePaiementEtud">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_ins_ped" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+            <Parameter Name="id_histo" Type="java.lang.Long"/>
+            <Parameter Name="valide" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="getIdAnonymat" MethodName="getIdAnonymat">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Long"/>
+            <Parameter Name="anne" Type="java.lang.Long"/>
+            <Parameter Name="semestre" Type="java.lang.Long"/>
+            <Parameter Name="sessions" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="fingAndUpdateAutorise" MethodName="fingAndUpdateAutorise">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_aut" Type="java.lang.Long"/>
+            <Parameter Name="valide" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="findAndUpdateResultat" MethodName="findAndUpdateResultat">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_resultat" Type="java.lang.Long"/>
+            <Parameter Name="insc_ped_sup" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="findAndPaieExoneration" MethodName="findAndPaieExoneration">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_insc_ped" Type="java.lang.Long"/>
+            <Parameter Name="droit_insc_adm" Type="java.lang.Long"/>
+            <Parameter Name="droit_insc_ped" Type="java.lang.Long"/>
+            <Parameter Name="cout_form" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isEtudEnRegleBu" MethodName="isEtudEnRegleBu">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_struct" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isNumNouvBac" MethodName="isNumNouvBac">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="num_table" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="getIdPersBac" MethodName="getIdPersBac">
+            <Return Name="_return_type_" Type="java.lang.String"/>
+            <Parameter Name="num_table" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="findAndUpdateInsPedVal" MethodName="findAndUpdateInsPedVal">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_insc_ped_sem" Type="java.lang.Long"/>
+            <Parameter Name="insc_ped_val" Type="java.lang.Integer"/>
+        </Method>
+        <Method Name="findAndUpdateNationalite" MethodName="findAndUpdateNationalite">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_pers" Type="java.lang.Long"/>
+            <Parameter Name="id_nouv_nat" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="findAndUpdateEtud" MethodName="findAndUpdateEtud">
+            <Return Name="_return_type_" Type="void"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+            <Parameter Name="mobilite" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isApte" MethodName="isApte">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isEnRegleBu" MethodName="isEnRegleBu">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+            <Parameter Name="hs" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isEtudTic" MethodName="isEtudTic">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isInscPedVal" MethodName="isInscPedVal">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_insc_ped" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isPaiementEtud" MethodName="isPaiementEtud">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_insc_ped" Type="java.lang.Long"/>
+            <Parameter Name="parcours" Type="java.lang.Long"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+            <Parameter Name="id_annee" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="isResponsableEtud" MethodName="isResponsableEtud">
+            <Return Name="_return_type_" Type="java.lang.Integer"/>
+            <Parameter Name="id_etud" Type="java.lang.Long"/>
+        </Method>
+        <Method Name="lesEtudInsc" MethodName="lesEtudInsc">
+            <Return Name="_return_type_" Type="oracle.jbo.RowSetIterator"/>
+            <Parameter Name="annee" Type="java.lang.Integer"/>
+            <Parameter Name="parcours" Type="java.lang.Integer"/>
+            <Parameter Name="session" Type="java.lang.Integer"/>
+        </Method>
+        <Method
+            Name="getNbreInsPed"
+            MethodName="getNbreInsPed">
+            <Return
+                Name="_return_type_"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="id_etud"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="id_annee"
+                Type="java.lang.Long"/>
+        </Method>
+        <Method
+            Name="getNiveau"
+            MethodName="getNiveau">
+            <Return
+                Name="_return_type_"
+                Type="java.lang.Integer"/>
+            <Parameter
+                Name="id_etud"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="id_annee"
+                Type="java.lang.Long"/>
+        </Method>
+        <Method
+            Name="findAndUpdateInsPed"
+            MethodName="findAndUpdateInsPed">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="id_ins_ped"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="etat"
+                Type="java.lang.Long"/>
+        </Method>
+        <Method
+            Name="UpdateEtatInsc"
+            MethodName="UpdateEtatInsc">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="id_ins_ped"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="etat"
+                Type="java.lang.Long"/>
+        </Method>
+        <Method
+            Name="findAndUpdateSusp"
+            MethodName="findAndUpdateSusp">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="id_susp"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="levee"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="util"
+                Type="java.lang.Long"/>
+        </Method>
+        <Method
+            Name="UpdateSuspension"
+            MethodName="UpdateSuspension">
+            <Return
+                Name="_return_type_"
+                Type="void"/>
+            <Parameter
+                Name="id_susp"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="levee"
+                Type="java.lang.Long"/>
+            <Parameter
+                Name="util"
+                Type="java.lang.Long"/>
+        </Method>
+        <Method
+            Name="next_seq"
+            MethodName="next_seq">
+            <Return
+                Name="_return_type_"
+                Type="java.lang.Integer"/>
+        </Method>
+    </ClientInterface>
+    <ResourceBundle>
+        <PropertiesBundle PropertiesFile="model.ModelBundle"/>
+    </ResourceBundle>
+</AppModule>

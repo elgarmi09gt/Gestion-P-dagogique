@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+<af:panelSplitter id="ps1" dimensionsFrom="children" splitterPosition="750" firstBorder="all"
+                          secondBorder="all" disabled="true">
+                <f:facet name="first">
+                        <af:panelGroupLayout id="pgl2" layout="vertical">
+                                <af:button text="Formulaire de Suspension" id="b5"
+                                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;"
+                                           partialSubmit="false" disabled="true"/>
+                                <af:panelFormLayout id="pfl1" rows="2"
+                                                    inlineStyle="margin-top:20px; border:solid  2px #2897e8;width:700px;margin-top:20px;margin-left:10px;">
+                                        <af:panelGroupLayout id="pgl3" inlineStyle="margin-bottom:20px;"
+                                                             layout="horizontal">
+                                                <af:inputText value="#{bindings.Duree.inputValue}" label="Durée"
+                                                              required="#{bindings.Duree.hints.mandatory}"
+                                                              columns="#{bindings.Duree.hints.displayWidth}"
+                                                              maximumLength="#{bindings.Duree.hints.precision}"
+                                                              shortDesc="#{bindings.Duree.hints.tooltip}" id="it2" autoSubmit="true">
+                                                        <!--f:validator binding="#{bindings.Duree.validator}"/!-->
+                                                        <!--af:convertNumber groupingUsed="false"
+                                                                  pattern="#{bindings.Duree.format}" disabled="true"/!-->
+                                                        <af:serverListener type="filterShuttle"
+                                                                           method="#{DetailSuspensionBean.onChangerDuree}"/>
+                                                        <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                                                </af:inputText>
+                                                <af:inputDate value="#{bindings.DateDebut.inputValue}"
+                                                              label="Date Debut"
+                                                              required="#{bindings.DateDebut.hints.mandatory}"
+                                                              columns="#{bindings.DateDebut.hints.displayWidth}"
+                                                              shortDesc="#{bindings.DateDebut.hints.tooltip}" id="id1"
+                                                              autoSubmit="true" partialTriggers="it2"
+                                                              placeholder="#{DetailSuspensionBean.date_debut}"
+                                                              inlineStyle="margin-left:20px;">
+                                                        <f:validator binding="#{bindings.DateDebut.validator}"/>
+                                                        <af:convertDateTime pattern="#{bindings.DateDebut.format}"/>
+                                                        <af:serverListener type="filterShuttle"
+                                                                           method="#{DetailSuspensionBean.onChangeDateDebut}"/>
+                                                        <af:clientListener method="catchKeyStroke" type="valueChange"/>
+                                                </af:inputDate>
+                                                <af:inputDate value="#{bindings.DateFin.inputValue}" label="Date Fin"
+                                                              required="#{bindings.DateFin.hints.mandatory}"
+                                                              columns="#{bindings.DateFin.hints.displayWidth}"
+                                                              shortDesc="#{bindings.DateFin.hints.tooltip}" id="id2"
+                                                              disabled="true" partialTriggers="it2"
+                                                              inlineStyle="margin-left:20px;">
+                                                        <f:validator binding="#{bindings.DateFin.validator}"/>
+                                                        <af:convertDateTime pattern="#{bindings.DateFin.format}"/>
+                                                </af:inputDate>
+                                        </af:panelGroupLayout>
+                                        <af:inputText value="#{bindings.MotifSuspension.inputValue}"
+                                                      label="Motif Suspension"
+                                                      required="#{bindings.MotifSuspension.hints.mandatory}"
+                                                      columns="#{bindings.MotifSuspension.hints.displayWidth}"
+                                                      maximumLength="#{bindings.MotifSuspension.hints.precision}"
+                                                      shortDesc="#{bindings.MotifSuspension.hints.tooltip}" id="it1"
+                                                      contentStyle="width:500px;height:95px;margin-bottom:10px;"
+                                                      rows="3">
+                                                <f:validator binding="#{bindings.MotifSuspension.validator}"/>
+                                        </af:inputText>
+                                        
+                            <af:resource type="javascript">
+                                function catchKeyStroke(event) {
+                                    component = event.getSource();
+                                    //if(component.getSubmittedValue().length == 0 || component.getSubmittedValue().length > 1)
+                                    //{
+                                        AdfCustomEvent.queue(component, "filterShuttle", 
+                                        {
+                                            filterKey : component.getSubmittedValue()
+                                        },true);
+                                        event.cancel();
+                                    //}
+                                }
+                              </af:resource>                                      
+                                </af:panelFormLayout>
+                                <af:button text="Valider" id="b1"
+                                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                                           icon="/images/commit.png"
+                                           action="#{DetailSuspensionBean.onValiderSuspension}"/>
+                        </af:panelGroupLayout>
+                </f:facet>
+                <f:facet name="second">
+                        <af:panelGroupLayout id="pgl1" layout="vertical">
+                                <af:button text="Liste des Suspensions" id="b6"
+                                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;"
+                                           partialSubmit="false" disabled="true"/>
+                                <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                                    inlineStyle="margin-top:20px;margin-left:10px;">
+                                        <f:facet name="menus"/>
+                                        <f:facet name="toolbar"/>
+                                        <f:facet name="statusbar"/>
+                                        <af:table value="#{bindings.ListeSuspensioneEtudRO.collectionModel}" var="row"
+                                                  rows="#{bindings.ListeSuspensioneEtudRO.rangeSize}"
+                                                  emptyText="#{bindings.ListeSuspensioneEtudRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                                  rowBandingInterval="0"
+                                                  selectedRowKeys="#{bindings.ListeSuspensioneEtudRO.collectionModel.selectedRow}"
+                                                  selectionListener="#{bindings.ListeSuspensioneEtudRO.collectionModel.makeCurrent}"
+                                                  rowSelection="single"
+                                                  fetchSize="#{bindings.ListeSuspensioneEtudRO.rangeSize}"
+                                                  filterModel="#{bindings.ListeSuspensioneEtudROQuery.queryDescriptor}"
+                                                  filterVisible="true"
+                                                  queryListener="#{bindings.ListeSuspensioneEtudROQuery.processQuery}"
+                                                  varStatus="vs" id="t1">
+                                                <af:column sortProperty="#{bindings.ListeSuspensioneEtudRO.hints.Numero.name}"
+                                                           filterable="true" sortable="true"
+                                                           headerText="Numéro"
+                                                           id="c1">
+                                                        <af:outputText value="#{row.Numero}"
+                                                                       shortDesc="#{bindings.ListeSuspensioneEtudRO.hints.Numero.tooltip}"
+                                                                       id="ot1"/>
+                                                </af:column>
+                                                <af:column sortProperty="#{bindings.ListeSuspensioneEtudRO.hints.Duree.name}"
+                                                           filterable="true" sortable="true"
+                                                           headerText="Durée"
+                                                           id="c2" width="60">
+                                                        <af:outputText value="#{row.Duree}"
+                                                                       shortDesc="#{bindings.ListeSuspensioneEtudRO.hints.Duree.tooltip}"
+                                                                       id="ot2">
+                                                                <af:convertNumber groupingUsed="false"
+                                                                                  pattern="#{bindings.ListeSuspensioneEtudRO.hints.Duree.format}"/>
+                                                        </af:outputText>
+                                                </af:column>
+                                                <af:column sortProperty="#{bindings.ListeSuspensioneEtudRO.hints.MotifSuspension.name}"
+                                                           filterable="true" sortable="true"
+                                                           headerText="Motif Suspension"
+                                                           id="c3" width="300">
+                                                        <af:outputText value="#{row.MotifSuspension}"
+                                                                       shortDesc="#{bindings.ListeSuspensioneEtudRO.hints.MotifSuspension.tooltip}"
+                                                                       id="ot3"/>
+                                                </af:column>
+                                                <af:column sortProperty="#{bindings.ListeSuspensioneEtudRO.hints.DateDebut.name}"
+                                                           filterable="true" sortable="true"
+                                                           headerText="Date Debut"
+                                                           id="c4">
+                                                        <f:facet name="filter">
+                                                                <af:inputDate value="#{bindings.ListeSuspensioneEtudROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateDebut.value}"
+                                                                              id="id3">
+                                                                        <af:convertDateTime pattern="#{bindings.ListeSuspensioneEtudRO.hints.DateDebut.format}"/>
+                                                                </af:inputDate>
+                                                        </f:facet>
+                                                        <af:outputText value="#{row.DateDebut}"
+                                                                       shortDesc="#{bindings.ListeSuspensioneEtudRO.hints.DateDebut.tooltip}"
+                                                                       id="ot4">
+                                                                <af:convertDateTime pattern="#{bindings.ListeSuspensioneEtudRO.hints.DateDebut.format}"/>
+                                                        </af:outputText>
+                                                </af:column>
+                                                <af:column sortProperty="#{bindings.ListeSuspensioneEtudRO.hints.DateFin.name}"
+                                                           filterable="true" sortable="true"
+                                                           headerText="Date Fin"
+                                                           id="c5">
+                                                        <f:facet name="filter">
+                                                                <af:inputDate value="#{bindings.ListeSuspensioneEtudROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateFin.value}"
+                                                                              id="id4">
+                                                                        <af:convertDateTime pattern="#{bindings.ListeSuspensioneEtudRO.hints.DateFin.format}"/>
+                                                                </af:inputDate>
+                                                        </f:facet>
+                                                        <af:outputText value="#{row.DateFin}"
+                                                                       shortDesc="#{bindings.ListeSuspensioneEtudRO.hints.DateFin.tooltip}"
+                                                                       id="ot5">
+                                                                <af:convertDateTime pattern="#{bindings.ListeSuspensioneEtudRO.hints.DateFin.format}"/>
+                                                        </af:outputText>
+                                                </af:column>
+                                                <af:column headerText="Année Universitaire"
+                                                           id="c6" width="120">
+                                                        <af:outputText value="#{row.LibAnnee}"
+                                                                       shortDesc="#{bindings.ListeSuspensioneEtudRO.hints.LibAnnee.tooltip}"
+                                                                       id="ot7"/>
+                                                </af:column>
+                                        </af:table>
+                                </af:panelCollection>
+                        </af:panelGroupLayout>
+                </f:facet>
+        </af:panelSplitter>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+                  binding="#{DetailSuspensionBean.popup}">
+                <af:dialog id="d1" title="Formulaire de Confirmation de la suspension"
+                           dialogListener="#{DetailSuspensionBean.onDialog}">
+                        <f:facet name="buttonBar"/>
+                        <af:outputText value="Voulez-vous suspendre l'étudiant #{sessionScope.nom_etud}  #{sessionScope.prenom_etud} pour une durée de #{bindings.Duree.inputValue}" id="ot6"/>
+                        <af:clientListener method="onDialog" type="dialog"/>
+                        <af:serverListener type="onDialogEvent" method="#{DetailSuspensionBean.onDialogCancel}"/>
+                </af:dialog>
+        </af:popup>
+        
+    <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>        
+        
+</ui:composition>

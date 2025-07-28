@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="list-inscription-ancienne">
+    <default-activity>inscription-ancienne</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__1">
+      <managed-bean-name>InscriptionAncbean</managed-bean-name>
+      <managed-bean-class>inscription_ancienne.InscriptionAncBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="inscription-ancienne">
+      <page>/inscription/inscription_ancienne/inscription-ancienne.jsff</page>
+    </view>
+    <task-flow-call id="recherche-etud-diplome">
+      <task-flow-reference>
+        <document>/inscription/inscription_ancienne/recherche-etud-diplome.xml</document>
+        <id>recherche-etud-diplome</id>
+      </task-flow-reference>
+      <run-as-dialog>
+        <display-type>
+          <inline-popup/>
+        </display-type>
+        <dialog-return-value>submitInsc</dialog-return-value>
+      </run-as-dialog>
+    </task-flow-call>
+    <control-flow-rule id="__2">
+      <from-activity-id>inscription-ancienne</from-activity-id>
+      <control-flow-case id="__8">
+        <from-outcome>recherche</from-outcome>
+        <to-activity-id>recherche-etud-diplome</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

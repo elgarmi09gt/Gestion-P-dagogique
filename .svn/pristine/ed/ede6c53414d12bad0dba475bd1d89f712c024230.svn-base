@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="list-enregistrement-diplome">
+    <default-activity>CreateInsert</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__5">
+      <managed-bean-name>EnregistrementDiplomebean</managed-bean-name>
+      <managed-bean-class>enregistrement_diplome.EnregistrementDiplomeBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="enregistrement-diplome">
+      <page>/inscription/enregistrement_diplome/enregistrement-diplome.jsff</page>
+    </view>
+    <method-call id="CreateInsert">
+      <method>#{bindings.CreateInsert.execute}</method>
+      <outcome>
+        <fixed-outcome>CreateInsert</fixed-outcome>
+      </outcome>
+    </method-call>
+    <task-flow-call id="search-etudiant">
+      <task-flow-reference>
+        <document>/inscription/enregistrement_diplome/search-etudiant.xml</document>
+        <id>search-etudiant</id>
+      </task-flow-reference>
+      <return-value id="__6">
+        <name>submitOrCancelFlag</name>
+        <value>#{pageFlowScope.submitOrCancelFlag}</value>
+      </return-value>
+      <run-as-dialog>
+        <display-type>
+          <inline-popup/>
+        </display-type>
+        <dialog-return-value>id_etud</dialog-return-value>
+      </run-as-dialog>
+    </task-flow-call>
+    <control-flow-rule id="__1">
+      <from-activity-id>CreateInsert</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>CreateInsert</from-outcome>
+        <to-activity-id>enregistrement-diplome</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__3">
+      <from-activity-id>enregistrement-diplome</from-activity-id>
+      <control-flow-case id="__4">
+        <from-outcome>lov</from-outcome>
+        <to-activity-id>search-etudiant</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

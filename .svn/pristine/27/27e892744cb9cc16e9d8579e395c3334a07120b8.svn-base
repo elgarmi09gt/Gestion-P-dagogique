@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ListeEtudNotPreInsROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ListeEtudNotPreInsROVORowImpl"
+  ComponentClass="model.readOnlyView.ListeEtudNotPreInsROVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ListeEtudNotPreInsROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_parc"
+    Kind="viewcriteria"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_annee"
+    Kind="viewcriteria"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select etu.ID_ETUDIANT,etu.numero, pers.prenoms ||'  '|| pers.nom as prenomNom , pers.date_naissance, ia.ID_ANNEES_UNIVERS,ip.etat_inscr_etat_inscr_id , ip.id_inscription_pedagogique , ip.id_parcours_maquet_annee , ip.ins_en_ligne           
+from inscriptions_admin ia          
+join inscriptions_pedagogiques ip on ia.id_inscription_admin = ip.id_inscription_admin          
+join ETUDIANTS etu on etu.ID_ETUDIANT=ia.ID_ETUDIANT                          
+join PERSONNES pers on pers.ID_PERSONNE=etu.ID_PERSONNE      
+where ip.etat_inscr_etat_inscr_id = 22]]></SQLQuery>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenomnom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="302"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMNOM"
+    Expression="PRENOMNOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="302"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_NAISSANCE"
+    Expression="DATE_NAISSANCE"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="EtatInscrEtatInscrId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="ETAT_INSCR_ETAT_INSCR_ID"
+    Expression="ETAT_INSCR_ETAT_INSCR_ID"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="IdInscriptionPedagogique"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PEDAGOGIQUE"
+    Expression="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdParcoursMaquetAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PARCOURS_MAQUET_ANNEE"
+    Expression="ID_PARCOURS_MAQUET_ANNEE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="InsEnLigne"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="INS_EN_LIGNE"
+    Expression="INS_EN_LIGNE"
+    SQLType="INTEGER"/>
+  <ViewCriteria
+    Name="ListeEtudNotPreInsROVOCriteria"
+    ViewObjectName="model.readOnlyView.ListeEtudNotPreInsROVO"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="ListeEtudNotPreInsROVOCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="IdAnneesUnivers"
+        ViewAttribute="IdAnneesUnivers"
+        Operator="="
+        Conjunction="AND"
+        Value=":id_annee"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="IdParcoursMaquetAnnee"
+        ViewAttribute="IdParcoursMaquetAnnee"
+        Operator="="
+        Conjunction="AND"
+        Value=":id_parc"
+        IsBindVarValue="true"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdInscriptionPedagogique"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,457 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelGroupLayout id="pgl2" layout="horizontal">
+      <af:panelGroupLayout id="pgl7" layout="vertical">
+        <af:panelGroupLayout id="pgl9" layout="vertical">
+          <af:panelHeader text="Parcours" id="ph1" inlineStyle="border: 2px solid #2898e8;">
+            <f:facet name="context"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="menuBar"/>
+            <f:facet name="legend"/>
+            <f:facet name="info"/>
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar"/>
+              <f:facet name="statusbar"/>
+              <af:table value="#{bindings.Parcours.collectionModel}" var="row" rows="#{bindings.Parcours.rangeSize}"
+                        emptyText="#{bindings.Parcours.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" selectedRowKeys="#{bindings.Parcours.collectionModel.selectedRow}"
+                        selectionListener="#{JuryBean.OnSelected}" rowSelection="single"
+                        fetchSize="#{bindings.Parcours.rangeSize}"
+                        filterModel="#{bindings.ParcoursQuery.queryDescriptor}" filterVisible="true"
+                        queryListener="#{bindings.ParcoursQuery.processQuery}" varStatus="vs" id="t1"
+                        columnStretching="last" columnSelectionListener="#{JuryBean.OnColumChanged}"
+                        attributeChangeListener="#{JuryBean.onAttributeTableChanged}"
+                        rowDisclosureListener="#{JuryBean.OnRowDisclosure}" columnSelection="single">
+                <af:column sortProperty="#{bindings.Parcours.hints.LibParcours.name}" filterable="true" sortable="true"
+                           headerText="#{viewcontrollerBundle.PARCOURS_NIVEAU_FORMATION}" id="c1"
+                           attributeChangeListener="#{JuryBean.OnTableRowChanged}">
+                  <af:outputText value="#{row.LibParcours}" shortDesc="#{bindings.Parcours.hints.LibParcours.tooltip}"
+                                 id="ot1" inlineStyle="font-size:large;"/>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:panelHeader>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl3" layout="vertical" inlineStyle="margin-top:10px">
+          <af:panelHeader text="Jurys" id="ph2" inlineStyle="border: 2px solid #2898e8">
+            <f:facet name="context"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="menuBar"/>
+            <f:facet name="legend"/>
+            <f:facet name="info"/>
+            <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar">
+                <af:toolbar id="t3">
+                  <af:button id="b1" icon="/images/new_icon.png" actionListener="#{JuryBean.OnNewJuryClicked}"/>
+                  <af:button id="b2" icon="/images/edit_icon.png" actionListener="#{JuryBean.OnEditClicked}"/>
+                  <af:button id="b3" icon="/images/delete_icon.png">
+                    <af:showPopupBehavior popupId="::popup-delete"/>
+                  </af:button>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.JuryVO1.collectionModel}" var="row" rows="#{bindings.JuryVO1.rangeSize}"
+                        emptyText="#{bindings.JuryVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" selectedRowKeys="#{bindings.JuryVO1.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.JuryVO1.collectionModel.makeCurrent}" rowSelection="single"
+                        fetchSize="#{bindings.JuryVO1.rangeSize}" filterModel="#{bindings.JuryVO1Query.queryDescriptor}"
+                        filterVisible="true" queryListener="#{bindings.JuryVO1Query.processQuery}" varStatus="vs"
+                        id="t2" binding="#{JuryBean.juryTable}" columnStretching="last">
+                <af:column sortProperty="#{bindings.JuryVO1.hints.IdSemestre.name}" filterable="true" sortable="true"
+                           headerText="#{viewcontrollerBundle.SEMESTRE}" id="c4" inlineStyle="font-size:medium;"
+                           width="150">
+                  <af:selectOneChoice value="#{row.bindings.IdSemestre.inputValue}"
+                                      label="#{row.bindings.IdSemestre.label}"
+                                      required="#{bindings.JuryVO1.hints.IdSemestre.mandatory}"
+                                      shortDesc="#{bindings.JuryVO1.hints.IdSemestre.tooltip}" readOnly="true"
+                                      id="soc1" inlineStyle="font-size:medium;" contentStyle="font-size:medium;">
+                    <f:selectItems value="#{row.bindings.IdSemestre.items}" id="si1"/>
+                    <f:validator binding="#{row.bindings.IdSemestre.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.JuryVO1.hints.IdSession.name}" filterable="true" sortable="true"
+                           headerText="#{viewcontrollerBundle1.SESSION}" id="c5" inlineStyle="font-size:medium;"
+                           width="150">
+                  <af:selectOneChoice value="#{row.bindings.IdSession.inputValue}"
+                                      label="#{row.bindings.IdSession.label}"
+                                      required="#{bindings.JuryVO1.hints.IdSession.mandatory}"
+                                      shortDesc="#{bindings.JuryVO1.hints.IdSession.tooltip}" readOnly="true" id="soc2"
+                                      inlineStyle="font-size:medium;" contentStyle="font-size:medium;">
+                    <f:selectItems value="#{row.bindings.IdSession.items}" id="si2"/>
+                    <f:validator binding="#{row.bindings.IdSession.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+                <af:column headerText="#{viewcontrollerBundle.ANNEE_UNIVERSITAIRE}" id="c2"
+                           inlineStyle="font-size:medium;">
+                  <af:selectOneChoice value="#{row.bindings.IdAnneesUnivers.inputValue}"
+                                      label="#{row.bindings.IdAnneesUnivers.label}"
+                                      required="#{bindings.JuryVO1.hints.IdAnneesUnivers.mandatory}"
+                                      shortDesc="#{bindings.JuryVO1.hints.IdAnneesUnivers.tooltip}" readOnly="true"
+                                      id="soc20" contentStyle="font-size:medium;">
+                    <f:selectItems value="#{row.bindings.IdAnneesUnivers.items}" id="si20"/>
+                    <f:validator binding="#{row.bindings.IdAnneesUnivers.validator}"/>
+                  </af:selectOneChoice>
+                </af:column>
+              </af:table>
+              <f:facet name="statusbar"/>
+            </af:panelCollection>
+          </af:panelHeader>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:spacer width="20" height="20" id="s1"/>
+      <af:panelGroupLayout id="pgl8" layout="vertical">
+        <af:panelHeader text="Utilisateurs" id="ph4" inlineStyle="border: 2px solid #2898e8">
+          <f:facet name="context"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <af:table value="#{bindings.UtilisateurFormationJuryROVO.collectionModel}" var="row"
+                      rows="#{bindings.UtilisateurFormationJuryROVO.rangeSize}"
+                      emptyText="#{bindings.UtilisateurFormationJuryROVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.UtilisateurFormationJuryROVO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.UtilisateurFormationJuryROVO.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.UtilisateurFormationJuryROVO.rangeSize}"
+                      filterModel="#{bindings.UtilisateurFormationJuryROVOQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.UtilisateurFormationJuryROVOQuery.processQuery}" varStatus="vs" id="t5"
+                      columnStretching="last" binding="#{JuryBean.userFormJuryTable}">
+              <af:column sortProperty="#{bindings.UtilisateurFormationJuryROVO.hints.isSelected.name}" filterable="true"
+                         sortable="true" id="c9" inlineStyle="font-size:large; text-align:center;">
+                <af:selectBooleanCheckbox value="#{row.bindings.isSelected.inputValue}"
+                                          label="#{row.bindings.isSelected.label}"
+                                          shortDesc="#{bindings.UtilisateurFormationJuryROVO.hints.isSelected.tooltip}"
+                                          id="sbc1"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.UtilisateurFormationJuryROVO.hints.Prenomnom.name}" filterable="true"
+                         sortable="true" headerText="#{viewcontrollerBundle1.PRENOMNOM}" id="c10"
+                         inlineStyle="font-size:large;">
+                <af:outputFormatted value="#{row.bindings.Prenomnom.inputValue}" id="of3"/>
+              </af:column>
+            </af:table>
+            <f:facet name="statusbar"/>
+          </af:panelCollection>
+        </af:panelHeader>
+        <af:panelGroupLayout id="pgl10" layout="vertical" inlineStyle="margin-bottom:20px;margin-top:10px">
+        <af:outputFormatted value="Role" id="of11" styleUsage="pageStamp" inlineStyle="font-size:large;"/>
+      
+          <af:selectOneChoice value="#{bindings.JuryRoleROVO.inputValue}"
+                              required="#{bindings.JuryRoleROVO.hints.mandatory}"
+                              shortDesc="#{bindings.JuryRoleROVO.hints.tooltip}" id="soc16"
+                              contentStyle="width:100%; border-radius:8px;font-size:large;border:solid 2px #2898e8;height:60px; line-height:30px;"
+                         binding="#{JuryBean.roleSelected}">
+            <f:selectItems value="#{bindings.JuryRoleROVO.items}" id="si16"/>
+            <f:validator binding="#{bindings.JuryRoleROVO.validator}"/>
+          </af:selectOneChoice>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl11" layout="vertical" inlineStyle="text-align:center;" halign="right">
+          <af:button id="b4" inlineStyle="font-size:x-large; color:White; font-family:cursive; border-radius:8px 8px 8px 8px / 8px 8px 8px 8px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8;" actionListener="#{JuryBean.OnSaveMemberClicked}"
+                     shortDesc="Enregistrer" text="Enregistrer"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl6" layout="vertical">
+      <af:panelHeader text="Membres" id="ph3">
+        <f:facet name="context"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="menuBar"/>
+        <f:facet name="legend"/>
+        <f:facet name="info"/>
+        <af:panelCollection id="pc4" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t6">
+              <af:button id="b5" icon="/images/edit_icon.png" actionListener="#{JuryBean.OnEditJuryMemberClicked}"/>
+              <af:button id="b6" icon="/images/delete_icon.png">
+                <af:showPopupBehavior popupId="::popup-delete-m"/>
+              </af:button>
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="statusbar"/>
+          <af:table value="#{bindings.UtilisateursJuryVO1.collectionModel}" var="row"
+                    rows="#{bindings.UtilisateursJuryVO1.rangeSize}"
+                    emptyText="#{bindings.UtilisateursJuryVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.UtilisateursJuryVO1.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.UtilisateursJuryVO1.collectionModel.makeCurrent}"
+                    rowSelection="single" fetchSize="#{bindings.UtilisateursJuryVO1.rangeSize}"
+                    filterModel="#{bindings.UtilisateursJuryVO1Query.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.UtilisateursJuryVO1Query.processQuery}" varStatus="vs" id="t4"
+                    columnStretching="last" binding="#{JuryBean.membreJuryTable}">
+            <af:column sortProperty="#{bindings.UtilisateursJuryVO1.hints.IdUtilisateur.name}" filterable="true"
+                       sortable="true" headerText="#{viewcontrollerBundle1.PRENOMNOM}" id="c6" width="250">
+              <af:selectOneChoice value="#{row.bindings.IdUtilisateur.inputValue}"
+                                  label="#{row.bindings.IdUtilisateur.label}"
+                                  required="#{bindings.UtilisateursJuryVO1.hints.IdUtilisateur.mandatory}"
+                                  shortDesc="#{bindings.UtilisateursJuryVO1.hints.IdUtilisateur.tooltip}"
+                                  readOnly="true" id="soc14" inlineStyle="font-size:medium;"
+                                  contentStyle="font-size:medium;">
+                <f:selectItems value="#{row.bindings.IdUtilisateur.items}" id="si14"/>
+                <f:validator binding="#{row.bindings.IdUtilisateur.validator}"/>
+              </af:selectOneChoice>
+            </af:column>
+            <af:column sortProperty="#{bindings.UtilisateursJuryVO1.hints.Role.name}" filterable="true" sortable="true"
+                       headerText="#{viewcontrollerBundle.ROLE}" id="c8">
+              <af:outputText value="#{row.Role}" shortDesc="#{bindings.UtilisateursJuryVO1.hints.Role.tooltip}"
+                             id="ot4"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:panelHeader>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+  <c:set var="viewcontrollerBundle1" value="#{adfBundle['view.ViewControllerBundle']}"/>
+  <c:set var="viewcontrollerBundle" value="#{adfBundle['bundles.dataHeaderBundle']}"/>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popupnew" binding="#{JuryBean.popupNewJury}">
+    <af:dialog id="d1" title="Nouveau Jury" dialogListener="#{JuryBean.OnDialogAction}">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl1" inlineStyle="line-height:30px;">
+        <af:selectOneChoice value="#{bindings.IdNiveauFormationParcours.inputValue}"
+                            label="#{viewcontrollerBundle.PARCOURS_NIVEAU_FORMATION}"
+                            required="#{bindings.IdNiveauFormationParcours.hints.mandatory}"
+                            shortDesc="#{bindings.IdNiveauFormationParcours.hints.tooltip}" readOnly="true" id="soc3"
+                            binding="#{JuryBean.parcoursid}">
+          <f:selectItems value="#{bindings.IdNiveauFormationParcours.items}" id="si3"/>
+          <f:validator binding="#{bindings.IdNiveauFormationParcours.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it1">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle.ABREVIATION}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it2">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdSemestre.inputValue}" label="#{viewcontrollerBundle.SEMESTRE}"
+                            required="#{bindings.IdSemestre.hints.mandatory}"
+                            shortDesc="#{bindings.IdSemestre.hints.tooltip}" id="soc5" binding="#{JuryBean.semestreid}">
+          <f:selectItems value="#{bindings.IdSemestre.items}" id="si5"/>
+          <f:validator binding="#{bindings.IdSemestre.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdSession.inputValue}" label="#{viewcontrollerBundle1.SESSION}"
+                            required="#{bindings.IdSession.hints.mandatory}"
+                            shortDesc="#{bindings.IdSession.hints.tooltip}" id="soc4" binding="#{JuryBean.sessionid}">
+          <f:selectItems value="#{bindings.IdSession.items}" id="si4"/>
+          <f:validator binding="#{bindings.IdSession.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+      <af:clientListener type="dialog" method="OnDialogCancel"/>
+      <af:serverListener type="HandlerEvenDialogCancel" method="#{JuryBean.OnDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{JuryBean.popupManyJury}"
+            contentDelivery="lazyUncached">
+    <af:dialog id="d2" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+      <af:panelGroupLayout id="pgl14" layout="vertical" inlineStyle="text-align:center;">
+        <af:icon name="warning" id="i1"/>
+        <af:outputFormatted value="Beaucoup de jury pour ce parcours" id="of8"
+                            inlineStyle="font-size:medium; color:Orange; font-weight:bold;"/>
+      </af:panelGroupLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:resource type="javascript">
+    function OnDialogCancel(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "HandlerEvenDialogCancel", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" binding="#{JuryBean.popupJuryExist}">
+    <af:dialog id="d3" title="Info" type="cancel" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl4" layout="vertical" inlineStyle="text-align:center;">
+        <af:icon name="info" id="i2"/>
+        <af:outputFormatted value="Le jury existe déjà" id="of1" inlineStyle="color:Blue; font-size:medium;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-edit" binding="#{JuryBean.popupEdit}">
+    <af:dialog id="d4" title="Modifier Jury" dialogListener="#{JuryBean.OnDialogEditAction}">
+      <af:panelFormLayout id="pfl2">
+        <af:selectOneChoice value="#{bindings.IdNiveauFormationParcours.inputValue}"
+                            label="#{bindings.IdNiveauFormationParcours.label}"
+                            required="#{bindings.IdNiveauFormationParcours.hints.mandatory}"
+                            shortDesc="#{bindings.IdNiveauFormationParcours.hints.tooltip}" readOnly="true" id="soc6"
+                            binding="#{JuryBean.parcours_edit_id}">
+          <f:selectItems value="#{bindings.IdNiveauFormationParcours.items}" id="si6"/>
+          <f:validator binding="#{bindings.IdNiveauFormationParcours.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdAnneesUnivers.inputValue}" label="#{bindings.IdAnneesUnivers.label}"
+                            required="#{bindings.IdAnneesUnivers.hints.mandatory}"
+                            shortDesc="#{bindings.IdAnneesUnivers.hints.tooltip}" id="soc10" readOnly="true">
+          <f:selectItems value="#{bindings.IdAnneesUnivers.items}" id="si10"/>
+          <f:validator binding="#{bindings.IdAnneesUnivers.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{bindings.LibelleLong.hints.label}"
+                      required="#{bindings.LibelleLong.hints.mandatory}"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it3">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it4">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdSession.inputValue}" label="#{bindings.IdSession.label}"
+                            required="#{bindings.IdSession.hints.mandatory}"
+                            shortDesc="#{bindings.IdSession.hints.tooltip}" id="soc7"
+                            binding="#{JuryBean.session_edit_id}">
+          <f:selectItems value="#{bindings.IdSession.items}" id="si7"/>
+          <f:validator binding="#{bindings.IdSession.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdSemestre.inputValue}" label="#{bindings.IdSemestre.label}"
+                            required="#{bindings.IdSemestre.hints.mandatory}"
+                            shortDesc="#{bindings.IdSemestre.hints.tooltip}" id="soc8"
+                            binding="#{JuryBean.semestre_edit_id}">
+          <f:selectItems value="#{bindings.IdSemestre.items}" id="si8"/>
+          <f:validator binding="#{bindings.IdSemestre.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-delete" contentDelivery="lazyUncached">
+    <af:dialog id="d5" dialogListener="#{JuryBean.OnDeleteDialogAction}" type="yesNo" title="Confirmer !!!"
+               affirmativeTextAndAccessKey="OUI" noTextAndAccessKey="NON">
+      <f:facet name="buttonBar"/>
+      <af:panelFormLayout id="pfl3">
+        <af:selectOneChoice value="#{bindings.IdNiveauFormationParcours.inputValue}"
+                            label="#{viewcontrollerBundle.PARCOURS_NIVEAU_FORMATION}"
+                            required="#{bindings.IdNiveauFormationParcours.hints.mandatory}"
+                            shortDesc="#{bindings.IdNiveauFormationParcours.hints.tooltip}" readOnly="true" id="soc9">
+          <f:selectItems value="#{bindings.IdNiveauFormationParcours.items}" id="si9"/>
+          <f:validator binding="#{bindings.IdNiveauFormationParcours.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdAnneesUnivers.inputValue}"
+                            label="#{viewcontrollerBundle.ANNEE_UNIVERSITAIRE}"
+                            required="#{bindings.IdAnneesUnivers.hints.mandatory}"
+                            shortDesc="#{bindings.IdAnneesUnivers.hints.tooltip}" readOnly="true" id="soc11">
+          <f:selectItems value="#{bindings.IdAnneesUnivers.items}" id="si11"/>
+          <f:validator binding="#{bindings.IdAnneesUnivers.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.LibelleLong.inputValue}" label="#{viewcontrollerBundle.LIBELLE}"
+                      required="#{bindings.LibelleLong.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleLong.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.LibelleLong.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{viewcontrollerBundle.ABREVIATION}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it6">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.IdSemestre.inputValue}" label="#{viewcontrollerBundle.SEMESTRE}"
+                            required="#{bindings.IdSemestre.hints.mandatory}"
+                            shortDesc="#{bindings.IdSemestre.hints.tooltip}" readOnly="true" id="soc13">
+          <f:selectItems value="#{bindings.IdSemestre.items}" id="si13"/>
+          <f:validator binding="#{bindings.IdSemestre.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdSession.inputValue}" label="#{viewcontrollerBundle1.SESSION}"
+                            required="#{bindings.IdSession.hints.mandatory}"
+                            shortDesc="#{bindings.IdSession.hints.tooltip}" readOnly="true" id="soc12">
+          <f:selectItems value="#{bindings.IdSession.items}" id="si12"/>
+          <f:validator binding="#{bindings.IdSession.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p3" binding="#{JuryBean.popupMemberExist}">
+    <af:dialog id="d6" title="Info !!!" type="cancel" cancelTextAndAccessKey="Fermer">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl5" layout="vertical" inlineStyle="text-align:center;">
+        <af:icon name="warning" id="i3"/>
+        <af:outputFormatted value="Ce jury contient des membres !!! Supprimer les d'abord" id="of2"
+                            inlineStyle="font-size:medium; color:Orange; font-style:italic; font-weight:bold;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-edit-m">
+    <af:dialog id="d8" title="Edition Jury" cancelTextAndAccessKey="ANNULER">
+      <af:panelFormLayout id="pfl4" inlineStyle="line-height:50px;">
+        <af:selectOneChoice value="#{bindings.IdUtilisateur.inputValue}" label="#{viewcontrollerBundle1.PRENOMNOM}"
+                            required="#{bindings.IdUtilisateur.hints.mandatory}"
+                            shortDesc="#{bindings.IdUtilisateur.hints.tooltip}" readOnly="true" id="soc15"
+                            inlineStyle="font-size:large;"
+                            contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:60px; line-height:30px;">
+          <f:selectItems value="#{bindings.IdUtilisateur.items}" id="si15"/>
+          <f:validator binding="#{bindings.IdUtilisateur.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdJury.inputValue}" label="#{viewcontrollerBundle.JURY}"
+                            required="#{bindings.IdJury.hints.mandatory}" shortDesc="#{bindings.IdJury.hints.tooltip}"
+                            id="soc17" inlineStyle="font-size:large;"
+                            contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:35px; line-height:30px;">
+          <f:selectItems value="#{bindings.IdJury.items}" id="si17"/>
+          <f:validator binding="#{bindings.IdJury.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.Role.inputValue}" label="#{viewcontrollerBundle.ROLE}"
+                      required="#{bindings.Role.hints.mandatory}" columns="#{bindings.Role.hints.displayWidth}"
+                      maximumLength="#{bindings.Role.hints.precision}" shortDesc="#{bindings.Role.hints.tooltip}"
+                      id="it7" inlineStyle="font-size:large;"
+                      contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:35px; line-height:30px;">
+          <f:validator binding="#{bindings.Role.validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="popup-delete-m">
+    <af:dialog id="d7" title="Supprimer Membre" dialogListener="#{JuryBean.OnDeleteMemberAction}" type="yesNo"
+               affirmativeTextAndAccessKey="OUI" noTextAndAccessKey="NON" cancelTextAndAccessKey="ANNULER">
+      <af:panelFormLayout id="pfl5" inlineStyle="line-height:50px;">
+        <af:selectOneChoice value="#{bindings.IdUtilisateur.inputValue}" label="#{viewcontrollerBundle1.PRENOMNOM}"
+                            required="#{bindings.IdUtilisateur.hints.mandatory}"
+                            shortDesc="#{bindings.IdUtilisateur.hints.tooltip}" readOnly="true" id="soc18">
+          <f:selectItems value="#{bindings.IdUtilisateur.items}" id="si18"/>
+          <f:validator binding="#{bindings.IdUtilisateur.validator}"/>
+        </af:selectOneChoice>
+        <af:selectOneChoice value="#{bindings.IdJury.inputValue}" label="#{viewcontrollerBundle.JURY}"
+                            required="#{bindings.IdJury.hints.mandatory}" shortDesc="#{bindings.IdJury.hints.tooltip}"
+                            readOnly="true" id="soc19">
+          <f:selectItems value="#{bindings.IdJury.items}" id="si19"/>
+          <f:validator binding="#{bindings.IdJury.validator}"/>
+        </af:selectOneChoice>
+        <af:inputText value="#{bindings.Role.inputValue}" label="#{viewcontrollerBundle.ROLE}"
+                      required="#{bindings.Role.hints.mandatory}" readOnly="true"
+                      columns="#{bindings.Role.hints.displayWidth}" maximumLength="#{bindings.Role.hints.precision}"
+                      shortDesc="#{bindings.Role.hints.tooltip}" id="it8">
+          <f:validator binding="#{bindings.Role.validator}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p4" binding="#{JuryBean.popupNoUser}">
+    <af:dialog id="d9" title="Info" type="cancel" cancelTextAndAccessKey="FERMER">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl12" layout="vertical" inlineStyle="text-align:center;">
+        <af:icon name="warning" id="i4"/>
+        <af:outputFormatted value="Veuillez sélectionner un utilisateur" id="of4"
+                            inlineStyle="font-size:medium; color:Orange;"/>
+      </af:panelGroupLayout>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <af:document title="attestation.jsf" id="d1">
+        <af:form id="f1">
+            <af:commandButton text="Attestation de Réussites" id="b1"
+                              inlineStyle="border-radius:20px ; background: #f5e6e6; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;"
+                              icon="/images/383188_48px.png"
+                              actionListener="#{AttestationRelevesBean.OnAttestationAction}">
+                <af:clientListener method="newWindow" type="action"/>
+            </af:commandButton>
+            <af:commandButton text="Relevés de Notes" id="cb1"
+                              inlineStyle="border-radius:20px ; background: #f5e6e6; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;"
+                              icon="/images/383188_48px.png" action="#{EtatsBean.OnPrintReleves}"/>
+        </af:form>
+        <f:facet name="metaContainer">
+            <af:resource type="javascript">
+                function newWindow(){
+                    document.getElementById("f1").target = "_blank;targetfeatures=toolbar=no location=no directories=no menubar=no";
+                }
+            </af:resource>
+        </f:facet>
+    </af:document>
+</f:view>

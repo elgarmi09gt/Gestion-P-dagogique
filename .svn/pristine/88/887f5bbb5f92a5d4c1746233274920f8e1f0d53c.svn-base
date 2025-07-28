@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="horizontal">
+    <af:panelGroupLayout id="pgl2" layout="vertical">
+      <af:outputFormatted value="Parcours" id="of1" styleUsage="pageStamp"
+                          inlineStyle="font-size:x-large;margin-left:10px"/>
+      <af:selectOneChoice value="#{bindings.Parcours.inputValue}" required="#{bindings.Parcours.hints.mandatory}"
+                          shortDesc="#{bindings.Parcours.hints.tooltip}" id="soc1" autoSubmit="true"
+                          valueChangeListener="#{EtatsBean.RefreshParcours}"
+                          contentStyle="width:100%; border-radius:8px;font-size:x-large;border:solid 2px #2898e8;height:50px"
+                          inlineStyle="margin:10px">
+        <f:selectItems value="#{bindings.Parcours.items}" id="si1"/>
+        <f:validator binding="#{bindings.Parcours.validator}"/>
+      </af:selectOneChoice>
+    </af:panelGroupLayout>
+    <af:commandButton text="Attestations" id="b1"
+                      inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;">
+      <af:fileDownloadActionListener contentType="application/pdf"
+                                     filename="attestation.pdf"
+                                     method="#{EtatsBean.AttestationClicked}"/>
+    </af:commandButton>
+    <af:commandButton text="Releves" id="b2"
+                      inlineStyle="font-size:x-large; color:White; font-family:cursive;border-radius:8px;background:#2897e8;margin-left:30px">
+      <af:fileDownloadActionListener contentType="application/pdf" filename="releves.pdf"
+                                     method="#{EtatsBean.RelevesClicked}"/>
+    </af:commandButton>
+    <af:matchMediaBehavior matchedPropertyValue="vertical" propertyName="layout"
+                           mediaQuery="screen and (max-width:1000px)"/>
+  </af:panelGroupLayout>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" binding="#{EtatsBean.popupSuccessReport}">
+    <af:dialog id="d1" title="Info" cancelTextAndAccessKey="Fermer" type="cancel" inlineStyle="text-align:center;">
+      <f:facet name="buttonBar"/>
+      <af:outputFormatted value="Document en registré dans  avec success !!!" id="of2"
+                          inlineStyle="color:Lime; font-size:large;"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

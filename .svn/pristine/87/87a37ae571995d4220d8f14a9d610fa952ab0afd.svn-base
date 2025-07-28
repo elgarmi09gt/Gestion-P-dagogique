@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NiveauFormationParcours"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.NiveauFormationParcours_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="ida"
+    Kind="where"
+    Type="oracle.jbo.domain.Number"/>
+  <Variable
+    Name="hs_id"
+    Kind="where"
+    Type="oracle.jbo.domain.Number"/>
+  <ViewAccessor
+    Name="AnneeUniverROVO1"
+    ViewObjectName="model.readOnlyView.AnneeUniverROVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_IdAnneesUnivers"
+    ListVOName="AnneeUniverROVO1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdAnneesUnivers"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdAnneesUnivers"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[SELECT DISTINCT                          
+  nfp.ID_NIVEAU_FORMATION_PARCOURS,        
+  nfc.ID_NIVEAU_FORMATION_COHORTE,                                          
+  pma.ID_ANNEES_UNIVERS,                                 
+  (nf.LIBELLE_LONG||' '||  decode(crt.ID_COHORTE, null, '', crt.LIBELLE) ) NiveauFormationParcours                                              
+FROM   NIVEAU_FORMATION_COHORTES nfc                                  
+JOIN   COHORTES crt ON nfc.ID_COHORTE = crt.ID_COHORTE                              
+JOIN   NIVEAUX_FORMATIONS nf ON nf.ID_NIVEAU_FORMATION = nfc.ID_NIVEAU_FORMATION                                            
+--JOIN   UTILISATEUR_NIVEAUX_FORMATIONS unf ON unf.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION                                            
+JOIN   NIVEAUX_FORMATION_PARCOURS nfp On nfp.ID_NIVEAU_FORMATION_COHORTE = nfc.ID_NIVEAU_FORMATION_COHORTE                                            
+JOIN   PARCOURS_MAQUETTE_ANNEE pma ON pma.ID_NIVEAU_FORMATION_PARCOURS = nfp.ID_NIVEAU_FORMATION_PARCOURS                                            
+join FORMATIONS fr on fr.id_formation = nf.ID_FORMATION                               
+join HISTORIQUES_STRUCTURES hs on hs.ID_HISTORIQUES_STRUCTURE= fr.ID_HISTORIQUES_STRUCTURE         
+WHERE  pma.ID_ANNEES_UNIVERS =:ida and                                   
+hs.ID_HISTORIQUES_STRUCTURE=:hs_id]]></SQLQuery>
+  <ViewAttribute
+    Name="IdNiveauFormationParcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_PARCOURS"
+    Expression="ID_NIVEAU_FORMATION_PARCOURS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormationCohorte"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION_COHORTE"
+    Expression="ID_NIVEAU_FORMATION_COHORTE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdAnneesUnivers"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ANNEES_UNIVERS"
+    Expression="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"
+    LOVName="LOV_IdAnneesUnivers">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Niveauformationparcours"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="301"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NIVEAUFORMATIONPARCOURS"
+    Expression="NIVEAUFORMATIONPARCOURS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="301"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdNiveauFormationParcours"/>
+    <Item Value="IdNiveauFormationCohorte"/>
+    <Item Value="IdAnneesUnivers"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="CalendrierDeliberationVO"
+    ViewLink="model.viewlink.NiveauFormationParcourToCalendrierDelib"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

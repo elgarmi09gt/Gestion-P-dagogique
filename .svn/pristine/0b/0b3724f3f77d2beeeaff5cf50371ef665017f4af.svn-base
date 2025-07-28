@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="etudiant_paie_inscriptionPageDef" Package="ecolage.etudiant_paiement_inscrit">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+        <iterator Binds="FormPayHstFormParcRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="FormPayHstFormParcROIterator"/>
+    <iterator Binds="LesFormationsStrctRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="LesFormationsStrctROIterator"/>
+    <iterator Binds="NivFormFormPayStrcRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="NivFormFormPayStrcROIterator"/>
+    <iterator Binds="AnneeUniversPasseAnterRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="AnneeUniversPasseAnterROIterator"/>
+    <iterator Binds="ListePaiementRetardRO" RangeSize="15" DataControl="ecolageAppDataControl"
+              id="ListePaiementRetardROIterator"/>
+    <iterator Binds="FormHistStrRO" RangeSize="25" DataControl="ecolageAppDataControl" id="FormHistStrROIterator"/>
+    <iterator Binds="NivFormFormPay" RangeSize="25" DataControl="ecolageAppDataControl" id="NivFormFormPayIterator"/>
+    <iterator Binds="EtudPaieInscriptionRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="EtudPaieInscriptionROIterator"/>
+    <searchRegion Binds="EtudPaieInscriptionROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtudPaieInscriptionROQuery"/>
+    <iterator Binds="EtudiantBu" RangeSize="10" DataControl="inscriptionAppDataControl" id="EtudiantBuIterator"/>
+    <iterator Binds="InscriptionsPedagogiques" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptionsPedagogiquesIterator"/>
+    <iterator Binds="AptePreins" RangeSize="10" DataControl="inscriptionAppDataControl" id="AptePreinsIterator"/>
+    <iterator Binds="ResponsableRO" RangeSize="10" DataControl="inscriptionAppDataControl" id="ResponsableROIterator"/>
+    <iterator Binds="EtatInscriptionRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="EtatInscriptionROIterator"/>
+    <iterator Binds="PaiementDIPEcolRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="PaiementDIPEcolROIterator"/>
+    <iterator Binds="MoisRO" RangeSize="10" DataControl="ecolageAppDataControl" id="MoisROIterator"/>
+    <iterator Binds="EtudAyantPaieMensualiteRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="EtudAyantPaieMensualiteROIterator"/>
+    <searchRegion Binds="EtudAyantPaieMensualiteROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtudAyantPaieMensualiteROQuery"/>
+    <iterator Binds="lesMoisFormNivFormAnnRO" RangeSize="25" DataControl="ecolageAppDataControl"
+              id="lesMoisFormNivFormAnnROIterator"/>
+  </executables>
+  <bindings>
+        <list IterBinding="AnneeUniversPasseAnterROIterator" ListOperMode="navigation"
+          ListIter="AnneeUniversPasseAnterROIterator" id="AnneeUniversPasseAnterRO" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="IdLibLongPasse"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="FormHistStrROIterator" ListOperMode="navigation" ListIter="FormHistStrROIterator"
+          id="FormHistStrRO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="NivFormFormPayIterator" ListOperMode="navigation" ListIter="NivFormFormPayIterator"
+          id="NivFormFormPay" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="FormHistStrROIterator" id="IdFormation">
+      <AttrNames>
+        <Item Value="IdFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="NivFormFormPayIterator" id="IdNiveauFormation">
+      <AttrNames>
+        <Item Value="IdNiveauFormation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AnneeUniversPasseAnterROIterator" id="IdAnneePasse">
+      <AttrNames>
+        <Item Value="IdAnneePasse"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="EtudPaieInscriptionROIterator" id="EtudPaieInscriptionRO">
+      <nodeDefinition DefName="model.readOnlyView.EtudPaieInscriptionROVO" Name="EtudPaieInscriptionRO0">
+        <AttrNames>
+          <Item Value="IdEtudiant"/>
+          <Item Value="Numero"/>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="Nationalite"/>
+          <Item Value="EtatInscrEtatInscrId"/>
+          <Item Value="IdInscriptionPedagogique"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="EtudPaieInscriptionROIterator" id="getEtudPaieInscription"
+            InstanceName="ecolageAppDataControl.EtudPaieInscriptionRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_niv_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="FormHistStrROIterator" id="IdStructure">
+      <AttrNames>
+        <Item Value="IdStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="EtudiantBuIterator" id="getEtudiantBu" InstanceName="inscriptionAppDataControl.EtudiantBu"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_struct" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="InscriptionsPedagogiquesIterator" id="getDetailIncPedEtud"
+            InstanceName="inscriptionAppDataControl.InscriptionsPedagogiques" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idInspAdmmin" NDType="java.lang.Long"/>
+      <NamedData NDName="id_ins_ped" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="AptePreinsIterator" id="getAptitudeEtudiant" InstanceName="inscriptionAppDataControl.AptePreins"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="ResponsableROIterator" id="getResponsableEtud"
+            InstanceName="inscriptionAppDataControl.ResponsableRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="EtatInscriptionROIterator" id="getEtatInscription"
+            InstanceName="ecolageAppDataControl.EtatInscriptionRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_etat_insc" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="PaiementDIPEcolROIterator" id="getPaiementDIPEcol"
+            InstanceName="ecolageAppDataControl.PaiementDIPEcolRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_insc_ped" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_niv_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="MoisROIterator" id="getMois" InstanceName="ecolageAppDataControl.MoisRO"
+            DataControl="ecolageAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_mois_deb" NDType="java.lang.Long"/>
+    </action>
+    <tree IterBinding="EtudAyantPaieMensualiteROIterator" id="EtudAyantPaieMensualiteRO">
+      <nodeDefinition DefName="model.readOnlyView.EtudAyantPaieMensualiteROVO" Name="EtudAyantPaieMensualiteRO0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="Nationalite"/>
+          <Item Value="DateOperation"/>
+          <Item Value="LibelleEchelon"/>
+          <Item Value="Montant"/>
+          <Item Value="LibModePaie"/>
+          <Item Value="LibTypePaie"/>
+          <Item Value="NumChqVir"/>
+          <Item Value="Banque"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="EtudAyantPaieMensualiteROIterator" id="getEtudAyantPaieMensualite"
+            InstanceName="ecolageAppDataControl.EtudAyantPaieMensualiteRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_niv_form" NDType="java.lang.Long"/>
+      <NamedData NDName="id_mois_cours" NDType="java.lang.Long"/>
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="lesMoisFormNivFormAnnROIterator" id="IdMois">
+      <AttrNames>
+        <Item Value="IdMois"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="lesMoisFormNivFormAnnROIterator" ListOperMode="navigation"
+          ListIter="lesMoisFormNivFormAnnROIterator" id="lesMoisFormNivFormAnnRO" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibelleEchelon"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="lesMoisFormNivFormAnnROIterator" id="LibelleEchelon">
+      <AttrNames>
+        <Item Value="LibelleEchelon"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

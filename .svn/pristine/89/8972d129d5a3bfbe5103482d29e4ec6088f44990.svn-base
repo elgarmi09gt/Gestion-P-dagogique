@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="list_jury_list_jury_ExecuteWithParams1PageDef" Package="evaluation.jury" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="Parcours" RangeSize="25" DataControl="evaluationAppDataControl" id="ParcoursIterator"
+              Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="ParcoursIterator" id="ExecuteWithParams" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_user" NDValue="#{sessionScope.id_user}" NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="idDept" NDValue="#{sessionScope.id_hs}" NDType="oracle.jbo.domain.Number"/>
+    </action>
+  </bindings>
+</pageDefinition>

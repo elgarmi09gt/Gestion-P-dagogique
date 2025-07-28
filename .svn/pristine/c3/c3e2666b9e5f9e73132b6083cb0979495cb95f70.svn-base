@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="niveau_formation_accesPageDef"
+                Package="parametrageSup.acces_niveaux_formations">
+    <parameters/>
+    <executables>
+        <variableIterator id="variables"/>
+        <iterator Binds="Structures" RangeSize="10" DataControl="evaluationAppDataControl" id="StructuresIterator"/>
+        <iterator Binds="UtilisateurStructure" RangeSize="25" DataControl="evaluationAppDataControl"
+                  id="UtilisateurStructureIterator"/>
+        <iterator Binds="AccesNiveauFormation" RangeSize="25" DataControl="evaluationAppDataControl"
+                  id="AccesNiveauFormationIterator"/>
+        <iterator Binds="UtilisateurNiveauFormation" RangeSize="25" DataControl="evaluationAppDataControl"
+                  id="UtilisateurNiveauFormationIterator"/>
+        <searchRegion Binds="AccesNiveauFormationIterator" Criteria=""
+                      Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="AccesNiveauFormationQuery"/>
+        <searchRegion Binds="UtilisateurStructureIterator" Criteria=""
+                      Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="UtilisateurStructureQuery"/>
+        <searchRegion Binds="UtilisateurNiveauFormationIterator" Criteria=""
+                      Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                      id="UtilisateurNiveauFormationQuery"/>
+        <iterator Binds="UtilisateurNiveauxFormationsVO" RangeSize="10" DataControl="evaluationAppDataControl"
+                  id="UtilisateurNiveauxFormationsVOIterator"/>
+        <iterator Binds="OptionROVO" RangeSize="10" DataControl="evaluationAppDataControl" id="OptionROVOIterator"/>
+        <iterator Binds="SpecialiteROVO1" RangeSize="25" DataControl="evaluationAppDataControl"
+                  id="SpecialiteROVO1Iterator"/>
+        <iterator Binds="IsNivFormAccesAllowed" RangeSize="25" DataControl="evaluationAppDataControl"
+                  id="IsNivFormAccesAllowedIterator"/>
+        <iterator Binds="UtilisateursROVO1" RangeSize="25" DataControl="evaluationAppDataControl"
+                  id="UtilisateursROVO1Iterator"/>
+    </executables>
+    <bindings>
+        <button IterBinding="AccesNiveauFormationIterator" id="selectedFormation" DTSupportsMRU="false">
+            <AttrNames>
+                <Item Value="selectedFormation"/>
+            </AttrNames>
+            <ValueList>
+                <Item Value="true"/>
+                <Item Value="false"/>
+            </ValueList>
+        </button>
+        <tree IterBinding="UtilisateurStructureIterator" id="UtilisateurStructure">
+            <nodeDefinition DefName="model.readOnlyView.UtilisateurStructureVO" Name="UtilisateurStructure0">
+                <AttrNames>
+                    <Item Value="isUserSelected"/>
+                    <Item Value="Prenomnom"/>
+                    <Item Value="AdressMail"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <button IterBinding="UtilisateurStructureIterator" id="isUserSelected" DTSupportsMRU="false">
+            <AttrNames>
+                <Item Value="isUserSelected"/>
+            </AttrNames>
+            <ValueList>
+                <Item Value="true"/>
+                <Item Value="false"/>
+            </ValueList>
+        </button>
+        <tree IterBinding="UtilisateurNiveauFormationIterator" id="UtilisateurNiveauFormation">
+            <nodeDefinition DefName="model.readOnlyView.UtilisateurNiveauFormationROVO"
+                            Name="UtilisateurNiveauFormation0">
+                <AttrNames>
+                    <Item Value="Prenomnom"/>
+                    <Item Value="NiveauFormation"/>
+                    <Item Value="Specialite"/>
+                    <Item Value="Options"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="AccesNiveauFormationIterator" id="IdNiveauFormation">
+            <AttrNames>
+                <Item Value="IdNiveauFormation"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="UtilisateurStructureIterator" id="IdUtilisateur">
+            <AttrNames>
+                <Item Value="IdUtilisateur"/>
+            </AttrNames>
+        </attributeValues>
+        
+    <attributeValues IterBinding="UtilisateursROVO1Iterator" id="IdUtilisateur">
+      <AttrNames>
+        <Item Value="IdUtilisateur"/>
+      </AttrNames>
+    </attributeValues><action IterBinding="UtilisateurStructureIterator" id="GetUserByStructure"
+                InstanceName="evaluationAppDataControl.UtilisateurStructure" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="s_id" NDType="java.lang.Integer" NDValue="#{sessionScope.id_hs}"/>
+        </action>
+        
+    <list IterBinding="UtilisateursROVO1Iterator" ListOperMode="navigation" ListIter="UtilisateursIterator"
+          id="Utilisateurs" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Prenomnom"/>
+      </AttrNames>
+    </list><attributeValues IterBinding="StructuresIterator" id="IdStructure">
+            <AttrNames>
+                <Item Value="IdStructure"/>
+            </AttrNames>
+        </attributeValues>
+        <action IterBinding="AccesNiveauFormationIterator" id="GetFormations" RequiresUpdateModel="true"
+                Action="executeWithParams">
+            <NamedData NDName="s_id" NDType="java.lang.Integer" NDValue="#{sessionScope.id_hs}"/>
+            <NamedData NDName="annee" NDType="java.lang.Integer" NDValue="#{sessionScope.id_annee}"/>
+        </action>
+        <action IterBinding="UtilisateurStructureIterator" id="GetUtilisateurs" RequiresUpdateModel="true"
+                Action="executeWithParams">
+            <NamedData NDName="s_id" NDType="java.lang.Integer" NDValue="#{sessionScope.id_hs}"/>
+        </action>
+        <action InstanceName="evaluationAppDataControl.UtilisateurNiveauFormation"
+                IterBinding="UtilisateurNiveauFormationIterator" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams" id="GetUtilisateurNivForm">
+            <NamedData NDName="s_id" NDType="java.lang.Integer" NDValue="#{sessionScope.id_hs}"/>
+            <NamedData NDName="id_annee" NDType="java.lang.Integer" NDValue="#{sessionScope.id_annee}"/>
+        </action>
+        <methodAction id="getSelectedNiveauFormations" RequiresUpdateModel="true"
+                      ReturnName="data.evaluationAppDataControl.methodResults.getSelectedNiveauFormations_getSelectedNiveauFormations_dataControl_dataProvider_getSelectedNiveauFormations_result"
+                      Action="invokeMethod" MethodName="getSelectedNiveauFormations" IsViewObjectMethod="false"
+                      DataControl="evaluationAppDataControl"
+                      InstanceName="bindings.getSelectedNiveauFormations.dataControl.dataProvider"/>
+        
+    <attributeValues IterBinding="UtilisateursROVO1Iterator" id="Prenomnom">
+      <AttrNames>
+        <Item Value="Prenomnom"/>
+      </AttrNames>
+    </attributeValues><methodAction id="getSelectedUsers" RequiresUpdateModel="true" Action="invokeMethod"
+                      MethodName="getSelectedUsers" IsViewObjectMethod="false" DataControl="evaluationAppDataControl"
+                      InstanceName="bindings.getSelectedUsers.dataControl.dataProvider"
+                      ReturnName="data.evaluationAppDataControl.methodResults.getSelectedUsers_getSelectedUsers_dataControl_dataProvider_getSelectedUsers_result"/>
+        <tree IterBinding="UtilisateurNiveauxFormationsVOIterator" id="UtilisateurNiveauxFormationsVO">
+            <nodeDefinition DefName="model.updatableview.UtilisateurNiveauxFormationsVO"
+                            Name="UtilisateurNiveauxFormationsVO0">
+                <AttrNames>
+                    <Item Value="IdUtilisNiveauFormation"/>
+                    <Item Value="IdNiveauFormation"/>
+                    <Item Value="IdNiveauFormationSpecialite"/>
+                    <Item Value="IdNivFormSpecOption"/>
+                    <Item Value="IdUtilisateur"/>
+                    <Item Value="UtiCree"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <action InstanceName="evaluationAppDataControl.UtilisateurNiveauxFormationsVO"
+                IterBinding="UtilisateurNiveauxFormationsVOIterator" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="createWithParams" id="AllowedAccessTo">
+            <NamedData NDName="IdUtilisateur" NDType="java.lang.String"/>
+            <NamedData NDName="IdNiveauFormation" NDType="java.lang.String"/>
+            <NamedData NDName="UtiCree" NDType="java.lang.String"/>
+            <NamedData NDName="IdNiveauFormationSpecialite" NDType="java.lang.String"/>
+            <NamedData NDName="IdNivFormSpecOption" NDType="java.lang.String"/>
+        </action>
+        <action id="Commit" DataControl="evaluationAppDataControl" RequiresUpdateModel="true"
+                Action="commitTransaction"/>
+        <action IterBinding="OptionROVOIterator" id="GetOptionBySpecialite"
+                InstanceName="evaluationAppDataControl.OptionROVO" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="sp" NDType="java.lang.Integer"/>
+        </action>
+        <list IterBinding="OptionROVOIterator" ListOperMode="navigation" ListIter="OptionROVOIterator" id="OptionROVO"
+              DTSupportsMRU="true" SelectItemValueMode="ListObject">
+            <AttrNames>
+                <Item Value="LibelleLong"/>
+            </AttrNames>
+        </list>
+        <list IterBinding="SpecialiteROVO1Iterator" ListOperMode="navigation" ListIter="SpecialiteROVO1Iterator"
+              id="SpecialiteROVO1" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+            <AttrNames>
+                <Item Value="LibelleLong"/>
+            </AttrNames>
+        </list>
+        <action IterBinding="IsNivFormAccesAllowedIterator" id="IsNivFormAccesAllowed"
+                InstanceName="evaluationAppDataControl.IsNivFormAccesAllowed" DataControl="evaluationAppDataControl"
+                RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="uti" NDType="java.lang.Integer"/>
+            <NamedData NDName="niv" NDType="java.lang.Integer"/>
+        </action>
+    <tree IterBinding="StructuresIterator" id="Structures">
+      <nodeDefinition DefName="model.updatableview.StructuresVO" Name="Structures0">
+        <AttrNames>
+          <Item Value="IdStructure"/>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="Adresse"/>
+          <Item Value="Email"/>
+          <Item Value="Telephone"/>
+          <Item Value="Fax"/>
+          <Item Value="StructureParent"/>
+          <Item Value="IdTypeSection"/>
+          <Item Value="Niveau"/>
+          <Item Value="Url"/>
+          <Item Value="HoraireTravail"/>
+          <Item Value="DateCreation"/>
+          <Item Value="DateModification"/>
+          <Item Value="UtiCree"/>
+          <Item Value="UtiModifie"/>
+          <Item Value="IdSignataire"/>
+          <Item Value="Signature"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+</bindings>
+</pageDefinition>

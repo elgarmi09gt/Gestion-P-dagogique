@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="recherche_anc_etudPageDef"
+                Package="inscription.resultat_ancien">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AttrSearchPers" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="AttrSearchPersIterator"/>
+    <iterator Binds="EtudiantAncien" RangeSize="25" DataControl="inscriptionAppDataControl"
+              id="EtudiantAncienIterator"/>
+    <iterator Binds="EtudAcnienRO" RangeSize="25" DataControl="inscriptionAppDataControl" id="EtudAcnienROIterator"/>
+    <searchRegion Binds="EtudAcnienROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="EtudAcnienROQuery"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AttrSearchPersIterator" id="PieceIdentification">
+      <AttrNames>
+        <Item Value="PieceIdentification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantAncienIterator" id="IdEtudiantAncien">
+      <AttrNames>
+        <Item Value="IdEtudiantAncien"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantAncienIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantAncienIterator" id="Nom1">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantAncienIterator" id="Prenom">
+      <AttrNames>
+        <Item Value="Prenom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantAncienIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantAncienIterator" id="Civilite">
+      <AttrNames>
+        <Item Value="Civilite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EtudiantAncienIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="EtudiantAncienIterator" StaticList="false" Uses="LOV_IdPays" id="IdPays" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="EtudiantAncienIterator" id="NeVers">
+      <AttrNames>
+        <Item Value="NeVers"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="EtudiantAncienIterator" id="CreateInsert"
+            InstanceName="inscriptionAppDataControl.EtudiantAncien" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <tree IterBinding="EtudAcnienROIterator" id="EtudAcnienRO">
+      <nodeDefinition DefName="model.readOnlyView.EtudAcnienROVO" Name="EtudAcnienRO0">
+        <AttrNames>
+          <Item Value="Numero"/>
+          <Item Value="Nom"/>
+          <Item Value="Prenom"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="EtudiantAncienIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="EtudAcnienROIterator" id="Execute" InstanceName="inscriptionAppDataControl.EtudAcnienRO"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="iteratorExecute"/>
+    <list IterBinding="EtudiantAncienIterator" StaticList="false" Uses="LOV_Sexe" id="Sexe" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject"/>
+  </bindings>
+</pageDefinition>

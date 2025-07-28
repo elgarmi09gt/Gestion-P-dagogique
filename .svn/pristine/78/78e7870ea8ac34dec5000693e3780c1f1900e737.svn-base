@@ -1,0 +1,346 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelHeader text="Selectionnez un groupe, puis une liste des éudiants" id="ph2">
+    <f:facet name="context"/>
+    <f:facet name="toolbar"/>
+    <f:facet name="menuBar"/>
+    <f:facet name="legend"/>
+    <f:facet name="info"/>
+    <af:panelGroupLayout id="pgl2" layout="scroll" inlineStyle="margin-top:10px;">
+      <af:panelSplitter id="ps1" splitterPosition="380" inlineStyle="width:1100px;" disabled="true">
+        <f:facet name="first">
+          <af:panelCollection id="pc1" binding="#{pageFlowScope.DetailGroupeTdbean.tableCollection}">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar">
+              <af:toolbar id="t3">
+                <af:button id="b2" icon="/images/new_icon.png"
+                           actionListener="#{pageFlowScope.DetailGroupeTdbean.onNewGroupeTd}"/>
+                <af:button id="b3" icon="/images/edit_icon.png"
+                           actionListener="#{pageFlowScope.DetailGroupeTdbean.onEditGroupeTd}"/>
+                <af:button text="Multi Grp" id="b5" icon="/images/new_icon.png"
+                           actionListener="#{pageFlowScope.DetailGroupeTdbean.onNewMultiGrp}"/>
+              </af:toolbar>
+            </f:facet>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.ListeGroupeTdTpRO.collectionModel}" var="row"
+                      rows="#{bindings.ListeGroupeTdTpRO.rangeSize}"
+                      emptyText="#{bindings.ListeGroupeTdTpRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.ListeGroupeTdTpRO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ListeGroupeTdTpRO.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.ListeGroupeTdTpRO.rangeSize}"
+                      filterModel="#{bindings.ListeGroupeTdTpROQuery.queryDescriptor}" filterVisible="true"
+                      queryListener="#{bindings.ListeGroupeTdTpROQuery.processQuery}" varStatus="vs" id="t1"
+                      scrollPolicy="page">
+              <af:column sortProperty="#{bindings.ListeGroupeTdTpRO.hints.LibelleLong.name}" filterable="true"
+                         sortable="true" headerText="Libellé Groupe" id="c1" width="200">
+                <af:outputText value="#{row.LibelleLong}"
+                               shortDesc="#{bindings.ListeGroupeTdTpRO.hints.LibelleLong.tooltip}" id="ot1"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ListeGroupeTdTpRO.hints.Effectif.name}" filterable="true"
+                         sortable="true" headerText="#{bindings.ListeGroupeTdTpRO.hints.Effectif.label}" id="c2">
+                <af:outputText value="#{row.Effectif}" shortDesc="#{bindings.ListeGroupeTdTpRO.hints.Effectif.tooltip}"
+                               id="ot2">
+                  <af:convertNumber groupingUsed="false" pattern="#{bindings.ListeGroupeTdTpRO.hints.Effectif.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:clientListener method="handleTableClick" type="click"/><af:serverListener type="TableClickEvent"
+                                                                                            method="#{pageFlowScope.DetailGroupeTdbean.handleTableClick}"/>
+            </af:table>
+          </af:panelCollection>
+        </f:facet>
+        <f:facet name="second">
+          <af:panelGroupLayout id="pgl1" layout="vertical">
+            <af:inputText label="Filtre :" id="it1" value="#{pageFlowScope.DetailGroupeTdbean.searchbind}"
+                          autoSubmit="true" inlineStyle="margin-top:10px;margin-left:20px;">
+              <af:clientListener method="catchKeyStroke" type="keyUp"/>
+              <af:serverListener type="filterShuttle" method="#{pageFlowScope.DetailGroupeTdbean.filterShuttleAction}"/>
+            </af:inputText>
+            <af:selectManyShuttle id="sms1" contentStyle="width:320px;"
+                                  binding="#{pageFlowScope.DetailGroupeTdbean.empShuttleBinding}"
+                                  partialTriggers="it1 b1">
+              <f:selectItems value="#{bindings.IdInscriptionPedagogique.items}" id="si1"/>
+            </af:selectManyShuttle>
+            <af:button text="Valider" id="b1" action="#{pageFlowScope.DetailGroupeTdbean.onValiderGoupeEtud}"
+                       inlineStyle="margin-top:10px;margin-left:20px;border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#ffffff;margin-bottom:15px;" icon="/images/commit.png"/>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelSplitter>
+      <af:panelHeader text="Liste des Etudiants du : #{bindings.LibelleLong}" id="ph1"
+                      inlineStyle="margin-top:20px;">
+        <f:facet name="context"/>
+        <f:facet name="toolbar"/>
+        <f:facet name="menuBar"/>
+        <f:facet name="legend"/>
+        <f:facet name="info"/>
+        <af:table value="#{bindings.ListeEtudiantGroupeTdRO.collectionModel}" var="row"
+                  rows="#{bindings.ListeEtudiantGroupeTdRO.rangeSize}"
+                  emptyText="#{bindings.ListeEtudiantGroupeTdRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.ListeEtudiantGroupeTdRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ListeEtudiantGroupeTdRO.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.ListeEtudiantGroupeTdRO.rangeSize}"
+                  filterModel="#{bindings.ListeEtudiantGroupeTdROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.ListeEtudiantGroupeTdROQuery.processQuery}" varStatus="vs" id="t2"
+                  width="1222" scrollPolicy="page" inlineStyle="margin-top:10px;">
+          <af:column sortProperty="#{bindings.ListeEtudiantGroupeTdRO.hints.Numero.name}" filterable="true"
+                     sortable="true" headerText="Numéro" id="c3">
+            <af:outputText value="#{row.Numero}" shortDesc="#{bindings.ListeEtudiantGroupeTdRO.hints.Numero.tooltip}"
+                           id="ot3"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeEtudiantGroupeTdRO.hints.Nom.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.ListeEtudiantGroupeTdRO.hints.Nom.label}" id="c4" width="200">
+            <af:outputText value="#{row.Nom}" shortDesc="#{bindings.ListeEtudiantGroupeTdRO.hints.Nom.tooltip}"
+                           id="ot4"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeEtudiantGroupeTdRO.hints.Prenoms.name}" filterable="true"
+                     sortable="true" id="c5" width="250"
+                     headerText="Prénoms">
+            <af:outputText value="#{row.Prenoms}" shortDesc="#{bindings.ListeEtudiantGroupeTdRO.hints.Prenoms.tooltip}"
+                           id="ot5"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeEtudiantGroupeTdRO.hints.DateNaissance.name}" filterable="true"
+                     sortable="true" headerText="Date Naissance" id="c6">
+            <f:facet name="filter">
+              <af:inputDate value="#{bindings.ListeEtudiantGroupeTdROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                            id="id1">
+                <af:convertDateTime pattern="#{bindings.ListeEtudiantGroupeTdRO.hints.DateNaissance.format}"/>
+              </af:inputDate>
+            </f:facet>
+            <af:outputText value="#{row.DateNaissance}"
+                           shortDesc="#{bindings.ListeEtudiantGroupeTdRO.hints.DateNaissance.tooltip}" id="ot6">
+              <af:convertDateTime pattern="#{bindings.ListeEtudiantGroupeTdRO.hints.DateNaissance.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeEtudiantGroupeTdRO.hints.Adresse.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.ListeEtudiantGroupeTdRO.hints.Adresse.label}" id="c7"
+                     width="300">
+            <af:outputText value="#{row.Adresse}" shortDesc="#{bindings.ListeEtudiantGroupeTdRO.hints.Adresse.tooltip}"
+                           id="ot7"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeEtudiantGroupeTdRO.hints.PieceIdentification.name}" filterable="true"
+                     sortable="true" id="c8" headerText="Pièce d'Identification">
+            <af:outputText value="#{row.PieceIdentification}"
+                           shortDesc="#{bindings.ListeEtudiantGroupeTdRO.hints.PieceIdentification.tooltip}" id="ot8"/>
+          </af:column>
+          <af:column id="c9" headerText="Retirer">
+            <af:button id="b4" icon="/images/delete_icon.png"
+                       inlineStyle="border-bottom-left-radius:20px 20px; border-bottom-right-radius:20px 20px; border-top-left-radius:20px 20px; border-top-right-radius:20px 20px; background:#ffffff;"
+                       action="#{pageFlowScope.DetailGroupeTdbean.onRetireEtudiant}"/>
+          </af:column>
+        </af:table>
+      </af:panelHeader>
+    </af:panelGroupLayout>
+  </af:panelHeader>
+  <af:resource type="javascript">
+      function handleTableClick(evt){   
+         var table = evt.getSource();
+         AdfCustomEvent.queue(table, "TableClickEvent",{}, true);         
+         evt.cancel();
+      }
+     </af:resource>
+     
+  <af:resource type="javascript">
+    function catchKeyStroke(event) {
+        component = event.getSource();
+        //if(component.getSubmittedValue().length == 0 || component.getSubmittedValue().length > 2)
+        //{
+            AdfCustomEvent.queue(component, "filterShuttle", 
+            {
+                filterKey : component.getSubmittedValue()
+            },true);
+            event.cancel();
+        //}
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p1" contentDelivery="lazyUncached"
+            binding="#{pageFlowScope.DetailGroupeTdbean.popup}">
+    <af:dialog id="d1" title="Formulaire d'ajout" dialogListener="#{pageFlowScope.DetailGroupeTdbean.onDialog}">
+      <f:facet name="buttonBar"/>
+      <af:selectBooleanCheckbox label="Créer plusieurs groupe :" id="sbc1"
+                                binding="#{pageFlowScope.DetailGroupeTdbean.check_grouper}" autoSubmit="true"
+                                valueChangeListener="#{pageFlowScope.DetailGroupeTdbean.onCreerMultiGroupe}"/>
+      <af:panelFormLayout id="pfl1" rows="3" partialTriggers="sbc1"
+                          visible="#{sessionScope.is_grouper == '1' ? false : true}">
+        <af:inputText value="#{bindings.LibelleLong1.inputValue}" label="#{bindings.LibelleLong1.hints.label}"
+                      required="#{bindings.LibelleLong1.hints.mandatory}"
+                      columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it2" inlineStyle="width:200px;">
+          <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it3">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.EffectifNouveau.inputValue}" label="Effectif Nouveau"
+                      required="#{bindings.EffectifNouveau.hints.mandatory}"
+                      columns="#{bindings.EffectifNouveau.hints.displayWidth}"
+                      maximumLength="#{bindings.EffectifNouveau.hints.precision}"
+                      shortDesc="#{bindings.EffectifNouveau.hints.tooltip}" id="it5" converter="javax.faces.Integer">
+          <f:validator binding="#{bindings.EffectifNouveau.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.EffectifNouveau.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.EffectifDoublant.inputValue}" label="Effectif Doublant"
+                      required="#{bindings.EffectifDoublant.hints.mandatory}"
+                      columns="#{bindings.EffectifDoublant.hints.displayWidth}"
+                      maximumLength="#{bindings.EffectifDoublant.hints.precision}"
+                      shortDesc="#{bindings.EffectifDoublant.hints.tooltip}" id="it6" converter="javax.faces.Integer">
+          <f:validator binding="#{bindings.EffectifDoublant.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.EffectifDoublant.format}"/>
+        </af:inputText>
+        <af:inputText value="#{pageFlowScope.DetailGroupeTdbean.searcheffnouv}"
+                      label="Effectif Réel Nouveau"
+                      required="#{bindings.EffectifReelNouveau.hints.mandatory}"
+                      columns="#{bindings.EffectifReelNouveau.hints.displayWidth}"
+                      maximumLength="#{bindings.EffectifReelNouveau.hints.precision}"
+                      shortDesc="#{bindings.EffectifReelNouveau.hints.tooltip}" id="it7"
+                      converter="javax.faces.Integer" autoSubmit="true">
+          <f:validator binding="#{bindings.EffectifReelNouveau.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.EffectifReelNouveau.format}"/>
+          <af:clientListener type="keyUp" method="catchKeyStroke"/>
+          <af:serverListener type="filterShuttle" method="#{pageFlowScope.DetailGroupeTdbean.onChangeEffReeNouv}"/>
+        </af:inputText>
+        <af:inputText value="#{pageFlowScope.DetailGroupeTdbean.searcheffdoub}"
+                      label="Effectif Réel Doublant"
+                      required="#{bindings.EffectifReelDoublant.hints.mandatory}"
+                      columns="#{bindings.EffectifReelDoublant.hints.displayWidth}"
+                      maximumLength="#{bindings.EffectifReelDoublant.hints.precision}"
+                      shortDesc="#{bindings.EffectifReelDoublant.hints.tooltip}" id="it8"
+                      converter="javax.faces.Integer" autoSubmit="true">
+          <f:validator binding="#{bindings.EffectifReelDoublant.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.EffectifReelDoublant.format}"/>
+          <af:clientListener method="catchKeyStroke" type="keyUp"/>
+          <af:serverListener type="filterShuttle" method="#{pageFlowScope.DetailGroupeTdbean.onChangeEffReelDoub}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Effectif.inputValue}" label="#{bindings.Effectif.hints.label}"
+                      required="#{bindings.Effectif.hints.mandatory}" columns="#{bindings.Effectif.hints.displayWidth}"
+                      maximumLength="#{bindings.Effectif.hints.precision}"
+                      shortDesc="#{bindings.Effectif.hints.tooltip}" id="it4" converter="javax.faces.Integer"
+                      disabled="true" partialTriggers="it7">
+          <f:validator binding="#{bindings.Effectif.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Effectif.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{pageFlowScope.DetailGroupeTdbean.onDialogCancel}"/>
+    </af:dialog>
+  </af:popup>
+        <af:resource type="javascript">
+      function onDialog(evt){
+        var outcome = evt.getOutcome();
+        if (outcome == AdfDialogEvent.OUTCOME_CANCEL){
+            //call server
+            var eventSource = evt.getSource();
+            var immediate = true;
+            AdfCustomEvent.queue(eventSource, "onDialogEvent", {},immediate);
+            evt.cancel();
+        }
+    }
+  </af:resource>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="pEdit" contentDelivery="lazyUncached"
+            binding="#{pageFlowScope.DetailGroupeTdbean.popEdit}">
+    <af:dialog id="d2" title="Formulaire de modifications"
+               dialogListener="#{pageFlowScope.DetailGroupeTdbean.onDialog}">
+      <af:panelFormLayout id="pfl2" rows="3">
+        <af:inputText value="#{bindings.LibelleLong1.inputValue}" label="#{bindings.LibelleLong1.hints.label}"
+                      required="#{bindings.LibelleLong1.hints.mandatory}"
+                      columns="#{bindings.LibelleLong1.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleLong1.hints.precision}"
+                      shortDesc="#{bindings.LibelleLong1.hints.tooltip}" id="it9">
+          <f:validator binding="#{bindings.LibelleLong1.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.LibelleCourt.inputValue}" label="#{bindings.LibelleCourt.hints.label}"
+                      required="#{bindings.LibelleCourt.hints.mandatory}"
+                      columns="#{bindings.LibelleCourt.hints.displayWidth}"
+                      maximumLength="#{bindings.LibelleCourt.hints.precision}"
+                      shortDesc="#{bindings.LibelleCourt.hints.tooltip}" id="it10">
+          <f:validator binding="#{bindings.LibelleCourt.validator}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.EffectifNouveau.inputValue}" label="Effectif Nouveau"
+                      required="#{bindings.EffectifNouveau.hints.mandatory}"
+                      columns="#{bindings.EffectifNouveau.hints.displayWidth}"
+                      maximumLength="#{bindings.EffectifNouveau.hints.precision}"
+                      shortDesc="#{bindings.EffectifNouveau.hints.tooltip}" id="it12" converter="javax.faces.Integer">
+          <f:validator binding="#{bindings.EffectifNouveau.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.EffectifNouveau.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.EffectifDoublant.inputValue}" label="Effectif Doublant"
+                      required="#{bindings.EffectifDoublant.hints.mandatory}"
+                      columns="#{bindings.EffectifDoublant.hints.displayWidth}"
+                      maximumLength="#{bindings.EffectifDoublant.hints.precision}"
+                      shortDesc="#{bindings.EffectifDoublant.hints.tooltip}" id="it13" converter="javax.faces.Integer">
+          <f:validator binding="#{bindings.EffectifDoublant.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.EffectifDoublant.format}"/>
+        </af:inputText>
+        <af:inputText value="#{pageFlowScope.DetailGroupeTdbean.searcheffnouv}"
+                      label="Effectif Réel Nouveau"
+                      required="#{bindings.EffectifReelNouveau.hints.mandatory}"
+                      columns="#{bindings.EffectifReelNouveau.hints.displayWidth}"
+                      maximumLength="#{bindings.EffectifReelNouveau.hints.precision}"
+                      shortDesc="#{bindings.EffectifReelNouveau.hints.tooltip}" id="it14"
+                      converter="javax.faces.Integer" autoSubmit="true">
+          <f:validator binding="#{bindings.EffectifReelNouveau.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.EffectifReelNouveau.format}"/>
+          <af:clientListener method="catchKeyStroke" type="keyUp"/>
+          <af:serverListener type="filterShuttle" method="#{pageFlowScope.DetailGroupeTdbean.onChangeEffReeNouv}"/>
+        </af:inputText>
+        <af:inputText value="#{pageFlowScope.DetailGroupeTdbean.searcheffdoub}"
+                      label="Effectif Réel Doublant"
+                      required="#{bindings.EffectifReelDoublant.hints.mandatory}"
+                      columns="#{bindings.EffectifReelDoublant.hints.displayWidth}"
+                      maximumLength="#{bindings.EffectifReelDoublant.hints.precision}"
+                      shortDesc="#{bindings.EffectifReelDoublant.hints.tooltip}" id="it15"
+                      converter="javax.faces.Integer" autoSubmit="true">
+          <f:validator binding="#{bindings.EffectifReelDoublant.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.EffectifReelDoublant.format}"/>
+          <af:clientListener method="catchKeyStroke" type="keyUp"/>
+          <af:serverListener type="filterShuttle" method="#{pageFlowScope.DetailGroupeTdbean.onChangeEffReelDoub}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.Effectif.inputValue}" label="#{bindings.Effectif.hints.label}"
+                      required="#{bindings.Effectif.hints.mandatory}" columns="#{bindings.Effectif.hints.displayWidth}"
+                      maximumLength="#{bindings.Effectif.hints.precision}"
+                      shortDesc="#{bindings.Effectif.hints.tooltip}" id="it11" converter="javax.faces.Integer"
+                      disabled="true" partialTriggers="it14 it15">
+          <f:validator binding="#{bindings.Effectif.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.Effectif.format}"/>
+        </af:inputText>
+      </af:panelFormLayout>
+      <f:facet name="buttonBar"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{pageFlowScope.DetailGroupeTdbean.onDialogCanEdit}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p2" contentDelivery="lazyUncached"
+            binding="#{pageFlowScope.DetailGroupeTdbean.popDelEtud}">
+    <af:dialog id="d3" title="Formulaire pour retirer un étudiant"
+               dialogListener="#{pageFlowScope.DetailGroupeTdbean.onDialogDel}">
+      <f:facet name="buttonBar"/>
+      <af:outputText value="Voulez-vous retirer #{bindings.Prenoms}  #{bindings.Nom} du groupe (#{bindings.LibelleLong})?" id="ot9" inlineStyle="font-size:large;"/>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{pageFlowScope.DetailGroupeTdbean.onDialogCanDel}"/>
+    </af:dialog>
+  </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p3" contentDelivery="lazyUncached"
+            binding="#{pageFlowScope.DetailGroupeTdbean.popMulti}">
+    <af:dialog id="d4" title="Ajoutez plusieurs groupe"
+               dialogListener="#{pageFlowScope.DetailGroupeTdbean.onDialogMulti}">
+      <f:facet name="buttonBar"/>
+      <af:panelGroupLayout id="pgl3" partialTriggers="sbc1">
+        <af:panelFormLayout id="pfl3" rows="1">
+          <f:facet name="footer"/>
+          <af:inputText label="Préfix des groupes:" id="it16" value="#{pageFlowScope.DetailGroupeTdbean.prefix}"/>
+          <af:inputText label="Nombre de groupes :" id="it17" converter="javax.faces.Integer"
+                        value="#{pageFlowScope.DetailGroupeTdbean.nb_groupes}"/>
+          <af:inputText label="Effectif :" id="it18" converter="javax.faces.Integer"
+                        value="#{pageFlowScope.DetailGroupeTdbean.effectifs}"/>
+        </af:panelFormLayout>
+      </af:panelGroupLayout>
+      <af:clientListener method="onDialog" type="dialog"/>
+      <af:serverListener type="onDialogEvent" method="#{pageFlowScope.DetailGroupeTdbean.onDialogCanMulti}"/>
+    </af:dialog>
+  </af:popup>
+</ui:composition>

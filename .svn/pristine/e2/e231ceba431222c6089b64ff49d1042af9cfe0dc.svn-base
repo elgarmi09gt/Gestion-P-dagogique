@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelSplitter id="ps1" dimensionsFrom="children" splitterPosition="900" firstBorder="all" secondBorder="all"
+                    disabled="true">
+    <f:facet name="first">
+      <af:panelGroupLayout id="pgl2" layout="vertical">
+        <af:button text="La liste des départements" id="b1"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+                       partialSubmit="false" disabled="true"/>
+        <af:table value="#{bindings.HistoriquesStructures.collectionModel}" var="row"
+                  rows="#{bindings.HistoriquesStructures.rangeSize}"
+                  emptyText="#{bindings.HistoriquesStructures.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.HistoriquesStructures.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.HistoriquesStructures.collectionModel.makeCurrent}"
+                  rowSelection="single" fetchSize="#{bindings.HistoriquesStructures.rangeSize}"
+                  filterModel="#{bindings.HistoriquesStructuresQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.HistoriquesStructuresQuery.processQuery}" varStatus="vs" id="t1"
+                  scrollPolicy="page" inlineStyle="margin-left:10px;" columnStretching="last">
+          <af:column sortProperty="#{bindings.HistoriquesStructures.hints.LibelleLong.name}" filterable="true"
+                     sortable="true" headerText="Département" id="c1" width="800">
+            <af:outputText value="#{row.LibelleLong}"
+                           shortDesc="#{bindings.HistoriquesStructures.hints.LibelleLong.tooltip}" id="ot1"/>
+          </af:column>
+        </af:table>
+      </af:panelGroupLayout>
+    </f:facet>
+    <f:facet name="second">
+      <af:panelGroupLayout id="pgl1" layout="vertical">
+        <af:button text="La liste des Ue" id="b3"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:10px;margin-bottom:10px;"
+                       partialSubmit="false" disabled="true"/>
+        <af:table value="#{bindings.HistoMobiliteRO.collectionModel}" var="row"
+                  rows="#{bindings.HistoMobiliteRO.rangeSize}"
+                  emptyText="#{bindings.HistoMobiliteRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.HistoMobiliteRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.HistoMobiliteRO.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.HistoMobiliteRO.rangeSize}"
+                  filterModel="#{bindings.HistoMobiliteROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.HistoMobiliteROQuery.processQuery}" varStatus="vs" id="t2"
+                  scrollPolicy="page" inlineStyle="margin-left:10px;width:430px;">
+          <af:column sortProperty="#{bindings.HistoMobiliteRO.hints.Codification.name}" filterable="true"
+                     sortable="true" headerText="#{bindings.HistoMobiliteRO.hints.Codification.label}" id="c2"
+                     width="300">
+            <af:inputText value="#{row.bindings.Codification.inputValue}"
+                          label="#{bindings.HistoMobiliteRO.hints.Codification.label}"
+                          required="#{bindings.HistoMobiliteRO.hints.Codification.mandatory}"
+                          columns="#{bindings.HistoMobiliteRO.hints.Codification.displayWidth}"
+                          maximumLength="#{bindings.HistoMobiliteRO.hints.Codification.precision}"
+                          shortDesc="#{bindings.HistoMobiliteRO.hints.Codification.tooltip}" id="it1">
+              <f:validator binding="#{row.bindings.Codification.validator}"/>
+            </af:inputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.HistoMobiliteRO.hints.case_cocher.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.HistoMobiliteRO.hints.case_cocher.label}" id="c3">
+            <af:selectBooleanCheckbox value="#{row.bindings.case_cocher.inputValue}"
+                                      label="#{row.bindings.case_cocher.label}"
+                                      shortDesc="#{bindings.HistoMobiliteRO.hints.case_cocher.tooltip}" id="sbc1"/>
+            <f:facet name="header">
+              <af:selectBooleanCheckbox text="Tout" id="sbc2" autoSubmit="true"
+                                        valueChangeListener="#{DetailEtudModileBean.onSelectAll}"
+                                        binding="#{DetailEtudModileBean.check}"/>
+            </f:facet>
+          </af:column>
+        </af:table>
+        <af:button id="b2"
+                   inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;width:50px;"
+                   icon="/images/commit.png" action="#{DetailEtudModileBean.onValiderInscPedSemUe}"/>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:panelSplitter>
+</ui:composition>

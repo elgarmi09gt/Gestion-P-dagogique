@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="recherche_historique_inscriptionPageDef" Package="inscription.historique_inscription">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <taskFlow id="dynamicRegion1" taskFlowId="${HistoriqueInscbean.dynamicTaskFlowId}" activation="deferred"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding" Refresh="ifNeeded">
+      <parameters>
+        <parameter id="url" value="#{sessionScope.TfHistInscID}"/>
+      </parameters>
+    </taskFlow>
+    <iterator Binds="NivFormHistoInscRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="NivFormHistoInscROIterator"/>
+  </executables>
+  <bindings>
+    <methodAction id="isNumCin" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumCin"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumCin.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumCin_isNumCin_dataControl_dataProvider_isNumCin_result">
+      <NamedData NDName="num_cin" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="isNumNouvBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumNouvBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumNouvBac.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumNouvBac_isNumNouvBac_dataControl_dataProvider_isNumNouvBac_result">
+      <NamedData NDName="num_table" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isNumEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumEtudiant_isNumEtudiant_dataControl_dataProvider_isNumEtudiant_result">
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getIdPersEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersEtudiant_getIdPersEtudiant_dataControl_dataProvider_getIdPersEtudiant_result">
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getNouvBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getNouvBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getNouvBac.dataControl.dataProvider">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getIdPersCin" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersCin"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersCin.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersCin_getIdPersCin_dataControl_dataProvider_getIdPersCin_result">
+      <NamedData NDName="cin" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getIdPersBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersBac.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersBac_getIdPersBac_dataControl_dataProvider_getIdPersBac_result">
+      <NamedData NDName="num_table" NDType="java.lang.Long"/>
+    </methodAction>
+    <action IterBinding="NivFormHistoInscROIterator" id="ExecuteWithParamsDetailHisto"
+            InstanceName="inscriptionAppDataControl.NivFormHistoInscRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

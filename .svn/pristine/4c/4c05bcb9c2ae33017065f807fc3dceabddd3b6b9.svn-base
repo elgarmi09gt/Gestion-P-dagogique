@@ -1,0 +1,257 @@
+package view.beans.evaluation.jury;
+
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCIteratorBinding;
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPopup;
+
+import oracle.adf.view.rich.component.rich.data.RichTable;
+import oracle.adf.view.rich.component.rich.layout.RichPanelFormLayout;
+
+import oracle.adf.view.rich.component.rich.output.RichOutputFormatted;
+import oracle.adf.view.rich.context.AdfFacesContext;
+
+import oracle.adf.view.rich.event.DialogEvent;
+
+import oracle.adf.view.rich.event.DialogEvent.Outcome;
+
+import oracle.adf.view.rich.event.LaunchPopupEvent;
+import oracle.adf.view.rich.event.PopupFetchEvent;
+import oracle.adf.view.rich.render.ClientEvent;
+
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+import oracle.jbo.RowSetIterator;
+
+import view.beans.entities.Ue;
+
+public class JuryBean {
+    final String OLD_CURR_KEY_VIEWSCOPE_ATTR = "__oldCurrentRowKey__";
+    private RichPopup popupNewJury;
+    private RichPanelFormLayout formNewJury;
+    private RichTable juryTable;
+    private RichPopup popupEdit;
+    private RichOutputFormatted formInputParcours;
+    Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    private Integer utilisateur = Integer.parseInt(sessionScope.get("id_user").toString());
+    private Long id_hs = Long.parseLong(sessionScope.get("id_smstre").toString());
+    
+    public JuryBean() {
+    }
+
+    public BindingContainer getBindings() {
+        return BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnNewJuryClicked(ActionEvent actionEvent) {
+        BindingContainer bindings = getBindings();
+       //get current row and save its rowKey in view scope for later use
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("JuryROVOIterator");
+        Row oldCcurrentRow = dciter.getCurrentRow();
+        if (oldCcurrentRow != null) {
+            ADFContext adfCtx = ADFContext.getCurrent();
+            adfCtx.getViewScope().put(OLD_CURR_KEY_VIEWSCOPE_ATTR, oldCcurrentRow.getKey().toStringFormat(true));
+        }
+        //GetParcours
+        // Filtrer les parcours
+        /*OperationBinding parcours = BindingContext.getCurrent()
+                                                .getCurrentBindingsEntry()
+                                                .getOperationBinding("GetParcours");
+        parcours.getParamsMap().put("id_user", 1);
+        parcours.getParamsMap().put("idDept", 5);
+        parcours.execute();
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPopupNewJury());*/
+        
+        
+        /*DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                   .getCurrentBindingsEntry()
+                                                                   .get("ParcoursIterator");
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        while (rsi.hasNext()) {
+            Row nextRow = rsi.next();
+            System.out.println(nextRow.getAttribute("LibParcours").toString());
+        }*/
+        //perform row create
+        OperationBinding operationBinding = bindings.getOperationBinding("CreateJury");
+        operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return;
+        }
+        RichPopup popup = this.getPopupNewJury();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        //empty hints renders dialog in center of screen
+        popup.show(hints);
+        return;
+    }
+
+    public void setPopupNewJury(RichPopup popupNewJury) {
+        this.popupNewJury = popupNewJury;
+    }
+
+    public RichPopup getPopupNewJury() {
+        return popupNewJury;
+    }
+
+    public void setFormNewJury(RichPanelFormLayout formNewJury) {
+        this.formNewJury = formNewJury;
+    }
+
+    public RichPanelFormLayout getFormNewJury() {
+        return formNewJury;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnDialogAction(DialogEvent dialogEvent) {
+        Outcome outcome = dialogEvent.getOutcome();
+        if (outcome == Outcome.ok) {
+            //commit
+            BindingContainer bindings = getBindings();
+            OperationBinding operationBinding = bindings.getOperationBinding("Commit");
+            Object result = operationBinding.execute();
+            if (!operationBinding.getErrors().isEmpty()) {
+                //handle errors if any
+                //...
+                return;
+            }
+            
+            this.getPopupNewJury().hide();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getJuryTable());
+        }
+    }
+
+    public void setJuryTable(RichTable juryTable) {
+        this.juryTable = juryTable;
+    }
+
+    public RichTable getJuryTable() {
+        return juryTable;
+    }
+
+    public void OnDialogCancel(ClientEvent clientEvent) {
+        BindingContainer bindings = getBindings();
+        RichPopup popup = this.getPopupNewJury();
+        popup.hide();
+        
+        DCIteratorBinding dciter = (DCIteratorBinding) bindings.get("JuryVOIterator");
+        Row currentRow = dciter.getCurrentRow();
+        dciter.removeCurrentRow();
+        //set current row back to original row
+        ADFContext adfCtx = ADFContext.getCurrent();
+        String oldCurrentRowKey = (String) adfCtx.getViewScope().get(OLD_CURR_KEY_VIEWSCOPE_ATTR);
+        dciter.setCurrentRowWithKey(oldCurrentRowKey);
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getJuryTable());
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        fctx.renderResponse();
+    }
+
+    public void OnEditClicked(ActionEvent actionEvent) {
+        RichPopup popup = this.getPopupEdit();
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        //empty hints renders dialog in center of screen
+        popup.show(hints);
+        return ;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnDeleteClicked(ActionEvent actionEvent) {
+        BindingContainer bindings = getBindings();
+        OperationBinding operationBinding = bindings.getOperationBinding("Delete");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return ;
+        } else {
+            OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+            Object commitResult = operationCommit.execute();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getJuryTable());
+            return ;
+        }
+    }
+
+    public void setPopupEdit(RichPopup popupEdit) {
+        this.popupEdit = popupEdit;
+    }
+
+    public RichPopup getPopupEdit() {
+        return popupEdit;
+    }
+
+    public void OnDeleteDialogAction(DialogEvent dialogEvent) {
+        if (dialogEvent.getOutcome().equals(Outcome.yes)) {
+            onDeleteClicked();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public String onDeleteClicked() {
+        BindingContainer bindings = getBindings();
+        OperationBinding operationBinding = bindings.getOperationBinding("Delete");
+        Object result = operationBinding.execute();
+        if (!operationBinding.getErrors().isEmpty()) {
+            return null ;
+        } else {
+            OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+            Object commitResult = operationCommit.execute();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getJuryTable());
+            return null ;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnPopupShow(PopupFetchEvent popupFetchEvent) {
+        System.out.println("PopupFetchEvent !!! ");
+        OperationBinding parcours = BindingContext.getCurrent()
+                                                        .getCurrentBindingsEntry()
+                                                        .getOperationBinding("GetParcours");
+                parcours.getParamsMap().put("id_user", getUtilisateur());
+                parcours.getParamsMap().put("idDept", getId_hs());
+                parcours.execute();
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPopupNewJury());
+        //AdfFacesContext.getCurrentInstance().addPartialTarget(this.getFormNewJury());
+        //AdfFacesContext.getCurrentInstance().addPartialTarget(this.getFormInputParcours());
+        
+        DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                       .getCurrentBindingsEntry()
+                                                                       .get("ParcoursIterator");
+        RowSetIterator rsi = iter.getViewObject().createRowSetIterator(null);
+        while (rsi.hasNext()) {
+            Row nextRow = rsi.next();
+            System.out.println(nextRow.getAttribute("LibParcours").toString());
+        }
+    }
+    
+    public void onshowP(LaunchPopupEvent launchPE){
+        System.out.println("LaunchPopupEvent !!! ");
+    }
+
+    public void setFormInputParcours(RichOutputFormatted formInputParcours) {
+        this.formInputParcours = formInputParcours;
+    }
+
+    public RichOutputFormatted getFormInputParcours() {
+        return formInputParcours;
+    }
+
+    public void setUtilisateur(Integer utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Integer getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setId_hs(Long id_hs) {
+        this.id_hs = id_hs;
+    }
+
+    public Long getId_hs() {
+        return id_hs;
+    }
+}

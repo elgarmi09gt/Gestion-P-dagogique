@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:table value="#{bindings.Parcours2.collectionModel}" var="row" rows="#{bindings.Parcours2.rangeSize}"
+            emptyText="#{bindings.Parcours2.viewable ? 'No data to display.' : 'Access Denied.'}" rowBandingInterval="0"
+            selectedRowKeys="#{bindings.Parcours2.collectionModel.selectedRow}"
+            selectionListener="#{bindings.Parcours2.collectionModel.makeCurrent}" rowSelection="single"
+            fetchSize="#{bindings.Parcours2.rangeSize}" filterModel="#{bindings.Parcours1Query.queryDescriptor}"
+            filterVisible="true" queryListener="#{bindings.Parcours1Query.processQuery}" varStatus="vs" id="t1">
+    <af:column sortProperty="#{bindings.Parcours2.hints.LibParcours.name}" filterable="true" sortable="true"
+               headerText="#{bindings.Parcours2.hints.LibParcours.label}" id="c1">
+      <af:outputText value="#{row.LibParcours}" shortDesc="#{bindings.Parcours2.hints.LibParcours.tooltip}" id="ot1"/>
+    </af:column>
+  </af:table>
+</ui:composition>

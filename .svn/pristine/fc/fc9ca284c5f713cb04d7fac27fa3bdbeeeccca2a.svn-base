@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ClotureInscStructuresEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="CLOTURE_INSC_STRUCTURES"
+  AliasName="ClotureInscStructuresEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdClotureInscStructures"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_CLOTURE_INSC_STRUCTURES"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="CLOTURE_INSC_STRUCTURES"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="IdAnneesUnivers"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_ANNEES_UNIVERS"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CLOTURE_INSC_STRUCTURES"/>
+  <Attribute
+    Name="IdStructure"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_STRUCTURE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CLOTURE_INSC_STRUCTURES"/>
+  <Attribute
+    Name="IdGrade"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_GRADE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CLOTURE_INSC_STRUCTURES"/>
+  <Attribute
+    Name="Active"
+    Precision="1"
+    ColumnName="ACTIVE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="CLOTURE_INSC_STRUCTURES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="CLOTURE_INSC_STRUCTURES"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="CLOTURE_INSC_STRUCTURES"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CLOTURE_INSC_STRUCTURES"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CLOTURE_INSC_STRUCTURES"/>
+  <Attribute
+    Name="IdNiveauFormation"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="CLOTURE_INSC_STRUCTURES"/>
+  <Key
+    Name="PkClotureInscStructures"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_CLOTURE_INSC_STRUCTURES"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ClotureInscStructuresEO.IdClotureInscStructures"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCloturInsStructAnUniv">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_ANNEES_UNIVERS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CLOTUR_INS_STRUCT_AN_UNIV"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ClotureInscStructuresEO.IdAnneesUnivers"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCloturInsStructGrade">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_GRADES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CLOTUR_INS_STRUCT_GRADE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ClotureInscStructuresEO.IdGrade"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCloturInsStructNivform">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_NIVEAUX_FORMATIONS"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CLOTUR_INS_STRUCT_NIVFORM"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ClotureInscStructuresEO.IdNiveauFormation"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCloturInsStructStructur">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_STRUCTURES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CLOTUR_INS_STRUCT_STRUCTUR"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ClotureInscStructuresEO.IdStructure"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCloturInsStructUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CLOTUR_INS_STRUCT_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ClotureInscStructuresEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkCloturInsStructUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_CLOTUR_INS_STRUCT_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.ClotureInscStructuresEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

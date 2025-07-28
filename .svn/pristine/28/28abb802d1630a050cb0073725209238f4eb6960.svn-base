@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll" halign="center" inlineStyle="background:#fff">
+    <af:panelGroupLayout id="pgl13" layout="horizontal" styleClass="AFStretchWidth"
+                         inlineStyle="border: solid 2px #2897e8;">
+      <af:panelGroupLayout id="pgl3" layout="vertical"
+                           styleClass="AFStretchWidth" halign="center">
+        <af:outputFormatted value="Délibération Annuelle" id="of1"
+                            inlineStyle="font-size:large; font-weight:bolder; line-height:50px;"
+                            styleUsage="pageStamp"/>
+        <af:panelGroupLayout id="pgl6" layout="vertical" inlineStyle="line-height:20px;" styleClass="AFStretchWidth">
+          <af:panelGroupLayout id="pgl7" layout="horizontal" halign="center">
+            <af:button id="b1"
+                       inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                       useWindow="false" icon="/images/Finance-Pos-Terminal-icon.png"
+                       actionListener="#{DeliberationAnnuelelBean.DeliberationAnnuelle}"
+                       binding="#{DeliberationAnnuelelBean.deliberer}" shortDesc="Déliberer"/>
+            <af:button id="b2"
+                       inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                       icon="/images/Microsoft-Excel-2013-icon-small.png" binding="#{DeliberationAnnuelelBean.pvprovisoire}"
+                       shortDesc="Pv Provisoire">
+              <af:exportCollectionActionListener type="excelHTML" exportedId="pc1:t4" filename="PvProvisoire.xls"
+                                                 title="Pv Provisoire"/>
+            </af:button>
+            <af:button id="b4"
+                       inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                       icon="/images/close_sess_icone_48px.png"
+                       actionListener="#{DeliberationAnnuelelBean.CloseSession}" shortDesc="Fermer Session"/>
+            <af:button id="b7"
+                       inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                       actionListener="#{DeliberationAnnuelelBean.DeliberationAnnuelle}"
+                       icon="/images/compensed_icon_48px.png" shortDesc="Ovrir Session 2"/>
+            <af:button id="b3"
+                       inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                       icon="/images/Close-icon-small.png" actionListener="#{DeliberationAnnuelelBean.Cloturer}"
+                       disabled="true" binding="#{DeliberationAnnuelelBean.cloturer}" shortDesc="Clôturer"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+      <af:panelGroupLayout id="pgl4" layout="vertical" halign="center"
+                           styleClass="AFStretchWidth">
+        <af:outputFormatted value="Recherche" id="of2"
+                            inlineStyle="font-size:large; font-weight:bolder; line-height:50px;"/>
+        <af:panelGroupLayout id="pgl9" halign="center" valign="middle" layout="horizontal"
+                             inlineStyle="font-size:15px;" styleClass="AFStretchWidth">
+          <af:outputFormatted value="Filtrer Par" id="of3" inlineStyle="font-weight:bold;"/>
+          <af:selectOneChoice value="#{bindings.FiltreAnuelleROVO1.inputValue}"
+                              required="#{bindings.FiltreAnuelleROVO1.hints.mandatory}"
+                              shortDesc="#{bindings.FiltreAnuelleROVO1.hints.tooltip}" id="soc1"
+                              contentStyle="border-radius:10px;height:40px; font-size:14px" inlineStyle="margin:10px">
+            <f:selectItems value="#{bindings.FiltreAnuelleROVO1.items}" id="si1"/>
+            <f:validator binding="#{bindings.FiltreAnuelleROVO1.validator}"/>
+          </af:selectOneChoice>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl10" layout="horizontal" styleClass="AFStretchWidth">
+          <af:selectOneChoice value="#{bindings.FiltreModeDelibAn1.inputValue}"
+                              required="#{bindings.FiltreModeDelibAn1.hints.mandatory}"
+                              shortDesc="#{bindings.FiltreModeDelibAn1.hints.tooltip}" id="soc2"
+                              contentStyle="border-radius:10px;height:40px; font-size:14px">
+            <f:selectItems value="#{bindings.FiltreModeDelibAn1.items}" id="si2"/>
+            <f:validator binding="#{bindings.FiltreModeDelibAn1.validator}"/>
+          </af:selectOneChoice>
+          <af:inputText id="it1" contentStyle="border-radius:10px;height:40px; font-size:14px" autoComplete="off"
+                        binding="#{DeliberationAnnuelelBean.first}"
+                        requiredMessageDetail="Entrer une valeur de filtre"/>
+          <af:outputFormatted value="Et" id="of4"/>
+          <af:inputText id="it2" contentStyle="border-radius:10px;height:40px; font-size:14px" autoComplete="off"
+                        binding="#{DeliberationAnnuelelBean.second}"
+                        requiredMessageDetail="Entrer une valeur de filtre"/>
+        </af:panelGroupLayout>
+        <af:button id="b5"
+                   inlineStyle="border-radius:20px ; background: #2898e8; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large;color:white"
+                   icon="/images/search.png" actionListener="#{DeliberationAnnuelelBean.Search}" iconPosition="top"/>
+      </af:panelGroupLayout>
+      <!--af:panelGroupLayout id="pgl5" layout="vertical" styleClass="AFStretchWidth">
+        <af:outputFormatted value="% d'admis des 3 derniers années" id="of5"
+                            inlineStyle="font-size:16px; font-weight:bold;"/>
+      </af:panelGroupLayout-->
+    </af:panelGroupLayout>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="popInf" binding="#{DeliberationAnnuelelBean.popInf}">
+      <af:dialog id="d1" title="Informations !!!" type="ok" inlineStyle="text-align:center">
+        <af:outputFormatted value="Avant de pouvoir délibérer annuellement, s'assurer que les deux semestres sont publiés" id="of6"
+                            inlineStyle="font-size:large;color:red"/>
+        <f:facet name="buttonBar"/>
+      </af:dialog>
+    </af:popup>
+    <af:panelGroupLayout id="pgl11" layout="vertical" inlineStyle="margin:30px">
+      <af:panelHeader text="Résultats Annuelles" id="ph1" binding="#{DeliberationAnnuelelBean.resAn}">
+        <f:facet name="context"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t3" inlineStyle="text-align:right;">
+            <af:button id="b6" icon="/images/excel.png" iconPosition="top"
+                       inlineStyle="border-radius:20px  ; margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large; color:Black;">
+              <af:exportCollectionActionListener type="excelHTML" exportedId="pc1:t4" filename="RésultatsAnnuelles.xls"
+                                                 title="RésultatsAnnuelles"/>
+            </af:button>
+          </af:toolbar>
+          <af:toolbar id="t1">
+            <af:button text="Relevé" id="b9" icon="/images/383188_48px.png" iconPosition="top"
+                       inlineStyle="border-radius:20px  ;  margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large; color:Black;"
+                       action="#{DeliberationAnnuelelBean.OnPrintReleveClicked}"
+                       actionListener="#{DeliberationAnnuelelBean.OnPrintReleveClick}"/>
+          </af:toolbar>
+          <af:toolbar id="t5">
+            <af:button text="Attestation" id="b8" icon="/images/383188_48px.png" iconPosition="top"
+                       inlineStyle="border-radius:20px  ;  margin-right:15px; margin-top:20px; margin-left:15px; margin-bottom:15px; font-size:large; color:Black;"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="menuBar"/>
+        <f:facet name="legend"/>
+        <f:facet name="info"/>
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth" binding="#{DeliberationAnnuelelBean.pancollect}">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="statusbar"/>
+          <af:table rows="#{bindings.return.rangeSize}" fetchSize="#{bindings.return.rangeSize}"
+                    emptyText="#{bindings.return.viewable ? 'No data to display.' : 'Access Denied.'}" var="row"
+                    rowBandingInterval="0" value="#{bindings.return.collectionModel}"
+                    selectedRowKeys="#{bindings.return.collectionModel.selectedRow}" rowSelection="single" id="t4"
+                    binding="#{DeliberationAnnuelelBean.deliberationTable}" columnStretching="last" scrollPolicy="page">
+            <!--selectionListener="#{bindings.return.collectionModel.makeCurrent}" -->
+            <af:iterator value="#{bindings.return.attributeDefs}" var="def" rows="0" id="i1">
+              <af:column headerText="#{bindings.return.labels[def.name]}" sortable="true" sortProperty="#{def.name}"
+                         id="c7" width="200">
+                <af:outputText value="#{row[def.name]}" id="ot6"/>
+              </af:column>
+            </af:iterator>
+          </af:table>
+        </af:panelCollection>
+      </af:panelHeader>
+      <af:toolbar id="t2"/>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</ui:composition>

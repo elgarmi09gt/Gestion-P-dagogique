@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="MentionsVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  SelectListFlags="1"
+  FromListFlags="1"
+  WhereFlags="1"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  SelectAllAttributes="false"
+  PageIterMode="Full">
+  <ViewAccessor
+    Name="DomainesVO1"
+    ViewObjectName="model.updatableview.DomainesVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="DomainesROVO1"
+    ViewObjectName="model.readOnlyView.DomainesROVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_IdDomaine"
+    ListVOName="DomainesROVO1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IdDomaine"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="IdDomaine"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="LibelleLong"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage
+    Name="MentionsEO"
+    Entity="model.entities.MentionsEO"/>
+  <ViewAttribute
+    Name="IdMention"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IdMention"
+    EntityUsage="MentionsEO"
+    AliasName="ID_MENTION"
+    IsUpdateable="while_insert"/>
+  <ViewAttribute
+    Name="LibelleLong"
+    IsUnique="true"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="LibelleLong"
+    EntityUsage="MentionsEO"
+    AliasName="LIBELLE_LONG"/>
+  <ViewAttribute
+    Name="LibelleCourt"
+    IsUnique="true"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="LibelleCourt"
+    EntityUsage="MentionsEO"
+    AliasName="LIBELLE_COURT"/>
+  <ViewAttribute
+    Name="IdDomaine"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IdDomaine"
+    EntityUsage="MentionsEO"
+    AliasName="ID_DOMAINE"
+    IsQueriable="false"
+    LOVName="LOV_IdDomaine">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateCreation"
+    PrecisionRule="true"
+    EntityAttrName="DateCreation"
+    EntityUsage="MentionsEO"
+    AliasName="DATE_CREATION"/>
+  <ViewAttribute
+    Name="DateModification"
+    PrecisionRule="true"
+    EntityAttrName="DateModification"
+    EntityUsage="MentionsEO"
+    AliasName="DATE_MODIFICATION"/>
+  <ViewAttribute
+    Name="UtiCree"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="UtiCree"
+    EntityUsage="MentionsEO"
+    AliasName="UTI_CREE"/>
+  <ViewAttribute
+    Name="UtiModifie"
+    PrecisionRule="true"
+    EntityAttrName="UtiModifie"
+    EntityUsage="MentionsEO"
+    AliasName="UTI_MODIFIE"/>
+  <ViewLinkAccessor
+    Name="DomainesVO"
+    ViewLink="model.viewlink.DomainesToMentionsVL"
+    Type="oracle.jbo.server.ViewRowImpl"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="SpecialitesVO"
+    ViewLink="model.viewlink.MentionsToSpecialitesVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+</ViewObject>

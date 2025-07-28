@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="responsable_etudPageDef"
+                Package="inscription.responsable">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="PersonnesROVO" RangeSize="25" DataControl="inscriptionAppDataControl" id="PersonnesROVOIterator"/>
+    <iterator Binds="Responsables" RangeSize="25" DataControl="inscriptionAppDataControl" id="ResponsablesIterator"
+              Refresh="default"/>
+    <iterator Binds="Etudiants" RangeSize="10" DataControl="inscriptionAppDataControl" id="EtudiantsIterator"/>
+    <iterator Binds="ResponsableRO" RangeSize="25" DataControl="inscriptionAppDataControl" id="ResponsableROIterator"/>
+  </executables>
+  <bindings>
+      <attributeValues IterBinding="PersonnesROVOIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesROVOIterator" id="NomMarital">
+      <AttrNames>
+        <Item Value="NomMarital"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesROVOIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesROVOIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesROVOIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesROVOIterator" id="IdPersonne">
+      <AttrNames>
+        <Item Value="IdPersonne"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesROVOIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsablesIterator" id="Nom1">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsablesIterator" id="Prenoms1">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsablesIterator" id="Adresse1">
+      <AttrNames>
+        <Item Value="Adresse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsablesIterator" id="Bp">
+      <AttrNames>
+        <Item Value="Bp"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsablesIterator" id="Telephone1">
+      <AttrNames>
+        <Item Value="Telephone"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsablesIterator" id="Portable1">
+      <AttrNames>
+        <Item Value="Portable"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsablesIterator" id="EMail">
+      <AttrNames>
+        <Item Value="EMail"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ResponsablesIterator" Uses="LOV_Etudiant" id="Etudiant"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject" StaticList="false"/>
+    <list IterBinding="ResponsablesIterator" StaticList="false" Uses="LOV_IdSocPro" id="IdSocPro"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="ResponsablesIterator" StaticList="false" Uses="LOV_Lienparente" id="Lienparente"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="ResponsablesIterator" id="Fax">
+      <AttrNames>
+        <Item Value="Fax"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ResponsablesIterator" StaticList="false" Uses="LOV_Contact" id="Contact" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="EtudiantsIterator" id="Numero">
+      <AttrNames>
+        <Item Value="Numero"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ResponsablesIterator" id="getResponsableEtud"
+            InstanceName="inscriptionAppDataControl.Responsables" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_etudiant" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="ResponsablesIterator" id="UtiCreeResp">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsablesIterator" id="IdEtudiantResp">
+      <AttrNames>
+        <Item Value="IdEtudiant"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ResponsablesIterator" id="CreateInsertResponsable" InstanceName="inscriptionAppDataControl.Responsables"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="ResponsableROIterator" id="Prenoms2">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsableROIterator" id="Nom2">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsableROIterator" id="Adresse">
+      <AttrNames>
+        <Item Value="Adresse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsableROIterator" id="Portable">
+      <AttrNames>
+        <Item Value="Portable"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsableROIterator" id="Bp1">
+      <AttrNames>
+        <Item Value="Bp"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsableROIterator" id="EMail1">
+      <AttrNames>
+        <Item Value="EMail"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResponsableROIterator" id="Telephone">
+      <AttrNames>
+        <Item Value="Telephone"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ResponsableROIterator" StaticList="false" Uses="LOV_Etudiant" id="Etudiant1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="ResponsableROIterator" StaticList="false" Uses="LOV_IdSocPro" id="IdSocPro1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="ResponsableROIterator" StaticList="false" Uses="LOV_Lienparente" id="Lienparente1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="ResponsableROIterator" id="Fax1">
+      <AttrNames>
+        <Item Value="Fax"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ResponsableROIterator" StaticList="false" Uses="LOV_Contact" id="Contact1"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+  </bindings>
+</pageDefinition>

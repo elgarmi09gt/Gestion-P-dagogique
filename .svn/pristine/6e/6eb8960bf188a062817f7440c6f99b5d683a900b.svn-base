@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listpersonnesPageDef"
+                Package="inscription.personnes">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Personnes" RangeSize="10" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <searchRegion Binds="PersonnesIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="PersonnesQuery"/>
+    <iterator Binds="LesPersonnesRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="LesPersonnesROIterator"/>
+    <searchRegion Binds="LesPersonnesROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="LesPersonnesROQuery"/>
+    <iterator Binds="PersNouvBachelierRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="PersNouvBachelierROIterator"/>
+    <iterator Binds="persEtudiantRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="persEtudiantROIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="PersonnesIterator" id="Personnes">
+      <nodeDefinition DefName="model.updatableview.PersonnesVO" Name="Personnes0">
+        <AttrNames>
+          <Item Value="Nom"/>
+          <Item Value="NomMarital"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="EmailInstitutionnel"/>
+          <Item Value="EmailPersonnel"/>
+          <Item Value="Adresse"/>
+          <Item Value="Telephone"/>
+          <Item Value="Portable"/>
+          <Item Value="IdPays"/>
+          <Item Value="IdPaysNationalite"/>
+          <Item Value="IdCivilite"/>
+          <Item Value="PieceIdentification"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="PersonnesIterator" id="Nom">
+      <AttrNames>
+        <Item Value="Nom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="NomMarital">
+      <AttrNames>
+        <Item Value="NomMarital"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Prenoms">
+      <AttrNames>
+        <Item Value="Prenoms"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="DateNaissance">
+      <AttrNames>
+        <Item Value="DateNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="LieuNaissance">
+      <AttrNames>
+        <Item Value="LieuNaissance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="EmailInstitutionnel">
+      <AttrNames>
+        <Item Value="EmailInstitutionnel"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="EmailPersonnel">
+      <AttrNames>
+        <Item Value="EmailPersonnel"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Adresse">
+      <AttrNames>
+        <Item Value="Adresse"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Telephone">
+      <AttrNames>
+        <Item Value="Telephone"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PersonnesIterator" id="Portable">
+      <AttrNames>
+        <Item Value="Portable"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdPays" id="IdPays" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdPaysNationalite" id="IdPaysNationalite"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="PersonnesIterator" StaticList="false" Uses="LOV_IdCivilite" id="IdCivilite"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="PersonnesIterator" id="PieceIdentification">
+      <AttrNames>
+        <Item Value="PieceIdentification"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="PersonnesIterator" id="CreateInsert" InstanceName="inscriptionAppDataControl.Personnes"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="PersonnesIterator" id="Delete" InstanceName="inscriptionAppDataControl.Personnes"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="LesPersonnesROIterator" id="LesPersonnesRO">
+      <nodeDefinition DefName="model.readOnlyView.LesPersonnesROVO" Name="LesPersonnesRO0">
+        <AttrNames>
+          <Item Value="Nom"/>
+          <Item Value="Prenoms"/>
+          <Item Value="DateNaissance"/>
+          <Item Value="LieuNaissance"/>
+          <Item Value="EmailPersonnel"/>
+          <Item Value="Adresse"/>
+          <Item Value="Portable"/>
+          <Item Value="IdCivilite"/>
+          <Item Value="PieceIdentification"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="PersonnesIterator" id="getPersonnesCourante" InstanceName="inscriptionAppDataControl.Personnes"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers_var" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="PersNouvBachelierROIterator" id="ExecuteNouvBac"
+            InstanceName="inscriptionAppDataControl.PersNouvBachelierRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="iteratorExecute"/>
+    <action IterBinding="persEtudiantROIterator" id="ExecuteEtud" InstanceName="inscriptionAppDataControl.persEtudiantRO"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="iteratorExecute"/>
+  </bindings>
+</pageDefinition>

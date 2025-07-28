@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="IsFilUeExist"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.IsFilUeExistRowImpl"
+  ComponentClass="model.readOnlyView.IsFilUeExistImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.IsFilUeExist_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="ue_id"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[Select fs.ID_FILIERE_UE_SEMSTRE 
+from FILIERE_UE_SEMSTRE fs join UE on fs.ID_UE=UE.ID_UE 
+where UE.ID_UE=:ue_id]]></SQLQuery>
+  <ViewAttribute
+    Name="IdFiliereUeSemstre"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_FILIERE_UE_SEMSTRE"
+    Expression="ID_FILIERE_UE_SEMSTRE"
+    SQLType="NUMERIC"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdFiliereUeSemstre"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

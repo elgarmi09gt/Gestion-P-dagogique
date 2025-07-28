@@ -1,0 +1,3960 @@
+package model.services;
+
+import java.math.BigDecimal;
+
+import java.sql.CallableStatement;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import java.sql.Types;
+
+import java.util.ArrayList;
+
+import java.util.List;
+import java.util.HashMap;
+import javax.sql.rowset.RowSetFactory;
+
+import model.assoc.DelibSemUeEtudiantROVOImpl;
+
+import model.readOnlyView.AccesEcListImpl;
+import model.readOnlyView.AccesUeListImpl;
+import model.readOnlyView.AllEcFilUeImpl;
+import model.readOnlyView.AllInteFilEcROVOImpl;
+import model.readOnlyView.AnneeUniverROVOImpl;
+import model.readOnlyView.AnoGenParcoursImpl;
+import model.readOnlyView.AnonymatExecuteROVOImpl;
+import model.readOnlyView.AnonymatParcoursROVOImpl;
+import model.readOnlyView.CalParcoursAnneeImpl;
+import model.readOnlyView.DelibSemEtudiantROVOImpl;
+import model.readOnlyView.DelibSemRepCritereCompLOVImpl;
+import model.readOnlyView.DelibSemRepFiltreLOVImpl;
+import model.readOnlyView.DelibSemRepecherSurLOVImpl;
+import model.readOnlyView.DeliberationSemestrielleImpl;
+import model.readOnlyView.DeliberationStaticListImpl;
+import model.readOnlyView.DetailsAnnEtudiantImpl;
+import model.readOnlyView.DetailsSemestreEtudiantImpl;
+import model.readOnlyView.DocumentsROVOImpl;
+import model.readOnlyView.EcEvalROVOImpl;
+import model.readOnlyView.EcEvalTypeCtrlModeCtrlROVOImpl;
+import model.readOnlyView.EcEvalTypeCtrlROVOImpl;
+import model.readOnlyView.EcROVOImpl;
+import model.readOnlyView.EtudiantResultAnnuelDelibROVOImpl;
+import model.readOnlyView.EtudiantNoteInterImpl;
+import model.readOnlyView.EtudiantResultUeDelibROVOImpl;
+import model.readOnlyView.FilEcInsPedSemUeImpl;
+import model.readOnlyView.FilUeByFilEcImpl;
+import model.readOnlyView.FilUeInsPedSemImpl;
+import model.readOnlyView.FiliereUeSemestreROVOImpl;
+import model.readOnlyView.FiltreAnuelleROVOImpl;
+import model.readOnlyView.FiltreModeDelibAnImpl;
+import model.readOnlyView.FormationByStructureImpl;
+import model.readOnlyView.GenAnonymatNewROVOImpl;
+import model.readOnlyView.GenAnonymatROVOImpl;
+import model.readOnlyView.GetRoleROVOImpl;
+import model.readOnlyView.IsAnParcoursClosedImpl;
+import model.readOnlyView.IsCalExistImpl;
+import model.readOnlyView.IsDelibCalendierROVOImpl;
+import model.readOnlyView.IsDelibDefEndImpl;
+import model.readOnlyView.IsDelibDefStartImpl;
+import model.readOnlyView.IsDelibProvEndImpl;
+import model.readOnlyView.IsDelibProvStartImpl;
+import model.readOnlyView.IsExistEtuAnoImpl;
+import model.readOnlyView.IsFormationTextIsImpl;
+import model.readOnlyView.IsMaquetteUsedROVOImpl;
+import model.readOnlyView.IsReclEndImpl;
+import model.readOnlyView.IsReclStartImpl;
+import model.readOnlyView.IsResponsableFilEcImpl;
+import model.readOnlyView.IsResponsableFilUeImpl;
+import model.readOnlyView.IsStructureTextExistImpl;
+import model.readOnlyView.IsUsedFormationTextImpl;
+import model.readOnlyView.IsUserRoleExistROVOImpl;
+import model.readOnlyView.JuryRoleROVOImpl;
+import model.readOnlyView.ListeEcImpl;
+import model.readOnlyView.ListeEtudiantInscImpl;
+import model.readOnlyView.ListeModeControlImpl;
+import model.readOnlyView.ModeControleEvalROVOImpl;
+import model.readOnlyView.ModeControleROVOImpl;
+import model.readOnlyView.MoyenneUEImpl;
+import model.readOnlyView.NoteModeEnsGenAnonymROVOImpl;
+import model.readOnlyView.NoteModeEnsInterGenAnonymROVOImpl;
+import model.readOnlyView.PourcentageCC_CT_ROVOImpl;
+import model.readOnlyView.ReglesCompensationPArcoursROVOImpl;
+import model.readOnlyView.ResultatFilUeSemestreROVOImpl;
+import model.readOnlyView.SaisieNotesFiltresLOVImpl;
+import model.readOnlyView.SaisieNotesGroupesSaisieLOVImpl;
+import model.readOnlyView.SemestreROVOImpl;
+import model.readOnlyView.StructureAccesROVOImpl;
+import model.readOnlyView.StudentParcrsAnSemSessImpl;
+import model.readOnlyView.TextLoiFormationROVOImpl;
+import model.readOnlyView.TextLoisByStructureImpl;
+import model.readOnlyView.TextsLoisROVOImpl;
+import model.readOnlyView.TypeControleROVOImpl;
+
+
+import model.readOnlyView.UeDelibROVOImpl;
+import model.readOnlyView.UeEvalROVOImpl;
+
+import model.readOnlyView.UsedAnoImpl;
+import model.readOnlyView.UserByUserNameImpl;
+import model.readOnlyView.UtilisateurNiveauFormationROImpl;
+import model.readOnlyView.common.RValidation;
+
+import model.readOnlyView.isClosedInscriptionImpl;
+import model.readOnlyView.isEtudiantNumeroValideImpl;
+import model.readOnlyView.isJuryAllowedAccessImpl;
+import model.readOnlyView.isJuryExistROVOImpl;
+import model.readOnlyView.isJuryPdtROVOImpl;
+import model.readOnlyView.isNivFormAccessAllowedImpl;
+import model.readOnlyView.isNivFormSpecAccessAllowedImpl;
+import model.readOnlyView.isNivFormSpecOptAccessAllowedImpl;
+import model.readOnlyView.isParametredCalendarImpl;
+
+import model.readOnlyView.isSess1ClosedImpl;
+
+import model.services.common.evaluationApp;
+
+import model.updatableview.NotesModeEnseignementInterVOImpl;
+
+import model.updatableview.NotesModeEnseignementVOImpl;
+
+import model.updatableview.ResultatsFilUeSemestreVOImpl;
+import model.updatableview.common.Etudiantsemestre;
+
+import model.updatableview.common.Semestre;
+import model.updatableview.common.TableEtudiantsemestre;
+
+import oracle.jbo.JboException;
+import oracle.jbo.Row;
+import oracle.jbo.RowSet;
+import oracle.jbo.RowSetIterator;
+import oracle.jbo.ViewCriteria;
+import oracle.jbo.Key;
+import oracle.jbo.Row;
+import oracle.jbo.RowSetIterator;
+import oracle.jbo.VariableValueManager;
+import oracle.jbo.ViewCriteria;
+import oracle.jbo.ViewCriteriaManager;
+import oracle.jbo.ViewObject;
+import oracle.jbo.server.ApplicationModuleImpl;
+import oracle.jbo.server.DBTransactionImpl;
+import oracle.jbo.server.ViewLinkImpl;
+
+
+import oracle.jbo.server.ViewObjectImpl;
+
+import oracle.jdbc.internal.OracleTypes;
+// ---------------------------------------------------------------------
+// ---    File generated by Oracle ADF Business Components Design Time.
+// ---    Mon Oct 05 10:35:14 UTC 2020
+// ---    Custom code may be added to this class.
+// ---    Warning: Do not modify method signatures of generated methods.
+// ---------------------------------------------------------------------
+public class evaluationAppImpl extends ApplicationModuleImpl implements evaluationApp {
+    /**
+     * This is the default constructor (do not remove).
+     */
+    public evaluationAppImpl() {
+    }
+
+    /**
+     * Container's getter for Parcours.
+     * @return Parcours
+     */
+    public ViewObjectImpl getParcours() {
+        return (ViewObjectImpl) findViewObject("Parcours");
+    }
+
+    /**
+     * Container's getter for Semestres.
+     * @return Semestres
+     */
+    public SemestreROVOImpl getSemestres() {
+        return (SemestreROVOImpl) findViewObject("Semestres");
+    }
+
+    /**
+     * Container's getter for HistoriquesStructures.
+     * @return HistoriquesStructures
+     */
+    public ViewObjectImpl getHistoriquesStructures() {
+        return (ViewObjectImpl) findViewObject("HistoriquesStructures");
+    }
+
+    /**
+     * Container's getter for Sessions.
+     * @return Sessions
+     */
+    public ViewObjectImpl getSessions() {
+        return (ViewObjectImpl) findViewObject("Sessions");
+    }
+
+    /**
+     * Container's getter for AnneeUnivers.
+     * @return AnneeUnivers
+     */
+    public AnneeUniverROVOImpl getAnneeUnivers() {
+        return (AnneeUniverROVOImpl) findViewObject("AnneeUnivers");
+    }
+
+    /**
+     * Container's getter for Etablissements.
+     * @return Etablissements
+     */
+    public ViewObjectImpl getEtablissements() {
+        return (ViewObjectImpl) findViewObject("Etablissements");
+    }
+
+    /**
+     * Container's getter for Departements.
+     * @return Departements
+     */
+    public ViewObjectImpl getDepartements() {
+        return (ViewObjectImpl) findViewObject("Departements");
+    }
+
+    /**
+     * Container's getter for CalendrierDeliberationsRO.
+     * @return CalendrierDeliberationsRO
+     */
+    public ViewObjectImpl getCalendrierDeliberationsRO() {
+        return (ViewObjectImpl) findViewObject("CalendrierDeliberationsRO");
+    }
+
+    /**
+     * Container's getter for CalendrierDeliberations.
+     * @return CalendrierDeliberations
+     */
+    public ViewObjectImpl getCalendrierDeliberations() {
+        return (ViewObjectImpl) findViewObject("CalendrierDeliberations");
+    }
+
+    /**
+     * Container's getter for NiveauFormationParcours.
+     * @return NiveauFormationParcours
+     */
+    public ViewObjectImpl getNiveauFormationParcours() {
+        return (ViewObjectImpl) findViewObject("NiveauFormationParcours");
+    }
+
+    /**
+     * Container's getter for CalendrierDeliberationVO.
+     * @return CalendrierDeliberationVO
+     */
+    public ViewObjectImpl getCalendrierDeliberationVO() {
+        return (ViewObjectImpl) findViewObject("CalendrierDeliberationVO");
+    }
+
+    /**
+     * Container's getter for ParcoursParamSaisieNoteEc.
+     * @return ParcoursParamSaisieNoteEc
+     */
+    public ViewObjectImpl getParcoursParamSaisieNoteEc() {
+        return (ViewObjectImpl) findViewObject("ParcoursParamSaisieNoteEc");
+    }
+
+    /**
+     * Container's getter for FiliereUeSemestres.
+     * @return FiliereUeSemestres
+     */
+    public FiliereUeSemestreROVOImpl getFiliereUeSemestres() {
+        return (FiliereUeSemestreROVOImpl) findViewObject("FiliereUeSemestres");
+    }
+
+    /**
+     * Container's getter for FiliereUeSemestreEcs.
+     * @return FiliereUeSemestreEcs
+     */
+    public ViewObjectImpl getFiliereUeSemestreEcs() {
+        return (ViewObjectImpl) findViewObject("FiliereUeSemestreEcs");
+    }
+
+    /**
+     * Container's getter for TypeControles.
+     * @return TypeControles
+     */
+    public TypeControleROVOImpl getTypeControles() {
+        return (TypeControleROVOImpl) findViewObject("TypeControles");
+    }
+
+    /**
+     * Container's getter for ModeControles.
+     * @return ModeControles
+     */
+    public ModeControleROVOImpl getModeControles() {
+        return (ModeControleROVOImpl) findViewObject("ModeControles");
+    }
+
+    /**
+     * Container's getter for ModeControleEc.
+     * @return ModeControleEc
+     */
+    public ViewObjectImpl getModeControleEc() {
+        return (ViewObjectImpl) findViewObject("ModeControleEc");
+    }
+
+    /**
+     * Container's getter for ModeControleEcs.
+     * @return ModeControleEcs
+     */
+    public ViewObjectImpl getModeControleEcs() {
+        return (ViewObjectImpl) findViewObject("ModeControleEcs");
+    }
+
+    /**
+     * Container's getter for EtablissementToDepartement1.
+     * @return EtablissementToDepartement1
+     */
+    public ViewLinkImpl getEtablissementToDepartement1() {
+        return (ViewLinkImpl) findViewLink("EtablissementToDepartement1");
+    }
+
+    /**
+     * Container's getter for NiveauFormationParcourToCalendrierDelib1.
+     * @return NiveauFormationParcourToCalendrierDelib1
+     */
+    public ViewLinkImpl getNiveauFormationParcourToCalendrierDelib1() {
+        return (ViewLinkImpl) findViewLink("NiveauFormationParcourToCalendrierDelib1");
+    }
+
+    /**
+     * Container's getter for ParcoursParamSaisieNoteEcToFiliereUeSemestre1.
+     * @return ParcoursParamSaisieNoteEcToFiliereUeSemestre1
+     */
+    public ViewLinkImpl getParcoursParamSaisieNoteEcToFiliereUeSemestre1() {
+        return (ViewLinkImpl) findViewLink("ParcoursParamSaisieNoteEcToFiliereUeSemestre1");
+    }
+
+    /**
+     * Container's getter for FiliereUeSemestreToFiliereUeSemestreEc1.
+     * @return FiliereUeSemestreToFiliereUeSemestreEc1
+     */
+    public ViewLinkImpl getFiliereUeSemestreToFiliereUeSemestreEc1() {
+        return (ViewLinkImpl) findViewLink("FiliereUeSemestreToFiliereUeSemestreEc1");
+    }
+
+    /**
+     * Container's getter for FiliereUeSemestreEcToModeControleEc1.
+     * @return FiliereUeSemestreEcToModeControleEc1
+     */
+    public ViewLinkImpl getFiliereUeSemestreEcToModeControleEc1() {
+        return (ViewLinkImpl) findViewLink("FiliereUeSemestreEcToModeControleEc1");
+    }
+    
+    public void initAno(Integer id_ano){
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN " + "EVAL.InitAnonymat(?);" + " END;"), 0);
+        try {
+            statement.setInt(1, id_ano);
+            statement.execute();
+            } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+            } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+    }
+    
+    public void InitialiserNoteModeEns(Integer fil_ue_sem_ec, Integer calendrier_deliberation, Integer utilisateur) {
+
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN " + "INITIALISATION.initialiserNoteModeEns(?,?,?);" + " END;"), 0);
+        try {
+            statement.setInt(1, fil_ue_sem_ec);
+            statement.setInt(2, calendrier_deliberation);
+            statement.setInt(3, utilisateur);
+            statement.execute();
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+
+        /*
+        CallableStatement cstmt = null;
+
+        String initModeEnsSql = "begin INITIALISATION.initialiserNoteModeEns(?,?,?); end;";
+        //String initModeEnsSql = "begin initialisation.initialisernotemodeens(?,?,?); end ;";
+        try {
+            cstmt = this.getDBTransaction().createCallableStatement(initModeEnsSql, 0);
+            cstmt.setInt(1, fil_ue_sem_ec);
+            cstmt.setInt(2, calendrier_deliberation);
+            cstmt.setInt(3, utilisateur);
+            cstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.print(e.getMessage());
+        }
+*/
+    }
+
+    public void initialiserNoteModeEnsFiliere(Integer anne_univers, Integer niv_fomr_parcours, Integer session_id,
+                                              Integer utilisateur) {
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN " + "INITIALISATION.initialiserNoteModeEnsFiliere(?,?,?,?);" +
+                                          " END;"), 0);
+        try {
+            statement.setInt(1, anne_univers);
+            statement.setInt(2, niv_fomr_parcours);
+            statement.setInt(3, session_id);
+            statement.setInt(4, utilisateur);
+            statement.execute();
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+    }
+    /*
+     * traitement_enjambiste(parcours,anne,utilisateur);
+     * */
+    public void traitementEnjambiste(Integer niv_fomr_parcours,Integer anne_univers, Integer utilisateur) {
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN " + "EVAL.traitement_enjambiste(?,?,?);" +
+                                          " END;"), 0);
+        try {
+            statement.setInt(1, niv_fomr_parcours);
+            statement.setInt(2, anne_univers);
+            statement.setInt(3, utilisateur);
+            statement.execute();
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+    }
+
+    public void reconduireRedoublantToSess2(Integer anne_univers, Integer niv_fomr_parcours, Integer session_id,
+                                            Integer utilisateur) {
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN " + "INITIALISATION.reconduireRedoublantToSess2(?,?,?,?);" + " END;"),
+                                         0);
+        try {
+            statement.setInt(1, anne_univers);
+            statement.setInt(2, niv_fomr_parcours);
+            statement.setInt(3, session_id);
+            statement.setInt(4, utilisateur);
+            statement.execute();
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+    }
+    //reconduireToSess2(anne_univers,niv_fomr_parcours,session_id ,semestre_id ,utilisateur )
+    public void reconduireToSess2(Integer anne_univers, Integer niv_fomr_parcours, Integer session_id,Integer semestre_id,
+                                            Integer utilisateur) {
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN " + "INITIALISATION.reconduireToSess2(?,?,?,?,?);" + " END;"),
+                                         0);
+        try {
+            statement.setInt(1, anne_univers);
+            statement.setInt(2, niv_fomr_parcours);
+            statement.setInt(3, session_id);
+            statement.setInt(4, semestre_id);
+            statement.setInt(5, utilisateur);
+            statement.execute();
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+    }
+
+    public void CalculMoyenneAnnuel(Integer anne_univers, Integer parcours, Integer utilisateur) {
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN " + "EVAL.CalculMoyenneAnnuelProc(?,?,?);" + " END;"), 0);
+        try {
+            statement.setInt(1, anne_univers);
+            statement.setInt(2, parcours);
+            statement.setInt(3, utilisateur);
+            statement.execute();
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+    }
+
+    public void UpdateResultat(Integer anne_univers, Integer parcours, Integer utilisateur) {
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN " + "EVAL.UpdateResultatProc(?,?,?);" + " END;"), 0);
+        try {
+            statement.setInt(1, anne_univers);
+            statement.setInt(2, parcours);
+            statement.setInt(3, utilisateur);
+            statement.execute();
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+    }
+    /**
+     * Container's getter for EtudiantResultAnnuelDelibROVO1.
+     * @return EtudiantResultAnnuelDelibROVO1
+     */
+    public EtudiantResultAnnuelDelibROVOImpl getDélibérationAnnuelle() {
+        return (EtudiantResultAnnuelDelibROVOImpl) findViewObject("DélibérationAnnuelle");
+    }
+
+
+    /**
+     * Container's getter for UeEvalROVO1.
+     * @return UeEvalROVO1
+     */
+    public UeEvalROVOImpl getUeEvalRO() {
+        return (UeEvalROVOImpl) findViewObject("UeEvalRO");
+    }
+
+    /**
+     * Container's getter for EcEvalROVO1.
+     * @return EcEvalROVO1
+     */
+    public EcEvalROVOImpl getEcEvalRO() {
+        return (EcEvalROVOImpl) findViewObject("EcEvalRO");
+    }
+
+    /**
+     * Container's getter for UeEvalROToEcEvalROVL1.
+     * @return UeEvalROToEcEvalROVL1
+     */
+    public ViewLinkImpl getUeEvalROToEcEvalROVL1() {
+        return (ViewLinkImpl) findViewLink("UeEvalROToEcEvalROVL1");
+    }
+
+    /**
+     * Container's getter for ModeControleEvalROVO1.
+     * @return ModeControleEvalROVO1
+     */
+    public ModeControleEvalROVOImpl getModeControleEvalRO() {
+        return (ModeControleEvalROVOImpl) findViewObject("ModeControleEvalRO");
+    }
+
+    /**
+     * Container's getter for EcEvalROToTypeControleEvalROVL1.
+     * @return EcEvalROToTypeControleEvalROVL1
+     */
+    public ViewLinkImpl getEcEvalROToTypeControleEvalROVL1() {
+        return (ViewLinkImpl) findViewLink("EcEvalROToTypeControleEvalROVL1");
+    }
+
+    /**
+     * Container's getter for TypeControleVO1.
+     * @return TypeControleVO1
+     */
+    public ViewObjectImpl getTypeControle() {
+        return (ViewObjectImpl) findViewObject("TypeControle");
+    }
+
+    /**
+     * Container's getter for NotesModeEnseignementInterVO1.
+     * @return NotesModeEnseignementInterVO1
+     */
+    public NotesModeEnseignementInterVOImpl getNotesModeEnseignementInterVO1() {
+        return (NotesModeEnseignementInterVOImpl) findViewObject("NotesModeEnseignementInterVO1");
+    }
+
+    /**
+     * Container's getter for SaisieNotesGroupesSaisieLOV2.
+     * @return SaisieNotesGroupesSaisieLOV2
+     */
+    public SaisieNotesGroupesSaisieLOVImpl getSaisieNotesGroupesSaisieLOV() {
+        return (SaisieNotesGroupesSaisieLOVImpl) findViewObject("SaisieNotesGroupesSaisieLOV");
+    }
+
+    /**
+     * Container's getter for SaisieNotesFiltresLOV1.
+     * @return SaisieNotesFiltresLOV1
+     */
+    public SaisieNotesFiltresLOVImpl getSaisieNotesFiltresLOV() {
+        return (SaisieNotesFiltresLOVImpl) findViewObject("SaisieNotesFiltresLOV");
+    }
+
+    /**
+     * Container's getter for NotesModeEnseignementVO1.
+     * @return NotesModeEnseignementVO1
+     */
+    public NotesModeEnseignementVOImpl getNotesModeEnseignement() {
+        return (NotesModeEnseignementVOImpl) findViewObject("NotesModeEnseignement");
+    }
+
+    /**
+     * Container's getter for UeDelibROVO1.
+     * @return UeDelibROVO1
+     */
+    public UeDelibROVOImpl getUeDelibRO() {
+        return (UeDelibROVOImpl) findViewObject("UeDelibRO");
+    }
+
+    /**
+     * Container's getter for EtudiantResultUeDelibROVO1.
+     * @return EtudiantResultUeDelibROVO1
+     */
+    public EtudiantResultUeDelibROVOImpl getEtudiantResultUeDelibRO() {
+        return (EtudiantResultUeDelibROVOImpl) findViewObject("EtudiantResultUeDelibRO");
+    }
+
+    public void getNotesEtudiants(Long type_ctrl_ec, Long id_cal_del) {
+        ViewObject vo = getNotesModeEnseignementInterVO1();
+        ViewCriteriaManager vcm = vo.getViewCriteriaManager();
+        ViewCriteria vc = vcm.getViewCriteria("NotesModeEnseignementInterVOCriteria");
+        VariableValueManager vvm = vc.ensureVariableManager();
+        vvm.setVariableValue("id_mode_ctrl_ec_var", type_ctrl_ec);
+        vvm.setVariableValue("id_cal_delib_var", id_cal_del);
+        vo.applyViewCriteria(vc);
+        vo.executeQuery();
+
+    }
+
+    public void getNotesEtudiantsModeEns(Long type_ctrl, Long id_cal_del) {
+        ViewObject vo = getNotesModeEnseignement();
+        ViewCriteriaManager vcm = vo.getViewCriteriaManager();
+        ViewCriteria vc = vcm.getViewCriteria("NotesModeEnseignementVOCriteria");
+        VariableValueManager vvm = vc.ensureVariableManager();
+        vvm.setVariableValue("id_type_ctrl_var", type_ctrl);
+        vvm.setVariableValue("id_cal_delib_var", id_cal_del);
+        vo.applyViewCriteria(vc);
+        vo.executeQuery();
+
+    }
+
+    public Integer clotureSaisieNotesInter(Long fil_sem_ec, Long type_control, Long mode_control, Long calendrier,
+                                           String action, Long utilisateur) {
+        //(fil_sem_ec, type_control, mode_controle, calendrier, actionE, utilisateur )
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  VALIDATION.cloturer_saisie_inter(?,?,?,?,?,?); end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, fil_sem_ec);
+            cls.setLong(3, type_control);
+            cls.setLong(4, mode_control);
+            cls.setLong(5, calendrier);
+            cls.setString(6, action);
+            cls.setLong(7, utilisateur);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+/*
+ * 
+ * ouvrir_saisie_inter(
+    parcours ,fil_ue ,fil_sem_ec ,type_control ,mode_controle ,calendrier , utilisateur   ) 
+ * */
+    public Integer reouvrirSaisieNotesInter(Long parcours, Long fil_ue,
+    Long fil_sem_ec, Long type_control, Long mode_control, Long calendrier, Long utilisateur) {
+        //(fil_sem_ec, type_control, mode_controle, calendrier, actionE, utilisateur )
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  VALIDATION.ouvrir_saisie_inter(?,?,?,?,?,?,?); end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, parcours);
+            cls.setLong(3, fil_ue);
+            cls.setLong(4, fil_sem_ec);
+            cls.setLong(5, type_control);
+            cls.setLong(6, mode_control);
+            cls.setLong(7, calendrier);
+            cls.setLong(8, utilisateur);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    public Integer isClosedSaisieNotesInter(Long fil_sem_ec, Long type_control, Long mode_control, Long calendrier) {
+        //is_closed_note_inter(fil_sem_ec,type_control, mode_controle,calendrier)
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  VALIDATION.is_closed_note_inter(?,?,?,?); end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, fil_sem_ec);
+            cls.setLong(3, type_control);
+            cls.setLong(4, mode_control);
+            cls.setLong(5, calendrier);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    /*
+     * isJuryDefined( parcours ,annee ,sess ,semestre)
+     * */
+    public Integer isJuryDefined(Integer parcours, Integer annee, Integer sess, Integer semestre) {
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  VALIDATION.is_jury_defined(?,?,?,?); end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, parcours);
+            cls.setLong(3, annee);
+            cls.setLong(4, sess);
+            cls.setLong(5, semestre);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    public Integer isClosedSaisieNotes(Long fil_sem_ec, Long type_control, Long calendrier) {
+        //is_closed_note_inter(fil_sem_ec,type_control, mode_controle,calendrier)
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  VALIDATION.is_closed_note_nme(?,?,?); end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, fil_sem_ec);
+            cls.setLong(3, type_control);
+            cls.setLong(4, calendrier);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    public void findAndUpdateNoteInter(Long idNoteModeEnsInter, Float note) {
+        NotesModeEnseignementInterVOImpl noteModeEnsInter = getNotesModeEnseignementInterVO1();
+        Key key = new Key(new Object[] { idNoteModeEnsInter });
+        RowSetIterator rsi = noteModeEnsInter.createRowSetIterator(null);
+        Row row = rsi.findByKey(key, 1)[0];
+        row.setAttribute("Note", note);
+
+    }
+
+    public void findAndUpdateNote(Long idNoteModeEns, Float note) {
+        NotesModeEnseignementVOImpl noteModeEns = getNotesModeEnseignement();
+        Key key = new Key(new Object[] { idNoteModeEns });
+        RowSetIterator rsi = noteModeEns.createRowSetIterator(null);
+        Row row = rsi.findByKey(key, 1)[0];
+        row.setAttribute("Note", note);
+
+    }
+
+    public Integer clotureSaisieNotes(Long fil_sem_ec, Long type_control, Long calendrier, String action,
+                                      Long utilisateur) {
+        /* cloturer_saisie_nme(fil_sem_ec, type_control, calendrier,action, utilisateur ) */
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  VALIDATION.cloturer_saisie_nme(?,?,?,?,?); end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, fil_sem_ec);
+            cls.setLong(3, type_control);
+            cls.setLong(4, calendrier);
+            cls.setString(5, action);
+            cls.setLong(6, utilisateur);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    public Integer reouvrirSaisieNotes(Long parcours, Long fil_ue,
+    Long fil_sem_ec, Long type_control, Long calendrier, Long utilisateur) {
+        //(fil_sem_ec, type_control, mode_controle, calendrier, actionE, utilisateur )
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  VALIDATION.ouvrir_saisie(?,?,?,?,?,?); end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, parcours);
+            cls.setLong(3, fil_ue);
+            cls.setLong(4, fil_sem_ec);
+            cls.setLong(5, type_control);
+            cls.setLong(6, calendrier);
+            cls.setLong(7, utilisateur);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+/*
+ * CalculMoyenneEc(Integer anne ,Integer semestre ,Integer parcours ,Integer fileUesem ,Integer idFilieUeSemEc, Integer typeControle ,Integer calendrDelib ,Integer utilisateur)
+ * */
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void calculMoyenneEc(Integer anne ,Integer semestre ,Integer parcours ,Integer fileUesem ,Integer idFilieUeSemEc, Integer typeControle ,Integer calendrDelib ,Integer utilisateur) {
+        CallableStatement callableStat = null;
+        String formSql = "begin eval.CalculMoyenneEc(?,?,?,?,?,?,?,?);  end ;";
+        try {
+            callableStat = getDBTransaction().createCallableStatement(formSql, 0);
+            callableStat.setInt(1, anne);
+            callableStat.setInt(2, semestre);
+            callableStat.setInt(3, parcours);
+            callableStat.setInt(4, fileUesem);
+            callableStat.setInt(5, idFilieUeSemEc);
+            callableStat.setInt(6, typeControle);
+            callableStat.setInt(7, calendrDelib);
+            callableStat.setInt(8, utilisateur);
+            callableStat.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStat != null) {
+                try {
+                    callableStat.close();
+                } catch (Exception c) {
+                }
+            }
+        }
+    }
+    
+    /*
+     *CalculMoyenneEcFinalProc(anne ,semestre ,parcours ,fileUesem ,idFilieUeSemEc,calendrDelib, utilisateur) 
+     * */
+    public void CalculMoyenneEcFinalProc(Integer anne ,Integer semestre ,Integer parcours ,Integer fileUesem ,Integer idFilieUeSemEc,Integer calendrDelib, Integer utilisateur) {
+        CallableStatement callableStat = null;
+        String formSql = "begin eval.CalculMoyenneEcFinalProc(?,?,?,?,?,?,?);  end ;";
+        try {
+            callableStat = getDBTransaction().createCallableStatement(formSql, 0);
+            callableStat.setInt(1, anne);
+            callableStat.setInt(2, semestre);
+            callableStat.setInt(3, parcours);
+            callableStat.setInt(4, fileUesem);
+            callableStat.setInt(5, idFilieUeSemEc);
+            callableStat.setInt(6, calendrDelib);
+            callableStat.setInt(7, utilisateur);
+            callableStat.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStat != null) {
+                try {
+                    callableStat.close();
+                } catch (Exception c) {
+                }
+            }
+        }
+    }
+    
+    public void calculMoyenneUe(Integer calendrier, Integer fileUesem, Integer utilisateur) {
+        //---CalculMoyenneUeProc(calendrier,fileUesem,utilisateur)
+
+        CallableStatement callableStat = null;
+        String formSql = "begin eval.CalculMoyenneUeProc(?,?,?);  end ;";
+        try {
+            callableStat = getDBTransaction().createCallableStatement(formSql, 0);
+            callableStat.setInt(1, calendrier);
+            callableStat.setInt(2, fileUesem);
+            callableStat.setInt(3, utilisateur);
+
+            callableStat.executeUpdate();
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStat != null) {
+                try {
+                    callableStat.close();
+                } catch (Exception c) {
+                }
+            }
+        }
+    }
+    
+    public Integer nbrColonneUe() {
+        //---CalculMoyenneUeProc(calendrier,fileUesem,utilisateur)
+        Integer i = null;
+        ResultSet rs = null;
+        CallableStatement callableStat = null;
+        String formSql =
+            "begin select  max(count(nmei.id_note_mode_ens_inter) ) as max from notes_mode_enseignement_inter nmei where  nmei.id_calendrier_deliberation=103 group by nmei.id_inscription_ped_sem_ue; end ;";
+        try {
+            callableStat = getDBTransaction().createCallableStatement(formSql, 0);
+
+
+            callableStat.executeUpdate();
+            rs = (ResultSet) callableStat.getObject(0);
+            i = rs.getInt("max");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStat != null) {
+                try {
+                    callableStat.close();
+                } catch (Exception c) {
+                }
+            }
+        }
+        return i;
+    }
+
+    public Integer clotureUe(Long fil_ue, Long calendrier, String action, Long utilisateur) {
+        //    FUNCTION cloturer_ue(fil_ue,calendrier, action,utilisateur)
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  VALIDATION.cloturer_ue(?,?,?,?); end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, fil_ue);
+            cls.setLong(3, calendrier);
+            cls.setString(4, action);
+            cls.setLong(5, utilisateur);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    public Integer deliberationUe(Long fil_ue, Long calendrier, String action, Long utilisateur) {
+        //    FUNCTION cloturer_ue(fil_ue,calendrier, action,utilisateur)
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  VALIDATION.deliberer_ue(?,?,?,?); end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, fil_ue);
+            cls.setLong(3, calendrier);
+            cls.setString(4, action);
+            cls.setLong(5, utilisateur);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    public Integer isClosedUe(Long fileUesem, Long calendrier) {
+        //---is_closed_ue(fileUesem,calendrier)
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  validation.is_closed_ue(?,?);  end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, fileUesem);
+            cls.setLong(3, calendrier);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    public Integer isDelibrateUe(Long fileUesem, Long calendrier) {
+        //---is_delibrate_ue(fileUesem,calendrier)
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  validation.is_delibrate_ue(?,?);  end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, fileUesem);
+            cls.setLong(3, calendrier);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    private RValidation transformStructToDomain(java.sql.Struct rawObject) throws SQLException {
+        RValidation validation = new RValidation();
+        Object[] attributes = rawObject.getAttributes();
+        for (int attributeNumber = 0; attributeNumber < attributes.length; attributeNumber++) {
+            validation.setAttribute(attributeNumber, attributes[attributeNumber]);
+        }
+        return validation;
+    }
+
+    public void calculMoyenneSemestrielle(Long calendrier, Long utilisateur) {
+        //---PROCEDURE CalculMoyenneSemestreProc(calendrier,utilisateur)
+
+        CallableStatement callableStat = null;
+        String formSql = "begin eval.CalculMoyenneSemestreProc(?,?);  end ;";
+        try {
+            callableStat = getDBTransaction().createCallableStatement(formSql, 0);
+            callableStat.setLong(1, calendrier);
+            callableStat.setLong(2, utilisateur);
+
+            callableStat.executeUpdate();
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStat != null) {
+                try {
+                    callableStat.close();
+                } catch (Exception c) {
+                }
+            }
+        }
+    }
+
+/*compenser(parcours ,anne ,calendrier,utilisateur)*/
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void compenser(Integer parcours, Integer anne,Integer calendrier, Integer utilisateur) {
+        CallableStatement callableStat = null;
+        String formSql = "begin eval.compenser(?,?,?,?);  end ;";
+        try {
+            callableStat = getDBTransaction().createCallableStatement(formSql, 0);
+            callableStat.setInt(1, parcours);
+            callableStat.setInt(2, anne);
+            callableStat.setInt(3, calendrier);
+            callableStat.setInt(4, utilisateur);
+            callableStat.executeUpdate();
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStat != null) {
+                try {
+                    callableStat.close();
+                } catch (Exception c) {
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public Integer isDelibratedSemestre(Long parcours, Long calendrier) {
+        //  FUNCTION is_delibrated_semestre(parcours, calendrier)
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  validation.is_delibrated_semestre(?,?);  end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, parcours);
+            cls.setLong(3, calendrier);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    public Integer isClosedSemestre(Long parcours, Long calendrier) {
+        //    FUNCTION is_closed_semestre(parcours ,calendrier)
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  validation.is_closed_semestre(?,?);  end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, parcours);
+            cls.setLong(3, calendrier);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    public Integer CompenserSemestre(Integer parcours, Integer calendrier, Integer semestre, String action, Integer utilisateur) {
+        Integer code = 0;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ?:=  VALIDATION.compenser_semestre(?,?,?,?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, OracleTypes.STRUCT, "R_VALIDATION");
+            statement.setLong(2, parcours);
+            statement.setLong(3, calendrier);
+            statement.setLong(4, semestre);
+            statement.setString(5, action);
+            statement.setLong(6, utilisateur);
+            statement.execute();
+            // Verifier le code de retour et faire le traitement en fonction
+            code = (Integer) transformRValidationToDomain((java.sql.Struct) statement.getObject(1)).getAttribute(0);
+            System.out.println("Compensation en cours ... ");
+            System.out.println("Erreur message : " +
+                               transformRValidationToDomain((java.sql.Struct) statement.getObject(1)));
+
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return code;
+    }
+    
+    /**
+     * Container's getter for DelibSemRepCritereCompLOV1.
+     * @return DelibSemRepCritereCompLOV1
+     */
+    public DelibSemRepCritereCompLOVImpl getDelibSemRepCritereCompLOV() {
+        return (DelibSemRepCritereCompLOVImpl) findViewObject("DelibSemRepCritereCompLOV");
+    }
+
+    /**
+     * Container's getter for DelibSemRepFiltreLOV1.
+     * @return DelibSemRepFiltreLOV1
+     */
+
+    public DelibSemRepFiltreLOVImpl getDelibSemRepFiltreLOV() {
+        return (DelibSemRepFiltreLOVImpl) findViewObject("DelibSemRepFiltreLOV");
+    }
+
+    /**
+     * Container's getter for DelibSemRepecherSurLOV1.
+     * @return DelibSemRepecherSurLOV1
+     */
+    public DelibSemRepecherSurLOVImpl getDelibSemRepecherSurLOV() {
+        return (DelibSemRepecherSurLOVImpl) findViewObject("DelibSemRepecherSurLOV");
+    }
+
+    /**
+     * Container's getter for DeliberationSemestrielle1.
+     * @return DeliberationSemestrielle1
+     */
+    public DeliberationSemestrielleImpl getDeliberationSemestrielle() {
+        return (DeliberationSemestrielleImpl) findViewObject("DeliberationSemestrielle");
+    }
+
+    /**
+     * Container's getter for EtudiantNoteInter1.
+     * @return EtudiantNoteInter1
+     */
+    public EtudiantNoteInterImpl getEtudiantNoteInter() {
+        return (EtudiantNoteInterImpl) findViewObject("EtudiantNoteInter");
+    }
+
+    /**
+     * Container's getter for ListeEtudiantInsc1.
+     * @return ListeEtudiantInsc1
+     */
+    public ListeEtudiantInscImpl getListeEtudiantInsc() {
+        return (ListeEtudiantInscImpl) findViewObject("ListeEtudiantInsc");
+    }
+
+    /**
+     * Container's getter for ListeModeControl1.
+     * @return ListeModeControl1
+     */
+    public ListeModeControlImpl getListeModeControl() {
+        return (ListeModeControlImpl) findViewObject("ListeModeControl");
+    }
+
+    /**
+     * Container's getter for ListeEc1.
+     * @return ListeEc1
+     */
+    public ListeEcImpl getListeEc() {
+        return (ListeEcImpl) findViewObject("ListeEc");
+    }
+
+    /**
+     * Container's getter for FiltreAnuelleROVO1.
+     * @return FiltreAnuelleROVO1
+     */
+    public FiltreAnuelleROVOImpl getFiltreAnuelleROVO1() {
+        return (FiltreAnuelleROVOImpl) findViewObject("FiltreAnuelleROVO1");
+    }
+
+    /**
+     * Container's getter for FiltreModeDelibAn1.
+     * @return FiltreModeDelibAn1
+     */
+    public FiltreModeDelibAnImpl getFiltreModeDelibAn1() {
+        return (FiltreModeDelibAnImpl) findViewObject("FiltreModeDelibAn1");
+    }
+
+    public void SortByCredit(Integer credit1, Integer credit2) {
+        ViewObjectImpl voi = this.getDélibérationAnnuelle();
+        ViewCriteria vc = voi.getViewCriteria("SortByCredit");
+        voi.appendViewCriteria(vc);
+        voi.setNamedWhereClauseParam("cred1", credit1);
+        voi.setNamedWhereClauseParam("cred2", credit2);
+        //ResultSet rs =
+        voi.executeQuery();
+    }
+
+    public void SortByMoyenne(Integer moyenne1, Integer moyenne2) {
+        ViewObjectImpl voi = this.getDélibérationAnnuelle();
+        ViewCriteria vc = voi.getViewCriteria("SortByMoyenne");
+        voi.appendViewCriteria(vc);
+        voi.setNamedWhereClauseParam("moy1", moyenne1);
+        voi.setNamedWhereClauseParam("moy2", moyenne2);
+        //ResultSet rs =
+        voi.executeQuery();
+    }
+
+    public Integer isPublishedAllSemestre(Integer parcours, Integer annee, Integer session) {
+        Integer is_publish = -1;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ? :=  VALIDATION.is_published_all_semestre(?,?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, Types.INTEGER);
+            statement.setInt(2, parcours);
+            statement.setInt(3, annee);
+            statement.setInt(4, session);
+            statement.executeUpdate();
+
+            is_publish = statement.getInt(1);
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return is_publish;
+    }
+
+    public Integer isCosedAllSemestre(Integer parcours, Integer annee, Integer session) {
+        Integer isclosed = -1;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ? :=  VALIDATION.is_closed_all_semestre(?,?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, Types.INTEGER);
+            statement.setInt(2, parcours);
+            statement.setInt(3, annee);
+            statement.setInt(4, session);
+            statement.executeUpdate();
+
+            isclosed = statement.getInt(1);
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return isclosed;
+    }
+
+    public Integer closeSemestre(Integer parcours, Integer calendrier, Integer semestre, String action,
+                                 Integer utilisateur) {
+        Integer code = 0;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ?:=  VALIDATION.cloturer_semestre(?,?,?,?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, OracleTypes.STRUCT, "R_VALIDATION");
+            statement.setInt(2, parcours);
+            statement.setInt(3, calendrier);
+            statement.setInt(4, semestre);
+            statement.setString(5, action);
+            statement.setInt(6, utilisateur);
+            statement.execute();
+            // Verifier le code de retour et faire le traitement en fonction
+            code = (Integer) transformRValidationToDomain((java.sql.Struct) statement.getObject(1)).getAttribute(0);
+            System.out.println("Erreur message : " +
+                               transformRValidationToDomain((java.sql.Struct) statement.getObject(1)));
+
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return code;
+    }
+
+    public Integer publishSemestre(Integer parcours, Integer calendrier, Integer semestre, String action,
+                                   Integer utilisateur) {
+        Integer code = 0;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ?:=  VALIDATION.publier_semestre(?,?,?,?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, OracleTypes.INTEGER);
+            statement.setInt(2, parcours);
+            statement.setInt(3, calendrier);
+            statement.setInt(4, semestre);
+            statement.setString(5, action);
+            statement.setInt(6, utilisateur);
+            statement.executeUpdate();
+            code = statement.getInt(1);
+
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return code;
+    }
+    
+    public Integer publierAnnee(Integer parcours, Integer calendrier, String action,
+                                   Integer utilisateur) {
+        Integer code = 0;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ?:=  VALIDATION.publier_annee(?,?,?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, OracleTypes.STRUCT, "R_VALIDATION");
+            statement.setInt(2, parcours);
+            statement.setInt(3, calendrier);
+            statement.setString(4, action);
+            statement.setInt(5, utilisateur);
+            statement.execute();
+            // Verifier le code de retour et faire le traitement en fonction
+            code = (Integer) transformRValidationToDomain((java.sql.Struct) statement.getObject(1)).getAttribute(0);
+            System.out.println("Message " +
+                               transformRValidationToDomain((java.sql.Struct) statement.getObject(1)).getAttribute(1) +
+                               " Code " +
+                               (Integer) transformRValidationToDomain((java.sql.Struct) statement.getObject(1))
+                               .getAttribute(0));
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return code;
+    }
+
+
+    public Integer isCosedAllNoteModeEns(Integer fil_ue, Integer calendrier) {
+        Integer isclosed = -1;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ? :=  VALIDATION.is_closed_all_note_nme(?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, Types.INTEGER);
+            statement.setInt(2, fil_ue);
+            statement.setInt(3, calendrier);
+            //statement.setInt(4, session);
+            statement.executeUpdate();
+
+            isclosed = statement.getInt(1);
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return isclosed;
+    }
+
+    // is_closed_ue(fil_ue ,calendrier) return integer AS
+    public Integer isCosedUe(Integer fil_ue, Integer calendrier) {
+        Integer isclosed = -1;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ? :=  VALIDATION.is_closed_ue(?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, Types.INTEGER);
+            statement.setInt(2, fil_ue);
+            statement.setInt(3, calendrier);
+            //statement.setInt(4, session);
+            statement.executeUpdate();
+
+            isclosed = statement.getInt(1);
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return isclosed;
+    }
+
+    // deliberer_ue(fil_ue,calendrier,action,user)
+    public Integer delibereUe(Integer fil_ue, Integer calendrier, String action, Integer utilisateur) {
+        Integer code = 0;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ?:=  VALIDATION.deliberer_ue2(?,?,?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, OracleTypes.STRUCT, "R_VALIDATION");
+            statement.setInt(2, fil_ue);
+            statement.setInt(3, calendrier);
+            //statement.setInt(4, semestre);
+            statement.setString(4, action);
+            statement.setInt(5, utilisateur);
+            statement.execute();
+            // Verifier le code de retour et faire le traitement en fonction
+            code = (Integer) transformRValidationToDomain((java.sql.Struct) statement.getObject(1)).getAttribute(0);
+            System.out.println("Erreur message : " +
+                               transformRValidationToDomain((java.sql.Struct) statement.getObject(1)));
+
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return code;
+    }
+
+    /*cloturer_ue(fil_ue,calendrier ,action ,utilisateur) RETURN integer AS*/
+    public Integer ClosedUe(Integer fil_ue, Integer calendrier, String action, Integer utilisateur) {
+        Integer isclosed = -1;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ? :=  VALIDATION.cloturer_ue(?,?,?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, Types.INTEGER);
+            statement.setInt(2, fil_ue);
+            statement.setInt(3, calendrier);
+            statement.setString(4, action);
+            statement.setInt(5, utilisateur);
+            statement.executeUpdate();
+
+            isclosed = statement.getInt(1);
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return isclosed;
+    }
+
+    @SuppressWarnings("deprecation")
+    public RowSetIterator DeliberationAnnuelle(Integer annee, Integer parcours, Integer session) {
+        System.out.println("DeliberationAnnuelle Début");
+        ViewObjectImpl delibVO = this.getEtudiantSemestreDeliberationAn();
+        delibVO.clearCache();
+        DBTransactionImpl transaction = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            transaction.createCallableStatement(("BEGIN ?:=  MYPKG.DeliberationAnnuelle(?,?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, OracleTypes.ARRAY, "TABLE_ETUDIANTSEMESTRE");
+            statement.setInt(2, annee);
+            statement.setInt(3, parcours);
+            statement.setInt(4, session);
+            statement.execute();
+            Integer count_ = transformArrayToList((java.sql.Array) statement.getObject(1)).size();
+
+            for (int i = 0; i < count_;
+                 i++) {
+                // Creates a row in ViewObject
+                Row r =delibVO.createRow();
+                // You can set attribute values in this new row
+                try {
+                r.setAttribute("Numero",
+                               transformArrayToList((java.sql.Array) statement.getObject(1)).get(i).getnumero());
+                } catch (Exception e) {
+                    r.setAttribute("Numero", "");
+                }
+                try {
+                r.setAttribute("PrenomNom",
+                               transformArrayToList((java.sql.Array) statement.getObject(1)).get(i).getprenom_nom());
+                } catch (Exception e) {
+                    r.setAttribute("PrenomNom","");
+                }
+                try {
+                r.setAttribute("Semestre1",
+                                   transformSemestreToDomain((oracle.sql.STRUCT) transformArrayToList((java.sql.Array) statement.getObject(1)).get(i).getsemestre().getList().get(0)).getAttribute(0));
+                } catch (Exception e) {
+                    r.setAttribute("Semestre1","");
+                }
+                try {
+                r.setAttribute("Semestre2",
+                               transformSemestreToDomain((oracle.sql.STRUCT) transformArrayToList((java.sql.Array) statement.getObject(1)).get(i)
+                                                                                                                                                       .getsemestre()
+                                                                                                                                                       .getList()
+                                                                                                                                                       .get(1))
+                  .getAttribute(0));
+                } catch (Exception e) {
+                    r.setAttribute("Semestre2","");
+                }
+                try {
+                r.setAttribute("Moyenne",
+                               transformArrayToList((java.sql.Array) statement.getObject(1)).get(i)
+                               .getAttribute("moyenne"));
+                //Insert that row in ViewObject
+                } catch (Exception e) {
+                    r.setAttribute("Moyenne","");
+                }
+                delibVO.insertRow(r);
+            }
+
+            return delibVO.getRowSetIterator();
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+    }
+
+    private RValidation transformRValidationToDomain(java.sql.Struct rawObject) throws SQLException {
+        RValidation r_v = new RValidation();
+        Object[] attributes = rawObject.getAttributes();
+        for (int attributeNumber = 0; attributeNumber < attributes.length; attributeNumber++) {
+            r_v.setAttribute(attributeNumber, attributes[attributeNumber]);
+        }
+        return r_v;
+    }
+
+    private Semestre transformSemestreToDomain(@SuppressWarnings("deprecation")
+                                               oracle.sql.STRUCT rawObject) throws SQLException {
+        Semestre r_v = new Semestre();
+        @SuppressWarnings("deprecation")
+        Object[] attributes = rawObject.getAttributes();
+        for (int attributeNumber = 0; attributeNumber < attributes.length; attributeNumber++) {
+            r_v.setAttribute(attributeNumber, attributes[attributeNumber]);
+        }
+        return r_v;
+    }
+
+    private TableEtudiantsemestre transformEtudiantsemestreToDomain(java.sql.Struct rawObject) throws SQLException {
+        TableEtudiantsemestre r_v = new TableEtudiantsemestre();
+        Object[] attributes = rawObject.getAttributes();
+        for (int attributeNumber = 0; attributeNumber < attributes.length; attributeNumber++) {
+            r_v.setAttribute(attributeNumber, attributes[attributeNumber]);
+        }
+        return r_v;
+    }
+
+    private java.util.List<TableEtudiantsemestre> transformArrayToList(java.sql.Array array) throws SQLException {
+        Object[] objectArray = (Object[]) array.getArray();
+        java.util.List<TableEtudiantsemestre> table = new java.util.ArrayList<>();
+        for (Object obj : objectArray) {
+            java.sql.Struct struct = (java.sql.Struct) obj;
+            table.add(transformEtudiantsemestreToDomain(struct));
+        }
+        return table;
+    }
+
+    /**
+     * Container's getter for EtudiantSemestreDeliberationAn2.
+     * @return EtudiantSemestreDeliberationAn2
+     */
+    public ViewObjectImpl getEtudiantSemestreDeliberationAn() {
+        return (ViewObjectImpl) findViewObject("EtudiantSemestreDeliberationAn");
+    }
+
+
+    /*#############################################DELIBERATION SEMESTRIELLE######################################################*/
+    /*@SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void calculMoyenneSemestrielle(Long calendrier, Long utilisateur) {
+        //---PROCEDURE CalculMoyenneSemestreProc(calendrier,utilisateur)
+        CallableStatement callableStat = null;
+        String formSql = "begin eval.CalculMoyenneSemestreProc(?,?);  end ;";
+        try {
+            callableStat = getDBTransaction().createCallableStatement(formSql, 0);
+            callableStat.setLong(1, calendrier);
+            callableStat.setLong(2, utilisateur);
+
+            callableStat.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStat != null) {
+                try {
+                    callableStat.close();
+                } catch (Exception c) {
+                }
+            }
+        }
+    }*/
+
+    /*@SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public Integer clotureSemestre(Long parcours, Long calendrier, Long semestre, String action, Long utilisateur) {
+        //    FUNCTION cloturer_semestre(parcours,calendrier,semestre,action,utilisateur)
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  VALIDATION.cloturer_semestre(?,?,?,?,?); end ;";
+        Integer result = 0;
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, parcours);
+            cls.setLong(3, calendrier);
+            cls.setLong(4, semestre);
+            cls.setString(5, action);
+            cls.setLong(6, utilisateur);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+*/
+    /*@SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public Integer isDelibratedSemestre(Long parcours, Long calendrier) {
+        //  FUNCTION is_delibrated_semestre(parcours, calendrier)
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  validation.is_delibrated_semestre(?,?);  end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, parcours);
+            cls.setLong(3, calendrier);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+    */
+    // Update Jury Role
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void UpdateRole(Integer idUser, Integer idJury, String role,Integer utimodif) {
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "Begin Update UTILISATEURS_JURY SET ROLE=?, UTI_MODIFIE=? WHERE ID_UTILISATEUR=? AND ID_JURY=? ; end ;";
+        //String sqlcommit = "begin ? := Update UTILISATEURS_JURY SET ROLE=?, UTI_MODIFIE=? WHERE ID_UTILISATEUR=? AND ID_JURY=? ; end ;";
+        
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setString(1, role);
+            cls.setInt(2, utimodif);
+            cls.setInt(3, idUser);
+            cls.setInt(4, idJury);
+            cls.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+    }
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void UpdateFormationAccess(Integer id_acces, String role,Integer utimodif) {
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "Begin Update UTILISATEUR_FORMATIONS SET ROLE=?, UTI_MODIFIE=? WHERE ID_UTILISATEUR_FORMATION=? ; end ;";
+       try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setString(1, role);
+            cls.setInt(2, utimodif);
+            cls.setInt(3, id_acces);
+            cls.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+    }
+
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void DeleteFormationAccess(Integer id_acces) {
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "Begin Delete from UTILISATEUR_FORMATIONS where ID_UTILISATEUR_FORMATION=? ; end ;";
+       try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setInt(1, id_acces);
+            cls.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+    }
+
+    //Insert into UTILISATEURS_ROLES (ID_UTILISATEUR,ID_ROLE,UTI_CREE) values (?,?,?)
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void AllowRoleTo(Integer role_id, Integer uti_id, Integer uticre) {
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "Begin Insert into UTILISATEURS_ROLES (ID_UTILISATEUR,ID_ROLE,UTI_CREE) values (?,?,?) ; end ;";
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setInt(1, uti_id);
+            cls.setInt(2, role_id);
+            cls.setInt(3, uticre);
+            cls.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+    }
+//Delete from UTILISATEURS_ROLES where ID_UTILISATEUR_ROLE=:
+        @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void UpdateUserRole(Integer user_role_id,Integer uti_id, Integer uti_modif) {
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        //Update UTILISATEUR_FORMATIONS SET ROLE=?, UTI_MODIFIE=? WHERE ID_UTILISATEUR_FORMATION=?
+        String sql = "Begin Update UTILISATEURS_ROLES set ID_UTILISATEUR=?, UTI_MODIFIE=? where ID_UTILISATEUR_ROLE=? ; end ;";
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setInt(1, uti_id);
+            cls.setInt(2, uti_modif);
+            cls.setInt(3, user_role_id);
+            cls.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+    }
+    public void deleteRuleNivParc(Integer id_niv_reg_parc){
+    //Delete from NIV_FORM_PARC_REGL_COMPENS nfr where nfr.ID_NIV_FORM_PARC_REGL_COMPENS=:id_niv_reg_parc
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql =
+            "Begin Delete from NIV_FORM_PARC_REGL_COMPENS nfr where nfr.ID_NIV_FORM_PARC_REGL_COMPENS=? ; end ;";
+        //String sqlcommit = "begin ? := Update UTILISATEURS_JURY SET ROLE=?, UTI_MODIFIE=? WHERE ID_UTILISATEUR=? AND ID_JURY=? ; end ;";
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setInt(1, id_niv_reg_parc);
+            cls.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+    }
+    
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void UpdateResponsableEc(Integer idUser, Integer idFilEc, String role,Integer utimodif,Integer id_uti_fil_ec) {
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "Begin UPDATE UTILIS_FILIERE_UE_SEMESTRE_EC ufec Set ufec.ROLE=?, ufec.UTI_MODIFIE=? \n" + 
+        "WHERE ufec.ID_FILIERE_UE_SEMSTRE_EC=? AND ufec.ID_UTILISATEUR =? \n" + 
+        "AND ufec.ID_UTILIS_FILIER_UE_SEM_EC=? ; end ;";
+       try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setString(1, role);
+            cls.setInt(2, utimodif);
+            cls.setInt(3, idFilEc);
+            cls.setInt(4, idUser);
+            cls.setInt(5, id_uti_fil_ec);
+            cls.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                    }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+            }
+        }
+    }
+
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public void UpdateResponsableUe(Integer idUser, Integer idFilUe, String role,Integer utimodif,Integer id_uti_fil_ue) {
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "Begin UPDATE UTILIS_FILIERE_UE_SEMESTRE ufs SET ufs.ROLE=?, ufs.UTI_MODIFIE=? \n" + 
+        "WHERE ufs.ID_FILIERE_UE_SEMSTRE=? \n" + 
+        "AND ufs.ID_UTILIS_FILIER_UE_SEM=? \n" + 
+        "AND ufs.ID_UTILISATEUR=? ; end ;";
+       try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setString(1, role);
+            cls.setInt(2, utimodif);
+            cls.setInt(3, idFilUe);
+            cls.setInt(4, id_uti_fil_ue);
+            cls.setInt(5, idUser);
+            cls.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                    }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+            }
+        }
+    }
+    
+    // Verifier si toutes les ues sont cloturer : appelé par deliberation semestrielle
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public Integer isClosedAllUe(Integer parcours, Integer calendrier, Integer semestre) {
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  validation.is_closed_all_note_ue2(?,?,?);  end ;";
+        Integer result = 0;
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setInt(2, parcours);
+            cls.setInt(3, calendrier);
+            cls.setInt(4, semestre);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+            result = cls.getInt(1);
+            System.out.println("result : " + result);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+
+    public List<Long> addSelectedToGroupe() {
+        List<Long> etulists = new ArrayList<>();
+        ViewObject vo = getEtudiantGroupeSaisieEtudiant();
+        //create a second row set to not impact the row set
+        //used in ADF
+        RowSet duplicateRowSet = vo.createRowSet("duplicateRowSet");
+        //set rowset to first row to avoid "attempt to access
+        //dead row" exception
+        duplicateRowSet.first();
+        //get the current row of the table to set it back after
+        //re-executing the VO
+        Row currentRow = vo.getCurrentRow();
+        boolean currentRowAdded = false;
+        //get all rows that have the transoent attribute
+        //"SelectedStudent" set to true
+        Row[] rowsToAdd = duplicateRowSet.getFilteredRows("SelectedStudent", true);
+        if (rowsToAdd.length > 0) {
+            //only run throizgh this code if there is something to
+            //delete
+            for (Row rw : rowsToAdd) {
+                //if row is ts marked as the current in VO, set
+                //boolean flag
+                if (rw.getKey().equals(currentRow.getKey())) {
+                    currentRowAdded = true;
+                }
+                etulists.add(Long.parseLong(rw.getAttribute("IdEtudiant").toString()));
+            }
+            //re-execute VO
+            vo.executeQuery();
+            //reset current row if it hasn't been deleted
+            if (!currentRowAdded) {
+                vo.setCurrentRow(currentRow);
+            }
+            duplicateRowSet.closeRowSet();
+        }
+        duplicateRowSet.closeRowSet();
+        return etulists;
+    }
+
+    public List<Long> getSelectedParcours() {
+        List<Long> parcourslist = new ArrayList<>();
+        ViewObject vo = getParcours();
+        RowSet duplicateRowSet = vo.createRowSet("duplicateRowSet");
+        duplicateRowSet.first();
+        Row currentRow = vo.getCurrentRow();
+        boolean currentRowAdded = false;
+        Row[] rowsToAdd = duplicateRowSet.getFilteredRows("isChecked", true);
+        if (rowsToAdd.length > 0) {
+            for (Row rw : rowsToAdd) {
+                if (rw.getKey().equals(currentRow.getKey())) {
+                    currentRowAdded = true;
+                }
+                parcourslist.add(Long.parseLong(rw.getAttribute("IdNiveauFormationParcours").toString()));
+            }
+            vo.executeQuery();
+            if (!currentRowAdded) {
+                vo.setCurrentRow(currentRow);
+            }
+            duplicateRowSet.closeRowSet();
+        }
+        duplicateRowSet.closeRowSet();
+        return parcourslist;
+    }
+
+    public List<Long> getSelectedUsers() {
+        List<Long> userlists = new ArrayList<>();
+        ViewObject vo = getUtilisateurStructure();
+        RowSet duplicateRowSet = vo.createRowSet("duplicateRowSet");
+        duplicateRowSet.first();
+        Row currentRow = vo.getCurrentRow();
+        boolean currentRowAdded = false;
+        Row[] rowsToAdd = duplicateRowSet.getFilteredRows("isUserSelected", true);
+        if (rowsToAdd.length > 0) {
+            for (Row rw : rowsToAdd) {
+                if (rw.getKey().equals(currentRow.getKey())) {
+                    currentRowAdded = true;
+                }
+                userlists.add(Long.parseLong(rw.getAttribute("IdUtilisateur").toString()));
+            }
+            vo.executeQuery();
+            if (!currentRowAdded) {
+                vo.setCurrentRow(currentRow);
+            }
+            duplicateRowSet.closeRowSet();
+        }
+        duplicateRowSet.closeRowSet();
+        return userlists;
+    }
+
+    public List<Long> getSelectedNiveauFormations() {
+        List<Long> niveaulists = new ArrayList<>();
+        ViewObject vo = getAccesNiveauFormation();
+        RowSet duplicateRowSet = vo.createRowSet("duplicateRowSet");
+        duplicateRowSet.first();
+        Row currentRow = vo.getCurrentRow();
+        boolean currentRowAdded = false;
+        Row[] rowsToAdd = duplicateRowSet.getFilteredRows("selectedFormation", true);
+        if (rowsToAdd.length > 0) {
+            for (Row rw : rowsToAdd) {
+                if (rw.getKey().equals(currentRow.getKey())) {
+                    currentRowAdded = true;
+                }
+                niveaulists.add(Long.parseLong(rw.getAttribute("IdNiveauFormation").toString()));
+            }
+            vo.executeQuery();
+            if (!currentRowAdded) {
+                vo.setCurrentRow(currentRow);
+            }
+            duplicateRowSet.closeRowSet();
+        }
+        duplicateRowSet.closeRowSet();
+        return niveaulists;
+    }
+    
+    public List<Long> getSelectedUes() {
+        List<Long> ueslists = new ArrayList<>();
+        ViewObject vo = getUeNiveauFormationUtilisateursROVO();
+        RowSet duplicateRowSet = vo.createRowSet("duplicateRowSet");
+        duplicateRowSet.first();
+        Row currentRow = vo.getCurrentRow();
+        boolean currentRowAdded = false;
+        Row[] rowsToAdd = duplicateRowSet.getFilteredRows("isUeSelected", true);
+        if (rowsToAdd.length > 0) {
+            for (Row rw : rowsToAdd) {
+                if (rw.getKey().equals(currentRow.getKey())) {
+                    currentRowAdded = true;
+                }
+                ueslists.add(Long.parseLong(rw.getAttribute("IdFiliereUeSemstre").toString()));
+            }
+            vo.executeQuery();
+            if (!currentRowAdded) {
+                vo.setCurrentRow(currentRow);
+            }
+            duplicateRowSet.closeRowSet();
+        }
+        duplicateRowSet.closeRowSet();
+        return ueslists;
+    }
+
+    public List<Long> getSelectedLois() {
+        List<Long> textlists = new ArrayList<>();
+        ViewObject vo = getTextLoisByStructure();
+        RowSet duplicateRowSet = vo.createRowSet("duplicateRowSet");
+        duplicateRowSet.first();
+        Row currentRow = vo.getCurrentRow();
+        boolean currentRowAdded = false;
+        Row[] rowsToAdd = duplicateRowSet.getFilteredRows("isSelected", true);
+        if (rowsToAdd.length > 0) {
+            for (Row rw : rowsToAdd) {
+                if (rw.getKey().equals(currentRow.getKey())) {
+                    currentRowAdded = true;
+                }
+                textlists.add(Long.parseLong(rw.getAttribute("IdTextLoi").toString()));
+                //textlists.put(Long.parseLong(rw.getAttribute("IdTextLoi").toString()), Integer.parseInt(rw.getAttribute("Ordre").toString()));
+            }
+            vo.executeQuery();
+            if (!currentRowAdded) {
+                vo.setCurrentRow(currentRow);
+            }
+            duplicateRowSet.closeRowSet();
+        }
+        duplicateRowSet.closeRowSet();
+        return textlists;
+    }
+    
+    public List<Long> getSelectedEcs() {
+        List<Long> ecslists = new ArrayList<>();
+        ViewObject vo = getEcNiveauFormationUtilisateurROVO();
+        RowSet duplicateRowSet = vo.createRowSet("duplicateRowSet");
+        duplicateRowSet.first();
+        Row currentRow = vo.getCurrentRow();
+        boolean currentRowAdded = false;
+        Row[] rowsToAdd = duplicateRowSet.getFilteredRows("isEcSelected", true);
+        if (rowsToAdd.length > 0) {
+            for (Row rw : rowsToAdd) {
+                if (rw.getKey().equals(currentRow.getKey())) {
+                    currentRowAdded = true;
+                }
+                ecslists.add(Long.parseLong(rw.getAttribute("IdFiliereUeSemstreEc").toString()));
+            }
+            vo.executeQuery();
+            if (!currentRowAdded) {
+                vo.setCurrentRow(currentRow);
+            }
+            duplicateRowSet.closeRowSet();
+        }
+        duplicateRowSet.closeRowSet();
+        return ecslists;
+    }
+    
+    public List<Long> getSelectedJury() {
+        List<Long> jurylists = new ArrayList<>();
+        ViewObject vo = getJuryROVO();
+        RowSet duplicateRowSet = vo.createRowSet("duplicateRowSet");
+        duplicateRowSet.first();
+        Row currentRow = vo.getCurrentRow();
+        boolean currentRowAdded = false;
+        Row[] rowsToAdd = duplicateRowSet.getFilteredRows("IsJurySelected", true);
+        if (rowsToAdd.length > 0) {
+            for (Row rw : rowsToAdd) {
+                if (rw.getKey().equals(currentRow.getKey())) {
+                    currentRowAdded = true;
+                }
+                jurylists.add(Long.parseLong(rw.getAttribute("IdJury").toString()));
+            }
+            vo.executeQuery();
+            if (!currentRowAdded) {
+                vo.setCurrentRow(currentRow);
+            }
+            duplicateRowSet.closeRowSet();
+        }
+        duplicateRowSet.closeRowSet();
+        return jurylists;
+    }
+    
+    public Integer isClosedAnnee(Integer parcours, Integer calendrier) {
+        Integer code = 0;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ?:=  VALIDATION.is_closed_annee(?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, OracleTypes.STRUCT, "R_VALIDATION");
+            statement.setInt(2, parcours);
+            statement.setInt(3, calendrier);
+            statement.execute();
+            // Verifier le code de retour et faire le traitement en fonction
+            code = (Integer) transformRValidationToDomain((java.sql.Struct) statement.getObject(1)).getAttribute(0);
+            System.out.println("Message " +
+                               transformRValidationToDomain((java.sql.Struct) statement.getObject(1)).getAttribute(1) +
+                               " Code " +
+                               (Integer) transformRValidationToDomain((java.sql.Struct) statement.getObject(1))
+                               .getAttribute(0));
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return code;
+    }
+
+    public Integer delibererSemestre(Integer parcours, Integer calendrier, Integer semestre, String action,
+                                     Integer utilisateur) {
+        Integer code = 0;
+        DBTransactionImpl dbti = (DBTransactionImpl) getDBTransaction();
+        CallableStatement statement =
+            dbti.createCallableStatement(("BEGIN ?:=  VALIDATION.deliberer_semestre(?,?,?,?,?) ; END;"), 0);
+        try {
+            statement.registerOutParameter(1, OracleTypes.STRUCT, "R_VALIDATION");
+            statement.setInt(2, parcours);
+            statement.setInt(3, calendrier);
+            statement.setInt(4, semestre);
+            statement.setString(5, action);
+            statement.setInt(6, utilisateur);
+            statement.execute();
+            // Verifier le code de retour et faire le traitement en fonction
+            code = (Integer) transformRValidationToDomain((java.sql.Struct) statement.getObject(1)).getAttribute(0);
+            System.out.println("Message " +
+                               transformRValidationToDomain((java.sql.Struct) statement.getObject(1)).getAttribute(1));
+        } catch (SQLException sqlerr) {
+            throw new JboException(sqlerr);
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException closeerr) {
+                throw new JboException(closeerr);
+            }
+        }
+        return code;
+    }
+
+    @SuppressWarnings("oracle.jdeveloper.java.insufficient-catch-block")
+    public Integer isCompensedSemestre(Integer parcours, Integer calendrier) {
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  validation.is_compensed_semestre(?,?);  end ;";
+        Integer result = 0;
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, parcours);
+            cls.setLong(3, calendrier);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+            result = cls.getInt(1);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return result;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+    public Integer getIdAnonymat(Long parcours, Long anne,Long semestre, Long sessions) {
+        //FUNCTION getIdAnonymat(parcours,anne,semestre,sessions)
+        CallableStatement cls = null;
+        ResultSet rs = null;
+        String sql = "begin ? :=  eval.getIdAnonymat(?,?,?,?);  end ;";
+        Integer result = 0;
+
+        try {
+            cls = getDBTransaction().createCallableStatement(sql, 0);
+            cls.setLong(2, parcours);
+            cls.setLong(3, anne);
+            cls.setLong(4, semestre);
+            cls.setLong(5, sessions);
+            cls.registerOutParameter(1, Types.INTEGER);
+            cls.executeUpdate();
+
+            result = cls.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        } finally {
+            if (cls != null)
+                try {
+                    cls.close();
+                } catch (Exception c) {
+                }
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception c) {
+                }
+        }
+        return result;
+    }
+    //is_genere_anonymat
+    
+    public Integer isGenereAnonymat(Long parcours, Long anne,Long semestre, Long sessions) {
+    //FUNCTION is_genere_anonymat(parcours,anne,semestre,sessions)
+    CallableStatement cls = null;
+    ResultSet rs = null;
+    String sql = "begin ? :=  eval.is_genere_anonymat(?,?,?,?);  end ;";
+    Integer result = 0;
+
+    try {
+        cls = getDBTransaction().createCallableStatement(sql, 0);
+        cls.setLong(2, parcours);
+        cls.setLong(3, anne);
+        cls.setLong(4, semestre);
+        cls.setLong(5, sessions);
+        cls.registerOutParameter(1, Types.INTEGER);
+        cls.executeUpdate();
+
+        result = cls.getInt(1);
+
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+        return result;
+    } finally {
+        if (cls != null)
+            try {
+                cls.close();
+            } catch (Exception c) {
+            }
+        if (rs != null)
+            try {
+                rs.close();
+            } catch (Exception c) {
+            }
+        }
+    return result;
+    }
+    
+    
+    /**
+     * Container's getter for DelibSemEtudiantROVO1.
+     * @return DelibSemEtudiantROVO1
+     */
+    public DelibSemEtudiantROVOImpl getDelibSemEtudiant() {
+        return (DelibSemEtudiantROVOImpl) findViewObject("DelibSemEtudiant");
+    }
+
+    /**
+     * Container's getter for DelibSemFilEcROVO1.
+     * @return DelibSemFilEcROVO1
+     */
+    public ViewObjectImpl getDelibSemFilEc() {
+        return (ViewObjectImpl) findViewObject("DelibSemFilEc");
+    }
+
+    /**
+     * Container's getter for DelibSemFilUeROVO1.
+     * @return DelibSemFilUeROVO1
+     */
+    public ViewObjectImpl getDelibSemFilUe() {
+        return (ViewObjectImpl) findViewObject("DelibSemFilUe");
+    }
+
+    /**
+     * Container's getter for DelibSemInsPedSemUeROVO1.
+     * @return DelibSemInsPedSemUeROVO1
+     */
+    public ViewObjectImpl getDelibSemInsPedSemUe() {
+        return (ViewObjectImpl) findViewObject("DelibSemInsPedSemUe");
+    }
+
+    /**
+     * Container's getter for DelibSemNoteEcROVO1.
+     * @return DelibSemNoteEcROVO1
+     */
+    public ViewObjectImpl getDelibSemNoteEc() {
+        return (ViewObjectImpl) findViewObject("DelibSemNoteEc");
+    }
+
+    /**
+     * Container's getter for DelibResUeROVO1.
+     * @return DelibResUeROVO1
+     */
+    public ViewObjectImpl getDelibResUe() {
+        return (ViewObjectImpl) findViewObject("DelibResUe");
+    }
+
+    /**
+     * Container's getter for DelibSemInsPedSem1.
+     * @return DelibSemInsPedSem1
+     */
+    public ViewObjectImpl getDelibSemInsPedSem() {
+        return (ViewObjectImpl) findViewObject("DelibSemInsPedSem");
+    }
+
+    /**
+     * Container's getter for DelibSemResSemROVO1.
+     * @return DelibSemResSemROVO1
+     */
+    public ViewObjectImpl getDelibSemResSem() {
+        return (ViewObjectImpl) findViewObject("DelibSemResSem");
+    }
+
+    /**
+     * Container's getter for DelibUeModeCntrlROVO1.
+     * @return DelibUeModeCntrlROVO1
+     */
+    public ViewObjectImpl getDelibUeModeCntrl() {
+        return (ViewObjectImpl) findViewObject("DelibUeModeCntrl");
+    }
+
+    /**
+     * Container's getter for DelibUeNoteModeCntrl1.
+     * @return DelibUeNoteModeCntrl1
+     */
+    public ViewObjectImpl getDelibUeNoteModeCntrl() {
+        return (ViewObjectImpl) findViewObject("DelibUeNoteModeCntrl");
+    }
+
+    /**
+     * Container's getter for DelibResEc1.
+     * @return DelibResEc1
+     */
+    public ViewObjectImpl getDelibResEc() {
+        return (ViewObjectImpl) findViewObject("DelibResEc");
+    }
+
+    /**
+     * Container's getter for GroupeSaisieVO1.
+     * @return GroupeSaisieVO1
+     */
+    public ViewObjectImpl getGroupeSaisie() {
+        return (ViewObjectImpl) findViewObject("GroupeSaisie");
+    }
+
+
+    /**
+     * Container's getter for EtudiantGroupeSaisieEtudiant1.
+     * @return EtudiantGroupeSaisieEtudiant1
+     */
+    public ViewObjectImpl getEtudiantGroupeSaisieEtudiant() {
+        return (ViewObjectImpl) findViewObject("EtudiantGroupeSaisieEtudiant");
+    }
+
+    /**
+     * Container's getter for GroupeSaisieEtudiantVO1.
+     * @return GroupeSaisieEtudiantVO1
+     */
+    public ViewObjectImpl getGroupeSaisieEtudiant() {
+        return (ViewObjectImpl) findViewObject("GroupeSaisieEtudiant");
+    }
+
+    /**
+     * Container's getter for StructuresVO1.
+     * @return StructuresVO1
+     */
+    public ViewObjectImpl getStructures() {
+        return (ViewObjectImpl) findViewObject("Structures");
+    }
+
+    /**
+     * Container's getter for UtilisateurStructureVO1.
+     * @return UtilisateurStructureVO1
+     */
+    public ViewObjectImpl getUtilisateurStructure() {
+        return (ViewObjectImpl) findViewObject("UtilisateurStructure");
+    }
+
+    /**
+     * Container's getter for AccesNiveauFormationROVO1.
+     * @return AccesNiveauFormationROVO1
+     */
+    public ViewObjectImpl getAccesNiveauFormation() {
+        return (ViewObjectImpl) findViewObject("AccesNiveauFormation");
+    }
+
+    /**
+     * Container's getter for UtilisateurNiveauFormationROVO1.
+     * @return UtilisateurNiveauFormationROVO1
+     */
+    public ViewObjectImpl getUtilisateurNiveauFormation() {
+        return (ViewObjectImpl) findViewObject("UtilisateurNiveauFormation");
+    }
+
+    /**
+     * Container's getter for UtilisateurNiveauxFormationsVO1.
+     * @return UtilisateurNiveauxFormationsVO1
+     */
+    public ViewObjectImpl getUtilisateurNiveauxFormationsVO() {
+        return (ViewObjectImpl) findViewObject("UtilisateurNiveauxFormationsVO");
+    }
+
+    /**
+     * Container's getter for GroupeSaisieEtudiantROVO1.
+     * @return GroupeSaisieEtudiantROVO1
+     */
+    public ViewObjectImpl getGroupeSaisieEtudiantROVO() {
+        return (ViewObjectImpl) findViewObject("GroupeSaisieEtudiantROVO");
+    }
+
+    /**
+     * Container's getter for GroupeSaisieParcoursROVO1.
+     * @return GroupeSaisieParcoursROVO1
+     */
+    public ViewObjectImpl getGroupeSaisieParcours() {
+        return (ViewObjectImpl) findViewObject("GroupeSaisieParcours");
+    }
+
+    /**
+     * Container's getter for UeNiveauFormationUtilisateursROVO1.
+     * @return UeNiveauFormationUtilisateursROVO1
+     */
+    public ViewObjectImpl getUeNiveauFormationUtilisateursROVO() {
+        return (ViewObjectImpl) findViewObject("UeNiveauFormationUtilisateursROVO");
+    }
+
+    /**
+     * Container's getter for UtilisFiliereUeSemestreVO1.
+     * @return UtilisFiliereUeSemestreVO1
+     */
+    public ViewObjectImpl getUtilisFiliereUeSemestreVO() {
+        return (ViewObjectImpl) findViewObject("UtilisFiliereUeSemestreVO");
+    }
+
+    /**
+     * Container's getter for UtilisFiliereUeSemestreEcVO1.
+     * @return UtilisFiliereUeSemestreEcVO1
+     */
+    public ViewObjectImpl getUtilisFiliereUeSemestreEcVO() {
+        return (ViewObjectImpl) findViewObject("UtilisFiliereUeSemestreEcVO");
+    }
+
+    /**
+     * Container's getter for AccesUeList1.
+     * @return AccesUeList1
+     */
+    public AccesUeListImpl getAccesUeList() {
+        return (AccesUeListImpl) findViewObject("AccesUeList");
+    }
+
+    /**
+     * Container's getter for UtilisateurAccesUeROVO1.
+     * @return UtilisateurAccesUeROVO1
+     */
+    public ViewObjectImpl getUtilisateurAccesUeROVO() {
+        return (ViewObjectImpl) findViewObject("UtilisateurAccesUeROVO");
+    }
+
+    /**
+     * Container's getter for EcNiveauFormationUtilisateurROVO1.
+     * @return EcNiveauFormationUtilisateurROVO1
+     */
+    public ViewObjectImpl getEcNiveauFormationUtilisateurROVO() {
+        return (ViewObjectImpl) findViewObject("EcNiveauFormationUtilisateurROVO");
+    }
+
+    /**
+     * Container's getter for AccesEcList1.
+     * @return AccesEcList1
+     */
+    public AccesEcListImpl getAccesEcList() {
+        return (AccesEcListImpl) findViewObject("AccesEcList");
+    }
+
+    /**
+     * Container's getter for UtilisateursAccesEcsROVO1.
+     * @return UtilisateursAccesEcsROVO1
+     */
+    public ViewObjectImpl getUtilisateursAccesEcsROVO() {
+        return (ViewObjectImpl) findViewObject("UtilisateursAccesEcsROVO");
+    }
+
+    /**
+     * Container's getter for IsEcAccesAllowedROVO1.
+     * @return IsEcAccesAllowedROVO1
+     */
+    public ViewObjectImpl getIsEcAccesAllowedROVO() {
+        return (ViewObjectImpl) findViewObject("IsEcAccesAllowedROVO");
+    }
+
+    /**
+     * Container's getter for IsUeAccesAllowedROVO1.
+     * @return IsUeAccesAllowedROVO1
+     */
+    public ViewObjectImpl getIsUeAccesAllowedROVO() {
+        return (ViewObjectImpl) findViewObject("IsUeAccesAllowedROVO");
+    }
+
+
+    /**
+     * Container's getter for OptionROVO1.
+     * @return OptionROVO1
+     */
+    public ViewObjectImpl getOptionROVO() {
+        return (ViewObjectImpl) findViewObject("OptionROVO");
+    }
+
+    /**
+     * Container's getter for SpecialiteROVO1.
+     * @return SpecialiteROVO1
+     */
+    public ViewObjectImpl getSpecialiteROVO1() {
+        return (ViewObjectImpl) findViewObject("SpecialiteROVO1");
+    }
+
+    /**
+     * Container's getter for IsNivFormAccesAllowed1.
+     * @return IsNivFormAccesAllowed1
+     */
+    public ViewObjectImpl getIsNivFormAccesAllowed() {
+        return (ViewObjectImpl) findViewObject("IsNivFormAccesAllowed");
+    }
+
+    /**
+     * Container's getter for JuryROVO1.
+     * @return JuryROVO1
+     */
+    public ViewObjectImpl getJuryROVO() {
+        return (ViewObjectImpl) findViewObject("JuryROVO");
+    }
+
+    /**
+     * Container's getter for JuryVO1.
+     * @return JuryVO1
+     */
+    public ViewObjectImpl getJuryVO() {
+        return (ViewObjectImpl) findViewObject("JuryVO");
+    }
+
+    /**
+     * Container's getter for UtilisateursJuryVO1.
+     * @return UtilisateursJuryVO1
+     */
+    public ViewObjectImpl getUtilisateursJuryVO() {
+        return (ViewObjectImpl) findViewObject("UtilisateursJuryVO");
+    }
+
+    /**
+     * Container's getter for IsJuryAffectedROVO1.
+     * @return IsJuryAffectedROVO1
+     */
+    public ViewObjectImpl getIsJuryAffectedROVO() {
+        return (ViewObjectImpl) findViewObject("IsJuryAffectedROVO");
+    }
+
+    /**
+     * Container's getter for JuryRoleROVO1.
+     * @return JuryRoleROVO1
+     */
+    public JuryRoleROVOImpl getJuryRoleROVO() {
+        return (JuryRoleROVOImpl) findViewObject("JuryRoleROVO");
+    }
+
+    /**
+     * Container's getter for IsJuryPresidentExist1.
+     * @return IsJuryPresidentExist1
+     */
+    public ViewObjectImpl getIsJuryPresidentExist() {
+        return (ViewObjectImpl) findViewObject("IsJuryPresidentExist");
+    }
+
+    /**
+     * Container's getter for IsResponsableUeExist1.
+     * @return IsResponsableUeExist1
+     */
+    public ViewObjectImpl getIsResponsableUeExist() {
+        return (ViewObjectImpl) findViewObject("IsResponsableUeExist");
+    }
+
+    /**
+     * Container's getter for IsEcResponsableExist1.
+     * @return IsEcResponsableExist1
+     */
+    public ViewObjectImpl getIsEcResponsableExist() {
+        return (ViewObjectImpl) findViewObject("IsEcResponsableExist");
+    }
+
+    /**
+     * Container's getter for UtilisateurJuryROVO1.
+     * @return UtilisateurJuryROVO1
+     */
+    public ViewObjectImpl getUtilisateurJuryROVO1() {
+        return (ViewObjectImpl) findViewObject("UtilisateurJuryROVO1");
+    }
+
+    /**
+     * Container's getter for UtilisateurJuryROVO2.
+     * @return UtilisateurJuryROVO2
+     */
+    public ViewObjectImpl getUtilisateurJuryROVO2() {
+        return (ViewObjectImpl) findViewObject("UtilisateurJuryROVO2");
+    }
+
+    /**
+     * Container's getter for JuryToUtilisateurJuryVL1.
+     * @return JuryToUtilisateurJuryVL1
+     */
+    public ViewLinkImpl getJuryToUtilisateurJuryVL1() {
+        return (ViewLinkImpl) findViewLink("JuryToUtilisateurJuryVL1");
+    }
+
+    /**
+     * Container's getter for ReglesCompensationROVO1.
+     * @return ReglesCompensationROVO1
+     */
+    public ViewObjectImpl getReglesCompensation() {
+        return (ViewObjectImpl) findViewObject("ReglesCompensation");
+    }
+
+    /**
+     * Container's getter for NivFormParcReglCompensVO1.
+     * @return NivFormParcReglCompensVO1
+     */
+    public ViewObjectImpl getNivFormParcReglCompens() {
+        return (ViewObjectImpl) findViewObject("NivFormParcReglCompens");
+    }
+
+    /**
+     * Container's getter for IsCompensedRuleParcoursExist1.
+     * @return IsCompensedRuleParcoursExist1
+     */
+    public ViewObjectImpl getIsCompensedRuleParcoursExist() {
+        return (ViewObjectImpl) findViewObject("IsCompensedRuleParcoursExist");
+    }
+
+    /**
+     * Container's getter for EtudiantReleves1.
+     * @return EtudiantReleves1
+     */
+    public ViewObjectImpl getEtudiantReleves() {
+        return (ViewObjectImpl) findViewObject("EtudiantReleves");
+    }
+
+    /**
+     * Container's getter for EtudiantAttestation1.
+     * @return EtudiantAttestation1
+     */
+    public ViewObjectImpl getEtudiantAttestation() {
+        return (ViewObjectImpl) findViewObject("EtudiantAttestation");
+    }
+
+    /**
+     * Container's getter for DocumentsROVO1.
+     * @return DocumentsROVO1
+     */
+    public DocumentsROVOImpl getDocuments() {
+        return (DocumentsROVOImpl) findViewObject("Documents");
+    }
+
+    /**
+     * Container's getter for UserByUserName1.
+     * @return UserByUserName1
+     */
+    public UserByUserNameImpl getUserByUserName() {
+        return (UserByUserNameImpl) findViewObject("UserByUserName");
+    }
+
+    /**
+     * Container's getter for TextLoisVO1.
+     * @return TextLoisVO1
+     */
+    public ViewObjectImpl getTextLoisVO() {
+        return (ViewObjectImpl) findViewObject("TextLoisVO");
+    }
+
+    /**
+     * Container's getter for TextsLoisROVO1.
+     * @return TextsLoisROVO1
+     */
+    public TextsLoisROVOImpl getTextsLoisROVO() {
+        return (TextsLoisROVOImpl) findViewObject("TextsLoisROVO");
+    }
+
+    /**
+     * Container's getter for DeliberationStaticList1.
+     * @return DeliberationStaticList1
+     */
+    public DeliberationStaticListImpl getDeliberationStaticList() {
+        return (DeliberationStaticListImpl) findViewObject("DeliberationStaticList");
+    }
+
+    /**
+     * Container's getter for IsUsedFormationText1.
+     * @return IsUsedFormationText1
+     */
+    public IsUsedFormationTextImpl getIsUsedFormationText() {
+        return (IsUsedFormationTextImpl) findViewObject("IsUsedFormationText");
+    }
+
+
+    /**
+     * Container's getter for FormationByStructure1.
+     * @return FormationByStructure1
+     */
+    public FormationByStructureImpl getFormationByStructure() {
+        return (FormationByStructureImpl) findViewObject("FormationByStructure");
+    }
+
+    /**
+     * Container's getter for TextLoisByStructure1.
+     * @return TextLoisByStructure1
+     */
+    public TextLoisByStructureImpl getTextLoisByStructure() {
+        return (TextLoisByStructureImpl) findViewObject("TextLoisByStructure");
+    }
+
+    /**
+     * Container's getter for IsFormationTextIs1.
+     * @return IsFormationTextIs1
+     */
+    public IsFormationTextIsImpl getIsFormationTextIs() {
+        return (IsFormationTextIsImpl) findViewObject("IsFormationTextIs");
+    }
+
+
+    /**
+     * Container's getter for IsStructureTextExist1.
+     * @return IsStructureTextExist1
+     */
+    public IsStructureTextExistImpl getIsStructureTextExist() {
+        return (IsStructureTextExistImpl) findViewObject("IsStructureTextExist");
+    }
+
+
+    /**
+     * Container's getter for TextLoiFormationROVO1.
+     * @return TextLoiFormationROVO1
+     */
+    public TextLoiFormationROVOImpl getTextLoiFormationROVO() {
+        return (TextLoiFormationROVOImpl) findViewObject("TextLoiFormationROVO");
+    }
+
+    /**
+     * Container's getter for TextLoisHistoriqueStrVO2.
+     * @return TextLoisHistoriqueStrVO2
+     */
+    public ViewObjectImpl getTextLoisHistoriqueStrVO() {
+        return (ViewObjectImpl) findViewObject("TextLoisHistoriqueStrVO");
+    }
+
+
+    /**
+     * Container's getter for ReglesAnonymatVO1.
+     * @return ReglesAnonymatVO1
+     */
+    public ViewObjectImpl getReglesAnonymatVO() {
+        return (ViewObjectImpl) findViewObject("ReglesAnonymatVO");
+    }
+
+    /**
+     * Container's getter for IsRuleUsed1.
+     * @return IsRuleUsed1
+     */
+    public ViewObjectImpl getIsRuleUsed() {
+        return (ViewObjectImpl) findViewObject("IsRuleUsed");
+    }
+
+    /**
+     * Container's getter for gerRuleUsed1.
+     * @return gerRuleUsed1
+     */
+    public ViewObjectImpl getgerRuleUsed() {
+        return (ViewObjectImpl) findViewObject("gerRuleUsed");
+    }
+
+    /**
+     * Container's getter for AnonymatVO1.
+     * @return AnonymatVO1
+     */
+    public ViewObjectImpl getAnonymatVO() {
+        return (ViewObjectImpl) findViewObject("AnonymatVO");
+    }
+
+    /**
+     * Container's getter for AnonymatVO1.
+     * @return AnonymatVO1
+     */
+    public ViewObjectImpl getAnonymatVO1() {
+        return (ViewObjectImpl) findViewObject("AnonymatVO1");
+    }
+
+    /**
+     * Container's getter for RegleToAnonymatVL1.
+     * @return RegleToAnonymatVL1
+     */
+    public ViewLinkImpl getRegleToAnonymatVL1() {
+        return (ViewLinkImpl) findViewLink("RegleToAnonymatVL1");
+    }
+
+    /**
+     * Container's getter for StudentParcrsAnSemSess1.
+     * @return StudentParcrsAnSemSess1
+     */
+    public StudentParcrsAnSemSessImpl getStudentParcrsAnSemSess() {
+        return (StudentParcrsAnSemSessImpl) findViewObject("StudentParcrsAnSemSess");
+    }
+
+    /**
+     * Container's getter for GenAnonymatVO1.
+     * @return GenAnonymatVO1
+     */
+    public ViewObjectImpl getGenAnonymatVO() {
+        return (ViewObjectImpl) findViewObject("GenAnonymatVO");
+    }
+
+    /**
+     * Container's getter for IsExistEtuAno1.
+     * @return IsExistEtuAno1
+     */
+    public IsExistEtuAnoImpl getIsExistEtuAno() {
+        return (IsExistEtuAnoImpl) findViewObject("IsExistEtuAno");
+    }
+
+    /**
+     * Container's getter for UsedAno1.
+     * @return UsedAno1
+     */
+    public UsedAnoImpl getUsedAno() {
+        return (UsedAnoImpl) findViewObject("UsedAno");
+    }
+
+    /**
+     * Container's getter for GenAnonymatROVO1.
+     * @return GenAnonymatROVO1
+     */
+    public GenAnonymatROVOImpl getGenAnonymatROVO() {
+        return (GenAnonymatROVOImpl) findViewObject("GenAnonymatROVO");
+    }
+
+    /**
+     * Container's getter for isParametredCalendar1.
+     * @return isParametredCalendar1
+     */
+    /*public isParametredCalendarImpl getisParametredCalendar() {
+        return (isParametredCalendarImpl) findViewObject("isParametredCalendar");
+    }*/
+
+    /**
+     * Container's getter for isClosedInscription1.
+     * @return isClosedInscription1
+     */
+    /*public isClosedInscriptionImpl getisClosedInscription() {
+        return (isClosedInscriptionImpl) findViewObject("isClosedInscription");
+    }*/
+
+
+    /**
+     * Container's getter for EcROVO1.
+     * @return EcROVO1
+     */
+    public EcROVOImpl getEcROVO() {
+        return (EcROVOImpl) findViewObject("EcROVO");
+    }
+
+    /**
+     * Container's getter for EcEvalTypeCtrlRO.
+     * @return EcEvalTypeCtrlRO
+     */
+    public EcEvalTypeCtrlROVOImpl getEcEvalTypeCtrlRO() {
+        return (EcEvalTypeCtrlROVOImpl) findViewObject("EcEvalTypeCtrlRO");
+    }
+
+    /**
+     * Container's getter for EcEvalTypeCtrlModeCtrlRO.
+     * @return EcEvalTypeCtrlModeCtrlRO
+     */
+    public EcEvalTypeCtrlModeCtrlROVOImpl getEcEvalTypeCtrlModeCtrlRO() {
+        return (EcEvalTypeCtrlModeCtrlROVOImpl) findViewObject("EcEvalTypeCtrlModeCtrlRO");
+    }
+
+    /**
+     * Container's getter for AnonymatExecuteROVO1.
+     * @return AnonymatExecuteROVO1
+     */
+    public AnonymatExecuteROVOImpl getAnonymatExecuteRO() {
+        return (AnonymatExecuteROVOImpl) findViewObject("AnonymatExecuteRO");
+    }
+
+    /**
+     * Container's getter for EcEvalToEcEvalTypeCtrlROVL1.
+     * @return EcEvalToEcEvalTypeCtrlROVL1
+     */
+    public ViewLinkImpl getEcEvalToEcEvalTypeCtrlROVL1() {
+        return (ViewLinkImpl) findViewLink("EcEvalToEcEvalTypeCtrlROVL1");
+    }
+
+    /**
+     * Container's getter for EcEvalTypeCtrlToModeCtrlROVOVL1.
+     * @return EcEvalTypeCtrlToModeCtrlROVOVL1
+     */
+    public ViewLinkImpl getEcEvalTypeCtrlToModeCtrlROVOVL1() {
+        return (ViewLinkImpl) findViewLink("EcEvalTypeCtrlToModeCtrlROVOVL1");
+    }
+
+    /**
+     * Container's getter for NoteModeEnsInterGenAnonymROVO1.
+     * @return NoteModeEnsInterGenAnonymROVO1
+     */
+    public NoteModeEnsInterGenAnonymROVOImpl getNoteModeEnsInterGenAnonymRO() {
+        return (NoteModeEnsInterGenAnonymROVOImpl) findViewObject("NoteModeEnsInterGenAnonymRO");
+    }
+
+    /**
+     * Container's getter for NoteModeEnsGenAnonymROVO1.
+     * @return NoteModeEnsGenAnonymROVO1
+     */
+    public NoteModeEnsGenAnonymROVOImpl getNoteModeEnsGenAnonymRO() {
+        return (NoteModeEnsGenAnonymROVOImpl) findViewObject("NoteModeEnsGenAnonymRO");
+    }
+
+    /**
+     * Container's getter for NoteModeEnsGenAnonymROVO2.
+     * @return NoteModeEnsGenAnonymROVO2
+     */
+    public NoteModeEnsGenAnonymROVOImpl getNoteModeEnsGenAnonymROVO2() {
+        return (NoteModeEnsGenAnonymROVOImpl) findViewObject("NoteModeEnsGenAnonymROVO2");
+    }
+
+    /**
+     * Container's getter for isClosedInscription1.
+     * @return isClosedInscription1
+     */
+    public isClosedInscriptionImpl getisClosedInscription() {
+        return (isClosedInscriptionImpl) findViewObject("isClosedInscription");
+    }
+
+    /**
+     * Container's getter for isParametredCalendar1.
+     * @return isParametredCalendar1
+     */
+    public isParametredCalendarImpl getisParametredCalendar() {
+        return (isParametredCalendarImpl) findViewObject("isParametredCalendar");
+    }
+
+    /**
+     * Container's getter for GenAnonymatNewROVO1.
+     * @return GenAnonymatNewROVO1
+     */
+    public GenAnonymatNewROVOImpl getGenAnonymatNewRO() {
+        return (GenAnonymatNewROVOImpl) findViewObject("GenAnonymatNewRO");
+    }
+
+    /**
+     * Container's getter for EtudiantsVO1.
+     * @return EtudiantsVO1
+     */
+    public ViewObjectImpl getEtudiants() {
+        return (ViewObjectImpl) findViewObject("Etudiants");
+    }
+
+    /**
+     * Container's getter for AnneeUniverROVO1.
+     * @return AnneeUniverROVO1
+     */
+    public AnneeUniverROVOImpl getAnneeUniverROVO() {
+        return (AnneeUniverROVOImpl) findViewObject("AnneeUniverROVO");
+    }
+
+    /**
+     * Container's getter for AnneesUniversVO1.
+     * @return AnneesUniversVO1
+     */
+    public ViewObjectImpl getAnneesUniversVO() {
+        return (ViewObjectImpl) findViewObject("AnneesUniversVO");
+    }
+    
+    
+    public void RepecheUECriteria(Long calendrier, BigDecimal superieur, BigDecimal inferieur){
+        ViewObjectImpl vo = this.getResultatsFilUeSemestreVO();
+        ViewCriteria vc = vo.getViewCriteria("RepechUeCriteria");
+        vo.applyViewCriteria(vc,true);
+        vo.setNamedWhereClauseParam("calendrier", calendrier);
+        vo.setNamedWhereClauseParam("inferieur", inferieur);
+        vo.setNamedWhereClauseParam("superieur", superieur);
+        vo.executeQuery();
+        
+    }
+
+    /**
+     * Container's getter for FilUeInsPedSem1.
+     * @return FilUeInsPedSem1
+     */
+    public FilUeInsPedSemImpl getFilUeInsPedSem() {
+        return (FilUeInsPedSemImpl) findViewObject("FilUeInsPedSem");
+    }
+
+    /**
+     * Container's getter for FilEcInsPedSemUe1.
+     * @return FilEcInsPedSemUe1
+     */
+    public FilEcInsPedSemUeImpl getFilEcInsPedSemUe() {
+        return (FilEcInsPedSemUeImpl) findViewObject("FilEcInsPedSemUe");
+    }
+
+    /**
+     * Container's getter for ResultatsFilUeSemestreVO1.
+     * @return ResultatsFilUeSemestreVO1
+     */
+    public ResultatsFilUeSemestreVOImpl getResultatsFilUeSemestreVO() {
+        return (ResultatsFilUeSemestreVOImpl) findViewObject("ResultatsFilUeSemestreVO");
+    }
+
+    /**
+     * Container's getter for NotesModeEnseignementVO1.
+     * @return NotesModeEnseignementVO1
+     */
+    public NotesModeEnseignementVOImpl getNotesModeEnseignementVO() {
+        return (NotesModeEnseignementVOImpl) findViewObject("NotesModeEnseignementVO");
+    }
+
+    /**
+     * Container's getter for ResultatUEToNoteModEnsVL1.
+     * @return ResultatUEToNoteModEnsVL1
+     */
+    public ViewLinkImpl getResultatUEToNoteModEnsVL1() {
+        return (ViewLinkImpl) findViewLink("ResultatUEToNoteModEnsVL1");
+    }
+
+    /**
+     * Container's getter for MoyenneUE1.
+     * @return MoyenneUE1
+     */
+    public MoyenneUEImpl getMoyenneUE() {
+        return (MoyenneUEImpl) findViewObject("MoyenneUE");
+    }
+
+    /**
+     * Container's getter for PourcentageCC_CT_ROVO1.
+     * @return PourcentageCC_CT_ROVO1
+     */
+    public PourcentageCC_CT_ROVOImpl getPourcentageCC_CT_ROVO() {
+        return (PourcentageCC_CT_ROVOImpl) findViewObject("PourcentageCC_CT_ROVO");
+    }
+
+    /**
+     * Container's getter for FilUeByFilEc1.
+     * @return FilUeByFilEc1
+     */
+    public FilUeByFilEcImpl getFilUeByFilEc() {
+        return (FilUeByFilEcImpl) findViewObject("FilUeByFilEc");
+    }
+
+
+    /**
+     * Container's getter for ResultatFilUeSemestreROVO1.
+     * @return ResultatFilUeSemestreROVO1
+     */
+    public ResultatFilUeSemestreROVOImpl getResultatFilUeSemestreROVO() {
+        return (ResultatFilUeSemestreROVOImpl) findViewObject("ResultatFilUeSemestreROVO");
+    }
+
+    /**
+     * Container's getter for ResultatSemestreToResultatFilUeSemROVOVL1.
+     * @return ResultatSemestreToResultatFilUeSemROVOVL1
+     */
+    public ViewLinkImpl getResultatSemestreToResultatFilUeSemROVOVL1() {
+        return (ViewLinkImpl) findViewLink("ResultatSemestreToResultatFilUeSemROVOVL1");
+    }
+
+    /**
+     * Container's getter for NotesModeEnseignementVO1.
+     * @return NotesModeEnseignementVO1
+     */
+    public NotesModeEnseignementVOImpl getNotesModeEnseignementVO1() {
+        return (NotesModeEnseignementVOImpl) findViewObject("NotesModeEnseignementVO1");
+    }
+
+    /**
+     * Container's getter for ResultatFilUESemestreROVOToNoteModeEns1.
+     * @return ResultatFilUESemestreROVOToNoteModeEns1
+     */
+    public ViewLinkImpl getResultatFilUESemestreROVOToNoteModeEns1() {
+        return (ViewLinkImpl) findViewLink("ResultatFilUESemestreROVOToNoteModeEns1");
+    }
+
+    /**
+     * Container's getter for AnonymatParcoursROVO1.
+     * @return AnonymatParcoursROVO1
+     */
+    public AnonymatParcoursROVOImpl getAnonymatParcours() {
+        return (AnonymatParcoursROVOImpl) findViewObject("AnonymatParcours");
+    }
+
+    /**
+     * Container's getter for AnoGenParcours1.
+     * @return AnoGenParcours1
+     */
+    public AnoGenParcoursImpl getAnoGenParcours() {
+        return (AnoGenParcoursImpl) findViewObject("AnoGenParcours");
+    }
+
+    /**
+     * Container's getter for AllInteFilEcROVO1.
+     * @return AllInteFilEcROVO1
+     */
+    public AllInteFilEcROVOImpl getAllInteFilEcROVO() {
+        return (AllInteFilEcROVOImpl) findViewObject("AllInteFilEcROVO");
+    }
+
+    /**
+     * Container's getter for AllEcFilUe1.
+     * @return AllEcFilUe1
+    
+    public AllEcFilUeImpl getAllEcFilUe() {
+        return (AllEcFilUeImpl) findViewObject("AllEcFilUe");
+    } */
+
+    /**
+     * Container's getter for ReglesCompensationPArcoursROVO1.
+     * @return ReglesCompensationPArcoursROVO1
+     */
+    public ReglesCompensationPArcoursROVOImpl getReglesCompensationPArcoursROVO() {
+        return (ReglesCompensationPArcoursROVOImpl) findViewObject("ReglesCompensationPArcoursROVO");
+    }
+
+    /**
+     * Container's getter for IsMaquetteUsedROVO1.
+     * @return IsMaquetteUsedROVO1
+     */
+    public IsMaquetteUsedROVOImpl getIsMaquetteUsedROVO() {
+        return (IsMaquetteUsedROVOImpl) findViewObject("IsMaquetteUsedROVO");
+    }
+
+    /**
+     * Container's getter for DelibSemUeEtudiantROVO1.
+     * @return DelibSemUeEtudiantROVO1
+     */
+    public DelibSemUeEtudiantROVOImpl getDelibSemUeEtudiant() {
+        return (DelibSemUeEtudiantROVOImpl) findViewObject("DelibSemUeEtudiant");
+    }
+
+    /**
+     * Container's getter for isEtudiantNumeroValide1.
+     * @return isEtudiantNumeroValide1
+     */
+    public isEtudiantNumeroValideImpl getisEtudiantNumeroValide() {
+        return (isEtudiantNumeroValideImpl) findViewObject("isEtudiantNumeroValide");
+    }
+
+    /**
+     * Container's getter for DetailsSemestreEtudiant1.
+     * @return DetailsSemestreEtudiant1
+     */
+    public DetailsSemestreEtudiantImpl getDetailsSemestreEtudiant() {
+        return (DetailsSemestreEtudiantImpl) findViewObject("DetailsSemestreEtudiant");
+    }
+
+    /**
+     * Container's getter for DetailsAnnEtudiant1.
+     * @return DetailsAnnEtudiant1
+     */
+    public DetailsAnnEtudiantImpl getDetailsAnnEtudiant() {
+        return (DetailsAnnEtudiantImpl) findViewObject("DetailsAnnEtudiant");
+    }
+
+    /**
+     * Container's getter for isNoteModeEnsInterExist1.
+     * @return isNoteModeEnsInterExist1
+     */
+    public ViewObjectImpl getisNoteModeEnsInterExist1() {
+        return (ViewObjectImpl) findViewObject("isNoteModeEnsInterExist1");
+    }
+
+    /**
+     * Container's getter for HistoriquesStructuresVO1.
+     * @return HistoriquesStructuresVO1
+     */
+    public ViewObjectImpl getHistoriquesStructuresVO1() {
+        return (ViewObjectImpl) findViewObject("HistoriquesStructuresVO1");
+    }
+
+    /**
+     * Container's getter for StructureToHStructureVL1.
+     * @return StructureToHStructureVL1
+     */
+    public ViewLinkImpl getStructureToHStructureVL1() {
+        return (ViewLinkImpl) findViewLink("StructureToHStructureVL1");
+    }
+
+    /**
+     * Container's getter for GroupeSaisieEtudiantROVO1.
+     * @return GroupeSaisieEtudiantROVO1
+     */
+    public ViewObjectImpl getGroupeSaisieEtudiantROVO1() {
+        return (ViewObjectImpl) findViewObject("GroupeSaisieEtudiantROVO1");
+    }
+
+    /**
+     * Container's getter for GroupeSaisiePcrsToGroupeSaisieEtdVL1.
+     * @return GroupeSaisiePcrsToGroupeSaisieEtdVL1
+     */
+    public ViewLinkImpl getGroupeSaisiePcrsToGroupeSaisieEtdVL1() {
+        return (ViewLinkImpl) findViewLink("GroupeSaisiePcrsToGroupeSaisieEtdVL1");
+    }
+
+    /**
+     * Container's getter for isSess1Closed1.
+     * @return isSess1Closed1
+     */
+    public isSess1ClosedImpl getisSess1Closed1() {
+        return (isSess1ClosedImpl) findViewObject("isSess1Closed1");
+    }
+
+    /**
+     * Container's getter for isJuryPdtROVO1.
+     * @return isJuryPdtROVO1
+     */
+    public isJuryPdtROVOImpl getisJuryPdtROVO() {
+        return (isJuryPdtROVOImpl) findViewObject("isJuryPdtROVO");
+    }
+
+    /**
+     * Container's getter for CalParcoursAnnee1.
+     * @return CalParcoursAnnee1
+     */
+    public CalParcoursAnneeImpl getCalParcoursAnnee() {
+        return (CalParcoursAnneeImpl) findViewObject("CalParcoursAnnee");
+    }
+
+    /**
+     * Container's getter for IsCalExist1.
+     * @return IsCalExist1
+     */
+    public IsCalExistImpl getIsCalExist() {
+        return (IsCalExistImpl) findViewObject("IsCalExist");
+    }
+
+
+    /**
+     * Container's getter for UtilisateursROVO1.
+     * @return UtilisateursROVO1
+     */
+    public ViewObjectImpl getUtilisateursROVO1() {
+        return (ViewObjectImpl) findViewObject("UtilisateursROVO1");
+    }
+
+    /**
+     * Container's getter for UserToStructureVL1.
+     * @return UserToStructureVL1
+     */
+    public ViewLinkImpl getUserToStructureVL1() {
+        return (ViewLinkImpl) findViewLink("UserToStructureVL1");
+    }
+
+    /**
+     * Container's getter for IsResponsableFilUe1.
+     * @return IsResponsableFilUe1
+     */
+    public IsResponsableFilUeImpl getIsResponsableFilUe() {
+        return (IsResponsableFilUeImpl) findViewObject("IsResponsableFilUe");
+    }
+
+    /**
+     * Container's getter for IsResponsableFilEc1.
+     * @return IsResponsableFilEc1
+     */
+    public IsResponsableFilEcImpl getIsResponsableFilEc() {
+        return (IsResponsableFilEcImpl) findViewObject("IsResponsableFilEc");
+    }
+
+    /**
+     * Container's getter for StructureAccesROVO1.
+     * @return StructureAccesROVO1
+     */
+    public StructureAccesROVOImpl getStructureAcces() {
+        return (StructureAccesROVOImpl) findViewObject("StructureAcces");
+    }
+    /**
+     * Container's getter for IsDelibCalendierROVO1.
+     * @return IsDelibCalendierROVO1
+     */
+    public IsDelibCalendierROVOImpl getIsDelibCalendier() {
+        return (IsDelibCalendierROVOImpl) findViewObject("IsDelibCalendier");
+    }
+
+
+    /**
+     * Container's getter for UtilisateurNiveauFormationRO1.
+     * @return UtilisateurNiveauFormationRO1
+     */
+    public UtilisateurNiveauFormationROImpl getUtilisateurNiveauFormationRO1() {
+        return (UtilisateurNiveauFormationROImpl) findViewObject("UtilisateurNiveauFormationRO1");
+    }
+
+    /**
+     * Container's getter for UtilisateurToUtilisateurNiveau1.
+     * @return UtilisateurToUtilisateurNiveau1
+     */
+    public ViewLinkImpl getUtilisateurToUtilisateurNiveau1() {
+        return (ViewLinkImpl) findViewLink("UtilisateurToUtilisateurNiveau1");
+    }
+
+    /**
+     * Container's getter for GetRoleROVO1.
+     * @return GetRoleROVO1
+     */
+    public GetRoleROVOImpl getGetRoleROVO() {
+        return (GetRoleROVOImpl) findViewObject("GetRoleROVO");
+    }
+
+    /**
+     * Container's getter for IsUserRoleExistROVO1.
+     * @return IsUserRoleExistROVO1
+     */
+    public IsUserRoleExistROVOImpl getIsUserRoleExistROVO() {
+        return (IsUserRoleExistROVOImpl) findViewObject("IsUserRoleExistROVO");
+    }
+
+
+    /**
+     * Container's getter for AnoGenParcours1.
+     * @return AnoGenParcours1
+     
+    public AnoGenParcoursImpl getAnoGenParcours() {
+        return (AnoGenParcoursImpl) findViewObject("AnoGenParcours");
+    }*/
+
+    /**
+     * Container's getter for AllInteFilEcROVO1.
+     * @return AllInteFilEcROVO1
+     
+    public AllInteFilEcROVOImpl getAllInteFilEcROVO() {
+        return (AllInteFilEcROVOImpl) findViewObject("AllInteFilEcROVO");
+    }*/
+
+    /**
+     * Container's getter for AllEcFilUe1.
+     * @return AllEcFilUe1
+     */
+    public AllEcFilUeImpl getAllEcFilUe() {
+        return (AllEcFilUeImpl) findViewObject("AllEcFilUe");
+    }
+
+    /**
+     * Container's getter for ReglesCompensationPArcoursROVO1.
+     * @return ReglesCompensationPArcoursROVO1
+     
+    public ReglesCompensationPArcoursROVOImpl getReglesCompensationPArcoursROVO() {
+        return (ReglesCompensationPArcoursROVOImpl) findViewObject("ReglesCompensationPArcoursROVO");
+    }*/
+
+    /**
+     * Container's getter for IsMaquetteUsedROVO1.
+     * @return IsMaquetteUsedROVO1
+     
+    public IsMaquetteUsedROVOImpl getIsMaquetteUsedROVO() {
+        return (IsMaquetteUsedROVOImpl) findViewObject("IsMaquetteUsedROVO");
+    }*/
+
+    /**
+     * Container's getter for DelibSemUeEtudiantROVO1.
+     * @return DelibSemUeEtudiantROVO1
+     
+    public DelibSemUeEtudiantROVOImpl getDelibSemUeEtudiant() {
+        return (DelibSemUeEtudiantROVOImpl) findViewObject("DelibSemUeEtudiant");
+    }*/
+
+    /**
+     * Container's getter for isEtudiantNumeroValide1.
+     * @return isEtudiantNumeroValide1
+     
+    public isEtudiantNumeroValideImpl getisEtudiantNumeroValide() {
+        return (isEtudiantNumeroValideImpl) findViewObject("isEtudiantNumeroValide");
+    }*/
+
+    /**
+     * Container's getter for DetailsSemestreEtudiant1.
+     * @return DetailsSemestreEtudiant1
+     
+    public DetailsSemestreEtudiantImpl getDetailsSemestreEtudiant() {
+        return (DetailsSemestreEtudiantImpl) findViewObject("DetailsSemestreEtudiant");
+    }*/
+
+    /**
+     * Container's getter for DetailsAnnEtudiant1.
+     * @return DetailsAnnEtudiant1
+     
+    public DetailsAnnEtudiantImpl getDetailsAnnEtudiant() {
+        return (DetailsAnnEtudiantImpl) findViewObject("DetailsAnnEtudiant");
+    }*/
+
+    /**
+     * Container's getter for isNoteModeEnsInterExist1.
+     * @return isNoteModeEnsInterExist1
+     
+    public ViewObjectImpl getisNoteModeEnsInterExist1() {
+        return (ViewObjectImpl) findViewObject("isNoteModeEnsInterExist1");
+    }*/
+
+    /**
+     * Container's getter for HistoriquesStructuresVO1.
+     * @return HistoriquesStructuresVO1
+     
+    public ViewObjectImpl getHistoriquesStructuresVO1() {
+        return (ViewObjectImpl) findViewObject("HistoriquesStructuresVO1");
+    }*/
+
+    /**
+     * Container's getter for StructureToHStructureVL1.
+     * @return StructureToHStructureVL1
+     
+    public ViewLinkImpl getStructureToHStructureVL1() {
+        return (ViewLinkImpl) findViewLink("StructureToHStructureVL1");
+    }*/
+
+    /**
+     * Container's getter for GroupeSaisieEtudiantROVO1.
+     * @return GroupeSaisieEtudiantROVO1
+     
+    public ViewObjectImpl getGroupeSaisieEtudiantROVO1() {
+        return (ViewObjectImpl) findViewObject("GroupeSaisieEtudiantROVO1");
+    }*/
+
+    /**
+     * Container's getter for GroupeSaisiePcrsToGroupeSaisieEtdVL1.
+     * @return GroupeSaisiePcrsToGroupeSaisieEtdVL1
+     
+    public ViewLinkImpl getGroupeSaisiePcrsToGroupeSaisieEtdVL1() {
+        return (ViewLinkImpl) findViewLink("GroupeSaisiePcrsToGroupeSaisieEtdVL1");
+    }*/
+
+    /**
+     * Container's getter for isSess1Closed1.
+     * @return isSess1Closed1
+     
+    public isSess1ClosedImpl getisSess1Closed1() {
+        return (isSess1ClosedImpl) findViewObject("isSess1Closed1");
+    }*/
+
+    /**
+     * Container's getter for isJuryPdtROVO1.
+     * @return isJuryPdtROVO1
+     
+    public isJuryPdtROVOImpl getisJuryPdtROVO() {
+        return (isJuryPdtROVOImpl) findViewObject("isJuryPdtROVO");
+    }*/
+
+    /**
+     * Container's getter for CalParcoursAnnee1.
+     * @return CalParcoursAnnee1
+     
+    public CalParcoursAnneeImpl getCalParcoursAnnee() {
+        return (CalParcoursAnneeImpl) findViewObject("CalParcoursAnnee");
+    }*/
+
+    /**
+     * Container's getter for IsCalExist1.
+     * @return IsCalExist1
+    
+    public IsCalExistImpl getIsCalExist() {
+        return (IsCalExistImpl) findViewObject("IsCalExist");
+    } */
+
+
+    /**
+     * Container's getter for UtilisateursROVO1.
+     * @return UtilisateursROVO1
+     
+    public ViewObjectImpl getUtilisateursROVO1() {
+        return (ViewObjectImpl) findViewObject("UtilisateursROVO1");
+    }*/
+
+    /**
+     * Container's getter for UserToStructureVL1.
+     * @return UserToStructureVL1
+     
+    public ViewLinkImpl getUserToStructureVL1() {
+        return (ViewLinkImpl) findViewLink("UserToStructureVL1");
+    }*/
+
+    /**
+     * Container's getter for IsResponsableFilUe1.
+     * @return IsResponsableFilUe1
+     
+    public IsResponsableFilUeImpl getIsResponsableFilUe() {
+        return (IsResponsableFilUeImpl) findViewObject("IsResponsableFilUe");
+    }*/
+
+    /**
+     * Container's getter for IsResponsableFilEc1.
+     * @return IsResponsableFilEc1
+     
+    public IsResponsableFilEcImpl getIsResponsableFilEc() {
+        return (IsResponsableFilEcImpl) findViewObject("IsResponsableFilEc");
+    }*/
+
+    /**
+     * Container's getter for StructureAccesROVO1.
+     * @return StructureAccesROVO1
+     
+    public StructureAccesROVOImpl getStructureAcces() {
+        return (StructureAccesROVOImpl) findViewObject("StructureAcces");
+    }*/
+
+    /**
+     * Container's getter for IsDelibCalendierROVO1.
+     * @return IsDelibCalendierROVO1
+     
+    public IsDelibCalendierROVOImpl getIsDelibCalendier() {
+        return (IsDelibCalendierROVOImpl) findViewObject("IsDelibCalendier");
+    }*/
+
+
+    /**
+     * Container's getter for UtilisateurNiveauFormationRO1.
+     * @return UtilisateurNiveauFormationRO1
+     
+    public UtilisateurNiveauFormationROImpl getUtilisateurNiveauFormationRO1() {
+        return (UtilisateurNiveauFormationROImpl) findViewObject("UtilisateurNiveauFormationRO1");
+    }*/
+
+    /**
+     * Container's getter for UtilisateurToUtilisateurNiveau1.
+     * @return UtilisateurToUtilisateurNiveau1
+     
+    public ViewLinkImpl getUtilisateurToUtilisateurNiveau1() {
+        return (ViewLinkImpl) findViewLink("UtilisateurToUtilisateurNiveau1");
+    }*/
+
+    /**
+     * Container's getter for GetRoleROVO1.
+     * @return GetRoleROVO1
+     
+    public GetRoleROVOImpl getGetRoleROVO() {
+        return (GetRoleROVOImpl) findViewObject("GetRoleROVO");
+    }*/
+
+    /**
+     * Container's getter for IsUserRoleExistROVO1.
+     * @return IsUserRoleExistROVO1
+
+    public IsUserRoleExistROVOImpl getIsUserRoleExistROVO() {
+        return (IsUserRoleExistROVOImpl) findViewObject("IsUserRoleExistROVO");
+    }*/
+
+    /**
+     * Container's getter for IsAnParcoursClosed1.
+     * @return IsAnParcoursClosed1
+     */
+    public IsAnParcoursClosedImpl getIsAnParcoursClosed() {
+        return (IsAnParcoursClosedImpl) findViewObject("IsAnParcoursClosed");
+    }
+
+    /**
+     * Container's getter for IsDelibDefEnd1.
+     * @return IsDelibDefEnd1
+     */
+    public IsDelibDefEndImpl getIsDelibDefEnd() {
+        return (IsDelibDefEndImpl) findViewObject("IsDelibDefEnd");
+    }
+
+    /**
+     * Container's getter for IsDelibDefStart1.
+     * @return IsDelibDefStart1
+     */
+    public IsDelibDefStartImpl getIsDelibDefStart() {
+        return (IsDelibDefStartImpl) findViewObject("IsDelibDefStart");
+    }
+
+    /**
+     * Container's getter for IsDelibProvEnd1.
+     * @return IsDelibProvEnd1
+     */
+    public IsDelibProvEndImpl getIsDelibProvEnd() {
+        return (IsDelibProvEndImpl) findViewObject("IsDelibProvEnd");
+    }
+
+    /**
+     * Container's getter for IsDelibProvStart1.
+     * @return IsDelibProvStart1
+     */
+    public IsDelibProvStartImpl getIsDelibProvStart() {
+        return (IsDelibProvStartImpl) findViewObject("IsDelibProvStart");
+    }
+
+    /**
+     * Container's getter for IsReclStart1.
+     * @return IsReclStart1
+     */
+    public IsReclStartImpl getIsReclStart() {
+        return (IsReclStartImpl) findViewObject("IsReclStart");
+    }
+
+    /**
+     * Container's getter for IsReclEnd1.
+     * @return IsReclEnd1
+     */
+    public IsReclEndImpl getIsReclEnd() {
+        return (IsReclEndImpl) findViewObject("IsReclEnd");
+    }
+}

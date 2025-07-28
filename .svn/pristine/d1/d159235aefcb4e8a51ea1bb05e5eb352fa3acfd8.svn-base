@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ListePersAutorise"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.ListePersAutoriseRowImpl"
+  ComponentClass="model.readOnlyView.ListePersAutoriseImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.ListePersAutorise_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="nom_var_bn"
+    Kind="viewcriteria"
+    Type="java.lang.String"/>
+  <Variable
+    Name="prenom_var_bn"
+    Kind="viewcriteria"
+    Type="java.lang.String"/>
+  <Variable
+    Name="cin_var_bn"
+    Kind="viewcriteria"
+    Type="java.lang.String"/>
+  <Variable
+    Name="id_parc_maquette"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select p.id_personne,etu.ID_ETUDIANT,etu.numero, p.nom , p.prenoms , p.date_naissance , p.lieu_naissance ,p.adresse  , p.email_personnel  , p.piece_identification   
+from inscriptions_admin ia      
+join inscriptions_pedagogiques ip on ia.id_inscription_admin = ip.id_inscription_admin      
+join ETUDIANTS etu on etu.ID_ETUDIANT=ia.ID_ETUDIANT                      
+join PERSONNES p on p.ID_PERSONNE=etu.ID_PERSONNE  
+join autorises a on a.id_personne = p.id_personne and ip.id_parcours_maquet_annee = a.id_parcours_maquet_annee 
+where ip.id_parcours_maquet_annee=:id_parc_maquette and ia.ID_ANNEES_UNIVERS=:id_annee]]></SQLQuery>
+  <ViewAttribute
+    Name="IdPersonne"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_PERSONNE"
+    Expression="ID_PERSONNE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenoms"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMS"
+    Expression="PRENOMS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_NAISSANCE"
+    Expression="DATE_NAISSANCE"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="LieuNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LIEU_NAISSANCE"
+    Expression="LIEU_NAISSANCE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Adresse"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ADRESSE"
+    Expression="ADRESSE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EmailPersonnel"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EMAIL_PERSONNEL"
+    Expression="EMAIL_PERSONNEL"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PieceIdentification"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PIECE_IDENTIFICATION"
+    Expression="PIECE_IDENTIFICATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="ListePersAutoriseCriteria"
+    ViewObjectName="model.readOnlyView.ListePersAutorise"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="ListePersAutoriseCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="Nom"
+        ViewAttribute="Nom"
+        Operator="STARTSWITH"
+        Conjunction="AND"
+        Required="Optional"
+        Value=":nom_var_bn"
+        IsBindVarValue="true"/>
+      <ViewCriteriaItem
+        Name="Prenoms"
+        ViewAttribute="Prenoms"
+        Operator="STARTSWITH"
+        Conjunction="AND"
+        Required="Optional"
+        Value=":prenom_var_bn"
+        IsBindVarValue="true"/>
+      <ViewCriteriaItem
+        Name="PieceIdentification"
+        ViewAttribute="PieceIdentification"
+        Operator="STARTSWITH"
+        Conjunction="AND"
+        Required="Optional"
+        Value=":cin_var_bn"
+        IsBindVarValue="true"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="IdPersonne"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

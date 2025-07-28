@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="menu-tf">
+    <default-activity>ExecuteWithParams</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__5">
+      <managed-bean-name>MenuBean</managed-bean-name>
+      <managed-bean-class>view.beans.MenuBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <exception-handler>ExceptionHandler</exception-handler>
+    <view id="menu">
+      <page>/menu/menu.jsff</page>
+    </view>
+    <method-call id="ExecuteWithParams">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="menu1">
+      <page>/menu/menu1.jsff</page>
+    </view>
+    <method-call id="ExceptionHandler">
+      <method>#{bindings.ExceptionHandler.execute}</method>
+      <outcome>
+        <fixed-outcome>ExceptionHandler</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__3">
+      <from-activity-id>ExecuteWithParams</from-activity-id>
+      <control-flow-case id="__4">
+        <from-outcome>ExecuteWithParams</from-outcome>
+        <to-activity-id>menu1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__1">
+      <from-activity-id>ExceptionHandler</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>ExceptionHandler</from-outcome>
+        <to-activity-id>menu1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

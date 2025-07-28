@@ -1,0 +1,405 @@
+package view.beans.evaluation.deliberation_ann;
+
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import oracle.adf.model.BindingContext;
+
+import oracle.adf.model.binding.DCBindingContainer;
+import oracle.adf.model.binding.DCIteratorBinding;
+
+import oracle.adf.view.rich.component.rich.RichPopup;
+import oracle.adf.view.rich.component.rich.data.RichTable;
+import oracle.adf.view.rich.component.rich.input.RichInputText;
+
+import oracle.adf.view.rich.component.rich.layout.RichPanelHeader;
+import oracle.adf.view.rich.component.rich.nav.RichButton;
+import oracle.adf.view.rich.component.rich.output.RichPanelCollection;
+import oracle.adf.view.rich.context.AdfFacesContext;
+
+import oracle.binding.BindingContainer;
+
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+
+import java.sql.*;
+
+import javax.sql.RowSet;
+
+import java.util.Map;
+
+import oracle.adf.share.ADFContext;
+
+public class DeliberationAnnuelelBean {
+    private RichInputText first;
+    private RichInputText second;
+    private RichTable delibAnTable;
+    private RichPanelHeader resAn;
+    private RichPopup popInf;
+    private RichButton deliberer;
+    private RichButton pvprovisoire;
+    private RichButton cloturer;
+    private RichTable deliberationTable;
+    Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    private Integer parcours = Integer.parseInt(sessionScope.get("id_niv_form_parcours").toString());
+    private Integer anne_univers = Integer.parseInt(sessionScope.get("id_annee").toString());
+    private Integer session = Integer.parseInt(sessionScope.get("id_session").toString());
+    private Integer utilisateur = Integer.parseInt(sessionScope.get("id_user").toString());
+    private Integer calendrier = Integer.parseInt(sessionScope.get("id_calendrier").toString());
+    private Integer semestre = Integer.parseInt(sessionScope.get("id_smstre").toString());
+    private RichPanelCollection pancollect;
+
+    public DeliberationAnnuelelBean() {
+        }
+
+    public BindingContainer getBindings() {
+        return (BindingContainer) BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void Search(ActionEvent actionEvent) {
+        
+        Integer moyenne1 = 0;
+        Integer moyenne2 = 20;
+        Integer credit1 = 0;
+        Integer credit2 = 60;
+        BindingContext cntx = BindingContext.getCurrent();
+        DCBindingContainer cbinding = (DCBindingContainer) cntx.getCurrentBindingsEntry();
+
+        DCIteratorBinding dciter_filtre = (DCIteratorBinding) cbinding.get("FiltreAnuelleROVO1Iterator");
+        Row currentFiltre = dciter_filtre.getCurrentRow();
+        //System.out.println("libelle currentFiltre"+currentFiltre.getAttribute("libelle"));
+
+        DCIteratorBinding dciter_filtre1 = (DCIteratorBinding) cbinding.get("FiltreModeDelibAn1Iterator");
+        Row currentFiltre1 = dciter_filtre1.getCurrentRow();
+
+        
+        if (currentFiltre.getAttribute("libelle").equals("Moyenne")) {
+            if (this.first.getValue() != null) {
+                moyenne1 = Integer.parseInt(this.first
+                                                .getValue()
+                                                .toString());
+            }
+            if (this.second.getValue() != null) {
+                moyenne2 = Integer.parseInt(this.second
+                                                .getValue()
+                                                .toString());
+            }
+            //System.out.println("SortByMoyenne");
+        }
+        if (currentFiltre.getAttribute("libelle").equals("Crédit")) {
+            if (this.first.getValue() != null) {
+                credit1 = Integer.parseInt(this.first
+                                               .getValue()
+                                               .toString());
+            }
+            if (this.second.getValue() != null) {
+                credit2 = Integer.parseInt(this.second
+                                               .getValue()
+                                               .toString());
+            }
+        }
+        if (moyenne1 > moyenne2) {
+            Integer m = moyenne1;
+            moyenne1 = moyenne2;
+            moyenne2 = m;
+        }
+        if (credit1 > credit2) {
+            Integer c = credit1;
+            credit1 = credit2;
+            credit2 = c;
+        }
+        /*System.out.println("moyenne1 "+moyenne1);
+        System.out.println("moyenne2 "+moyenne2);
+        System.out.println("credit1 "+credit1);
+        System.out.println("credit2 "+credit2);*/
+        //System.out.println("currentFiltre.getAttribute(\"libelle\") "+currentFiltre.getAttribute("libelle"));
+        BindingContainer bindings = getBindings();
+        OperationBinding operationBinding = bindings.getOperationBinding("ExecuteWithParams");
+
+        //Variables doivent etre recupérer à partir de la session
+        operationBinding.getParamsMap().put("annee", getAnne_univers());
+        operationBinding.getParamsMap().put("calendrier", getCalendrier());
+        operationBinding.getParamsMap().put("parcours", getParcours());
+
+        //Variable recupéré à partir du formulaire
+        operationBinding.getParamsMap().put("moy1", moyenne1);
+        operationBinding.getParamsMap().put("moy2", moyenne2);
+        operationBinding.getParamsMap().put("cred1", credit1);
+        operationBinding.getParamsMap().put("cred2", credit2);
+        @SuppressWarnings("unused")
+        Object result = operationBinding.execute();
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPancollect());
+        AdfFacesContext.getCurrentInstance().addPartialTarget(this.getDelibAnTable());
+    }
+
+    public void setFirst(RichInputText first) {
+        this.first = first;
+    }
+
+    public RichInputText getFirst() {
+        return first;
+    }
+
+    public void setSecond(RichInputText second) {
+        this.second = second;
+    }
+
+    public RichInputText getSecond() {
+        return second;
+    }
+
+    public void setDelibAnTable(RichTable delibAnTable) {
+        this.delibAnTable = delibAnTable;
+    }
+
+    public RichTable getDelibAnTable() {
+        return delibAnTable;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void Deliberer(ActionEvent actionEvent) {
+        // L'objectif general de cette methode est : Appel de calculMoyenneAnnuelProc() aprés que toutes le necessaire est fait
+        // S'assurer que les semestres sont déja publiés
+        BindingContainer bindings = getBindings();
+
+        // Vérifier si les semestres sont publié
+        OperationBinding is_all_sem_publised = bindings.getOperationBinding("isPublishedAllSemestre");
+        is_all_sem_publised.getParamsMap().put("parcours", getParcours());
+        is_all_sem_publised.getParamsMap().put("annee", getAnne_univers());
+        is_all_sem_publised.getParamsMap().put("session", getSession());
+        Integer is_published_all_sem = (Integer) is_all_sem_publised.execute();
+        // System.out.println("is_closed : "+is_closed);
+        if (is_published_all_sem == 0) { // les deux semestres ne sont pas encore cloturer : donc impossible de délibérer
+            System.out.println("Publier toutes les semestres avant de faire la délibération annuelle");
+            RichPopup popup = this.getPopInf();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints);
+            return;
+        } else { // Semestre cloturer donc délibération possible
+            OperationBinding operationCalculMoyenne = bindings.getOperationBinding("CalculMoyenneAnnuel");
+            //Variable de Session
+            operationCalculMoyenne.getParamsMap().put("anne_univers", getAnne_univers());
+            operationCalculMoyenne.getParamsMap().put("parcours", getParcours());
+            operationCalculMoyenne.getParamsMap().put("utilisateur", getUtilisateur());
+            Object moyenne = operationCalculMoyenne.execute();
+            pvprovisoire.setDisabled(false);
+            cloturer.setDisabled(false);
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPvprovisoire());
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCloturer());
+
+            // Rafraichissement du tableau
+            OperationBinding operationRefresh = bindings.getOperationBinding("ExecuteWithParams");
+            //Variables doivent etre recupérer à partir de la session
+            operationRefresh.getParamsMap().put("annee", getAnne_univers());
+            operationRefresh.getParamsMap().put("calendrier", getCalendrier());
+            operationRefresh.getParamsMap().put("parcours", getParcours());
+
+            //Variable fixe pour recupérer toutes les lignes apres la délibération
+            operationRefresh.getParamsMap().put("moy1", 0);
+            operationRefresh.getParamsMap().put("moy2", 20);
+            operationRefresh.getParamsMap().put("cred1", 0);
+            operationRefresh.getParamsMap().put("cred2", 60);
+            Object res1 = operationRefresh.execute();
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getDelibAnTable());
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getResAn());
+        }
+    }
+
+    public void setResAn(RichPanelHeader resAn) {
+        this.resAn = resAn;
+    }
+
+    public RichPanelHeader getResAn() {
+        return resAn;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void Cloturer(ActionEvent actionEvent) {
+        System.out.println("Cloturer");
+        //Creer année suivante si pas existante
+        //Initialiser calendrier délibération sem 1 sess 1 parcours courant nouvelle année
+        
+        BindingContainer bindings = getBindings();
+        // Cloturer la premiere session if session normale
+        // ""       "" seconde           ""    ""   2
+        String action = "O";
+        if(session==1){
+        // reconduireRedoublancToSess2
+        }
+        else{
+        // reconduireNoteToAn
+        }
+
+        
+    }
+
+    public void setPopInf(RichPopup popInf) {
+        this.popInf = popInf;
+    }
+
+    public RichPopup getPopInf() {
+        return popInf;
+    }
+
+    public void setDeliberer(RichButton deliberer) {
+        this.deliberer = deliberer;
+    }
+
+    public RichButton getDeliberer() {
+        return deliberer;
+    }
+
+    public void setPvprovisoire(RichButton pvprovisoire) {
+        this.pvprovisoire = pvprovisoire;
+    }
+
+    public RichButton getPvprovisoire() {
+        return pvprovisoire;
+    }
+
+    public void setCloturer(RichButton cloturer) {
+        this.cloturer = cloturer;
+    }
+
+    public RichButton getCloturer() {
+        return cloturer;
+    }
+
+    public void CloseSession(ActionEvent actionEvent) {
+        // Si c'est la premiere session, on reconduit à la session 2 (ReconduireToSess2) ouverture de la sess2
+        // Si c'est la deuxiéme session, on reconduit à l'annee suivant (ReconduireToAnSuivant)
+        System.out.println("Fermeture de la session session ... ");
+        if (getSession() == 1) {
+            // call procedure reconduireRedoublantToSess2(anne, parcours, sess, user)
+
+        } else {
+            // call procedure reconduireRedoublantToAnSuivant(anne, parcours, sess, user)
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void DeliberationAnnuelle(ActionEvent actionEvent) {
+        // L'objectif general de cette methode est : Appel de calculMoyenneAnnuelProc() aprés que toutes le necessaire est fait
+        // S'assurer que les semestres sont déja publiés
+        String action = "O";
+        BindingContainer bindings = getBindings();
+        // Vérifier si les semestres sont publié 
+        OperationBinding is_all_sem_publised = bindings.getOperationBinding("isPublishedAllSemestre");
+        is_all_sem_publised.getParamsMap().put("parcours", getParcours());
+        is_all_sem_publised.getParamsMap().put("annee", getAnne_univers());
+        is_all_sem_publised.getParamsMap().put("session", getSession());
+        Integer is_published_all_sem = (Integer) is_all_sem_publised.execute();
+        if (is_published_all_sem == 0) { // les deux semestres ne sont pas encore cloturer : donc impossible de délibérer
+            System.out.println("Publier toutes les semestres avant de faire la délibération annuelle");
+            RichPopup popup = this.getPopInf();
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            //empty hints renders dialog in center of screen
+            popup.show(hints);
+            return;
+        } else {
+            // Semestre publié donc délibération possible
+            //1.Calcul Moyenne Annuelle
+            OperationBinding operationCalculMoyenne = bindings.getOperationBinding("CalculMoyenneAnnuel");
+            operationCalculMoyenne.getParamsMap().put("anne_univers", getAnne_univers());
+            operationCalculMoyenne.getParamsMap().put("parcours", getParcours());
+            operationCalculMoyenne.getParamsMap().put("calendrier", getCalendrier());
+            operationCalculMoyenne.getParamsMap().put("utilisateur", getUtilisateur());
+            Object moyenne = operationCalculMoyenne.execute();
+            //pvprovisoire.setDisabled(false);
+            //cloturer.setDisabled(false);
+            //2. Update Resultat
+            OperationBinding operationUpdate = bindings.getOperationBinding("UpdateResultat");
+            operationUpdate.getParamsMap().put("anne_univers", getAnne_univers());
+            operationUpdate.getParamsMap().put("parcours", getParcours());
+            operationUpdate.getParamsMap().put("utilisateur", getUtilisateur());
+            operationUpdate.execute();
+            //3. Deliberer
+            OperationBinding operationRefresh = bindings.getOperationBinding("DeliberationAnnuelle");
+            Object res1 = operationRefresh.execute();
+            //4.Publier
+            OperationBinding operationPublish = bindings.getOperationBinding("publierAnnee");      
+            operationPublish.getParamsMap().put("calendrier", getCalendrier());
+            operationPublish.getParamsMap().put("parcours", getParcours());
+            operationPublish.getParamsMap().put("action", action);
+            operationPublish.getParamsMap().put("utilisateur", getUtilisateur());
+            operationPublish.execute();
+            
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getPvprovisoire());
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getCloturer());
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getDeliberationTable());
+            AdfFacesContext.getCurrentInstance().addPartialTarget(this.getResAn());
+        }
+    }
+
+    public void setDeliberationTable(RichTable deliberationTable) {
+        this.deliberationTable = deliberationTable;
+    }
+
+    public RichTable getDeliberationTable() {
+        return deliberationTable;
+    }
+
+    public String OnPrintReleveClicked() {
+        System.out.println("Printing Action ...");
+        return null;
+    }
+
+    public void OnPrintReleveClick(ActionEvent actionEvent) {
+        System.out.println("Printing ActionListener ...");
+        DCIteratorBinding locIter = (DCIteratorBinding) getBindings().get("DélibérationAnnuelleIterator");
+        String num = locIter.getCurrentRow().getAttribute("Numero").toString();
+        System.out.println("Numero Etudiant : "+num);
+    }
+
+    public void setAnne_univers(Integer anne_univers) {
+        this.anne_univers = anne_univers;
+    }
+
+    public Integer getAnne_univers() {
+        return anne_univers;
+    }
+
+    public void setParcours(Integer parcours) {
+        this.parcours = parcours;
+    }
+
+    public Integer getParcours() {
+        return parcours;
+    }
+
+    public void setSession(Integer session) {
+        this.session = session;
+    }
+
+    public Integer getSession() {
+        return session;
+    }
+
+    public void setUtilisateur(Integer utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Integer getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setCalendrier(Integer calendrier) {
+        this.calendrier = calendrier;
+    }
+
+    public Integer getCalendrier() {
+        return calendrier;
+    }
+
+    public void setPancollect(RichPanelCollection pancollect) {
+        this.pancollect = pancollect;
+    }
+
+    public RichPanelCollection getPancollect() {
+        return pancollect;
+    }
+}

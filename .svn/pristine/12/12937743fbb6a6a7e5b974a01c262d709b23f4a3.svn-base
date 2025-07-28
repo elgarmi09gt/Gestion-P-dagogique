@@ -1,0 +1,264 @@
+package view.beans.paramSup.accesformation;
+
+import java.util.ArrayList;
+
+import java.util.Map;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+
+import oracle.adf.model.BindingContext;
+
+import oracle.adf.model.binding.DCBindingContainer;
+import oracle.adf.model.binding.DCIteratorBinding;
+import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPopup;
+import oracle.adf.view.rich.component.rich.data.RichTable;
+import oracle.adf.view.rich.component.rich.input.RichSelectOneChoice;
+
+import oracle.adf.view.rich.component.rich.layout.RichPanelGroupLayout;
+import oracle.adf.view.rich.component.rich.output.RichOutputFormatted;
+
+import oracle.adf.view.rich.context.AdfFacesContext;
+
+import oracle.binding.AttributeBinding;
+import oracle.binding.BindingContainer;
+import oracle.binding.OperationBinding;
+
+import oracle.jbo.Row;
+
+public class NiveauAccesBean {
+    private RichSelectOneChoice inputStructure;
+    private RichOutputFormatted idStructure;
+    private RichPopup pupupNotUserDetails;
+    private RichPopup popupNotNivDetails;
+    private RichTable niveauxFormationTable;
+    private RichPanelGroupLayout utiAccessTable;
+    private RichSelectOneChoice inputSpecialite;
+    private RichSelectOneChoice inputOption;
+    Map sessionScope = ADFContext.getCurrent().getSessionScope();
+    private Integer anne_univers = Integer.parseInt(sessionScope.get("id_annee").toString());
+    private Integer utilisateur = Integer.parseInt(sessionScope.get("id_user").toString());
+    private Integer id_hs = Integer.parseInt(sessionScope.get("id_hs").toString());
+    
+    @SuppressWarnings("unchecked")
+    public NiveauAccesBean() {
+       /* OperationBinding lesformations = BindingContext.getCurrent()
+                                                  .getCurrentBindingsEntry()
+                                                  .getOperationBinding("GetFormations");
+        lesformations.getParamsMap().put("s_id", 1);
+        lesformations.getParamsMap().put("annee", 2);
+        lesformations.execute();*/
+    }
+
+    public BindingContainer getBindings() {
+        return BindingContext.getCurrent().getCurrentBindingsEntry();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnStructureValueChange(ValueChangeEvent valueChangeEvent) {
+        BindingContainer container = BindingContext.getCurrent().getCurrentBindingsEntry();
+        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+        AttributeBinding attrIdBinding = (AttributeBinding) container.getControlBinding("IdStructure");
+        Integer Id = (Integer.parseInt(attrIdBinding.getInputValue().toString()));
+        //System.out.println("Id- " + Id);
+        OperationBinding lesEtudiants = BindingContext.getCurrent()
+                                                      .getCurrentBindingsEntry()
+                                                      .getOperationBinding("GetUserByStructure");
+        //lesEtudiants.getParamsMap().put("s_id", Id);
+        lesEtudiants.execute();
+
+    }
+
+    public void setInputStructure(RichSelectOneChoice inputStructure) {
+        this.inputStructure = inputStructure;
+    }
+
+    public RichSelectOneChoice getInputStructure() {
+        return inputStructure;
+    }
+
+    public void setIdStructure(RichOutputFormatted idStructure) {
+        this.idStructure = idStructure;
+    }
+
+    public RichOutputFormatted getIdStructure() {
+        return idStructure;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void AllowedAccesTo(ActionEvent actionEvent) {
+        BindingContainer bindings = getBindings();
+        //get current row and save its rowKey in view scope for later use
+        String specialite = this.getInputSpecialite().getValue().toString();
+        //String option = this.getInputOption().getValue().toString();
+        System.out.println("Specialité : "+specialite);
+        try {
+            // Recupére les utilisateur selectionner
+            OperationBinding usersSelected = bindings.getOperationBinding("getSelectedUsers");
+            ArrayList<Long> users = (ArrayList<Long>) usersSelected.execute();
+
+            if (users.size() != 0) {
+                // Pour chaque utilisateur lui accorder les accees choisies
+                OperationBinding niveauxSelected = bindings.getOperationBinding("getSelectedNiveauFormations");
+                ArrayList<Long> niveaux = (ArrayList<Long>) niveauxSelected.execute();
+                if (niveaux.size() != 0) {
+                    for (int usercounter = 0; usercounter < users.size(); usercounter++) {
+                        for (int nivcounter = 0; nivcounter < niveaux.size(); nivcounter++) {
+                            OperationBinding isAllowAcces = bindings.getOperationBinding("IsNivFormAccesAllowed");
+                            //isAllowAcces.getParamsMap().put("s", 1);
+                            isAllowAcces.getParamsMap().put("uti", users.get(usercounter));
+                            isAllowAcces.getParamsMap().put("niv", niveaux.get(nivcounter));
+                            //isAllowAcces.getParamsMap().put("annee", getAnne_univers());
+                            
+                            Object resul = isAllowAcces.execute();
+                           DCIteratorBinding iter = (DCIteratorBinding) BindingContext.getCurrent()
+                                                                     .getCurrentBindingsEntry()
+                                                                     .get("IsNivFormAccesAllowedIterator");
+                            Row crnt = iter.getCurrentRow();
+                            if (crnt == null) {
+                                OperationBinding opAllowAcces = bindings.getOperationBinding("AllowedAccessTo");
+                                opAllowAcces.getParamsMap().put("IdUtilisateur", users.get(usercounter));
+                                opAllowAcces.getParamsMap().put("UtiCree", getUtilisateur());
+                                opAllowAcces.getParamsMap().put("IdNiveauFormation", niveaux.get(nivcounter));
+                                //recuperer la spécialité et l'option s'il y en a
+                                opAllowAcces.getParamsMap().put("IdNiveauFormationSpecialite", null);
+                                opAllowAcces.getParamsMap().put("IdNivFormSpecOption", null);
+                                resul = opAllowAcces.execute();
+                            }
+                            else{
+                                System.out.println("Acces déja accorder : IdUtilisateur "+users.get(usercounter)+" IdNiveauFormation "+niveaux.get(nivcounter));
+                            }
+                        }
+                    }
+                    // Tout ce passe bien On commit
+                    OperationBinding operationCommit = bindings.getOperationBinding("Commit");
+                    Object result = operationCommit.execute();
+
+                    // Réexecuter les VO pour actualiser les tableaux
+                    OperationBinding lesNiveaux = BindingContext.getCurrent()
+                                                                .getCurrentBindingsEntry()
+                                                                .getOperationBinding("GetFormations");
+                    //lesNiveaux.getParamsMap().put("annee", getAnne_univers());
+                    //lesNiveaux.getParamsMap().put("s_id", 1);
+                    lesNiveaux.execute();
+
+                    OperationBinding lesAcces = BindingContext.getCurrent()
+                                                              .getCurrentBindingsEntry()
+                                                              .getOperationBinding("GetUtilisateurNivForm");
+                    //lesAcces.getParamsMap().put("s_id", 1);
+                    //lesAcces.getParamsMap().put("id_annee", getAnne_univers());
+                    lesAcces.execute();
+
+                    AdfFacesContext.getCurrentInstance().addPartialTarget(this.getNiveauxFormationTable());
+                    AdfFacesContext.getCurrentInstance().addPartialTarget(this.getUtiAccessTable());
+                    //AdfFacesContext.getCurrentInstance().addPartialTarget(this.getEtudiantTable());
+
+                } else {
+                    //Si aucun niveau de formation n'est selectionné
+                    RichPopup popup = this.getPopupNotNivDetails();
+                    RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                    popup.show(hints);
+                }
+            } else {
+                // Si aucun utilisateur n'est selectionner
+                RichPopup popup = this.getPupupNotUserDetails();
+                RichPopup.PopupHints hints = new RichPopup.PopupHints();
+                popup.show(hints);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void setPupupNotUserDetails(RichPopup pupupNotUserDetails) {
+        this.pupupNotUserDetails = pupupNotUserDetails;
+    }
+
+    public RichPopup getPupupNotUserDetails() {
+        return pupupNotUserDetails;
+    }
+
+    public void setPopupNotNivDetails(RichPopup popupNotNivDetails) {
+        this.popupNotNivDetails = popupNotNivDetails;
+    }
+
+    public RichPopup getPopupNotNivDetails() {
+        return popupNotNivDetails;
+    }
+
+    public void setNiveauxFormationTable(RichTable niveauxFormationTable) {
+        this.niveauxFormationTable = niveauxFormationTable;
+    }
+
+    public RichTable getNiveauxFormationTable() {
+        return niveauxFormationTable;
+    }
+
+    public void setUtiAccessTable(RichPanelGroupLayout utiAccessTable) {
+        this.utiAccessTable = utiAccessTable;
+    }
+
+    public RichPanelGroupLayout getUtiAccessTable() {
+        return utiAccessTable;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void OnSpecialitevalueChange(ValueChangeEvent valueChangeEvent) {
+        BindingContext cntx = BindingContext.getCurrent();
+        DCBindingContainer cbinding = (DCBindingContainer) cntx.getCurrentBindingsEntry();
+        UIComponent comp = valueChangeEvent.getComponent();
+        comp.processUpdates(FacesContext.getCurrentInstance());
+        //get current row and save its rowKey in view scope for later use
+        DCIteratorBinding dciter = (DCIteratorBinding) cbinding.get("SpecialiteROVO1Iterator");
+        Row currentSpecialite = dciter.getCurrentRow();
+        //System.out.print("XXXX " + currentSpecialite.getAttribute("IdSpecialite"));
+
+        BindingContainer bindings = getBindings();
+        OperationBinding operationBinding = bindings.getOperationBinding("GetOptionBySpecialite");
+        operationBinding.getParamsMap().put("sp", currentSpecialite.getAttribute("IdNiveauFormationSpecialite"));
+        Object result = operationBinding.execute();
+    }
+
+    public void setInputSpecialite(RichSelectOneChoice inputSpecialite) {
+        this.inputSpecialite = inputSpecialite;
+    }
+
+    public RichSelectOneChoice getInputSpecialite() {
+        return inputSpecialite;
+    }
+
+    public void setInputOption(RichSelectOneChoice inputOption) {
+        this.inputOption = inputOption;
+    }
+
+    public RichSelectOneChoice getInputOption() {
+        return inputOption;
+    }
+
+    public void setAnne_univers(Integer anne_univers) {
+        this.anne_univers = anne_univers;
+    }
+
+    public Integer getAnne_univers() {
+        return anne_univers;
+    }
+
+    public void setUtilisateur(Integer utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Integer getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setId_hs(Integer id_hs) {
+        this.id_hs = id_hs;
+    }
+
+    public Integer getId_hs() {
+        return id_hs;
+    }
+}

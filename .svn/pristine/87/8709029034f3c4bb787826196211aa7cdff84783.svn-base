@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="comptable_etablissementPageDef"
+                Package="ecolage.comptable_etab">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="OperationAValCmptableRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="OperationAValCmptableROIterator"/>
+    <searchRegion Binds="OperationAValCmptableROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="OperationAValCmptableROQuery"/>
+    <iterator Binds="OperationValCmptableRO" RangeSize="7" DataControl="ecolageAppDataControl"
+              id="OperationValCmptableROIterator"/>
+    <searchRegion Binds="OperationValCmptableROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="OperationValCmptableROQuery"/>
+    <iterator Binds="DetailsCompteRO" RangeSize="10" DataControl="ecolageAppDataControl" id="DetailsCompteROIterator"/>
+    <iterator Binds="RechCompteGlobRO" RangeSize="10" DataControl="ecolageAppDataControl"
+              id="RechCompteGlobROIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="OperationAValCmptableROIterator" id="OperationAValCmptableRO">
+      <nodeDefinition DefName="model.readOnlyView.OperationAValCmptableROVO" Name="OperationAValCmptableRO0">
+        <AttrNames>
+          <Item Value="Strcture"/>
+          <Item Value="Departement"/>
+          <Item Value="Formation"/>
+          <Item Value="LibTypeCmpte"/>
+          <Item Value="Montant"/>
+          <Item Value="NumeroRecu"/>
+          <Item Value="OpAnnule"/>
+          <Item Value="DateOperation"/>
+          <Item Value="LibModePaie"/>
+          <Item Value="NumChqVir"/>
+          <Item Value="Proprietaire"/>
+          <Item Value="Motif"/>
+          <Item Value="OpValidee" Binds="OpValidee"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="OperationAValCmptableROIterator" id="OpValidee" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="OpValidee"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="3"/>
+        <Item Value="2"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="OperationValCmptableROIterator" id="OperationValCmptableRO">
+      <nodeDefinition DefName="model.readOnlyView.OperationValCmptableROVO" Name="OperationValCmptableRO0">
+        <AttrNames>
+          <Item Value="Strcture"/>
+          <Item Value="Departement"/>
+          <Item Value="Formation"/>
+          <Item Value="LibTypeCmpte"/>
+          <Item Value="Montant"/>
+          <Item Value="NumeroRecu"/>
+          <Item Value="DateOperation"/>
+          <Item Value="LibModePaie"/>
+          <Item Value="NumChqVir"/>
+          <Item Value="Proprietaire"/>
+          <Item Value="Motif"/>
+          <Item Value="OpVal"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="OperationAValCmptableROIterator" id="getOperationAValCptableEtab"
+            InstanceName="ecolageAppDataControl.OperationAValCmptableRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="OperationValCmptableROIterator" id="getOperationValCptableEtab"
+            InstanceName="ecolageAppDataControl.OperationValCmptableRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+      <NamedData NDName="id_util" NDType="java.lang.Long"/>
+    </action>
+    <action IterBinding="DetailsCompteROIterator" id="getDetailsCompte"
+            InstanceName="ecolageAppDataControl.DetailsCompteRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_cmpte" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="findAndUpdateCompteEtud" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findAndUpdateCompteEtud" IsViewObjectMethod="false" DataControl="ecolageAppDataControl"
+                  InstanceName="bindings.findAndUpdateCompteEtud.dataControl.dataProvider">
+      <NamedData NDName="id_solde_compte" NDType="java.lang.Long"/>
+      <NamedData NDName="solde_act" NDType="java.lang.String"/>
+      <NamedData NDName="util" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="findAndUpdateValOperCmptable" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findAndUpdateValOperCmptable" IsViewObjectMethod="false"
+                  DataControl="ecolageAppDataControl"
+                  InstanceName="bindings.findAndUpdateValOperCmptable.dataControl.dataProvider">
+      <NamedData NDName="id_oper" NDType="java.lang.Long"/>
+      <NamedData NDName="debit" NDType="java.lang.String"/>
+      <NamedData NDName="valide" NDType="java.lang.String"/>
+      <NamedData NDName="opvalide" NDType="java.lang.String"/>
+      <NamedData NDName="util" NDType="java.lang.String"/>
+    </methodAction>
+    <action IterBinding="RechCompteGlobROIterator" id="getRechCmpteGlob"
+            InstanceName="ecolageAppDataControl.RechCompteGlobRO" DataControl="ecolageAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_strct" NDType="java.lang.Long"/>
+      <NamedData NDName="type_cmpte" NDType="java.lang.Long"/>
+      <NamedData NDName="id_hs" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+  </bindings>
+</pageDefinition>

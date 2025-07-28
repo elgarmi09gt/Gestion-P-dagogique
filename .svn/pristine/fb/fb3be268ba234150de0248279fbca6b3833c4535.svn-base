@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="EtatsPageDef"
+                Package="evaluation.relevesAttestations">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Parcours" RangeSize="25" DataControl="evaluationAppDataControl" id="ParcoursIterator"/>
+    <searchRegion Binds="ParcoursIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="Parcours1Query"/>
+  </executables>
+  <bindings>
+    <list IterBinding="ParcoursIterator" ListOperMode="navigation" ListIter="ParcoursIterator" id="Parcours"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LibParcours"/>
+      </AttrNames>
+    </list>
+    <tree IterBinding="ParcoursIterator" id="Parcours1">
+      <nodeDefinition DefName="model.readOnlyView.ParcoursROVO" Name="Parcours10">
+        <AttrNames>
+          <Item Value="LibParcours"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ParcoursIterator" id="Parcours2">
+      <nodeDefinition DefName="model.readOnlyView.ParcoursROVO" Name="Parcours20">
+        <AttrNames>
+          <Item Value="LibParcours"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

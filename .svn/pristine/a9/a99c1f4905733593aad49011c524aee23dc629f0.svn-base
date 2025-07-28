@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+        <af:panelGroupLayout id="pgl1" layout="vertical">
+                <af:button text="Rechercher un Etudiant" id="b1"
+                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;"
+                           partialSubmit="false" disabled="true"/>
+                <af:panelFormLayout id="pfl1" rows="3"
+                                    inlineStyle="border:solid  2px #2897e8;width:800px;margin-top:20px;margin-left:10px;">
+                        <f:facet name="footer"/>
+                        <af:inputText id="it13" autoSubmit="true" label="Numéro Etudiant"
+                                      value="#{SuspensionBean.numero_etud}">
+                                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                                <af:serverListener type="filterShuttle" method="#{SuspensionBean.onChangeNumeroEtud}"/>
+                        </af:inputText>
+                        <af:inputText id="it21" autoSubmit="true" label="Numéro d'identification Nationale"
+                                      contentStyle="margin-bottom:5px;" value="#{SuspensionBean.numero_cin}"
+                                      disabled="#{sessionScope.etudNotNullSusp == '1' ? true : false}"
+                                      partialTriggers="it13">
+                                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                                <af:serverListener type="filterShuttle" method="#{SuspensionBean.onChangeNumeroCin}"/>
+                        </af:inputText>
+                        <af:inputText id="it2" autoSubmit="true" converter="javax.faces.Integer" label="Numéro Table"
+                                      value="#{SuspensionBean.numero_table}"
+                                      disabled="#{sessionScope.cinNotNullSusp == '1' or sessionScope.etudNotNullSusp == '1' ? true : false}"
+                                      partialTriggers="it13 it21">
+                                <af:clientListener method="catchKeyStroke" type="keyUp"/>
+                                <af:serverListener type="filterShuttle" method="#{SuspensionBean.onChangeNumeroTable}"/>
+                        </af:inputText>
+                        <af:inputText id="it29" label="Prénom" value="#{SuspensionBean.prenom}"
+                                      disabled="#{sessionScope.tableNotNullSusp == '1' or sessionScope.etudNotNullSusp == '1'  or sessionScope.cinNotNullSusp == '1' ? true : false}"
+                                      partialTriggers="it13 it21 it2"/>
+                        <af:inputText id="it30" label="Nom" value="#{SuspensionBean.nom}"
+                                      disabled="#{sessionScope.tableNotNullSusp == '1' or sessionScope.etudNotNullSusp == '1'  or sessionScope.cinNotNullSusp == '1' ? true : false}"
+                                      partialTriggers="it13 it21 it2"/>
+                        <af:inputDate id="it31" label="Date Naissance" value="#{SuspensionBean.date_naiss}"
+                                      disabled="#{sessionScope.tableNotNullSusp == '1' or sessionScope.etudNotNullSusp == '1'  or sessionScope.cinNotNullSusp == '1' ? true : false}"
+                                      partialTriggers="it13 it21 it2"/>
+        <af:resource type="javascript">
+            function catchKeyStroke(event) {
+                component = event.getSource();
+                //if(component.getSubmittedValue().length == 0 || component.getSubmittedValue().length > 1)
+                //{
+                    AdfCustomEvent.queue(component, "filterShuttle", 
+                    {
+                        filterKey : component.getSubmittedValue()
+                    },true);
+                    event.cancel();
+                //}
+            }
+          </af:resource>
+                </af:panelFormLayout>
+                <af:button text="Rechercher" id="b2"
+                           inlineStyle="font-size:small; border-radius:10px 10px 10px 10px / 10px 10px 10px 10px ; background:none 0% 0%/auto auto repeat scroll padding-box border-box #2897e8; color:#fff;margin-left:10px;margin-top:20px;margin-bottom:10px;"
+                           action="#{SuspensionBean.onValiderRecherche}"/>
+                <af:region value="#{bindings.dynamicRegion1.regionModel}" id="r1" partialTriggers="::b2"
+                           inlineStyle="margin-left:10px;margin-top:10px;"/>
+        </af:panelGroupLayout>
+</ui:composition>

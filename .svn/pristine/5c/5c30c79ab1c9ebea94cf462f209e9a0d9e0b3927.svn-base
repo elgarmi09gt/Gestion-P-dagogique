@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="listboursesPageDef"
+                Package="inscription.bourses">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Bourses" RangeSize="25" DataControl="inscriptionAppDataControl" id="BoursesIterator"/>
+    <searchRegion Binds="BoursesIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="BoursesQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="BoursesIterator" id="Bourses">
+      <nodeDefinition DefName="model.updatableview.BoursesVO" Name="Bourses0">
+        <AttrNames>
+          <Item Value="Libelle"/>
+          <Item Value="Boursier"/>
+          <Item Value="IdTypeBourse"/>
+          <Item Value="IdOrganisme"/>
+          <Item Value="IdTypePrelevement"/>
+          <Item Value="Recu"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="BoursesIterator" id="Libelle">
+      <AttrNames>
+        <Item Value="Libelle"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="BoursesIterator" StaticList="false" Uses="LOV_Boursier" id="Boursier" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="BoursesIterator" StaticList="false" Uses="LOV_IdTypeBourse" id="IdTypeBourse"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="BoursesIterator" StaticList="false" Uses="LOV_IdOrganisme" id="IdOrganisme"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="BoursesIterator" StaticList="false" Uses="LOV_IdTypePrelevement" id="IdTypePrelevement"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <list IterBinding="BoursesIterator" StaticList="false" Uses="LOV_Recu" id="Recu" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="BoursesIterator" id="CreateInsert" InstanceName="inscriptionAppDataControl.Bourses"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="BoursesIterator" id="Delete" InstanceName="inscriptionAppDataControl.Bourses"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="BoursesIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoursesIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

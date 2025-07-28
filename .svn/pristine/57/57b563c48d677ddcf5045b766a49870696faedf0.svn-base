@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="HistoriquesStructuresEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="HISTORIQUES_STRUCTURES"
+  AliasName="HistoriquesStructuresEO"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdHistoriquesStructure"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_HISTORIQUES_STRUCTURE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="HISTORIQUES_STRUCTURES"
+    PrimaryKey="true"
+    ChangeIndicator="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="LibelleLong"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="200"
+    ColumnName="LIBELLE_LONG"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="HISTORIQUES_STRUCTURES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="LibelleCourt"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="75"
+    ColumnName="LIBELLE_COURT"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="HISTORIQUES_STRUCTURES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="75"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="IdStructures"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_STRUCTURES"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    TableName="HISTORIQUES_STRUCTURES"/>
+  <Attribute
+    Name="DateDebut"
+    ColumnName="DATE_DEBUT"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="HISTORIQUES_STRUCTURES"/>
+  <Attribute
+    Name="DateFin"
+    ColumnName="DATE_FIN"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="HISTORIQUES_STRUCTURES"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="HISTORIQUES_STRUCTURES"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="HISTORIQUES_STRUCTURES"/>
+  <Attribute
+    Name="UtiCree"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="HISTORIQUES_STRUCTURES"
+    IsNotNull="true"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="HISTORIQUES_STRUCTURES"/>
+  <AccessorAttribute
+    Name="StructuresEO"
+    Association="model.assoc.StructureToHStructureAssoc"
+    AssociationEnd="model.assoc.StructureToHStructureAssoc.StructuresEO"
+    AssociationOtherEnd="model.assoc.StructureToHStructureAssoc.HistoriquesStructuresEO"
+    Type="oracle.jbo.server.EntityImpl"
+    IsUpdateable="true"/>
+  <AccessorAttribute
+    Name="FormationsEO"
+    Association="model.assoc.HistoriquesStructuresToFormationsAssoc"
+    AssociationEnd="model.assoc.HistoriquesStructuresToFormationsAssoc.FormationsEO"
+    AssociationOtherEnd="model.assoc.HistoriquesStructuresToFormationsAssoc.HistoriquesStructuresEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <!--AccessorAttribute
+    Name="PaiementEtudiantEO"
+    Association="model.entities.FkPaiementEtudiantEtabAssoc"
+    AssociationEnd="model.entities.FkPaiementEtudiantEtabAssoc.PaiementEtudiantEO"
+    AssociationOtherEnd="model.entities.FkPaiementEtudiantEtabAssoc.HistoriquesStructuresEO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/-->
+  <ViewLinkAccessor
+    Name="StructuresVO"
+    ViewLink="model.viewlink.StructureToHStructureVL"
+    ViewLinkEnd="model.viewlink.StructureToHStructureVL.StructuresVO"
+    ViewLinkOtherEnd="model.viewlink.StructureToHStructureVL.HistoriquesStructuresVO"
+    Type="oracle.jbo.server.ViewRowImpl"
+    IsUpdateable="false"/>
+  <Key
+    Name="PkHistoriquesStructures"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_HISTORIQUES_STRUCTURES"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.HistoriquesStructuresEO.IdHistoriquesStructure"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqHistoriqStructLibCourt">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_HISTORIQ_STRUCT_LIB_COURT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.HistoriquesStructuresEO.LibelleCourt"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqHistoriqStructLibLong">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_HISTORIQ_STRUCT_LIB_LONG"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.HistoriquesStructuresEO.LibelleLong"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkHistoriqStructUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_STRUCTURES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_HISTORIQ_STRUCT_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.HistoriquesStructuresEO.IdStructures"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkHistoriqStructUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_HISTORIQ_STRUCT_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.HistoriquesStructuresEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+</Entity>

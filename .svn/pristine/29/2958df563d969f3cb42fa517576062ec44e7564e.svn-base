@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="detail_etudiant_mobilitePageDef" Package="inscription.etudiant_mobilite">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="HistoriquesStructures" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="HistoriquesStructuresIterator"/>
+    <searchRegion Binds="HistoriquesStructuresIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="HistoriquesStructuresQuery"/>
+    <iterator Binds="HistoMobiliteRO" RangeSize="7" DataControl="inscriptionAppDataControl"
+              id="HistoMobiliteROIterator"/>
+    <searchRegion Binds="HistoMobiliteROIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="HistoMobiliteROQuery"/>
+    <iterator Binds="InscPedSemUe" RangeSize="10" DataControl="inscriptionAppDataControl" id="InscPedSemUeIterator"/>
+    <iterator Binds="InscriptionPedSemUe" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="InscriptionPedSemUeIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="HistoriquesStructuresIterator" id="HistoriquesStructures">
+      <nodeDefinition DefName="model.updatableview.HistoriquesStructuresVO" Name="HistoriquesStructures0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="HistoMobiliteROIterator" id="HistoMobiliteRO">
+      <nodeDefinition DefName="model.readOnlyView.HistoMobiliteROVO" Name="HistoMobiliteRO0">
+        <AttrNames>
+          <Item Value="Codification"/>
+          <Item Value="case_cocher"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="HistoMobiliteROIterator" id="case_cocher" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="case_cocher"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="True"/>
+        <Item Value="False"/>
+      </ValueList>
+    </button>
+    <action IterBinding="InscriptionPedSemUeIterator" id="CreateInsertInscPedSemUe"
+            InstanceName="inscriptionAppDataControl.InscriptionPedSemUe" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="InscriptionPedSemUeIterator" id="IdInscriptionPedSemestre">
+      <AttrNames>
+        <Item Value="IdInscriptionPedSemestre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemUeIterator" id="IdFiliereUeSemstre">
+      <AttrNames>
+        <Item Value="IdFiliereUeSemstre"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InscriptionPedSemUeIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="HistoMobiliteROIterator" id="getListeUe"
+            InstanceName="inscriptionAppDataControl.HistoMobiliteRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="id_sem" NDType="java.lang.Long"/>
+      <NamedData NDName="id_pers" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="findAndUpdateEtud" RequiresUpdateModel="true" Action="invokeMethod" MethodName="findAndUpdateEtud"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.findAndUpdateEtud.dataControl.dataProvider">
+      <NamedData NDName="id_etud" NDType="java.lang.Long"/>
+      <NamedData NDName="mobilite" NDType="java.lang.Long"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

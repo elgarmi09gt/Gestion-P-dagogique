@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelSplitter id="ps1" dimensionsFrom="children" splitterPosition="750" disabled="true">
+      <f:facet name="first">
+        <af:table value="#{bindings.HistStructAncInscRO.collectionModel}" var="row"
+                  rows="#{bindings.HistStructAncInscRO.rangeSize}"
+                  emptyText="#{bindings.HistStructAncInscRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.HistStructAncInscRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.HistStructAncInscRO.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.HistStructAncInscRO.rangeSize}" id="t1" scrollPolicy="scroll">
+          <af:column headerText="Structure" id="c1" width="520">
+            <af:outputText value="#{row.LibStruct}" shortDesc="#{bindings.HistStructAncInscRO.hints.LibStruct.tooltip}"
+                           id="ot1"/>
+          </af:column>
+          <af:column headerText="Historique Structure" id="c2" width="200">
+            <af:outputText value="#{row.LibHistoriq}"
+                           shortDesc="#{bindings.HistStructAncInscRO.hints.LibHistoriq.tooltip}" id="ot2"/>
+          </af:column>
+        </af:table>
+      </f:facet>
+      <f:facet name="second">
+        <af:panelSplitter id="ps2" dimensionsFrom="children" splitterPosition="200" disabled="true">
+          <f:facet name="first">
+            <af:table value="#{bindings.AnneeUnivAnscInscRO.collectionModel}" var="row"
+                      rows="#{bindings.AnneeUnivAnscInscRO.rangeSize}"
+                      emptyText="#{bindings.AnneeUnivAnscInscRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.AnneeUnivAnscInscRO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.AnneeUnivAnscInscRO.collectionModel.makeCurrent}"
+                      rowSelection="single" fetchSize="#{bindings.AnneeUnivAnscInscRO.rangeSize}" id="t2"
+                      inlineStyle="width:115px;margin-left:20px;" scrollPolicy="scroll">
+              <af:column headerText="Année Univers." id="c3">
+                <af:outputText value="#{row.LibelleLong}"
+                               shortDesc="#{bindings.AnneeUnivAnscInscRO.hints.LibelleLong.tooltip}" id="ot3"/>
+              </af:column>
+            </af:table>
+          </f:facet>
+          <f:facet name="second">
+            <af:table value="#{bindings.NivFormAncInsRO.collectionModel}" var="row"
+                      rows="#{bindings.NivFormAncInsRO.rangeSize}"
+                      emptyText="#{bindings.NivFormAncInsRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.NivFormAncInsRO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.NivFormAncInsRO.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.NivFormAncInsRO.rangeSize}" id="t3" inlineStyle="width:415px;"
+                      scrollPolicy="scroll">
+              <af:column headerText="Niveau Formation" id="c4" width="400">
+                <af:outputText value="#{row.Libform}" shortDesc="#{bindings.NivFormAncInsRO.hints.Libform.tooltip}"
+                               id="ot4"/>
+              </af:column>
+            </af:table>
+          </f:facet>
+        </af:panelSplitter>
+      </f:facet>
+    </af:panelSplitter>
+    <af:panelHeader text="Liste des inscriptions anciennes" id="ph1" inlineStyle="margin-top:20px;">
+      <f:facet name="context"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:panelCollection id="pc1" inlineStyle="width:1579px;margin-top:10px;">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t5">
+            <af:button id="b3" action="#{InscriptionAncbean.onNewInscAncienne}" windowEmbedStyle="inlineDocument"
+                       windowHeight="800" windowWidth="850" immediate="true" useWindow="true"
+                       returnListener="#{InscriptionAncbean.onReturnValider}" icon="/images/new_icon.png"/>
+            <af:button id="b2" icon="/images/edit_icon.png" action="#{InscriptionAncbean.onValiderModif}"
+                       useWindow="true" windowEmbedStyle="inlineDocument" windowHeight="800" windowWidth="850"
+                       immediate="true" returnListener="#{InscriptionAncbean.onReturnValider}"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.ListeInscAncRO.collectionModel}" var="row"
+                  rows="#{bindings.ListeInscAncRO.rangeSize}"
+                  emptyText="#{bindings.ListeInscAncRO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.ListeInscAncRO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ListeInscAncRO.collectionModel.makeCurrent}" rowSelection="single"
+                  fetchSize="#{bindings.ListeInscAncRO.rangeSize}"
+                  filterModel="#{bindings.ListeInscAncROQuery.queryDescriptor}" filterVisible="true"
+                  queryListener="#{bindings.ListeInscAncROQuery.processQuery}" varStatus="vs" id="t6"
+                  binding="#{InscriptionAncbean.table}">
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.Numero.name}" filterable="true" sortable="true"
+                     headerText="Numéro" id="c15">
+            <af:outputText value="#{row.Numero}" shortDesc="#{bindings.ListeInscAncRO.hints.Numero.tooltip}" id="ot6"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.Nom.name}" filterable="true" sortable="true"
+                     headerText="Nom" id="c16">
+            <af:outputText value="#{row.Nom}" shortDesc="#{bindings.ListeInscAncRO.hints.Nom.tooltip}" id="ot7"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.Prenom.name}" filterable="true" sortable="true"
+                     headerText="Prénoms" id="c17" width="200">
+            <af:outputText value="#{row.Prenom}" shortDesc="#{bindings.ListeInscAncRO.hints.Prenom.tooltip}" id="ot8"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.DateNaissance.name}" filterable="true"
+                     sortable="true" headerText="Date Naissance" id="c18">
+            <f:facet name="filter">
+              <af:inputDate value="#{bindings.ListeInscAncROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateNaissance.value}"
+                            id="id5">
+                <af:convertDateTime pattern="#{bindings.ListeInscAncRO.hints.DateNaissance.format}"/>
+              </af:inputDate>
+            </f:facet>
+            <af:outputText value="#{row.DateNaissance}"
+                           shortDesc="#{bindings.ListeInscAncRO.hints.DateNaissance.tooltip}" id="ot9">
+              <af:convertDateTime pattern="#{bindings.ListeInscAncRO.hints.DateNaissance.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.NumDiplome.name}" filterable="true" sortable="true"
+                     headerText="Numéro Diplome" id="c22" width="125">
+            <af:outputText value="#{row.NumDiplome}" shortDesc="#{bindings.ListeInscAncRO.hints.NumDiplome.tooltip}"
+                           id="ot13">
+              <af:convertNumber groupingUsed="false" pattern="#{bindings.ListeInscAncRO.hints.NumDiplome.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.DateDeliberation.name}" filterable="true"
+                     sortable="true" headerText="Date Déliberation" id="c19" width="120">
+            <f:facet name="filter">
+              <af:inputDate value="#{bindings.ListeInscAncROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateDeliberation.value}"
+                            id="id6">
+                <af:convertDateTime pattern="#{bindings.ListeInscAncRO.hints.DateDeliberation.format}"/>
+              </af:inputDate>
+            </f:facet>
+            <af:outputText value="#{row.DateDeliberation}"
+                           shortDesc="#{bindings.ListeInscAncRO.hints.DateDeliberation.tooltip}" id="ot10">
+              <af:convertDateTime pattern="#{bindings.ListeInscAncRO.hints.DateDeliberation.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.DateDelivrance.name}" filterable="true"
+                     sortable="true" headerText="Date Délivrance" id="c20">
+            <f:facet name="filter">
+              <af:inputDate value="#{bindings.ListeInscAncROQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.DateDelivrance.value}"
+                            id="id7">
+                <af:convertDateTime pattern="#{bindings.ListeInscAncRO.hints.DateDelivrance.format}"/>
+              </af:inputDate>
+            </f:facet>
+            <af:outputText value="#{row.DateDelivrance}"
+                           shortDesc="#{bindings.ListeInscAncRO.hints.DateDelivrance.tooltip}" id="ot11">
+              <af:convertDateTime pattern="#{bindings.ListeInscAncRO.hints.DateDelivrance.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.IdOption.name}" filterable="true" sortable="true"
+                     headerText="Option" id="c23" width="250">
+            <af:selectOneChoice value="#{row.bindings.IdOption.inputValue}" label="#{row.bindings.IdOption.label}"
+                                required="#{bindings.ListeInscAncRO.hints.IdOption.mandatory}"
+                                shortDesc="#{bindings.ListeInscAncRO.hints.IdOption.tooltip}" readOnly="true" id="soc6">
+              <f:selectItems value="#{row.bindings.IdOption.items}" id="si6"/>
+              <f:validator binding="#{row.bindings.IdOption.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.IdSession.name}" filterable="true" sortable="true"
+                     headerText="Session" id="c24">
+            <af:selectOneChoice value="#{row.bindings.IdSession.inputValue}" label="#{row.bindings.IdSession.label}"
+                                required="#{bindings.ListeInscAncRO.hints.IdSession.mandatory}"
+                                shortDesc="#{bindings.ListeInscAncRO.hints.IdSession.tooltip}" readOnly="true"
+                                id="soc7">
+              <f:selectItems value="#{row.bindings.IdSession.items}" id="si7"/>
+              <f:validator binding="#{row.bindings.IdSession.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.IdTypeMention.name}" filterable="true"
+                     sortable="true" headerText="Mention" id="c25">
+            <af:selectOneChoice value="#{row.bindings.IdTypeMention.inputValue}"
+                                label="#{row.bindings.IdTypeMention.label}"
+                                required="#{bindings.ListeInscAncRO.hints.IdTypeMention.mandatory}"
+                                shortDesc="#{bindings.ListeInscAncRO.hints.IdTypeMention.tooltip}" readOnly="true"
+                                id="soc8">
+              <f:selectItems value="#{row.bindings.IdTypeMention.items}" id="si8"/>
+              <f:validator binding="#{row.bindings.IdTypeMention.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.IdTypeResultat.name}" filterable="true"
+                     sortable="true" headerText="Resultat" id="c26">
+            <af:selectOneChoice value="#{row.bindings.IdTypeResultat.inputValue}"
+                                label="#{row.bindings.IdTypeResultat.label}"
+                                required="#{bindings.ListeInscAncRO.hints.IdTypeResultat.mandatory}"
+                                shortDesc="#{bindings.ListeInscAncRO.hints.IdTypeResultat.tooltip}" readOnly="true"
+                                id="soc9">
+              <f:selectItems value="#{row.bindings.IdTypeResultat.items}" id="si9"/>
+              <f:validator binding="#{row.bindings.IdTypeResultat.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+          <af:column sortProperty="#{bindings.ListeInscAncRO.hints.Valide.name}" filterable="true" sortable="true"
+                     headerText="#{bindings.ListeInscAncRO.hints.Valide.label}" id="c27" width="50">
+            <af:selectOneChoice value="#{row.bindings.Valide.inputValue}" label="#{row.bindings.Valide.label}"
+                                required="#{bindings.ListeInscAncRO.hints.Valide.mandatory}"
+                                shortDesc="#{bindings.ListeInscAncRO.hints.Valide.tooltip}" readOnly="true" id="soc10">
+              <f:selectItems value="#{row.bindings.Valide.items}" id="si10"/>
+              <f:validator binding="#{row.bindings.Valide.validator}"/>
+            </af:selectOneChoice>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+</ui:composition>

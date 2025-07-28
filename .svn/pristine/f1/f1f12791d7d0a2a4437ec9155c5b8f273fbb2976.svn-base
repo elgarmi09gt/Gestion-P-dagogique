@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="UtilisateursFonctionnalitesEO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="UTILISATEURS_FONCTIONNALITES"
+  AliasName="UtilisateursFonctionnalitesE1"
+  BindingStyle="OracleName">
+  <Attribute
+    Name="IdUtilisateur"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_UTILISATEUR"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="UTILISATEURS_FONCTIONNALITES"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    PrimaryKey="true"
+    RetrievedOnInsert="true"
+    ChangeIndicator="true"/>
+  <Attribute
+    Name="IdFonctionnalite"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_FONCTIONNALITE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="UTILISATEURS_FONCTIONNALITES"/>
+  <Attribute
+    Name="DateCreation"
+    ColumnName="DATE_CREATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="UTILISATEURS_FONCTIONNALITES"/>
+  <Attribute
+    Name="DateModification"
+    ColumnName="DATE_MODIFICATION"
+    SQLType="DATE"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    TableName="UTILISATEURS_FONCTIONNALITES"/>
+  <Attribute
+    Name="UtiCree"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="UTI_CREE"
+    SQLType="NUMERIC"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    TableName="UTILISATEURS_FONCTIONNALITES"/>
+  <Attribute
+    Name="UtiModifie"
+    Precision="5"
+    Scale="0"
+    ColumnName="UTI_MODIFIE"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="UTILISATEURS_FONCTIONNALITES"/>
+  <Attribute
+    Name="IdUtilisateurFonctionnalite"
+    Precision="10"
+    Scale="0"
+    ColumnName="ID_UTILISATEUR_FONCTIONNALITE"
+    SQLType="NUMERIC"
+    Type="oracle.jbo.domain.DBSequence"
+    ColumnType="NUMBER"
+    TableName="UTILISATEURS_FONCTIONNALITES"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    DefaultValue="@0"
+    Domain="oracle.jbo.domain.DBSequence"
+    RetrievedOnInsert="true"/>
+  <Key
+    Name="PkUtilisateurFonctionnalite"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PK_UTILISATEUR_FONCTIONNALITE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursFonctionnalitesEO.IdUtilisateurFonctionnalite"/>
+      <Item Value="model.entities.UtilisateursFonctionnalitesEO.IdUtilisateur"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="UqUtilisateurFonctionnalite">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="UQ_UTILISATEUR_FONCTIONNALITE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursFonctionnalitesEO.IdUtilisateur"/>
+      <Item Value="model.entities.UtilisateursFonctionnalitesEO.IdFonctionnalite"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisFonctioFonctio">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_FONCTIONNALITES"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILIS_FONCTIO_FONCTIO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursFonctionnalitesEO.IdFonctionnalite"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisFonctioUtiCree">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILIS_FONCTIO_UTI_CREE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursFonctionnalitesEO.UtiCree"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisFonctioUtiModif">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILIS_FONCTIO_UTI_MODIF"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursFonctionnalitesEO.UtiModifie"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="FkUtilisFonctioUtilisateur">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PK_UTILISATEUR"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_UTILIS_FONCTIO_UTILISATEUR"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entities.UtilisateursFonctionnalitesEO.IdUtilisateur"/>
+    </AttrArray>
+  </Key>
+</Entity>

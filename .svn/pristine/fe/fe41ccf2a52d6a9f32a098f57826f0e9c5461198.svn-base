@@ -1,0 +1,47 @@
+//Groovy Scripts for model.entities.CalendrierDeliberationEO
+
+package model.entities
+
+import oracle.jbo.script.annotation.ValidatorExpression;
+
+@ValidatorExpression(name="DateDebutDelibProvisoirRule0", attributeName="DateDebutDelibProvisoir")
+def DateDebutDelibProvisoir_DateDebutDelibProvisoirRule0_ValidationRuleScript_ValidationRule()
+{
+adf.currentDate
+}
+
+
+@ValidatorExpression(name="DateFinDelibProvisoirRule0", attributeName="DateFinDelibProvisoir")
+def DateFinDelibProvisoir_DateFinDelibProvisoirRule0_ValidationRuleScript_ValidationRule()
+{
+DateDebutDelibProvisoir
+}
+
+
+@ValidatorExpression(name="DateDebutReclammationRule0", attributeName="DateDebutReclammation")
+def DateDebutReclammation_DateDebutReclammationRule0_ValidationRuleScript_ValidationRule()
+{
+DateFinDelibProvisoir
+}
+
+
+@ValidatorExpression(name="DateFinReclammationRule0", attributeName="DateFinReclammation")
+def DateFinReclammation_DateFinReclammationRule0_ValidationRuleScript_ValidationRule()
+{
+DateDebutReclammation
+}
+
+
+@ValidatorExpression(name="DateDebutDelibDefinitiveRule0", attributeName="DateDebutDelibDefinitive")
+def DateDebutDelibDefinitive_DateDebutDelibDefinitiveRule0_ValidationRuleScript_ValidationRule()
+{
+DateFinReclammation
+}
+
+
+@ValidatorExpression(name="DateFinDelibDefinitiveRule0", attributeName="DateFinDelibDefinitive")
+def DateFinDelibDefinitive_DateFinDelibDefinitiveRule0_ValidationRuleScript_ValidationRule()
+{
+DateDebutDelibDefinitive
+}
+

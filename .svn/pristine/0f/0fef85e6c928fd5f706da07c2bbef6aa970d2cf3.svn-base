@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <af:document title="delibAn.jsf" id="d1">
+        <af:messages id="m1"/>
+        <af:form id="f1">
+            <af:pageTemplate viewId="/oracle/templates/threeColumnTemplate.jspx" id="pt1">
+                <f:facet name="center">
+                    <!--  -->
+                    <af:table value="#{bindings.return.collectionModel}" var="row" id="t01" filterVisible="true"
+                              scrollPolicy="page">
+                        <af:column id="c02" headerText="Délibération Annuelle" align="center">
+                            <af:column id="c1" headerText="Informations de l'étudiant" align="center">
+                                <af:column id="c2" headerText="Numéro" align="center">
+                                    <af:iterator var="etudiants" value="#{bindings.return.collectionModel}" id="i2">
+                                        <af:outputText value="#{etudiants.Numero}" id="ot10"
+                                                       inlineStyle="font-size:large;"/>
+                                    </af:iterator>
+                                </af:column>
+                                <af:column id="c3" headerText="Prénom et NOM" align="center" width="200"
+                                           filterable="true"/>
+                            </af:column>
+                            <af:column id="c4" headerText="Moyenne Semestre 1" align="center"/>
+                            <af:column id="c5" headerText="Moyenne Semestre 2" align="center"/>
+                            <af:column id="c6" headerText="Moyenne Annuelle" align="center"/>
+                        </af:column>
+                    </af:table>
+                    <!-- -->
+                </f:facet>
+                <f:facet name="header"/>
+                <f:facet name="end"/>
+                <f:facet name="start"/>
+                <f:facet name="branding"/>
+                <f:facet name="copyright"/>
+                <f:facet name="status"/>
+            </af:pageTemplate>
+        </af:form>
+    </af:document>
+</f:view>

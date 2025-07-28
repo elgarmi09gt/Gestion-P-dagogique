@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="EtudPaieInscriptionROVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.EtudPaieInscriptionROVORowImpl"
+  ComponentClass="model.readOnlyView.EtudPaieInscriptionROVOImpl"
+  PageIterMode="Full"
+  OrderBy='"NOM","PRENOMS"'>
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.EtudPaieInscriptionROVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_form"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_niv_form"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery><![CDATA[select e.id_personne ,    
+e.id_etudiant ,    
+e.numero ,   
+pe.nom ,    
+pe.prenoms ,    
+pe.date_naissance ,    
+pe.id_pays,    
+pa.nationalite,   
+ip.etat_inscr_etat_inscr_id ,    
+ip.id_inscription_pedagogique ,    
+ip.id_inscription_admin,    
+ip.id_parcours_maquet_annee ,    
+nf.id_niveau_formation ,   
+f.id_formation ,   
+ip.ins_en_ligne    
+from  inscriptions_admin a                              
+join inscriptions_pedagogiques ip on ip.id_inscription_admin = a.id_inscription_admin                        
+join parcours_maquette_annee pma on pma.id_parcours_maquet_annee = ip.id_parcours_maquet_annee                                            
+JOIN niveaux_formation_parcours nfp on nfp.id_niveau_formation_parcours = pma.id_niveau_formation_parcours                                               
+JOIN niveau_formation_cohortes nfc on nfc.id_niveau_formation_cohorte = nfp.id_niveau_formation_cohorte                                               
+JOIN niveaux_formations nf on nfc.id_niveau_formation = nf.id_niveau_formation                          
+JOIN formations f on f.id_formation = nf.id_formation               
+                      
+JOIN etudiants e on e.id_etudiant = a.id_etudiant                       
+JOIN personnes pe on pe.id_personne = e.id_personne   
+JOIN pays pa on pa.id_pays = pe.id_pays_nationalite   
+      
+where f.id_formation=:id_form         
+and nf.id_niveau_formation=:id_niv_form   
+and a.id_annees_univers=:id_annee]]></SQLQuery>
+  <ViewAttribute
+    Name="IdPersonne"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_PERSONNE"
+    Expression="ID_PERSONNE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdEtudiant"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_ETUDIANT"
+    Expression="ID_ETUDIANT"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Numero"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NUMERO"
+    Expression="NUMERO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Nom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NOM"
+    Expression="NOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prenoms"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRENOMS"
+    Expression="PRENOMS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DateNaissance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="DATE_NAISSANCE"
+    Expression="DATE_NAISSANCE"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="IdPays"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PAYS"
+    Expression="ID_PAYS"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Nationalite"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NATIONALITE"
+    Expression="NATIONALITE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EtatInscrEtatInscrId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="ETAT_INSCR_ETAT_INSCR_ID"
+    Expression="ETAT_INSCR_ETAT_INSCR_ID"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="IdInscriptionPedagogique"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_PEDAGOGIQUE"
+    Expression="ID_INSCRIPTION_PEDAGOGIQUE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdInscriptionAdmin"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_INSCRIPTION_ADMIN"
+    Expression="ID_INSCRIPTION_ADMIN"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdParcoursMaquetAnnee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_PARCOURS_MAQUET_ANNEE"
+    Expression="ID_PARCOURS_MAQUET_ANNEE"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdNiveauFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_NIVEAU_FORMATION"
+    Expression="ID_NIVEAU_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="IdFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="ID_FORMATION"
+    Expression="ID_FORMATION"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="InsEnLigne"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="INS_EN_LIGNE"
+    Expression="INS_EN_LIGNE"
+    SQLType="INTEGER"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

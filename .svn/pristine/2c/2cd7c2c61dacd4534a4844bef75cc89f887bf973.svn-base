@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="etudiant_list_etudiant_list_ExecuteWithParamsPageDef" Package="evaluation.groupe_saisie"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="DelibSemEtudiant" RangeSize="25" DataControl="evaluationAppDataControl"
+              id="DelibSemEtudiantIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="DelibSemEtudiantIterator" id="ExecuteWithParams" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="parcours" NDValue="2" NDType="java.lang.Integer"/>
+      <NamedData NDName="sem" NDValue="1" NDType="java.lang.Integer"/>
+      <NamedData NDName="annee" NDValue="2" NDType="java.lang.Integer"/>
+      <NamedData NDName="sess" NDValue="1" NDType="java.lang.Integer"/>
+    </action>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="historiquestructurePageDef"
+                Package="dap.historiquestructure">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="HistoriquesStructures" RangeSize="25" DataControl="gestdapAppDataControl"
+              id="HistoriquesStructuresIterator"/>
+    <searchRegion Binds="HistoriquesStructuresIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="HistoriquesStructuresQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="HistoriquesStructuresIterator" id="HistoriquesStructures">
+      <nodeDefinition DefName="model.updatableview.HistoriquesStructuresVO" Name="HistoriquesStructures0">
+        <AttrNames>
+          <Item Value="LibelleLong"/>
+          <Item Value="LibelleCourt"/>
+          <Item Value="IdStructures"/>
+          <Item Value="DateDebut"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="HistoriquesStructuresIterator" id="LibelleLong">
+      <AttrNames>
+        <Item Value="LibelleLong"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoriquesStructuresIterator" id="LibelleCourt">
+      <AttrNames>
+        <Item Value="LibelleCourt"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="HistoriquesStructuresIterator" StaticList="false" Uses="LOV_IdStructures" id="IdStructures"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="HistoriquesStructuresIterator" id="DateDebut">
+      <AttrNames>
+        <Item Value="DateDebut"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoriquesStructuresIterator" id="UtiCree">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="gestdapAppDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action IterBinding="HistoriquesStructuresIterator" id="CreateInsert"
+            InstanceName="gestdapAppDataControl.HistoriquesStructures" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="HistoriquesStructuresIterator" id="Delete"
+            InstanceName="gestdapAppDataControl.HistoriquesStructures" DataControl="gestdapAppDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="HistoriquesStructuresIterator" id="DateFin">
+      <AttrNames>
+        <Item Value="DateFin"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoriquesStructuresIterator" id="IdHistoriquesStructure">
+      <AttrNames>
+        <Item Value="IdHistoriquesStructure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoriquesStructuresIterator" id="DateCreation">
+      <AttrNames>
+        <Item Value="DateCreation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoriquesStructuresIterator" id="DateModification">
+      <AttrNames>
+        <Item Value="DateModification"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="HistoriquesStructuresIterator" id="UtiModifie">
+      <AttrNames>
+        <Item Value="UtiModifie"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

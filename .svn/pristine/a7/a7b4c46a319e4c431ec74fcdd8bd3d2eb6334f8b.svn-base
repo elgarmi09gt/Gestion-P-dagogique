@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="suspensionPageDef"
+                Package="inscription.suspension">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Personnes" RangeSize="10" DataControl="inscriptionAppDataControl" id="PersonnesIterator"/>
+    <iterator Binds="PersonneSearchSimple" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="PersonneSearchSimpleIterator"/>
+    <taskFlow id="dynamicRegion1" taskFlowId="${SuspensionBean.dynamicTaskFlowId}" activation="immediate"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding" Refresh="ifNeeded">
+      <parameters>
+        <parameter id="url_susp" value="#{sessionScope.TfSuspID}"/>
+      </parameters>
+    </taskFlow>
+    <iterator Binds="Suspension" RangeSize="10" DataControl="inscriptionAppDataControl" id="SuspensionIterator"/>
+    <iterator Binds="ListeSuspensioneEtudRO" RangeSize="10" DataControl="inscriptionAppDataControl"
+              id="ListeSuspensioneEtudROIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="PersonnesIterator" id="getDetailPers" InstanceName="inscriptionAppDataControl.Personnes"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers_var" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="isNumNouvBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumNouvBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumNouvBac.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumNouvBac_isNumNouvBac_dataControl_dataProvider_isNumNouvBac_result">
+      <NamedData NDName="num_table" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="getIdPersBac" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersBac"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersBac.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersBac_getIdPersBac_dataControl_dataProvider_getIdPersBac_result">
+      <NamedData NDName="num_table" NDType="java.lang.Long"/>
+      <NamedData NDName="id_annee" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="isNumEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumEtudiant_isNumEtudiant_dataControl_dataProvider_isNumEtudiant_result">
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getIdPersEtudiant" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersEtudiant"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersEtudiant.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersEtudiant_getIdPersEtudiant_dataControl_dataProvider_getIdPersEtudiant_result">
+      <NamedData NDName="num_etud" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="isNumCin" RequiresUpdateModel="true" Action="invokeMethod" MethodName="isNumCin"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.isNumCin.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.isNumCin_isNumCin_dataControl_dataProvider_isNumCin_result">
+      <NamedData NDName="num_cin" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getIdPersCin" RequiresUpdateModel="true" Action="invokeMethod" MethodName="getIdPersCin"
+                  IsViewObjectMethod="false" DataControl="inscriptionAppDataControl"
+                  InstanceName="bindings.getIdPersCin.dataControl.dataProvider"
+                  ReturnName="data.inscriptionAppDataControl.methodResults.getIdPersCin_getIdPersCin_dataControl_dataProvider_getIdPersCin_result">
+      <NamedData NDName="cin" NDType="java.lang.String"/>
+    </methodAction>
+    <action IterBinding="PersonneSearchSimpleIterator" id="getPersonneSearch"
+            InstanceName="inscriptionAppDataControl.PersonneSearchSimple" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="prenom_pers" NDType="java.lang.String"/>
+      <NamedData NDName="nom_pers" NDType="java.lang.String"/>
+      <NamedData NDName="date_naiss" NDType="java.lang.String"/>
+    </action>
+    <action IterBinding="SuspensionIterator" id="CreateInsertSuspension" InstanceName="inscriptionAppDataControl.Suspension"
+            DataControl="inscriptionAppDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="SuspensionIterator" id="UtiCreeSusp">
+      <AttrNames>
+        <Item Value="UtiCree"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="SuspensionIterator" id="DateDebut">
+      <AttrNames>
+        <Item Value="DateDebut"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ListeSuspensioneEtudROIterator" id="getListeSuspension"
+            InstanceName="inscriptionAppDataControl.ListeSuspensioneEtudRO" DataControl="inscriptionAppDataControl"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="idpers" NDType="java.lang.Long"/>
+    </action>
+    <attributeValues IterBinding="SuspensionIterator" id="IdAnneesUnivers">
+      <AttrNames>
+        <Item Value="IdAnneesUnivers"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="isRespNivFormSpecOptExist"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.readOnlyView.isRespNivFormSpecOptExistRowImpl"
+  ComponentClass="model.readOnlyView.isRespNivFormSpecOptExistImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.readOnlyView.isRespNivFormSpecOptExist_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="id_annee"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="id_niv_fr"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="id_spec"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="id_op"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <SQLQuery><![CDATA[SELECT DISTINCT                   
+  unf.ID_UTILIS_NIVEAU_FORMATION  
+FROM UTILISATEUR_NIVEAUX_FORMATIONS unf                
+JOIN NIVEAUX_FORMATIONS nf  ON  unf.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION           
+JOIN NIVEAU_FORMATION_MAQUETTE_ANNE nfma on nfma.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION   
+JOIN NIVEAU_FORMATION_COHORTES nfc on nfc.ID_NIVEAU_FORMATION = nf.ID_NIVEAU_FORMATION   
+LEFT JOIN (                                      
+        SELECT                                       
+            sp.LIBELLE_LONG lib_specialite,       
+            nfs.ID_NIVEAU_FORMATION_SPECIALITE       
+        FROM                                       
+            NIVEAUX_FORMATIONS_SPECIALITES nfs        
+            JOIN SPECIALITES sp ON nfs.ID_SPECIALITE= sp.ID_SPECIALITE                               
+    ) sp ON sp.ID_NIVEAU_FORMATION_SPECIALITE = unf.ID_NIVEAU_FORMATION_SPECIALITE       
+    LEFT JOIN (                                      
+        SELECT           
+            op.LIBELLE_LONG lib_option ,nfso.ID_NIV_FORM_SPEC_OPTION       
+        FROM           
+            NIV_FORM_SPECIALITE_OPTION nfso JOIN OPTIONS op ON nfso.ID_OPTION  = op.ID_OPTION           
+    ) op ON op.ID_NIV_FORM_SPEC_OPTION = unf.ID_NIV_FORM_SPEC_OPTION          
+JOIN FORMATIONS f  ON  nf.ID_FORMATION = f.ID_FORMATION      
+AND nfma.ID_ANNEES_UNIVERS=:id_annee    
+AND unf.ID_NIVEAU_FORMATION=:id_niv_fr   
+AND unf.ID_NIVEAU_FORMATION_SPECIALITE =:id_spec   
+AND unf.ID_NIV_FORM_SPEC_OPTION=:id_op       
+AND unf.ROLE ='RESPONSABLE NIVEAU']]></SQLQuery>
+  <ViewAttribute
+    Name="IdUtilisNiveauFormation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="ID_UTILIS_NIVEAU_FORMATION"
+    Expression="ID_UTILIS_NIVEAU_FORMATION"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>
